@@ -1,13 +1,31 @@
 """Console script for torchfl."""
-import argparse
-import sys
+from argparse import ArgumentParser, Namespace, _ArgumentGroup
+from sys import exit
+
+from compatibility import DATASETS
+
+
+def cli_parser() -> Namespace:
+    parser = ArgumentParser()
+    federated: _ArgumentGroup = parser.add_argument_group("federated learning")
+    general: _ArgumentGroup = parser.add_argument_group("general")
+
+    # federated args
+    federated.add_argument("--num_workers", type=int, default=10, help="number of workers for federated learning.")
+    federated.add_argument("--worker_bs", type=int, default=10, help="batch size of the dataset for workers training locally.")
+    federated.add_argument("--worker_ep", type=int, default=5, help="number of epochs for the workers training locally.")
+
+    # general args
+    general.add_argument("--dataset", type=str, default="mnist", help=f"name of the dataset to be used. Supported: {DATASETS}")
+    general.add_argument("--iid", action='store_true', help="whether the dataset follows iid distribution or not.")
+
+    args = parser.parse_args()
+    return args
 
 
 def main():
     """Console script for torchfl."""
-    parser = argparse.ArgumentParser()
-    parser.add_argument('_', nargs='*')
-    args = parser.parse_args()
+    args = cli_parser()
 
     print("Arguments: " + str(args._))
     print("Replace this message by putting your code into "
@@ -16,4 +34,4 @@ def main():
 
 
 if __name__ == "__main__":
-    sys.exit(main())  # pragma: no cover
+    exit(main())  # pragma: no cover

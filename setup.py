@@ -27,6 +27,7 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
     ],
     description="A Python library for implementing concurrent (multi-threaded and multi-processed) federated learning using PyTorch API.",
     entry_points={
