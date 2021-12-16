@@ -6,7 +6,7 @@ torchfl
 .. image:: https://img.shields.io/pypi/v/torchfl.svg
         :target: https://pypi.python.org/pypi/torchfl
 
-.. image:: https://img.shields.io/travis/vivekkhimani/torchfl.svg
+.. image:: https://img.shields.io/circleci/build/github/vivekkhimani/torchfl/master?token=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vg
         :target: https://app.circleci.com/pipelines/github/vivekkhimani/torchfl
 
 .. image:: https://readthedocs.org/projects/torchfl/badge/?version=latest
