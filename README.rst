@@ -7,7 +7,7 @@ torchfl
         :target: https://pypi.python.org/pypi/torchfl
 
 .. image:: https://img.shields.io/travis/vivekkhimani/torchfl.svg
-        :target: https://travis-ci.com/vivekkhimani/torchfl
+        :target: https://app.circleci.com/pipelines/github/vivekkhimani/torchfl
 
 .. image:: https://readthedocs.org/projects/torchfl/badge/?version=latest
         :target: https://torchfl.readthedocs.io/en/latest/?version=latest
