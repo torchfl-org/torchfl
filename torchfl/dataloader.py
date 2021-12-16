@@ -1,4 +1,5 @@
-from typing import Iterable, Set, Tuple, Any, Dict
+from typing import Iterable, List, Tuple, Any, Dict, Set
+from torch.utils import data
 from torch.utils.data import Dataset, DataLoader
 from torchvision import datasets, transforms
 from argparse import Namespace
@@ -86,16 +87,40 @@ class CustomDataLoader:
 
     def train_non_iid(self) -> Dict[int, Dataset]:
         dataset: Dataset = self.load_dataset(self.args.dataset, True)
-        return
+        shards: int = self.args.num_workers * self.args.niid_factor
+        items: int = len(dataset) // shards
+        idxShard: List[int] = list(range(shards))
+        classes: np.ndarray = dataset.targets.numpy()
+        idxs: Any = np.arange(len(dataset))
 
-    def test(self) -> Dict[int, Dataset]:
+        idxsLabels: np.ndarray = np.vstack((idxs, classes))
+        idxsLabels = idxsLabels[:, idxsLabels[1, :].argsort()]
+        idxs: np.ndarray = idxsLabels[0, :]
+        distribution: Dict[int, np.ndarray] = {i: np.array(
+            [], dtype='int64') for i in range(self.args.num_workers)}
+
+        while idxShard:
+            for i in range(self.args.num_workers):
+                randSet: Set[int] = set(np.random.choice(
+                    idxShard, self.args.niid_factor, replace=False))
+                idxShard = list(set(idxShard) - randSet)
+                for rand in randSet:
+                    distribution[i] = np.concatenate(
+                        (distribution[i], idxs[rand * items:(rand + 1) * items]), axis=0)
+        federated: Dict[int, Dataset] = dict()
+        for i in distribution:
+            federated[i] = DataLoader(DatasetSplit(
+                dataset, distribution[i]), batch_size=self.args.worker_bs, shuffle=True, **self.kwargs)
+        return federated
+
+    def test(self) -> Dataset:
         dataset: Dataset = self.load_dataset(self.args.dataset, False)
-        return
+        return DataLoader(dataset, batch_size=self.args.test_bs, shuffle=True, **self.kwargs)
+
 
 # driver for testing
 if __name__ == '__main__':
     from cli import cli_parser
     args = cli_parser()
     loader = CustomDataLoader(args=args, kwargs={})
-    print(loader.train_iid())
-
+    print(loader.train_non_iid())

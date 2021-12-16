@@ -1,5 +1,4 @@
 from typing import Iterable, Literal, Type
-from argparse import Action, ArgumentParser, Namespace
 
 # normal
 DATASETS = ["mnist", "emnist_digits", "cifar10", "cifar100"]

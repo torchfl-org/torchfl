@@ -6,6 +6,7 @@ import pytest
 
 
 from torchfl import torchfl
+from torchfl import dataloader
 
 
 @pytest.fixture
