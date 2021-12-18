@@ -2,7 +2,7 @@
 from argparse import ArgumentParser, Namespace, _ArgumentGroup
 from sys import exit
 
-from .compatibility import DATASETS
+from compatibility import DATASETS
 
 
 def cli_parser() -> Namespace:

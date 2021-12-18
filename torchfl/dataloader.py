@@ -13,7 +13,7 @@ import numpy as np
 from torch.utils.data import DataLoader, Dataset
 from torchvision import datasets, transforms
 
-from .compatibility import DATASETS_LITERAL
+from compatibility import DATASETS_LITERAL
 
 np.random.seed(42)
 
@@ -37,7 +37,7 @@ class DatasetSplit(Dataset):
         Returns:
             int: length of the collection of indices.
         """
-        return len(self.idxs)
+        return len(self.idxs)   # type: ignore
 
     def __getitem__(self, index: int) -> Tuple[Any, Any]:
         """Overriding the get method.
@@ -48,7 +48,7 @@ class DatasetSplit(Dataset):
         Returns:
             Tuple[Any, Any]: returns the key-value pair as a tuple.
         """
-        image, label = self.dataset[self.idxs[index]]
+        image, label = self.dataset[self.idxs[index]]   # type: ignore
         return image, label
 
 
@@ -73,7 +73,7 @@ class FLDataLoader:
             worker_ep (int, optional): number of epochs for the workers training locally. Defaults to 5.
             iid (bool, optional): whether the dataset follows iid distribution or not. Defaults to True.
             niid_factor (int, optional): max number of classes held by each niid agent. lower the number, more measure of non-iidness. Defaults to 2.
-            dataset (DATASETS_LITERAL, optional): name of the dataset to be used. Defaults to "mnist".
+            dataset ([mnist, emnist_digits, cifar10, cifar100], optional): name of the dataset to be used. Defaults to "mnist".
             test_bs (int, optional): batch size used for the testing dataset. Defaults to 128.
         """
         self.num_workers: int = num_workers
@@ -85,11 +85,11 @@ class FLDataLoader:
         self.test_bs: int = test_bs
 
     @staticmethod
-    def load_dataset(name: DATASETS_LITERAL, training: bool) -> Dataset:
+    def __load_dataset__(name: DATASETS_LITERAL, training: bool) -> Dataset:
         """Helper method used to load the PyTorch Dataset with a provided name.
 
         Args:
-            name (DATASETS_LITERAL): name of the dataset to be loaded.
+            name ([mnist, emnist_digits, cifar10, cifar100]): name of the dataset to be loaded.
             training (bool): if the dataset needs to be used for training or testing.
 
         Raises:
@@ -164,7 +164,7 @@ class FLDataLoader:
         Returns:
             Dict[int, Dataset]: collection of workers as the keys and the PyTorch Dataset object as values (used for training).
         """
-        dataset: Dataset = self.load_dataset(self.dataset, True)
+        dataset: Dataset = self.__load_dataset__(self.dataset, True)
         items: int = len(dataset) // self.num_workers
         distribution: np.ndarray = np.random.randint(
             low=0, high=len(dataset), size=(self.num_workers, items)
@@ -184,14 +184,13 @@ class FLDataLoader:
         Returns:
             Dict[int, Dataset]: collection of workers as the keys and the PyTorch Dataset object as values (used for training).
         """
-        dataset: Dataset = self.load_dataset(self.dataset, True)
+        dataset: Dataset = self.__load_dataset__(self.dataset, True)
         shards: int = self.num_workers * self.niid_factor
         items: int = len(dataset) // shards
         idx_shard: List[int] = list(range(shards))
         classes: np.ndarray = dataset.targets.numpy()
-        idxs: Any = np.arange(len(dataset))
 
-        idxs_labels: np.ndarray = np.vstack((idxs, classes))
+        idxs_labels: np.ndarray = np.vstack((np.arange(len(dataset)), classes))
         idxs_labels = idxs_labels[:, idxs_labels[1, :].argsort()]
         idxs: np.ndarray = idxs_labels[0, :]
         distribution: Dict[int, np.ndarray] = {
@@ -224,7 +223,7 @@ class FLDataLoader:
         Returns:
             Dataset: PyTorch Dataset object.
         """
-        dataset: Dataset = self.load_dataset(self.dataset, False)
+        dataset: Dataset = self.__load_dataset__(self.dataset, False)
         return DataLoader(dataset, batch_size=self.test_bs, shuffle=True)
 
 
