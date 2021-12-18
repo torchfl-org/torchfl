@@ -37,7 +37,7 @@ class DatasetSplit(Dataset):
         Returns:
             int: length of the collection of indices.
         """
-        return len(self.idxs)   # type: ignore
+        return len(self.idxs)  # type: ignore
 
     def __getitem__(self, index: int) -> Tuple[Any, Any]:
         """Overriding the get method.
@@ -48,7 +48,7 @@ class DatasetSplit(Dataset):
         Returns:
             Tuple[Any, Any]: returns the key-value pair as a tuple.
         """
-        image, label = self.dataset[self.idxs[index]]   # type: ignore
+        image, label = self.dataset[self.idxs[index]]  # type: ignore
         return image, label
 
 
@@ -205,7 +205,7 @@ class FLDataLoader:
                 idx_shard = list(set(idx_shard) - rand_set)
                 for rand in rand_set:
                     distribution[i] = np.concatenate(
-                        (distribution[i], idxs[rand * items : (rand + 1) * items]),         # noqa: E203
+                        (distribution[i], idxs[rand * items : (rand + 1) * items]),
                         axis=0,
                     )
         federated: Dict[int, Dataset] = dict()

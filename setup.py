@@ -12,9 +12,7 @@ with open("HISTORY.rst") as history_file:
 
 requirements = []
 
-test_requirements = [
-    "pytest>=3",
-]
+test_requirements = ["pytest>=3"]
 
 setup(
     author="Vivek Khimani",
@@ -32,11 +30,7 @@ setup(
         "Programming Language :: Python :: 3.9",
     ],
     description="A Python library for implementing concurrent (multi-threaded and multi-processed) federated learning using PyTorch API.",
-    entry_points={
-        "console_scripts": [
-            "torchfl=torchfl.cli:main",
-        ],
-    },
+    entry_points={"console_scripts": ["torchfl=torchfl.cli:main"]},
     install_requires=requirements,
     license="GNU General Public License v3",
     long_description=readme + "\n\n" + history,
