@@ -63,7 +63,6 @@ class FLDataLoader:
         self,
         num_workers: int = 10,
         worker_bs: int = 10,
-        worker_ep: int = 5,
         iid: bool = True,
         niid_factor: int = 2,
         dataset: DATASETS_LITERAL = "mnist",  # type: ignore
@@ -82,7 +81,6 @@ class FLDataLoader:
         """
         self.num_workers: int = num_workers
         self.worker_bs: int = worker_bs
-        self.worker_ep: int = worker_ep
         self.iid: bool = iid
         self.niid_factor: int = niid_factor
         self.dataset: DATASETS_LITERAL = dataset  # type: ignore
