@@ -1,8 +1,11 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 """Console script for torchfl."""
 from argparse import ArgumentParser, Namespace, _ArgumentGroup
 from sys import exit
 
-from compatibility import DATASETS
+from torchfl.compatibility import DATASETS
 
 
 def cli_parser() -> Namespace:

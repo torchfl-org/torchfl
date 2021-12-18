@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# mypy: ignore-errors
+
 """Prepares the given torchvision datasets for federated learning.
 
 Raises:
@@ -13,7 +17,7 @@ import numpy as np
 from torch.utils.data import DataLoader, Dataset
 from torchvision import datasets, transforms
 
-from compatibility import DATASETS_LITERAL
+from torchfl.compatibility import DATASETS_LITERAL
 
 np.random.seed(42)
 
@@ -62,7 +66,7 @@ class FLDataLoader:
         worker_ep: int = 5,
         iid: bool = True,
         niid_factor: int = 2,
-        dataset: DATASETS_LITERAL = "mnist",
+        dataset: DATASETS_LITERAL = "mnist",  # type: ignore
         test_bs: int = 128,
     ) -> None:
         """Constructor
@@ -81,11 +85,13 @@ class FLDataLoader:
         self.worker_ep: int = worker_ep
         self.iid: bool = iid
         self.niid_factor: int = niid_factor
-        self.dataset: DATASETS_LITERAL = dataset
+        self.dataset: DATASETS_LITERAL = dataset  # type: ignore
         self.test_bs: int = test_bs
 
     @staticmethod
-    def __load_dataset__(name: DATASETS_LITERAL, training: bool) -> Dataset:
+    def __load_dataset__(
+        name: DATASETS_LITERAL, training: bool
+    ) -> Dataset:  # type: ignore
         """Helper method used to load the PyTorch Dataset with a provided name.
 
         Args:
@@ -108,7 +114,7 @@ class FLDataLoader:
                     [transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))]
                 ),
             )
-        elif name.lower() == "emnist":
+        elif name.lower() == "emnist_digits":  # type: ignore
             return datasets.EMNIST(
                 root,
                 split="digits",
@@ -119,7 +125,7 @@ class FLDataLoader:
                 ),
             )
 
-        elif name.lower() == "cifar10":
+        elif name.lower() == "cifar10":  # type: ignore
             return datasets.CIFAR10(
                 root,
                 train=training,
@@ -136,7 +142,7 @@ class FLDataLoader:
                 ),
             )
 
-        elif name.lower() == "cifar100":
+        elif name.lower() == "cifar100":  # type: ignore
             return datasets.CIFAR100(
                 root,
                 train=training,
@@ -158,11 +164,11 @@ class FLDataLoader:
                 f"name: the dataset is not currently supported. Found: {name}"
             )
 
-    def train_iid(self) -> Dict[int, Dataset]:
+    def train_iid(self) -> Dict[int, DataLoader]:
         """Loads the training dataset as iid split among the workers.
 
         Returns:
-            Dict[int, Dataset]: collection of workers as the keys and the PyTorch Dataset object as values (used for training).
+            Dict[int, DataLoader]: collection of workers as the keys and the PyTorch DataLoader object as values (used for training).
         """
         dataset: Dataset = self.__load_dataset__(self.dataset, True)
         items: int = len(dataset) // self.num_workers
@@ -178,17 +184,21 @@ class FLDataLoader:
             )
         return federated
 
-    def train_non_iid(self) -> Dict[int, Dataset]:
+    def train_non_iid(self) -> Dict[int, DataLoader]:
         """Loads the training dataset as non-iid split among the workers.
 
         Returns:
-            Dict[int, Dataset]: collection of workers as the keys and the PyTorch Dataset object as values (used for training).
+            Dict[int, DataLoader]: collection of workers as the keys and the PyTorch DataLoader object as values (used for training).
         """
         dataset: Dataset = self.__load_dataset__(self.dataset, True)
         shards: int = self.num_workers * self.niid_factor
         items: int = len(dataset) // shards
         idx_shard: List[int] = list(range(shards))
-        classes: np.ndarray = dataset.targets.numpy()
+        classes: np.ndarray = np.array([])
+        if isinstance(dataset.targets, list):
+            classes = np.array(dataset.targets)
+        else:
+            classes = dataset.targets.numpy()
 
         idxs_labels: np.ndarray = np.vstack((np.arange(len(dataset)), classes))
         idxs_labels = idxs_labels[:, idxs_labels[1, :].argsort()]
@@ -223,8 +233,7 @@ class FLDataLoader:
         Returns:
             Dataset: PyTorch Dataset object.
         """
-        dataset: Dataset = self.__load_dataset__(self.dataset, False)
-        return DataLoader(dataset, batch_size=self.test_bs, shuffle=True)
+        return self.__load_dataset__(self.dataset, False)
 
 
 # driver for testing
