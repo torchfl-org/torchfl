@@ -1,3 +1,4 @@
+"""Defines the constants to ensure the consistency and compatibility between the files."""
 from typing import Literal, Type
 
 # normal

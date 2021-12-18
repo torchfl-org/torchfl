@@ -1,1 +1,1 @@
-# will contain baseline models for non-federated runs and testing
+"""Contains the baseline models for benchmarking the non-federated learning performance."""

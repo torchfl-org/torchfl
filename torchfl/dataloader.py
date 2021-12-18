@@ -1,3 +1,12 @@
+"""Prepares the given torchvision datasets for federated learning.
+
+Raises:
+    ValueError: The given name of the dataset is not currently supported.
+
+Returns:
+    DatasetSplit: Implementation of PyTorch key-value based Dataset.
+    FLDataLoader: Prepares the torchvision datasets for federated learning. Supports iid and non-iid splits.
+"""
 import os
 from typing import Any, Dict, Iterable, List, Set, Tuple
 import numpy as np
@@ -10,20 +19,41 @@ np.random.seed(42)
 
 
 class DatasetSplit(Dataset):
+    """Implementation of PyTorch key-value based Dataset."""
+
     def __init__(self, dataset: Dataset, idxs: Iterable[int]) -> None:
+        """Constructor
+
+        Args:
+            dataset (Dataset): PyTorch Dataset.
+            idxs (Iterable[int]): collection of indices.
+        """
         self.dataset: Dataset = dataset
         self.idxs: Iterable[int] = list(idxs)
 
     def __len__(self) -> int:
+        """Overriding the length method.
+
+        Returns:
+            int: length of the collection of indices.
+        """
         return len(self.idxs)
 
     def __getitem__(self, index: int) -> Tuple[Any, Any]:
+        """Overriding the get method.
+
+        Args:
+            index (int): index for querying.
+
+        Returns:
+            Tuple[Any, Any]: returns the key-value pair as a tuple.
+        """
         image, label = self.dataset[self.idxs[index]]
         return image, label
 
 
 class FLDataLoader:
-    """Data Loader for Federated Learning"""
+    """Prepares the torchvision datasets for federated learning. Supports iid and non-iid splits."""
 
     def __init__(
         self,
@@ -36,14 +66,15 @@ class FLDataLoader:
         test_bs: int = 128,
     ) -> None:
         """Constructor
+
         Args:
-            num_workers (int, optional): [description]. Defaults to 10.
-            worker_bs (int, optional): [description]. Defaults to 10.
-            worker_ep (int, optional): [description]. Defaults to 5.
-            iid (bool, optional): [description]. Defaults to True.
-            niid_factor (int, optional): [description]. Defaults to 2.
-            dataset (DATASETS_LITERAL, optional): [description]. Defaults to "mnist".
-            test_bs (int, optional): [description]. Defaults to 128.
+            num_workers (int, optional): number of workers for federated learning. Defaults to 10.
+            worker_bs (int, optional): batch size of the dataset for workers training locally. Defaults to 10.
+            worker_ep (int, optional): number of epochs for the workers training locally. Defaults to 5.
+            iid (bool, optional): whether the dataset follows iid distribution or not. Defaults to True.
+            niid_factor (int, optional): max number of classes held by each niid agent. lower the number, more measure of non-iidness. Defaults to 2.
+            dataset (DATASETS_LITERAL, optional): name of the dataset to be used. Defaults to "mnist".
+            test_bs (int, optional): batch size used for the testing dataset. Defaults to 128.
         """
         self.num_workers: int = num_workers
         self.worker_bs: int = worker_bs
@@ -55,10 +86,22 @@ class FLDataLoader:
 
     @staticmethod
     def load_dataset(name: DATASETS_LITERAL, training: bool) -> Dataset:
-        ROOT = os.path.join(os.pardir, "data")
+        """Helper method used to load the PyTorch Dataset with a provided name.
+
+        Args:
+            name (DATASETS_LITERAL): name of the dataset to be loaded.
+            training (bool): if the dataset needs to be used for training or testing.
+
+        Raises:
+            ValueError: the given name is not currently supported.
+
+        Returns:
+            Dataset: PyTorch Dataset object.
+        """
+        root = os.path.join(os.pardir, "data")
         if name.lower() == "mnist":
             return datasets.MNIST(
-                ROOT,
+                root,
                 train=training,
                 download=True,
                 transform=transforms.Compose(
@@ -67,7 +110,7 @@ class FLDataLoader:
             )
         elif name.lower() == "emnist":
             return datasets.EMNIST(
-                ROOT,
+                root,
                 split="digits",
                 train=training,
                 download=True,
@@ -78,7 +121,7 @@ class FLDataLoader:
 
         elif name.lower() == "cifar10":
             return datasets.CIFAR10(
-                ROOT,
+                root,
                 train=training,
                 download=True,
                 transform=transforms.Compose(
@@ -95,7 +138,7 @@ class FLDataLoader:
 
         elif name.lower() == "cifar100":
             return datasets.CIFAR100(
-                ROOT,
+                root,
                 train=training,
                 download=True,
                 transform=transforms.Compose(
@@ -116,6 +159,11 @@ class FLDataLoader:
             )
 
     def train_iid(self) -> Dict[int, Dataset]:
+        """Loads the training dataset as iid split among the workers.
+
+        Returns:
+            Dict[int, Dataset]: collection of workers as the keys and the PyTorch Dataset object as values (used for training).
+        """
         dataset: Dataset = self.load_dataset(self.dataset, True)
         items: int = len(dataset) // self.num_workers
         distribution: np.ndarray = np.random.randint(
@@ -131,6 +179,11 @@ class FLDataLoader:
         return federated
 
     def train_non_iid(self) -> Dict[int, Dataset]:
+        """Loads the training dataset as non-iid split among the workers.
+
+        Returns:
+            Dict[int, Dataset]: collection of workers as the keys and the PyTorch Dataset object as values (used for training).
+        """
         dataset: Dataset = self.load_dataset(self.dataset, True)
         shards: int = self.num_workers * self.niid_factor
         items: int = len(dataset) // shards
@@ -153,7 +206,7 @@ class FLDataLoader:
                 idx_shard = list(set(idx_shard) - rand_set)
                 for rand in rand_set:
                     distribution[i] = np.concatenate(
-                        (distribution[i], idxs[rand * items : (rand + 1) * items]),
+                        (distribution[i], idxs[rand * items : (rand + 1) * items]),         # noqa: E203
                         axis=0,
                     )
         federated: Dict[int, Dataset] = dict()
@@ -166,6 +219,11 @@ class FLDataLoader:
         return federated
 
     def test(self) -> Dataset:
+        """Loads the dataset for testing.
+
+        Returns:
+            Dataset: PyTorch Dataset object.
+        """
         dataset: Dataset = self.load_dataset(self.dataset, False)
         return DataLoader(dataset, batch_size=self.test_bs, shuffle=True)
 

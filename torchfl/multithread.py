@@ -1,1 +1,1 @@
-# will provided multithreaded implementation of FL
+"""Contains the multithreading-based implementation for federated learning."""

@@ -1,1 +1,1 @@
-# will provided multiprocessing implementation of FL
+"""Contains the multiprocessing-based implementation for federated learning."""

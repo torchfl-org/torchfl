@@ -6,6 +6,11 @@ from .compatibility import DATASETS
 
 
 def cli_parser() -> Namespace:
+    """Defines the argument parser and returns the Namespace.
+
+    Returns:
+        Namespace: Namespace object from argparse
+    """
     parser = ArgumentParser()
     federated: _ArgumentGroup = parser.add_argument_group("federated learning")
     general: _ArgumentGroup = parser.add_argument_group("general")

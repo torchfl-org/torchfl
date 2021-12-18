@@ -1,1 +1,1 @@
-# will provide sequential implementation of FL
+"""Contains the non-concurrent implementation for federated learning."""
