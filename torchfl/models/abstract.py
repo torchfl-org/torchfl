@@ -5,11 +5,16 @@
 
 from torch.nn import Module
 from abc import ABC, abstractmethod
-from torch import Tensor
+from torch.functional import Tensor
 
 
 class TorchModel(Module, ABC):
     """Abstract class used as the base for implementation of PyTorch models."""
+
+    @abstractmethod
+    def __init__(self):
+        """Default constructor"""
+        super(TorchModel, self).__init__()
 
     @abstractmethod
     def forward(self, x: Tensor) -> Tensor:
