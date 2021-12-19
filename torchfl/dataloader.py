@@ -76,7 +76,7 @@ class FLDataLoader:
             worker_ep (int, optional): number of epochs for the workers training locally. Defaults to 5.
             iid (bool, optional): whether the dataset follows iid distribution or not. Defaults to True.
             niid_factor (int, optional): max number of classes held by each niid agent. lower the number, more measure of non-iidness. Defaults to 2.
-            dataset ([mnist, emnist_digits, cifar10, cifar100], optional): name of the dataset to be used. Defaults to "mnist".
+            dataset ([mnist, emnist_digits, cifar10], optional): name of the dataset to be used. Defaults to "mnist".
             test_bs (int, optional): batch size used for the testing dataset. Defaults to 128.
         """
         self.num_workers: int = num_workers
@@ -93,7 +93,7 @@ class FLDataLoader:
         """Helper method used to load the PyTorch Dataset with a provided name.
 
         Args:
-            name ([mnist, emnist_digits, cifar10, cifar100]): name of the dataset to be loaded.
+            name ([mnist, emnist_digits, cifar10]): name of the dataset to be loaded.
             training (bool): if the dataset needs to be used for training or testing.
 
         Raises:
@@ -125,23 +125,6 @@ class FLDataLoader:
 
         elif name.lower() == "cifar10":  # type: ignore
             return datasets.CIFAR10(
-                root,
-                train=training,
-                download=True,
-                transform=transforms.Compose(
-                    [
-                        transforms.RandomCrop(32, padding=4),
-                        transforms.RandomHorizontalFlip(),
-                        transforms.ToTensor(),
-                        transforms.Normalize(
-                            (0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)
-                        ),
-                    ]
-                ),
-            )
-
-        elif name.lower() == "cifar100":  # type: ignore
-            return datasets.CIFAR100(
                 root,
                 train=training,
                 download=True,

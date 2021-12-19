@@ -37,11 +37,53 @@ def cifar10_loader():
     return dataloader.FLDataLoader(dataset="cifar10")
 
 
-@pytest.fixture
-def cifar100_loader():
-    """Fixture for CIFAR100 dataset.
+def test_mnist_mlp():
+    return
 
-    Returns:
-        DataLoader: DataLoader object for CIFAR100.
-    """
-    return dataloader.FLDataLoader(dataset="cifar100")
+
+def test_mnist_cnn():
+    return
+
+
+def test_emnist_digits_mlp():
+    return
+
+
+def test_emnist_digits_cnn():
+    return
+
+
+def test_cifar10_cnn():
+    return
+
+
+def test_cifar10_dpn26():
+    return
+
+
+def test_cifar10_dpn92():
+    return
+
+
+def test_cifar10_vgg19():
+    return
+
+
+def test_cifar10_resnet18():
+    return
+
+
+def test_cifar10_resnet34():
+    return
+
+
+def test_cifar10_resnet50():
+    return
+
+
+def test_cifar10_resnet101():
+    return
+
+
+def test_cifar10_resnet152():
+    return

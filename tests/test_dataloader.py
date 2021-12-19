@@ -52,16 +52,6 @@ def cifar10_loader():
     return dataloader.FLDataLoader(dataset="cifar10")
 
 
-@pytest.fixture
-def cifar100_loader():
-    """Fixture for CIFAR100 dataset.
-
-    Returns:
-        DataLoader: DataLoader object for CIFAR100.
-    """
-    return dataloader.FLDataLoader(dataset="cifar100")
-
-
 def test_mnist_iid(mnist_loader):
     """Testing the iid split for MNIST
 
@@ -177,42 +167,3 @@ def test_cifar10_validation(cifar10_loader):
     test_dataset = cifar10_loader.test()
     assert len(test_dataset) == 10000
     assert len(test_dataset.classes) == 10
-
-
-def test_cifar100_iid(cifar100_loader):
-    """Testing the iid split for CIFAR100
-
-    Args:
-        mnist_loader (DataLoader): CIFAR100 federated DataLoader object.
-    """
-    train_dataset = cifar100_loader.train_iid()
-    assert len(train_dataset.keys()) == 10
-    collated_labels = collate_federated(train_dataset[0])
-    assert len(collated_labels) == 5000
-    frequency = Counter(collated_labels)
-    assert len(frequency.keys()) == 100
-
-
-def test_cifar100_non_iid(cifar100_loader):
-    """Testing the non-iid split for CIFAR100
-
-    Args:
-        mnist_loader (DataLoader): CIFAR100 federated DataLoader object.
-    """
-    train_dataset = cifar100_loader.train_non_iid()
-    assert len(train_dataset.keys()) == 10
-    collated_labels = collate_federated(train_dataset[0])
-    assert len(collated_labels) == 5000
-    frequency = Counter(collated_labels)
-    assert len(frequency.keys()) == 10
-
-
-def test_cifar100_validation(cifar100_loader):
-    """Testing the validation split for CIFAR100
-
-    Args:
-        mnist_loader (DataLoader): CIFAR100 federated DataLoader object.
-    """
-    test_dataset = cifar100_loader.test()
-    assert len(test_dataset) == 10000
-    assert len(test_dataset.classes) == 100
