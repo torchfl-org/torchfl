@@ -14,10 +14,11 @@ from torch.nn import (
     Dropout2d,
     Dropout,
     Linear,
+    AvgPool2d,
 )
 import torch
 from torch.nn.functional import relu, avg_pool2d
-from typing import List
+from typing import List, Any
 
 
 class CNN(TorchModel):
@@ -71,7 +72,7 @@ class CNN(TorchModel):
 
 
 class Bottleneck(TorchModel):
-    """Implementation of Bottleneck for CIFAR10."""
+    """Implementation of Bottleneck for DPN and VGG models for CIFAR10."""
 
     def __init__(
         self,
@@ -286,3 +287,310 @@ class DPN92(TorchModel):
         x = avg_pool2d(x, 4)
         x = x.view(x.size(0), -1)
         return self.linear(x)
+
+
+class VGG19(TorchModel):
+    """Implementation of VGG19 for CIFAR10."""
+
+    def __init__(self):
+        """Constructor"""
+        super(VGG19, self).__init__()
+        self.features: Sequential = self._make_layers(
+            [
+                64,
+                64,
+                "M",
+                128,
+                128,
+                "M",
+                256,
+                256,
+                256,
+                256,
+                "M",
+                512,
+                512,
+                512,
+                512,
+                "M",
+                512,
+                512,
+                512,
+                512,
+                "M",
+            ]
+        )
+        self.classifier: Linear = Linear(512, 10)
+
+    def forward(self, x: Tensor) -> Tensor:
+        """Forward propagation through the network.
+
+        Args:
+            x (Tensor): The input image.
+
+        Returns:
+            Tensor: The output tensor after forward propagation.
+        """
+        x = self.features(x)
+        x = x.view(x.size(0), -1)
+        return self.classifier(x)
+
+    @staticmethod
+    def _make_layers(cfg: List[Any]) -> Sequential:
+        """Helper method for creating layers.
+
+        Args:
+            cfg (List[Any]): configuration used for creating every layer.
+
+        Returns:
+            Sequential: Sequential model by PyTorch.
+        """
+        layers: List[Any] = list()
+        in_channels: int = 3
+        for x in cfg:
+            if x == "M":
+                layers += [MaxPool2d(kernel_size=2, stride=2)]
+            else:
+                layers += [
+                    Conv2d(in_channels, x, kernel_size=3, padding=1),
+                    BatchNorm2d(x),
+                    ReLU(inplace=True),
+                ]
+                in_channels = x
+        layers += [AvgPool2d(kernel_size=1, stride=1)]
+        return Sequential(*layers)
+
+
+class ResNetAbstractBlock(TorchModel):
+    """Implementation of Abstract Block class for the ResNet model variants for CIFAR10."""
+
+    def __init__(self) -> None:
+        """Constructor"""
+        super(ResNetAbstractBlock, self).__init__()
+
+
+class ResNetBasicBlock(ResNetAbstractBlock):
+    """Implementation of BasicBlock of the ResNet model variants for CIFAR10."""
+
+    expansion: int = 1
+
+    def __init__(self, in_planes: int, out_planes: int, stride: int = 1) -> None:
+        """Constructor
+
+        Args:
+            in_planes (int): incoming planes for a layer.
+            out_planes (int): outgoing planes for a layer.
+            stride (int, optional): stride for the convolutional layers. Defaults to 1.
+        """
+        super(ResNetBasicBlock, self).__init__()
+        self.conv_model: Sequential = Sequential(
+            Conv2d(
+                in_planes,
+                out_planes,
+                kernel_size=3,
+                stride=stride,
+                padding=1,
+                bias=False,
+            ),
+            BatchNorm2d(out_planes),
+            ReLU(inplace=True),
+            Conv2d(
+                out_planes, out_planes, kernel_size=3, stride=1, padding=1, bias=False
+            ),
+            BatchNorm2d(out_planes),
+        )
+        self.shortcut: Sequential = Sequential()
+        if (stride != 1) or (in_planes != (self.expansion * out_planes)):
+            self.shortcut = Sequential(
+                Conv2d(
+                    in_planes,
+                    (self.expansion * out_planes),
+                    kernel_size=1,
+                    stride=stride,
+                    bias=False,
+                ),
+                BatchNorm2d(self.expansion * out_planes),
+            )
+
+    def forward(self, x: Tensor) -> Tensor:
+        """Forward propagation through the network.
+
+        Args:
+            x (Tensor): The input image.
+
+        Returns:
+            Tensor: The output tensor after forward propagation.
+        """
+        out: Tensor = self.conv_model(x)
+        out += self.shortcut(x)
+        return relu(out)
+
+
+class ResNetBottleneck(ResNetAbstractBlock):
+    """Implementation of Bottleneck of the ResNet model variants for CIFAR10."""
+
+    expansion: int = 4
+
+    def __init__(self, in_planes: int, out_planes: int, stride: int = 1) -> None:
+        """Constructor
+
+        Args:
+            in_planes (int): incoming planes for a layer.
+            out_planes (int): outgoing planes for a layer.
+            stride (int, optional): stride for the convolutional layers. Defaults to 1.
+        """
+        super(ResNetBottleneck, self).__init__()
+        self.conv_model: Sequential = Sequential(
+            Conv2d(
+                in_planes,
+                out_planes,
+                kernel_size=1,
+                bias=False,
+            ),
+            BatchNorm2d(out_planes),
+            ReLU(inplace=True),
+            Conv2d(
+                out_planes, out_planes, kernel_size=3, stride=1, padding=1, bias=False
+            ),
+            BatchNorm2d(out_planes),
+            ReLU(inplace=True),
+            Conv2d(
+                out_planes, (self.expansion * out_planes), kernel_size=1, bias=False
+            ),
+            BatchNorm2d(self.expansion * out_planes),
+        )
+        self.shortcut: Sequential = Sequential()
+        if (stride != 1) or (in_planes != (self.expansion * out_planes)):
+            self.shortcut = Sequential(
+                Conv2d(
+                    in_planes,
+                    (self.expansion * out_planes),
+                    kernel_size=1,
+                    stride=stride,
+                    bias=False,
+                ),
+                BatchNorm2d(self.expansion * out_planes),
+            )
+
+    def forward(self, x: Tensor) -> Tensor:
+        """Forward propagation through the network.
+
+        Args:
+            x (Tensor): The input image.
+
+        Returns:
+            Tensor: The output tensor after forward propagation.
+        """
+        out: Tensor = self.conv_model(x)
+        out += self.shortcut(x)
+        return relu(out)
+
+
+class ResNet(TorchModel):
+    """Implementation of the ResNet base class for CIFAR10."""
+
+    def __init__(
+        self, block: ResNetAbstractBlock, num_blocks: int, num_classes: int = 10
+    ) -> None:
+        """Constructor
+
+        Args:
+            block (ResNetAbstractBlock): block type used for the construction of ResNet
+            num_blocks (int): number of blocks
+            num_classes (int, optional): number of classes for prediction. Defaults to 10.
+        """
+        super(ResNet, self).__init__()
+        self.in_planes: int = 64
+        self.conv_model: Sequential = Sequential(
+            Conv2d(3, 64, kernel_size=3, stride=1, padding=1, bias=False),
+            BatchNorm2d(64),
+            ReLU(inplace=True),
+        )
+        self.layer1: Sequential = self._make_layer(block, 64, num_blocks[0], stride=1)
+        self.layer2: Sequential = self._make_layer(block, 128, num_blocks[1], stride=2)
+        self.layer3: Sequential = self._make_layer(block, num_blocks[2], stride=2)
+        self.layer4: Sequential = self._make_layer(block, 512, num_blocks[3], stride=2)
+        self.linear: Linear = Linear(512 * block.expansion, num_classes)
+
+    def _make_layer(
+        self, block: ResNetAbstractBlock, planes: int, num_blocks: int, stride: int
+    ) -> Sequential:
+        """Helper method used for the creation of layers.
+
+        Args:
+            block (ResNetAbstractBlock): ResNetAbstractBlock custom data type.
+            planes (int): number of planes in the layer.
+            num_blocks (int): number of blocks in the layer.
+            stride (int): strides used in the layer.
+
+        Returns:
+            Sequential: Sequential model by PyTorch.
+        """
+        strides: List[int] = [stride] + [1] * (num_blocks - 1)
+        layers: List[ResNetAbstractBlock] = list()
+        for s in strides:
+            layers.append(block(self.in_planes, planes, s))
+            self.in_planes = planes * block.expansion
+        return Sequential(*layers)
+
+    def forward(self, x: Tensor) -> Tensor:
+        """Forward propagation through the network.
+
+        Args:
+            x (Tensor): The input image.
+
+        Returns:
+            Tensor: The output tensor after forward propagation.
+        """
+        x = self.conv_model(x)
+        x = self.layer1(x)
+        x = self.layer2(x)
+        x = self.layer3(x)
+        x = self.layer4(x)
+        x = avg_pool2d(x, 4)
+        x = x.view(x.size(0), -1)
+        x = self.linear(x)
+        return x
+
+
+def ResNet18() -> ResNet:
+    """ResNet18 for CIFAR10.
+
+    Returns:
+        ResNet: Base ResNet implementation for CIFAR10.
+    """
+    return ResNet(ResNetBasicBlock, [2, 2, 2, 2])
+
+
+def ResNet34() -> ResNet:
+    """ResNet34 for CIFAR10.
+
+    Returns:
+        ResNet: Base ResNet implementation for CIFAR10.
+    """
+    return ResNet(ResNetBasicBlock, [3, 4, 6, 3])
+
+
+def ResNet50() -> ResNet:
+    """ResNet50 for CIFAR10.
+
+    Returns:
+        ResNet: Base ResNet implementation for CIFAR10.
+    """
+    return ResNet(ResNetBottleneck, [3, 4, 6, 3])
+
+def ResNet101() -> ResNet:
+    """ResNet101 for CIFAR10.
+
+    Returns:
+        ResNet: Base ResNet implementation for CIFAR10.
+    """
+    return ResNet(ResNetBottleneck, [3, 4, 23, 3])
+
+def ResNet152() -> ResNet:
+    """ResNet152 for CIFAR10.
+
+    Returns:
+        ResNet: Base ResNet implementation for CIFAR10.
+    """
+    return ResNet(ResNetBottleneck, [3, 8, 36, 3])
