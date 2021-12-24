@@ -3,9 +3,10 @@
 
 """Initializes the PyTorch models for EMNIST dataset."""
 
+from abc import ABC
 from torch.functional import Tensor
-from torchfl.models.abstract import TorchModel
 from torch.nn import (
+    Module,
     Sequential,
     Linear,
     ReLU,
@@ -17,7 +18,7 @@ from torch.nn import (
 )
 
 
-class MLP(TorchModel):
+class MLP(Module, ABC):
     """Implementation of MLP for EMNIST Digits."""
 
     def __init__(self) -> None:
@@ -40,7 +41,7 @@ class MLP(TorchModel):
         return self.model(x)
 
 
-class CNN(TorchModel):
+class CNN(Module, ABC):
     """Implementation of CNN for EMNIST Digits."""
 
     def __init__(self) -> None:

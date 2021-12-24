@@ -3,9 +3,10 @@
 
 """Initializes the PyTorch models for CIFAR-10 dataset."""
 
+from abc import ABC
 from torch.functional import Tensor
-from torchfl.models.abstract import TorchModel
 from torch.nn import (
+    Module,
     Sequential,
     Conv2d,
     BatchNorm2d,
@@ -16,12 +17,12 @@ from torch.nn import (
     Linear,
     AvgPool2d,
 )
-import torch
+from torch import cat
 from torch.nn.functional import relu, avg_pool2d
 from typing import List, Any, Union, Type
 
 
-class CNN(TorchModel):
+class CNN(Module, ABC):
     """Implementation of CNN for CIFAR10."""
 
     def __init__(self) -> None:
@@ -71,7 +72,7 @@ class CNN(TorchModel):
         return self.linear_model(x)
 
 
-class Bottleneck(TorchModel):
+class Bottleneck(Module, ABC):
     """Implementation of Bottleneck for DPN and VGG models for CIFAR10."""
 
     def __init__(
@@ -139,13 +140,13 @@ class Bottleneck(TorchModel):
         out: Tensor = self.conv_model(x)
         x = self.shortcut(x)
         d: int = self.out_planes
-        out = torch.cat(
+        out = cat(
             [x[:, :d, :, :] + out[:, :d, :, :], x[:, d:, :, :], out[:, d:, :, :]], 1
         )
         return relu(out)
 
 
-class DPN26(TorchModel):
+class DPN26(Module, ABC):
     """Implementation of DPN26 for CIFAR10."""
 
     def __init__(self) -> None:
@@ -226,7 +227,7 @@ class DPN26(TorchModel):
         return self.linear(x)
 
 
-class DPN92(TorchModel):
+class DPN92(Module, ABC):
     """Implementation of DPN92 for CIFAR10."""
 
     def __init__(self) -> None:
@@ -307,7 +308,7 @@ class DPN92(TorchModel):
         return self.linear(x)
 
 
-class VGG19(TorchModel):
+class VGG19(Module, ABC):
     """Implementation of VGG19 for CIFAR10."""
 
     def __init__(self):
@@ -379,7 +380,7 @@ class VGG19(TorchModel):
         return Sequential(*layers)
 
 
-class ResNetBasicBlock(TorchModel):
+class ResNetBasicBlock(Module, ABC):
     """Implementation of BasicBlock of the ResNet model variants for CIFAR10."""
 
     expansion: int = 1
@@ -436,7 +437,7 @@ class ResNetBasicBlock(TorchModel):
         return relu(out)
 
 
-class ResNetBottleneck(TorchModel):
+class ResNetBottleneck(Module, ABC):
     """Implementation of Bottleneck of the ResNet model variants for CIFAR10."""
 
     expansion: int = 4
@@ -496,7 +497,7 @@ class ResNetBottleneck(TorchModel):
         return relu(out)
 
 
-class ResNet(TorchModel):
+class ResNet(Module, ABC):
     """Implementation of the ResNet base class for CIFAR10."""
 
     def __init__(
