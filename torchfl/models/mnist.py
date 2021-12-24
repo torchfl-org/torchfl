@@ -37,12 +37,13 @@ class CNN(TorchModel):
         """Constructor"""
         super(CNN, self).__init__()
         self.conv_model: Sequential = Sequential(
-            Conv2d(1, 10, 5),
+            Conv2d(1, 10, kernel_size=5),
             MaxPool2d(2, 2),
-            ReLU(),
-            Conv2d(10, 20, 5),
+            ReLU(inplace=True),
+            Conv2d(10, 20, kernel_size=5),
             Dropout2d(),
             MaxPool2d(2, 2),
+            ReLU(inplace=True),
         )
         self.linear_model: Sequential = Sequential(
             ReLU(), Linear(320, 50), Dropout(), Linear(50, 10)
@@ -58,6 +59,5 @@ class CNN(TorchModel):
             Tensor: The output tensor after forward propagation.
         """
         x = self.conv_model(x)
-        x = x.view(-1, x.shape[1] * x.shape[2], x.shape[3])
-        x = self.linear_model(x)
-        return self.model(x)
+        x = x.view(-1, x.shape[1] * x.shape[2] * x.shape[3])
+        return self.linear_model(x)

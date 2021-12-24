@@ -87,9 +87,7 @@ class FLDataLoader:
         self.test_bs: int = test_bs
 
     @staticmethod
-    def __load_dataset__(
-        name: DATASETS_LITERAL, training: bool
-    ) -> Dataset:  # type: ignore
+    def load_dataset(name: DATASETS_LITERAL, training: bool) -> Dataset:  # type: ignore
         """Helper method used to load the PyTorch Dataset with a provided name.
 
         Args:
@@ -151,7 +149,7 @@ class FLDataLoader:
         Returns:
             Dict[int, DataLoader]: collection of workers as the keys and the PyTorch DataLoader object as values (used for training).
         """
-        dataset: Dataset = self.__load_dataset__(self.dataset, True)
+        dataset: Dataset = self.load_dataset(self.dataset, True)
         items: int = len(dataset) // self.num_workers
         distribution: np.ndarray = np.random.randint(
             low=0, high=len(dataset), size=(self.num_workers, items)
@@ -171,7 +169,7 @@ class FLDataLoader:
         Returns:
             Dict[int, DataLoader]: collection of workers as the keys and the PyTorch DataLoader object as values (used for training).
         """
-        dataset: Dataset = self.__load_dataset__(self.dataset, True)
+        dataset: Dataset = self.load_dataset(self.dataset, True)
         shards: int = self.num_workers * self.niid_factor
         items: int = len(dataset) // shards
         idx_shard: List[int] = list(range(shards))
@@ -214,7 +212,7 @@ class FLDataLoader:
         Returns:
             Dataset: PyTorch Dataset object.
         """
-        return self.__load_dataset__(self.dataset, False)
+        return self.load_dataset(self.dataset, False)
 
 
 # driver for testing

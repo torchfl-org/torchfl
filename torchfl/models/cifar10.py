@@ -28,21 +28,21 @@ class CNN(TorchModel):
         """Constructor"""
         super(CNN, self).__init__()
         self.conv_model: Sequential = Sequential(
-            Conv2d(3, 32, 3),
-            BatchNorm2d(32),
+            Conv2d(3, 64, kernel_size=3),
+            BatchNorm2d(64),
             ReLU(inplace=True),
             MaxPool2d(kernel_size=2, stride=2),
-            Conv2d(64, 128, 3, 1),
+            Conv2d(64, 128, kernel_size=3, padding=1),
             BatchNorm2d(128),
             ReLU(inplace=True),
-            Conv2d(128, 128, 3, 1),
+            Conv2d(128, 128, kernel_size=3, padding=1),
             ReLU(inplace=True),
             MaxPool2d(kernel_size=2, stride=2),
             Dropout2d(p=0.05),
-            Conv2d(128, 256, 3, 1),
+            Conv2d(128, 256, kernel_size=3, padding=1),
             BatchNorm2d(256),
             ReLU(inplace=True),
-            Conv2d(256, 256, 3, 1),
+            Conv2d(256, 256, kernel_size=3, padding=1),
             ReLU(inplace=True),
             MaxPool2d(kernel_size=2, stride=2),
         )
@@ -97,19 +97,33 @@ class Bottleneck(TorchModel):
         self.out_planes: int = out_planes
         self.dense_depth: int = dense_depth
         self.conv_model: Sequential = Sequential(
-            Conv2d(last_planes, in_planes, 1, False),
+            Conv2d(last_planes, in_planes, kernel_size=1, bias=False),
             BatchNorm2d(in_planes),
             ReLU(inplace=True),
-            Conv2d(in_planes, in_planes, 3, stride, 1, 32, False),
+            Conv2d(
+                in_planes,
+                in_planes,
+                kernel_size=3,
+                stride=stride,
+                padding=1,
+                groups=32,
+                bias=False,
+            ),
             BatchNorm2d(in_planes),
             ReLU(inplace=True),
-            Conv2d(in_planes, out_planes + dense_depth, 1, False),
+            Conv2d(in_planes, out_planes + dense_depth, kernel_size=1, bias=False),
             BatchNorm2d(out_planes + dense_depth),
         )
         self.shortcut: Sequential = Sequential()
         if first_layer:
             self.shortcut = Sequential(
-                Conv2d(last_planes, out_planes + dense_depth, 1, stride, False),
+                Conv2d(
+                    last_planes,
+                    out_planes + dense_depth,
+                    kernel_size=1,
+                    stride=stride,
+                    bias=False,
+                ),
                 BatchNorm2d(out_planes + dense_depth),
             )
 
@@ -142,7 +156,9 @@ class DPN26(TorchModel):
 
         self.last_planes: int = 64
         self.conv_model: Sequential = Sequential(
-            Conv2d(3, 64, 3, 1, 1, False), BatchNorm2d(64), ReLU(inplace=True)
+            Conv2d(3, 64, kernel_size=3, stride=1, padding=1, bias=False),
+            BatchNorm2d(64),
+            ReLU(inplace=True),
         )
         self.layer1: Sequential = self._make_layer(
             in_planes[0], out_planes[0], num_blocks[0], dense_depth[0], stride=1
@@ -221,7 +237,9 @@ class DPN92(TorchModel):
 
         self.last_planes: int = 64
         self.conv_model: Sequential = Sequential(
-            Conv2d(3, 64, 3, 1, 1, False), BatchNorm2d(64), ReLU(inplace=True)
+            Conv2d(3, 64, kernel_size=3, stride=1, padding=1, bias=False),
+            BatchNorm2d(64),
+            ReLU(inplace=True),
         )
         self.layer1: Sequential = self._make_layer(
             in_planes[0], out_planes[0], num_blocks[0], dense_depth[0], stride=1
@@ -437,7 +455,12 @@ class ResNetBottleneck(TorchModel):
             BatchNorm2d(out_planes),
             ReLU(inplace=True),
             Conv2d(
-                out_planes, out_planes, kernel_size=3, stride=1, padding=1, bias=False
+                out_planes,
+                out_planes,
+                kernel_size=3,
+                stride=stride,
+                padding=1,
+                bias=False,
             ),
             BatchNorm2d(out_planes),
             ReLU(inplace=True),
