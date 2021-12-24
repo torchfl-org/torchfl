@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# mypy: ignore-errors
 
 """Prepares the given torchvision datasets for federated learning.
 
@@ -101,7 +100,7 @@ class FLDataLoader:
             Dataset: PyTorch Dataset object.
         """
         root = os.path.join(os.pardir, "data")
-        if name.lower() == "mnist":
+        if name.lower() == "mnist":  # type: ignore
             return datasets.MNIST(
                 root,
                 train=training,
