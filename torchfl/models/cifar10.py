@@ -18,7 +18,7 @@ from torch.nn import (
 )
 import torch
 from torch.nn.functional import relu, avg_pool2d
-from typing import List, Any
+from typing import List, Any, Union, Type
 
 
 class CNN(TorchModel):
@@ -361,15 +361,7 @@ class VGG19(TorchModel):
         return Sequential(*layers)
 
 
-class ResNetAbstractBlock(TorchModel):
-    """Implementation of Abstract Block class for the ResNet model variants for CIFAR10."""
-
-    def __init__(self) -> None:
-        """Constructor"""
-        super(ResNetAbstractBlock, self).__init__()
-
-
-class ResNetBasicBlock(ResNetAbstractBlock):
+class ResNetBasicBlock(TorchModel):
     """Implementation of BasicBlock of the ResNet model variants for CIFAR10."""
 
     expansion: int = 1
@@ -426,7 +418,7 @@ class ResNetBasicBlock(ResNetAbstractBlock):
         return relu(out)
 
 
-class ResNetBottleneck(ResNetAbstractBlock):
+class ResNetBottleneck(TorchModel):
     """Implementation of Bottleneck of the ResNet model variants for CIFAR10."""
 
     expansion: int = 4
@@ -441,12 +433,7 @@ class ResNetBottleneck(ResNetAbstractBlock):
         """
         super(ResNetBottleneck, self).__init__()
         self.conv_model: Sequential = Sequential(
-            Conv2d(
-                in_planes,
-                out_planes,
-                kernel_size=1,
-                bias=False,
-            ),
+            Conv2d(in_planes, out_planes, kernel_size=1, bias=False),
             BatchNorm2d(out_planes),
             ReLU(inplace=True),
             Conv2d(
@@ -490,13 +477,16 @@ class ResNet(TorchModel):
     """Implementation of the ResNet base class for CIFAR10."""
 
     def __init__(
-        self, block: ResNetAbstractBlock, num_blocks: int, num_classes: int = 10
+        self,
+        block: Union[Type[ResNetBasicBlock], Type[ResNetBottleneck]],
+        num_blocks: List[int],
+        num_classes: int = 10,
     ) -> None:
         """Constructor
 
         Args:
-            block (ResNetAbstractBlock): block type used for the construction of ResNet
-            num_blocks (int): number of blocks
+            block (Union[ResNetBasicBlock, ResNetBottleneck]): block type used for the construction of ResNet
+            num_blocks (List[int]): number of blocks for evert layer
             num_classes (int, optional): number of classes for prediction. Defaults to 10.
         """
         super(ResNet, self).__init__()
@@ -508,17 +498,21 @@ class ResNet(TorchModel):
         )
         self.layer1: Sequential = self._make_layer(block, 64, num_blocks[0], stride=1)
         self.layer2: Sequential = self._make_layer(block, 128, num_blocks[1], stride=2)
-        self.layer3: Sequential = self._make_layer(block, num_blocks[2], stride=2)
+        self.layer3: Sequential = self._make_layer(block, 256, num_blocks[2], stride=2)
         self.layer4: Sequential = self._make_layer(block, 512, num_blocks[3], stride=2)
         self.linear: Linear = Linear(512 * block.expansion, num_classes)
 
     def _make_layer(
-        self, block: ResNetAbstractBlock, planes: int, num_blocks: int, stride: int
+        self,
+        block: Union[Type[ResNetBasicBlock], Type[ResNetBottleneck]],
+        planes: int,
+        num_blocks: int,
+        stride: int,
     ) -> Sequential:
         """Helper method used for the creation of layers.
 
         Args:
-            block (ResNetAbstractBlock): ResNetAbstractBlock custom data type.
+            block (Union[ResNetBasicBlock, ResNetBottleneck]): block type.
             planes (int): number of planes in the layer.
             num_blocks (int): number of blocks in the layer.
             stride (int): strides used in the layer.
@@ -527,7 +521,7 @@ class ResNet(TorchModel):
             Sequential: Sequential model by PyTorch.
         """
         strides: List[int] = [stride] + [1] * (num_blocks - 1)
-        layers: List[ResNetAbstractBlock] = list()
+        layers: List[Union[Type[ResNetBasicBlock], Type[ResNetBottleneck]]] = list()
         for s in strides:
             layers.append(block(self.in_planes, planes, s))
             self.in_planes = planes * block.expansion
@@ -553,7 +547,7 @@ class ResNet(TorchModel):
         return x
 
 
-def ResNet18() -> ResNet:
+def ResNet18() -> ResNet:  # noqa: N802
     """ResNet18 for CIFAR10.
 
     Returns:
@@ -562,7 +556,7 @@ def ResNet18() -> ResNet:
     return ResNet(ResNetBasicBlock, [2, 2, 2, 2])
 
 
-def ResNet34() -> ResNet:
+def ResNet34() -> ResNet:  # noqa: N802
     """ResNet34 for CIFAR10.
 
     Returns:
@@ -571,7 +565,7 @@ def ResNet34() -> ResNet:
     return ResNet(ResNetBasicBlock, [3, 4, 6, 3])
 
 
-def ResNet50() -> ResNet:
+def ResNet50() -> ResNet:  # noqa: N802
     """ResNet50 for CIFAR10.
 
     Returns:
@@ -579,7 +573,8 @@ def ResNet50() -> ResNet:
     """
     return ResNet(ResNetBottleneck, [3, 4, 6, 3])
 
-def ResNet101() -> ResNet:
+
+def ResNet101() -> ResNet:  # noqa: N802
     """ResNet101 for CIFAR10.
 
     Returns:
@@ -587,7 +582,8 @@ def ResNet101() -> ResNet:
     """
     return ResNet(ResNetBottleneck, [3, 4, 23, 3])
 
-def ResNet152() -> ResNet:
+
+def ResNet152() -> ResNet:  # noqa: N802
     """ResNet152 for CIFAR10.
 
     Returns:
