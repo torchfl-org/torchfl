@@ -40,7 +40,7 @@ class Benchmark:
         console_out: bool = True,
         verbose: bool = False,
     ) -> None:
-        """[summary]
+        """Constructor
 
         Args:
             experiment_name (str): name of the experiment for logging and storage purpose.
@@ -61,7 +61,6 @@ class Benchmark:
         Raises:
             FileNotFoundError: raised when the given path for the model to be loaded does not exist.
         """
-
         self.experiment_name: str = experiment_name
         self.use_cuda: bool = bool(use_gpu and cuda.is_available())
         self.torch_device: device = device("cuda" if self.use_cuda else "cpu")
