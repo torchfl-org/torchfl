@@ -1,7 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Initializes the PyTorch models for MNIST dataset."""
+"""Initializes the PyTorch models for MNIST dataset.
+
+Returns:
+    MLP: Implementation of the MLP model for the MNIST dataset.
+    CNN: Implementation of the CNN model for the MNIST dataset.
+"""
 from abc import ABC
 from torch.functional import Tensor
 from torch.nn import (

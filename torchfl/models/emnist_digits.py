@@ -1,7 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Initializes the PyTorch models for EMNIST dataset."""
+"""Initializes the PyTorch models for EMNIST dataset.
+
+Returns:
+    MLP: Implementation of the MLP model for the EMNIST digits dataset.
+    CNN: Implementation of the CNN model for the EMNIST digits dataset.
+"""
 
 from abc import ABC
 from torch.functional import Tensor

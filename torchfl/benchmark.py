@@ -1,13 +1,21 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Implementation of the Benchmark class to test the models in the non-federated setting."""
+"""Implementation of the Benchmark class to test the models in the non-federated setting.
+
+Returns:
+    Benchmark: Implementation of the Benchmark class to test the models in the non-federated setting.
+
+Raises:
+    FileNotFoundError: Raised when the given path for the model to be loaded does not exist.
+"""
 
 from torchfl.compatibility import OPTIMIZERS
 from torch.nn import Module
 from torchfl.logger import Logger
 from typing import Optional, Dict, Union
-from torch import cuda, device, Tensor, zeros, no_grad
+import os
+from torch import load, cuda, device, Tensor, zeros, no_grad, save
 from torch.utils.data import Dataset, DataLoader
 from torch.nn.functional import cross_entropy
 
@@ -32,7 +40,7 @@ class Benchmark:
         console_out: bool = True,
         verbose: bool = False,
     ) -> None:
-        """Constructor
+        """[summary]
 
         Args:
             experiment_name (str): name of the experiment for logging and storage purpose.
@@ -49,7 +57,11 @@ class Benchmark:
             load_model_path (Optional[str], optional): load the model from the given path and start training. Defaults to None.
             console_out (bool, optional): allow output to console (stdout). Defaults to True.
             verbose (bool, optional): verbose output to console. Defaults to False.
+
+        Raises:
+            FileNotFoundError: raised when the given path for the model to be loaded does not exist.
         """
+
         self.experiment_name: str = experiment_name
         self.use_cuda: bool = bool(use_gpu and cuda.is_available())
         self.torch_device: device = device("cuda" if self.use_cuda else "cpu")
@@ -66,10 +78,16 @@ class Benchmark:
         self.optimizer: OPTIMIZERS = optimizer  # type: ignore
         self.logger: Optional[Logger] = logger
         self.epochs: int = epochs
-        self.save_model_path: Optional[str] = save_model_path
-        self.load_model_path: Optional[str] = load_model_path
         self.console_out: bool = console_out
         self.verbose: bool = bool(console_out and verbose)
+        self.save_model_path: Optional[str] = save_model_path
+        if load_model_path:
+            if not os.path.exists(load_model_path):
+                raise FileNotFoundError(
+                    f"Cannot load the PyTorch model. The path does not exist: {load_model_path}"
+                )
+            self.load_model_path: Optional[str] = load_model_path
+            self.model.load_state_dict(load(self.load_model_path))
 
     def train(self, epoch: int) -> None:
         """Training sub-routine"""
@@ -125,6 +143,7 @@ class Benchmark:
             self.custom_print(f"Running Epoch:\t{epoch}/{self.epochs}.")
             self.train(epoch)
             self.test()
+        save(self.model.state_dict(), self.save_model_path)
 
     def custom_print(self, content: str) -> None:
         """Helper method for printing to console.

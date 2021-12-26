@@ -1,7 +1,23 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Initializes the PyTorch models for CIFAR-10 dataset."""
+"""Initializes the PyTorch models for CIFAR-10 dataset.
+
+Returns:
+    CNN: Implementation of the CNN model for the CIFAR10 dataset.
+    Bottleneck: Implementation of the helper Bottleneck layers for DPN and VGG models for the CIFAR10 dataset.
+    DPN26: Implementation of the DPN26 model for the CIFAR10 dataset.
+    DPN92: Implementation of the DPN92 model for the CIFAR10 dataset.
+    VGG19: Implementation of the VGG19 model for the CIFAR10 dataset.
+    ResNetBasicBlock: Implementation of the helper BasicBlock for ResNet models for the CIFAR10 dataset.
+    ResNetBottleneck: Implementation of the helper Bottleneck for the ResNet models for the CIFAR10 dataset.
+    ResNet: Implementation of the base ResNet model for the CIFAR10 dataset.
+    ResNet18: Implementation of the ResNet10 model for the CIFAR10 dataset.
+    ResNet34: Implementation of the ResNet34 model for the CIFAR10 dataset.
+    ResNet50: Implementation of the ResNet50 model for the CIFAR10 dataset.
+    ResNet101: Implementation of the ResNet101 model for the CIFAR10 dataset.
+    ResNet152: Implementation of the ResNet152 model for the CIFAR10 dataset.
+"""
 
 from abc import ABC
 from torch.functional import Tensor
