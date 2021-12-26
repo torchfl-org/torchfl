@@ -1,4 +1,4 @@
-"""Sub-package for base model implementations used by the core models provided by torchfl."""
+"""Sub-package for wrapper model implementations used by torchfl."""
 
 __author__ = """Vivek Khimani"""
 __email__ = "vivekkhimani07@gmail.com"

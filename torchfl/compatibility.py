@@ -20,7 +20,7 @@ from torch.optim import (
     SGD,
 )
 from torch.nn import Tanh, ReLU, LeakyReLU, GELU
-from torchfl.models.core.base.resnet import ResNetBlock, PreActResNetBlock
+from torchfl.models.sota.resnet import ResNetBlock, PreActResNetBlock
 
 # normal
 DATASETS = ["mnist", "emnist_digits", "cifar10"]
