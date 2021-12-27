@@ -2,14 +2,14 @@
 # -*- coding: utf-8 -*-
 # type: ignore
 
-"""Contains the custom base model implementations for FashionMNIST dataset."""
+"""Implementation of the general LeNet architecture using PyTorch."""
 
 import torch.nn as nn
 from torchfl.models.sota.mlp import LinearBlock
 from torchfl.compatibility import ACTIVATION_FUNCTIONS_BY_NAME
 
 
-class CNN(nn.Module):
+class LeNet(nn.Module):
     def __init__(
         self, num_classes=10, num_channels=1, act_fn_name="relu", **kwargs
     ) -> None:
@@ -20,9 +20,9 @@ class CNN(nn.Module):
             num_channels (int, optional): Number of channels for the images in the dataset. Defaults to 3.
             act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
-        super(CNN, self).__init__()
+        super(LeNet, self).__init__()
         self.hparams = SimpleNamespace(
-            model_name="cnn",
+            model_name="lenet",
             num_classes=num_classes,
             num_channels=num_channels,
             act_fn_name=act_fn_name,
@@ -34,19 +34,19 @@ class CNN(nn.Module):
 
     def _create_network(self):
         self.input_net = nn.Sequential(
-            nn.Conv2d(self.hparams.num_channels, 10, kernel_size=5),
-            nn.MaxPool2d(2, 2),
+            nn.Conv2d(self.hparams.num_channels, 6, kernel_size=5, stride=1, padding=2),
             self.hparams.act_fn(),
+            nn.AvgPool2d(kernel_size=2, stride=2),
         )
         self.conv_net = nn.Sequential(
-            nn.Conv2d(10, 20, kernel_size=5),
-            nn.Dropout2d(),
-            nn.MaxPool2d(2, 2),
+            nn.Conv2d(6, 16, kernel_size=5, stride=1),
+            nn.AvgPool2d(kernel_size=2, stride=2),
+            nn.Conv2d(16, 120, kernel_size=5, stride=1),
             self.hparams.act_fn(),
-            nn.Flatten(),
-            LinearBlock(320, 50, self.hparams.act_fn, True),
+            nn.Flatten(start_dim=1),
+            LinearBlock(120, 84, self.hparams.act_fn, False),
         )
-        self.output_net = nn.Sequential(nn.Linear(50, self.hparams.num_classes))
+        self.output_net = nn.Sequential(nn.Linear(84, self.hparams.num_classes))
 
     def forward(self, x):
         return self.output_net(self.conv_net(self.input_net(x)))

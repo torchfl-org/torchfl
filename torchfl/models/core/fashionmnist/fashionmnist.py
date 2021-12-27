@@ -4,7 +4,8 @@
 """Contains the model implementations for FashionMNIST dataset."""
 
 from torchfl.models.sota.mlp import MLP as BaseMLP
-from torchfl.models.core.fashionmnist.base import CNN as BaseCNN
+from torchfl.models.sota.lenet import LeNet as BaseLeNet
+from torchfl.models.sota.alexnet import AlexNet as BaseAlexNet
 from torchfl.models.sota.densenet import DenseNet as BaseDensenet
 from torchfl.models.sota.googlenet import GoogleNet as BaseGoogleNet
 from torchfl.models.sota.resnet import ResNet as BaseResNet
@@ -18,10 +19,18 @@ class MLP(BaseMLP):
         )
 
 
-class CNN(BaseCNN):
+class LeNet(BaseLeNet):
     def __init__(self) -> None:
         """Constructor"""
-        super(CNN, self).__init__(num_classes=10, num_channels=1, act_fn_name="relu")
+        super(LeNet, self).__init__(num_classes=10, num_channels=1, act_fn_name="tanh")
+
+
+class AlexNet(BaseAlexNet):
+    def __init__(self) -> None:
+        """Constructor"""
+        super(AlexNet, self).__init__(
+            num_classes=10, num_channels=1, act_fn_name="relu"
+        )
 
 
 class DenseNet(BaseDensenet):
