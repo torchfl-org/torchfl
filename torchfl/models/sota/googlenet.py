@@ -2,7 +2,12 @@
 # -*- coding: utf-8 -*-
 # type: ignore
 
-"""Implementation of the general GoogleNet architecture using PyTorch."""
+"""Implementation of the general GoogleNet architecture using PyTorch.
+
+Contains:
+    - InceptionBlock
+    - GoogleNet
+"""
 
 import torch.nn as nn
 import torch
@@ -82,6 +87,10 @@ class GoogleNet(nn.Module):
             num_channels=num_channels,
             act_fn_name=act_fn_name,
             act_fn=ACTIVATION_FUNCTIONS_BY_NAME[act_fn_name],
+            pre_trained=False,
+            feature_extract=False,
+            finetune=False,
+            quantized=False,
         )
         self._create_network()
         self._init_params()

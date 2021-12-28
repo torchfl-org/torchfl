@@ -2,7 +2,14 @@
 # -*- coding: utf-8 -*-
 # type: ignore
 
-"""Implementation of the general DenseNet architecture using PyTorch."""
+"""Implementation of the general DenseNet architecture using PyTorch.
+
+Contains:
+    - DenseLayer
+    - DenseBlock
+    - TransitionLayer
+    - DenseNet
+"""
 
 import torch.nn as nn
 import torch
@@ -113,6 +120,10 @@ class DenseNet(nn.Module):
             growth_rate=growth_rate,
             act_fn_name=act_fn_name,
             act_fn=ACTIVATION_FUNCTIONS_BY_NAME[act_fn_name],
+            pre_trained=False,
+            feature_extract=False,
+            finetune=False,
+            quantized=False,
         )
         self._create_network()
         self._init_params()

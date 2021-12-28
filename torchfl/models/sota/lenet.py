@@ -29,6 +29,10 @@ class LeNet(nn.Module):
             act_fn=ACTIVATION_FUNCTIONS_BY_NAME[act_fn_name],
             hidden_conv_dim=[10, 20],
             hidden_linear_dim=[320, 50],
+            pre_trained=False,
+            feature_extract=False,
+            finetune=False,
+            quantized=False,
         )
         self._create_network()
 

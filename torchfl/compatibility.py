@@ -20,7 +20,6 @@ from torch.optim import (
     SGD,
 )
 from torch.nn import Tanh, ReLU, LeakyReLU, GELU
-from torchfl.models.sota.resnet import ResNetBlock, PreActResNetBlock
 
 # normal
 DATASETS = ["mnist", "emnist_digits", "cifar10"]
@@ -40,7 +39,6 @@ OPTIMIZERS = [
     "sgd",
 ]
 ACTIVATION_FUNCTIONS = ["tanh", "relu", "leakyrelu", "gelu"]
-RESNET_BLOCKS = ["ResNetBlock", "PreActResNetBlock"]
 
 # type literals
 DATASETS_LITERAL: Type[Literal["mnist", "emnist_digits", "cifar10"]] = Literal[
@@ -80,10 +78,6 @@ OPTIMIZERS_LITERAL: Type[
 ACTIVATION_FUNCTIONS_LITERAL: Type[
     Literal["tanh", "relu", "leakyrelu", "gelu"]
 ] = Literal["tanh", "relu", "leakyrelu", "gelu"]
-RESNET_BLOCK_LITERAL: Type[Literal["ResNetBlock", "PreActResNetBlock"]] = Literal[
-    "ResNetBlock", "PreActResNetBlock"
-]
-
 # mappings
 OPTIMIZERS_BY_NAME: Dict[str, Any] = {
     "adadelta": Adadelta,
@@ -105,8 +99,4 @@ ACTIVATION_FUNCTIONS_BY_NAME: Dict[str, Any] = {
     "relu": ReLU,
     "leakyrelu": LeakyReLU,
     "gelu": GELU,
-}
-RESNET_BLOCKS_BY_NAME: Dict[str, Any] = {
-    "ResNetBlock": ResNetBlock,
-    "PreActResNetBlock": PreActResNetBlock,
 }

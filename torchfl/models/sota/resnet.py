@@ -2,11 +2,23 @@
 # -*- coding: utf-8 -*-
 # type: ignore
 
-"""Implementation of the general ResNet architecture using PyTorch."""
+"""Implementation of the general ResNet architecture using PyTorch.
+
+Contains:
+    - ResNetBlock
+    - PreActResNetBlock
+    - ResNet
+"""
 
 import torch.nn as nn
 from types import SimpleNamespace
-from torchfl.compatibility import ACTIVATION_FUNCTIONS_BY_NAME, RESNET_BLOCKS_BY_NAME
+from torchfl.compatibility import ACTIVATION_FUNCTIONS_BY_NAME
+
+
+RESNET_BLOCKS_BY_NAME = {
+    "ResNetBlock": ResNetBlock,
+    "PreActResNetBlock": PreActResNetBlock,
+}
 
 
 class ResNetBlock(nn.Module):
@@ -137,6 +149,10 @@ class ResNet(nn.Module):
             act_fn_name=act_fn_name,
             act_fn=ACTIVATION_FUNCTIONS_BY_NAME[act_fn_name],
             block_class=RESNET_BLOCKS_BY_NAME[block_name],
+            pre_trained=False,
+            feature_extract=False,
+            finetune=False,
+            quantized=False,
         )
         self._create_network()
         self._init_params()

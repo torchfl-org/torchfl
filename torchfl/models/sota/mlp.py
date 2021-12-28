@@ -2,7 +2,12 @@
 # -*- coding: utf-8 -*-
 # type: ignore
 
-"""Implementation of the general MLP architecture using PyTorch."""
+"""Implementation of the general MLP architecture using PyTorch.
+
+Contains:
+    - LinearBlock
+    - MLP
+"""
 
 import torch.nn as nn
 from torchfl.compatibility import ACTIVATION_FUNCTIONS_BY_NAME
@@ -66,6 +71,10 @@ class MLP(nn.Module):
             hidden_dims=hidden_dims,
             act_fn_name=act_fn_name,
             act_fn=ACTIVATION_FUNCTIONS_BY_NAME[act_fn_name],
+            pre_trained=False,
+            feature_extract=False,
+            finetune=False,
+            quantized=False,
         )
         self._create_network()
 
