@@ -20,7 +20,7 @@ class AlexNet(models.alexnet(pretrained=True, progress=True)):
             num_classes (int, optional): Number of classification outputs. Defaults to 10.
             act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
-        super(PreTrainedAlexNet, self).__init__()
+        super(AlexNet, self).__init__()
         self.hparams = SimpleNamespace(
             model_name="alexnet",
             pre_trained=True,
