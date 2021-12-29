@@ -1,4 +1,4 @@
-"""Sub-package for core EMNIST model implementations used by torchfl."""
+"""Sub-package for MNIST EMNIST model implementations provided by torchfl."""
 
 __author__ = """Vivek Khimani"""
 __email__ = "vivekkhimani07@gmail.com"
