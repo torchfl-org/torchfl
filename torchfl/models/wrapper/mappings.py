@@ -3,6 +3,7 @@
 
 """Contains the model mappings for specific datasets."""
 
+from typing import Type, Literal, Dict, Any
 from torchfl.models.core.cifar.cifar10 import (
     alexnet as cifar10_alexnet,
     densenet as cifar10_densenet,
@@ -19,7 +20,7 @@ from torchfl.models.core.cifar.cifar10.quantized import (
     shufflenetv2 as quantized_cifar10_shufflenetv2,
 )
 
-CIFAR10_MODELS_MAPPING = {
+CIFAR10_MODELS_MAPPING: Dict[str, Any] = {
     "alexnet": cifar10_alexnet.AlexNet,
     "densenet121": cifar10_densenet.DenseNet121,
     "densenet161": cifar10_densenet.DenseNet161,
@@ -77,7 +78,7 @@ from torchfl.models.core.cifar.cifar100.quantized import (
     shufflenetv2 as quantized_cifar100_shufflenetv2,
 )
 
-CIFAR100_MODELS_MAPPING = {
+CIFAR100_MODELS_MAPPING: Dict[str, Any] = {
     "alexnet": cifar100_alexnet.AlexNet,
     "densenet121": cifar100_densenet.DenseNet121,
     "densenet161": cifar100_densenet.DenseNet161,

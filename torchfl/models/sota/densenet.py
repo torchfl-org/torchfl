@@ -48,7 +48,7 @@ class DenseNet121(models.densenet121(pretrained=True, progress=True)):
         self.classifier = nn.Linear(in_features, self.hparams.num_classes)
 
 
-class DenseNet169(models.densenet169(pretrained=True, progress=True)):
+class DenseNet161(models.densenet161(pretrained=True, progress=True)):
     def __init__(
         self, feature_extract=True, num_classes=10, act_fn_name="relu", **kwargs
     ) -> None:
@@ -59,9 +59,9 @@ class DenseNet169(models.densenet169(pretrained=True, progress=True)):
             num_classes (int, optional): Number of classification outputs. Defaults to 10.
             act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
-        super(DenseNet169, self).__init__()
+        super(DenseNet161, self).__init__()
         self.hparams = SimpleNamespace(
-            model_name="densenet169",
+            model_name="densenet161",
             pre_trained=True,
             feature_extract=feature_extract,
             finetune=bool(not feature_extract),
@@ -79,7 +79,7 @@ class DenseNet169(models.densenet169(pretrained=True, progress=True)):
         self.classifier = nn.Linear(in_features, self.hparams.num_classes)
 
 
-class DenseNet121(models.densenet121(pretrained=True, progress=True)):
+class DenseNet169(models.densenet169(pretrained=True, progress=True)):
     def __init__(
         self, feature_extract=True, num_classes=10, act_fn_name="relu", **kwargs
     ) -> None:
@@ -90,9 +90,9 @@ class DenseNet121(models.densenet121(pretrained=True, progress=True)):
             num_classes (int, optional): Number of classification outputs. Defaults to 10.
             act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
-        super(DenseNet121, self).__init__()
+        super(DenseNet169, self).__init__()
         self.hparams = SimpleNamespace(
-            model_name="densenet121",
+            model_name="densenet169",
             pre_trained=True,
             feature_extract=feature_extract,
             finetune=bool(not feature_extract),
