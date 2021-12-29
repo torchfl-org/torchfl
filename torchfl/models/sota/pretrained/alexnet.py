@@ -7,6 +7,7 @@
 from torchvision import models
 from types import SimpleNamespace
 import torch.nn as nn
+from torchfl.compatibility import ACTIVATION_FUNCTIONS_BY_NAME
 
 
 class AlexNet(models.alexnet(pretrained=True, progress=True)):

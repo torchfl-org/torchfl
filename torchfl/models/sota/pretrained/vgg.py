@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # type: ignore
 
-"""Implementation of the pre-trained ResNet architectures using PyTorch and torchvision.
+"""Implementation of the pre-trained VGG architectures using PyTorch and torchvision.
 
 Contains:
     - VGG11
@@ -18,6 +18,7 @@ Contains:
 from torchvision import models
 from types import SimpleNamespace
 import torch.nn as nn
+from torchfl.compatibility import ACTIVATION_FUNCTIONS_BY_NAME
 
 
 class VGG11(models.vgg11(pretrained=True, progress=True)):

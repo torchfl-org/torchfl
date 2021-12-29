@@ -19,6 +19,7 @@ Contains:
 from torchvision import models
 from types import SimpleNamespace
 import torch.nn as nn
+from torchfl.compatibility import ACTIVATION_FUNCTIONS_BY_NAME
 
 
 class ResNet18(models.resnet18(pretrained=True, progress=True)):
