@@ -1,4 +1,4 @@
-"""Sub-package for pre-trained and quantized models for FashionMNIST model implementations provided by torchfl."""
+"""Sub-package for pre-trained and quantized models for EMNIST (balanced) model implementations provided by torchfl."""
 
 __author__ = """Vivek Khimani"""
 __email__ = "vivekkhimani07@gmail.com"

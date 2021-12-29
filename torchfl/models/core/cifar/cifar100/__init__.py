@@ -1,4 +1,4 @@
-"""Sub-package for EMNIST (by merge) model implementations provided by torchfl."""
+"""Sub-package for CIFAR100 model implementations provided by torchfl."""
 
 __author__ = """Vivek Khimani"""
 __email__ = "vivekkhimani07@gmail.com"
