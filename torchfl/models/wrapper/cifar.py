@@ -18,7 +18,7 @@ class CIFAR10(pl.LightningModule):
         super().__init__()
         # FIXME from here - figuring out the hyperparameters part
         # FIXME - finish all the wrappers
-        # FIXME - add the tests for models as organized
+        # FIXME - add the tests for wrappers
         # FIXME - jump to reorganizing the data modules for torch lightning
         # FIXME - finish the tests for the data loading modules
         # FIXME - move on to the training wrapper (see trello)
