@@ -4,7 +4,6 @@
 """Contains the model implementations for CIFAR100 dataset."""
 
 from torchfl.models.sota.densenet import DenseNet as BaseDensenet
-from torchfl.models.sota.googlenet import GoogleNet as BaseGoogleNet
 from torchfl.models.sota.resnet import ResNet as BaseResNet
 
 
@@ -12,12 +11,6 @@ class DenseNet(BaseDensenet):
     def __init__(self) -> None:
         """Constructor"""
         super(DenseNet, self).__init__(num_classes=100, num_channels=3)
-
-
-class GoogleNet(BaseGoogleNet):
-    def __init__(self) -> None:
-        """Constructor"""
-        super(GoogleNet, self).__init__(num_classes=100, num_channels=3)
 
 
 class ResNet18(BaseResNet):
