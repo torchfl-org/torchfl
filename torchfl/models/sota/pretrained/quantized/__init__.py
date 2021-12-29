@@ -2,10 +2,8 @@
 
 Available modules:
     - resnet
-    - googlenet
     - shufflenetv2
-    - mobilenetv2
-    - mobilenetv3
+    - mobilenet
 """
 
 __author__ = """Vivek Khimani"""

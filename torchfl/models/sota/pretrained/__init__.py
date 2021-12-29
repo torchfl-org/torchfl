@@ -6,13 +6,8 @@ Available modules:
     - vgg
     - squeezenet
     - densenet
-    - googlenet
     - shufflenetv2
-    - mobilenetv2
-    - mobilenetv3
-    - mnasnet
-    - efficientnet
-    - regnet
+    - mobilenet
 """
 
 __author__ = """Vivek Khimani"""
