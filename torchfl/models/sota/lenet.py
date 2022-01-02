@@ -6,6 +6,7 @@
 
 import torch.nn as nn
 from torchfl.models.sota.mlp import LinearBlock
+from types import SimpleNamespace
 from torchfl.compatibility import ACTIVATION_FUNCTIONS_BY_NAME
 
 
@@ -27,8 +28,6 @@ class LeNet(nn.Module):
             num_channels=num_channels,
             act_fn_name=act_fn_name,
             act_fn=ACTIVATION_FUNCTIONS_BY_NAME[act_fn_name],
-            hidden_conv_dim=[10, 20],
-            hidden_linear_dim=[320, 50],
             pre_trained=False,
             feature_extract=False,
             finetune=False,
@@ -48,7 +47,7 @@ class LeNet(nn.Module):
             nn.Conv2d(16, 120, kernel_size=5, stride=1),
             self.hparams.act_fn(),
             nn.Flatten(start_dim=1),
-            LinearBlock(120, 84, self.hparams.act_fn, False),
+            LinearBlock(300000, 84, self.hparams.act_fn, False),
         )
         self.output_net = nn.Sequential(nn.Linear(84, self.hparams.num_classes))
 

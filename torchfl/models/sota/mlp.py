@@ -10,6 +10,7 @@ Contains:
 """
 
 import torch.nn as nn
+from types import SimpleNamespace
 from torchfl.compatibility import ACTIVATION_FUNCTIONS_BY_NAME
 
 
@@ -81,7 +82,7 @@ class MLP(nn.Module):
     def _create_network(self):
         # input layer
         self.input_net = nn.Sequential(
-            nn.Flatten,
+            nn.Flatten(),
             nn.Linear(
                 self.hparams.num_channels * self.hparams.img_w * self.hparams.img_h,
                 self.hparams.hidden_dims[0],
@@ -91,9 +92,14 @@ class MLP(nn.Module):
 
         # hidden layers
         layers = list()
-        for i in range(len(hidden_dims) - 1):
+        for i in range(len(self.hparams.hidden_dims) - 1):
             layers.append(
-                LinearBlock(layers[i], layers[i + 1], self.hparams.act_fn, False)
+                LinearBlock(
+                    self.hparams.hidden_dims[i],
+                    self.hparams.hidden_dims[i + 1],
+                    self.hparams.act_fn,
+                    False,
+                )
             )
         self.hidden_net = nn.Sequential(*layers)
 
