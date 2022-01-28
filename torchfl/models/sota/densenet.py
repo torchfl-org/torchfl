@@ -15,7 +15,6 @@ from torchvision import models
 from types import SimpleNamespace
 import torch.nn as nn
 from torchfl.compatibility import ACTIVATION_FUNCTIONS_BY_NAME
-from re import compile
 
 
 class DenseNet121(models.DenseNet):
