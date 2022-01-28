@@ -20,7 +20,7 @@ from torchvision.models.mobilenetv3 import _mobilenet_v3_conf
 from functools import partial
 
 
-class MobileNetV2(models.MobileNetV2):
+class MobileNetV2(models.mobilenet.MobileNetV2):
     def __init__(
         self,
         pre_trained=True,
@@ -39,15 +39,7 @@ class MobileNetV2(models.MobileNetV2):
             num_channels (int, optional): Number of incoming channels. Defaults to 3.
             act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
-        super(MobileNetV2, self).__init__(
-            num_classes=num_classes,
-            width_mult=1.0,
-            inverted_residual_setting=None,
-            round_nearest=8,
-            block=None,
-            norm_layer=None,
-            dropout=0.2,
-        )
+        super(MobileNetV2, self).__init__()
         self.hparams = SimpleNamespace(
             model_name="mobilenet_v2",
             pre_trained=pre_trained,
@@ -72,14 +64,13 @@ class MobileNetV2(models.MobileNetV2):
             if num_channels != 3:
                 self.features[0] = ConvNormActivation(
                     num_channels,
-                    _make_divisible(3 * 1.0, 8),
+                    _make_divisible(32 * 1.0, 8),
                     stride=2,
                     norm_layer=nn.BatchNorm2d,
                     activation_layer=nn.ReLU6,
                 )
 
-        in_features = self.classifier[1].in_features
-        self.classifier[1] = nn.Linear(in_features, self.hparams.num_classes)
+        self.classifier[-1] = nn.Linear(self.last_channel, self.hparams.num_classes)
 
 
 class MobileNetV3Small(models.mobilenet.MobileNetV3):
@@ -138,8 +129,8 @@ class MobileNetV3Small(models.mobilenet.MobileNetV3):
                     activation_layer=nn.Hardswish,
                 )
 
-        in_features = self.classifier[1].in_features
-        self.classifier[1] = nn.Linear(in_features, self.hparams.num_classes)
+        in_features = self.classifier[-1].in_features
+        self.classifier[-1] = nn.Linear(in_features, self.hparams.num_classes)
 
 
 class MobileNetV3Large(models.mobilenet.MobileNetV3):
@@ -198,5 +189,5 @@ class MobileNetV3Large(models.mobilenet.MobileNetV3):
                     activation_layer=nn.Hardswish,
                 )
 
-        in_features = self.classifier[1].in_features
-        self.classifier[1] = nn.Linear(in_features, self.hparams.num_classes)
+        in_features = self.classifier[-1].in_features
+        self.classifier[-1] = nn.Linear(in_features, self.hparams.num_classes)

@@ -44,9 +44,10 @@ def emnist_balanced_single_channel_loader():
         Dataset: PyTorch Dataset object for EMNIST (balanced).
     """
     global data_transforms
-    return datasets.FashionMNIST(
+    return datasets.EMNIST(
         root=os.path.join(os.pardir, "data"),
         train=True,
+        split="balanced",
         download=True,
         transform=data_transforms["train_single_channel"],
     )
