@@ -61,14 +61,14 @@ class MobileNetV2(models.mobilenet.MobileNetV2):
                 for param in self.parameters():
                     param.requires_grad = False
 
-            if num_channels != 3:
-                self.features[0] = ConvNormActivation(
-                    num_channels,
-                    _make_divisible(32 * 1.0, 8),
-                    stride=2,
-                    norm_layer=nn.BatchNorm2d,
-                    activation_layer=nn.ReLU6,
-                )
+        if num_channels != 3:
+            self.features[0] = ConvNormActivation(
+                num_channels,
+                _make_divisible(32 * 1.0, 8),
+                stride=2,
+                norm_layer=nn.BatchNorm2d,
+                activation_layer=nn.ReLU6,
+            )
 
         self.classifier[-1] = nn.Linear(self.last_channel, self.hparams.num_classes)
 
@@ -119,15 +119,15 @@ class MobileNetV3Small(models.mobilenet.MobileNetV3):
             if feature_extract:
                 for param in self.parameters():
                     param.requires_grad = False
-            if num_channels != 3:
-                self.features[0] = ConvNormActivation(
-                    num_channels,
-                    inverted_residual_setting[0].input_channels,
-                    kernel_size=3,
-                    stride=2,
-                    norm_layer=partial(nn.BatchNorm2d, eps=0.001, momentum=0.01),
-                    activation_layer=nn.Hardswish,
-                )
+        if num_channels != 3:
+            self.features[0] = ConvNormActivation(
+                num_channels,
+                inverted_residual_setting[0].input_channels,
+                kernel_size=3,
+                stride=2,
+                norm_layer=partial(nn.BatchNorm2d, eps=0.001, momentum=0.01),
+                activation_layer=nn.Hardswish,
+            )
 
         in_features = self.classifier[-1].in_features
         self.classifier[-1] = nn.Linear(in_features, self.hparams.num_classes)
@@ -179,15 +179,15 @@ class MobileNetV3Large(models.mobilenet.MobileNetV3):
             if feature_extract:
                 for param in self.parameters():
                     param.requires_grad = False
-            if num_channels != 3:
-                self.features[0] = ConvNormActivation(
-                    num_channels,
-                    inverted_residual_setting[0].input_channels,
-                    kernel_size=3,
-                    stride=2,
-                    norm_layer=partial(nn.BatchNorm2d, eps=0.001, momentum=0.01),
-                    activation_layer=nn.Hardswish,
-                )
+        if num_channels != 3:
+            self.features[0] = ConvNormActivation(
+                num_channels,
+                inverted_residual_setting[0].input_channels,
+                kernel_size=3,
+                stride=2,
+                norm_layer=partial(nn.BatchNorm2d, eps=0.001, momentum=0.01),
+                activation_layer=nn.Hardswish,
+            )
 
         in_features = self.classifier[-1].in_features
         self.classifier[-1] = nn.Linear(in_features, self.hparams.num_classes)

@@ -17,9 +17,8 @@ class CIFAR10(pl.LightningModule):
     def __init__(self, model_name: str, optimizer: OPTIMIZERS) -> None:
         super().__init__()
         # FIXME from here
-        # FIXME - finish updating the models starting from mobilenet to support channels. add tests simultaneously.
-        # FIXME - finish all the wrappers
-        # FIXME - add the tests for wrappers
+        # FIXME - finish updating the models starting from shufflenetv2 to support channels. add tests simultaneously.
+        # FIXME - finish all the wrappers and add tests.
         # FIXME - jump to reorganizing the data modules for torch lightning
         # FIXME - finish the tests for the data loading modules
         # FIXME - move on to the training wrapper (see trello)

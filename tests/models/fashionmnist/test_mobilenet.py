@@ -73,7 +73,7 @@ def fashionmnist_3_channel_loader():
 
 
 def test_mobilenetv2_single_channel_ouput_shape(fashionmnist_single_channel_loader):
-    """Testing the AlexNet output for a single-channel FashionMNIST image.
+    """Testing the MobileNet output for a single-channel FashionMNIST image.
 
     Args:
         fashionmnist_loader (Dataset): PyTorch Dataset object for MNIST.
@@ -87,7 +87,7 @@ def test_mobilenetv2_single_channel_ouput_shape(fashionmnist_single_channel_load
 
 
 def test_mobilenetv2_3_channels_output_shape(fashionmnist_3_channel_loader):
-    """Testing the AlexNet output for a 3-channel FashionMNIST image.
+    """Testing the MobileNet output for a 3-channel FashionMNIST image.
 
     Args:
         fashionmnist_loader (Dataset): PyTorch Dataset object for MNIST.
@@ -101,7 +101,7 @@ def test_mobilenetv2_3_channels_output_shape(fashionmnist_3_channel_loader):
 def test_mobilenetv3small_single_channel_ouput_shape(
     fashionmnist_single_channel_loader,
 ):
-    """Testing the AlexNet output for a single-channel FashionMNIST image.
+    """Testing the MobileNet output for a single-channel FashionMNIST image.
 
     Args:
         fashionmnist_loader (Dataset): PyTorch Dataset object for MNIST.
@@ -115,7 +115,7 @@ def test_mobilenetv3small_single_channel_ouput_shape(
 
 
 def test_mobilenetv3small_3_channels_output_shape(fashionmnist_3_channel_loader):
-    """Testing the AlexNet output for a 3-channel FashionMNIST image.
+    """Testing the MobileNet output for a 3-channel FashionMNIST image.
 
     Args:
         fashionmnist_loader (Dataset): PyTorch Dataset object for MNIST.
@@ -129,7 +129,7 @@ def test_mobilenetv3small_3_channels_output_shape(fashionmnist_3_channel_loader)
 def test_mobilenetv3large_single_channel_ouput_shape(
     fashionmnist_single_channel_loader,
 ):
-    """Testing the AlexNet output for a single-channel FashionMNIST image.
+    """Testing the MobileNet output for a single-channel FashionMNIST image.
 
     Args:
         fashionmnist_loader (Dataset): PyTorch Dataset object for MNIST.
@@ -143,7 +143,7 @@ def test_mobilenetv3large_single_channel_ouput_shape(
 
 
 def test_mobilenetv3large_3_channels_output_shape(fashionmnist_3_channel_loader):
-    """Testing the AlexNet output for a 3-channel FashionMNIST image.
+    """Testing the MobileNet output for a 3-channel FashionMNIST image.
 
     Args:
         fashionmnist_loader (Dataset): PyTorch Dataset object for MNIST.
