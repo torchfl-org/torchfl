@@ -24,14 +24,7 @@ data_transforms = {
             transforms.RandomResizedCrop(224),
             transforms.RandomHorizontalFlip(),
             transforms.ToTensor(),
-            transforms.Normalize(
-                [
-                    0.485,
-                ],
-                [
-                    0.229,
-                ],
-            ),
+            transforms.Normalize([0.485], [0.229]),
         ]
     ),
     "train_3_channels": transforms.Compose(

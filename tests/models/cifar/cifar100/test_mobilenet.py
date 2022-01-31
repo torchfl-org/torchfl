@@ -8,7 +8,7 @@ import os
 from torchfl.models.core.cifar.cifar100.mobilenet import (
     MobileNetV2,
     MobileNetV3Small,
-    MobileNetV3Large
+    MobileNetV3Large,
 )
 import torch
 
@@ -20,7 +20,7 @@ data_transforms = {
             transforms.ToTensor(),
             transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
         ]
-    ),
+    )
 }
 
 

@@ -27,15 +27,10 @@ class LinearBlock(nn.Module):
         super().__init__()
         if dropout:
             self.linear_block = nn.Sequential(
-                nn.Linear(c_in, c_out),
-                act_fn(),
-                nn.Dropout(),
+                nn.Linear(c_in, c_out), act_fn(), nn.Dropout()
             )
         else:
-            self.linear_block = nn.Sequential(
-                nn.Linear(c_in, c_out),
-                act_fn(),
-            )
+            self.linear_block = nn.Sequential(nn.Linear(c_in, c_out), act_fn())
 
     def forward(self, x):
         return self.linear_block(x)

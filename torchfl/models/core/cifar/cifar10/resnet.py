@@ -109,7 +109,7 @@ class ResNet152(BaseResNet.ResNet152):
 
 
 class ResNext50_32X4D(BaseResNet.ResNext50_32X4D):
-     def __init__(self, pre_trained=True, feature_extract=False, num_channels=3) -> None:
+    def __init__(self, pre_trained=True, feature_extract=False, num_channels=3) -> None:
         """Constructor
 
         Args:

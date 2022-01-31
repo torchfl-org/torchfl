@@ -5,7 +5,10 @@
 
 import pytorch_lightning as pl
 import torch.nn as nn
-from torchfl.models.wrapper.mappings import CIFAR10_MODELS_MAPPING, CIFAR100_MODELS_MAPPING
+from torchfl.models.wrapper.mappings import (
+    CIFAR10_MODELS_MAPPING,
+    CIFAR100_MODELS_MAPPING,
+)
 from torchfl.compatibility import OPTIMIZERS
 
 pl.seed_everything(42)
@@ -17,7 +20,7 @@ class CIFAR10(pl.LightningModule):
     def __init__(self, model_name: str, optimizer: OPTIMIZERS) -> None:
         super().__init__()
         # FIXME from here
-        # FIXME - finish updating the models starting from shufflenetv2 to support channels. add tests simultaneously.
+        # FIXME - finish updating the models starting from squeezenet to support channels. add tests simultaneously.
         # FIXME - finish all the wrappers and add tests.
         # FIXME - jump to reorganizing the data modules for torch lightning
         # FIXME - finish the tests for the data loading modules

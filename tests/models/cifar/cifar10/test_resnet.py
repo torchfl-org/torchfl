@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Tests for MobileNet in `torchfl` package."""
+"""Tests for ResNet in `torchfl` package."""
 import pytest
 from torchvision import datasets, transforms
 import os
@@ -26,7 +26,7 @@ data_transforms = {
             transforms.ToTensor(),
             transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
         ]
-    ),
+    )
 }
 
 

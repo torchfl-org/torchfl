@@ -64,12 +64,7 @@ class ResNet18(models.ResNet):
 
         if num_channels != 3:
             self.conv1 = nn.Conv2d(
-                num_channels,
-                64,
-                kernel_size=7,
-                stride=2,
-                padding=3,
-                bias=False,
+                num_channels, 64, kernel_size=7, stride=2, padding=3, bias=False
             )
 
         in_features = self.fc.in_features
@@ -116,12 +111,7 @@ class ResNet34(models.ResNet):
                     param.requires_grad = False
         if num_channels != 3:
             self.conv1 = nn.Conv2d(
-                num_channels,
-                64,
-                kernel_size=7,
-                stride=2,
-                padding=3,
-                bias=False,
+                num_channels, 64, kernel_size=7, stride=2, padding=3, bias=False
             )
 
         in_features = self.fc.in_features
@@ -168,12 +158,7 @@ class ResNet50(models.ResNet):
                     param.requires_grad = False
         if num_channels != 3:
             self.conv1 = nn.Conv2d(
-                num_channels,
-                64,
-                kernel_size=7,
-                stride=2,
-                padding=3,
-                bias=False,
+                num_channels, 64, kernel_size=7, stride=2, padding=3, bias=False
             )
 
         in_features = self.fc.in_features
@@ -220,12 +205,7 @@ class ResNet101(models.ResNet):
                     param.requires_grad = False
         if num_channels != 3:
             self.conv1 = nn.Conv2d(
-                num_channels,
-                64,
-                kernel_size=7,
-                stride=2,
-                padding=3,
-                bias=False,
+                num_channels, 64, kernel_size=7, stride=2, padding=3, bias=False
             )
 
         in_features = self.fc.in_features
@@ -272,12 +252,7 @@ class ResNet152(models.ResNet):
                     param.requires_grad = False
         if num_channels != 3:
             self.conv1 = nn.Conv2d(
-                num_channels,
-                64,
-                kernel_size=7,
-                stride=2,
-                padding=3,
-                bias=False,
+                num_channels, 64, kernel_size=7, stride=2, padding=3, bias=False
             )
 
         in_features = self.fc.in_features
@@ -326,12 +301,7 @@ class ResNext50_32X4D(models.ResNet):
                     param.requires_grad = False
         if num_channels != 3:
             self.conv1 = nn.Conv2d(
-                num_channels,
-                64,
-                kernel_size=7,
-                stride=2,
-                padding=3,
-                bias=False,
+                num_channels, 64, kernel_size=7, stride=2, padding=3, bias=False
             )
 
         in_features = self.fc.in_features
@@ -380,12 +350,7 @@ class ResNext101_32X8D(models.ResNet):
                     param.requires_grad = False
         if num_channels != 3:
             self.conv1 = nn.Conv2d(
-                num_channels,
-                64,
-                kernel_size=7,
-                stride=2,
-                padding=3,
-                bias=False,
+                num_channels, 64, kernel_size=7, stride=2, padding=3, bias=False
             )
 
         in_features = self.fc.in_features
@@ -434,12 +399,7 @@ class WideResNet50_2(models.ResNet):
                     param.requires_grad = False
         if num_channels != 3:
             self.conv1 = nn.Conv2d(
-                num_channels,
-                64,
-                kernel_size=7,
-                stride=2,
-                padding=3,
-                bias=False,
+                num_channels, 64, kernel_size=7, stride=2, padding=3, bias=False
             )
 
         in_features = self.fc.in_features
@@ -488,12 +448,7 @@ class WideResNet101_2(models.ResNet):
                     param.requires_grad = False
         if num_channels != 3:
             self.conv1 = nn.Conv2d(
-                num_channels,
-                64,
-                kernel_size=7,
-                stride=2,
-                padding=3,
-                bias=False,
+                num_channels, 64, kernel_size=7, stride=2, padding=3, bias=False
             )
 
         in_features = self.fc.in_features

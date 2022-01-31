@@ -14,14 +14,7 @@ data_transforms = {
             transforms.RandomResizedCrop(224),
             transforms.RandomHorizontalFlip(),
             transforms.ToTensor(),
-            transforms.Normalize(
-                [
-                    0.485,
-                ],
-                [
-                    0.229,
-                ],
-            ),
+            transforms.Normalize([0.485], [0.229]),
         ]
     ),
     "train_3_channels": transforms.Compose(
@@ -78,9 +71,7 @@ def test_alexnet_single_channel_ouput_shape(emnist_single_channel_loader):
     """
     model = AlexNet(pre_trained=True, feature_extract=True, num_channels=1)
     model.zero_grad()
-    out = model(
-        torch.reshape(emnist_single_channel_loader[0][0], (1, 1, 224, 224))
-    )
+    out = model(torch.reshape(emnist_single_channel_loader[0][0], (1, 1, 224, 224)))
     assert out.size() == torch.Size([1, 62])
 
 

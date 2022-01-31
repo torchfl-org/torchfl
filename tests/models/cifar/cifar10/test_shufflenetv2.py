@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Tests for DenseNet in `torchfl` package."""
+"""Tests for ResNet in `torchfl` package."""
 import pytest
 from torchvision import datasets, transforms
 import os
-from torchfl.models.core.cifar.cifar10.densenet import (
-    DenseNet121,
-    DenseNet161,
-    DenseNet169,
-    DenseNet201,
+from torchfl.models.core.cifar.cifar10.shufflenetv2 import (
+    ShuffleNetv2_x0_5,
+    ShuffleNetv2_x1_0,
+    ShuffleNetv2_x1_5,
+    ShuffleNetv2_x2_0,
 )
 import torch
 
@@ -41,49 +41,49 @@ def three_channel_loader():
     )
 
 
-def test_densenet121_3_channels_output_shape(three_channel_loader):
+def test_shufflenetv2_x05_3_channels_output_shape(three_channel_loader):
     """Testing the output for a 3-channel image.
 
     Args:
         loader (Dataset): PyTorch Dataset object.
     """
-    model = DenseNet121(pre_trained=True, feature_extract=True, num_channels=3)
+    model = ShuffleNetv2_x0_5(pre_trained=True, feature_extract=True, num_channels=3)
     model.zero_grad()
     out = model(torch.reshape(three_channel_loader[0][0], (1, 3, 224, 224)))
     assert out.size() == torch.Size([1, 10])
 
 
-def test_densenet161_3_channels_output_shape(three_channel_loader):
+def test_shufflenetv2_x10_3_channels_output_shape(three_channel_loader):
     """Testing the output for a 3-channel image.
 
     Args:
         loader (Dataset): PyTorch Dataset object.
     """
-    model = DenseNet161(pre_trained=True, feature_extract=True, num_channels=3)
+    model = ShuffleNetv2_x1_0(pre_trained=True, feature_extract=True, num_channels=3)
     model.zero_grad()
     out = model(torch.reshape(three_channel_loader[0][0], (1, 3, 224, 224)))
     assert out.size() == torch.Size([1, 10])
 
 
-def test_densenet169_3_channels_output_shape(three_channel_loader):
+def test_shufflenetv2_x15_3_channels_output_shape(three_channel_loader):
     """Testing the output for a 3-channel image.
 
     Args:
         loader (Dataset): PyTorch Dataset object.
     """
-    model = DenseNet169(pre_trained=True, feature_extract=True, num_channels=3)
+    model = ShuffleNetv2_x1_5(pre_trained=False, feature_extract=True, num_channels=3)
     model.zero_grad()
     out = model(torch.reshape(three_channel_loader[0][0], (1, 3, 224, 224)))
     assert out.size() == torch.Size([1, 10])
 
 
-def test_densenet201_3_channels_output_shape(three_channel_loader):
+def test_shufflenetv2_x20_3_channels_output_shape(three_channel_loader):
     """Testing the output for a 3-channel image.
 
     Args:
         loader (Dataset): PyTorch Dataset object.
     """
-    model = DenseNet201(pre_trained=True, feature_extract=True, num_channels=3)
+    model = ShuffleNetv2_x2_0(pre_trained=False, feature_extract=True, num_channels=3)
     model.zero_grad()
     out = model(torch.reshape(three_channel_loader[0][0], (1, 3, 224, 224)))
     assert out.size() == torch.Size([1, 10])

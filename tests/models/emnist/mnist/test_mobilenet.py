@@ -18,14 +18,7 @@ data_transforms = {
             transforms.RandomResizedCrop(224),
             transforms.RandomHorizontalFlip(),
             transforms.ToTensor(),
-            transforms.Normalize(
-                [
-                    0.485,
-                ],
-                [
-                    0.229,
-                ],
-            ),
+            transforms.Normalize([0.485], [0.229]),
         ]
     ),
     "train_3_channels": transforms.Compose(
@@ -82,9 +75,7 @@ def test_mobilenetv2_single_channel_ouput_shape(single_channel_loader):
     """
     model = MobileNetV2(pre_trained=True, feature_extract=True, num_channels=1)
     model.zero_grad()
-    out = model(
-        torch.reshape(single_channel_loader[0][0], (1, 1, 224, 224))
-    )
+    out = model(torch.reshape(single_channel_loader[0][0], (1, 1, 224, 224)))
     assert out.size() == torch.Size([1, 10])
 
 
@@ -100,9 +91,7 @@ def test_mobilenetv2_3_channels_output_shape(three_channel_loader):
     assert out.size() == torch.Size([1, 10])
 
 
-def test_mobilenetv3small_single_channel_ouput_shape(
-    single_channel_loader,
-):
+def test_mobilenetv3small_single_channel_ouput_shape(single_channel_loader,):
     """Testing the MobileNet output for a single-channel EMNIST image.
 
     Args:
@@ -110,9 +99,7 @@ def test_mobilenetv3small_single_channel_ouput_shape(
     """
     model = MobileNetV3Small(pre_trained=True, feature_extract=True, num_channels=1)
     model.zero_grad()
-    out = model(
-        torch.reshape(single_channel_loader[0][0], (1, 1, 224, 224))
-    )
+    out = model(torch.reshape(single_channel_loader[0][0], (1, 1, 224, 224)))
     assert out.size() == torch.Size([1, 10])
 
 
@@ -128,9 +115,7 @@ def test_mobilenetv3small_3_channels_output_shape(three_channel_loader):
     assert out.size() == torch.Size([1, 10])
 
 
-def test_mobilenetv3large_single_channel_ouput_shape(
-    single_channel_loader,
-):
+def test_mobilenetv3large_single_channel_ouput_shape(single_channel_loader,):
     """Testing the MobileNet output for a single-channel EMNIST image.
 
     Args:
@@ -138,9 +123,7 @@ def test_mobilenetv3large_single_channel_ouput_shape(
     """
     model = MobileNetV3Large(pre_trained=True, feature_extract=True, num_channels=1)
     model.zero_grad()
-    out = model(
-        torch.reshape(single_channel_loader[0][0], (1, 1, 224, 224))
-    )
+    out = model(torch.reshape(single_channel_loader[0][0], (1, 1, 224, 224)))
     assert out.size() == torch.Size([1, 10])
 
 
