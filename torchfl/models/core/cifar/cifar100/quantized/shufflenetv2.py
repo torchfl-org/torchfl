@@ -3,7 +3,6 @@
 
 """Contains the quantized ShuffleNetv2 model implementations for CIFAR100 dataset.
 
-
 Contains:
     - ShuffleNetv2_x0_5
     - ShuffleNetv2_x1_0

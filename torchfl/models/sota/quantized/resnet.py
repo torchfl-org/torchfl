@@ -19,6 +19,8 @@ from torchfl.compatibility import ACTIVATION_FUNCTIONS_BY_NAME
 class ResNet18(
     models.quantization.resnet18(pretrained=True, progress=True, quantize=True)
 ):
+    """Quantized ResNet18 base definition"""
+
     def __init__(
         self, feature_extract=True, num_classes=10, act_fn_name="relu", **kwargs
     ) -> None:
@@ -52,6 +54,8 @@ class ResNet18(
 class ResNet50(
     models.quantization.resnet50(pretrained=True, progress=True, quantize=True)
 ):
+    """Quantized ResNet50 base definition"""
+
     def __init__(
         self, feature_extract=True, num_classes=10, act_fn_name="relu", **kwargs
     ) -> None:
@@ -85,6 +89,8 @@ class ResNet50(
 class ResNext101_32X8D(
     models.quantization.resnext101_32x8d(pretrained=True, progress=True, quantize=True)
 ):
+    """Quantized ResNet101_32X8D base definition"""
+
     def __init__(
         self, feature_extract=True, num_classes=10, act_fn_name="relu", **kwargs
     ) -> None:

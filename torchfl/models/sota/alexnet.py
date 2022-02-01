@@ -11,6 +11,8 @@ from torchfl.compatibility import ACTIVATION_FUNCTIONS_BY_NAME
 
 
 class AlexNet(models.AlexNet):
+    """AlexNet base definition"""
+
     def __init__(
         self,
         pre_trained=True,

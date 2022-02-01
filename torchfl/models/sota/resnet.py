@@ -24,6 +24,8 @@ from torchvision.models.resnet import BasicBlock, Bottleneck
 
 
 class ResNet18(models.ResNet):
+    """ResNet18 base definition"""
+
     def __init__(
         self,
         pre_trained=True,
@@ -72,6 +74,8 @@ class ResNet18(models.ResNet):
 
 
 class ResNet34(models.ResNet):
+    """ResNet34 base definition"""
+
     def __init__(
         self,
         pre_trained=True,
@@ -119,6 +123,8 @@ class ResNet34(models.ResNet):
 
 
 class ResNet50(models.ResNet):
+    """ResNet50 base definition"""
+
     def __init__(
         self,
         pre_trained=True,
@@ -166,6 +172,8 @@ class ResNet50(models.ResNet):
 
 
 class ResNet101(models.ResNet):
+    """ResNet101 base definition"""
+
     def __init__(
         self,
         pre_trained=True,
@@ -213,6 +221,8 @@ class ResNet101(models.ResNet):
 
 
 class ResNet152(models.ResNet):
+    """ResNet152 base definition"""
+
     def __init__(
         self,
         pre_trained=True,
@@ -260,6 +270,8 @@ class ResNet152(models.ResNet):
 
 
 class ResNext50_32X4D(models.ResNet):
+    """ResNet50_32X4D base definition"""
+
     def __init__(
         self,
         pre_trained=True,
@@ -309,6 +321,8 @@ class ResNext50_32X4D(models.ResNet):
 
 
 class ResNext101_32X8D(models.ResNet):
+    """ResNet101_32X8D base definition"""
+
     def __init__(
         self,
         pre_trained=True,
@@ -358,6 +372,8 @@ class ResNext101_32X8D(models.ResNet):
 
 
 class WideResNet50_2(models.ResNet):
+    """WideResNet50_2 base definition"""
+
     def __init__(
         self,
         pre_trained=True,
@@ -407,6 +423,8 @@ class WideResNet50_2(models.ResNet):
 
 
 class WideResNet101_2(models.ResNet):
+    """WideResNet101_2 base definition"""
+
     def __init__(
         self,
         pre_trained=True,

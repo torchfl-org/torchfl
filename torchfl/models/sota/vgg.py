@@ -22,6 +22,8 @@ from torchfl.compatibility import ACTIVATION_FUNCTIONS_BY_NAME
 
 
 class VGG11(models.vgg11(pretrained=True, progress=True)):
+    """VGG11 base definition"""
+
     def __init__(
         self, feature_extract=True, num_classes=10, act_fn_name="relu", **kwargs
     ) -> None:
@@ -53,6 +55,8 @@ class VGG11(models.vgg11(pretrained=True, progress=True)):
 
 
 class VGG11_BN(models.vgg11_bn(pretrained=True, progress=True)):
+    """VGG11_BN base definition"""
+
     def __init__(
         self, feature_extract=True, num_classes=10, act_fn_name="relu", **kwargs
     ) -> None:
@@ -84,6 +88,8 @@ class VGG11_BN(models.vgg11_bn(pretrained=True, progress=True)):
 
 
 class VGG13(models.vgg13(pretrained=True, progress=True)):
+    """VGG13 base definition"""
+
     def __init__(
         self, feature_extract=True, num_classes=10, act_fn_name="relu", **kwargs
     ) -> None:
@@ -115,6 +121,8 @@ class VGG13(models.vgg13(pretrained=True, progress=True)):
 
 
 class VGG13_BN(models.vgg13_bn(pretrained=True, progress=True)):
+    """VGG13_BN base definition"""
+
     def __init__(
         self, feature_extract=True, num_classes=10, act_fn_name="relu", **kwargs
     ) -> None:
@@ -146,6 +154,8 @@ class VGG13_BN(models.vgg13_bn(pretrained=True, progress=True)):
 
 
 class VGG16(models.vgg16(pretrained=True, progress=True)):
+    """VGG16 base definition"""
+
     def __init__(
         self, feature_extract=True, num_classes=10, act_fn_name="relu", **kwargs
     ) -> None:
@@ -177,6 +187,8 @@ class VGG16(models.vgg16(pretrained=True, progress=True)):
 
 
 class VGG16_BN(models.vgg16_bn(pretrained=True, progress=True)):
+    """VGG16_BN base definition"""
+
     def __init__(
         self, feature_extract=True, num_classes=10, act_fn_name="relu", **kwargs
     ) -> None:
@@ -208,6 +220,8 @@ class VGG16_BN(models.vgg16_bn(pretrained=True, progress=True)):
 
 
 class VGG19(models.vgg19(pretrained=True, progress=True)):
+    """VGG19 base definition"""
+
     def __init__(
         self, feature_extract=True, num_classes=10, act_fn_name="relu", **kwargs
     ) -> None:
@@ -239,6 +253,8 @@ class VGG19(models.vgg19(pretrained=True, progress=True)):
 
 
 class VGG19_BN(models.vgg19_bn(pretrained=True, progress=True)):
+    """VGG19_BN base definition"""
+
     def __init__(
         self, feature_extract=True, num_classes=10, act_fn_name="relu", **kwargs
     ) -> None:

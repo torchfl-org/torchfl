@@ -18,6 +18,8 @@ from torchfl.compatibility import ACTIVATION_FUNCTIONS_BY_NAME
 
 
 class DenseNet121(models.DenseNet):
+    """DenseNet121 base definition."""
+
     def __init__(
         self,
         pre_trained=True,
@@ -74,6 +76,8 @@ class DenseNet121(models.DenseNet):
 
 
 class DenseNet161(models.DenseNet):
+    """DenseNet161 base definition."""
+
     def __init__(
         self,
         pre_trained=True,
@@ -130,6 +134,8 @@ class DenseNet161(models.DenseNet):
 
 
 class DenseNet169(models.DenseNet):
+    """DenseNet169 base definition."""
+
     def __init__(
         self,
         pre_trained=True,
@@ -186,6 +192,8 @@ class DenseNet169(models.DenseNet):
 
 
 class DenseNet201(models.DenseNet):
+    """DenseNet201 base definition."""
+
     def __init__(
         self,
         pre_trained=True,

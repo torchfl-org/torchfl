@@ -3,7 +3,6 @@
 
 """Contains the quantized ShuffleNetv2 model implementations for EMNIST (by class) dataset.
 
-
 Contains:
     - ShuffleNetv2_x0_5
     - ShuffleNetv2_x1_0

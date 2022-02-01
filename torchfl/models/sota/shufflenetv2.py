@@ -18,6 +18,8 @@ from torchfl.compatibility import ACTIVATION_FUNCTIONS_BY_NAME
 
 
 class ShuffleNetv2_x0_5(models.ShuffleNetV2):
+    """ShuffleNetv2_x0_5 base definition"""
+
     def __init__(
         self,
         pre_trained=True,
@@ -70,6 +72,8 @@ class ShuffleNetv2_x0_5(models.ShuffleNetV2):
 
 
 class ShuffleNetv2_x1_0(models.ShuffleNetV2):
+    """ShuffleNetv2_x1_0 base definition"""
+
     def __init__(
         self,
         pre_trained=True,
@@ -122,6 +126,8 @@ class ShuffleNetv2_x1_0(models.ShuffleNetV2):
 
 
 class ShuffleNetv2_x1_5(models.ShuffleNetV2):
+    """ShuffleNetv2_x1_5 base definition"""
+
     def __init__(
         self,
         pre_trained=True,
@@ -175,6 +181,8 @@ class ShuffleNetv2_x1_5(models.ShuffleNetV2):
 
 
 class ShuffleNetv2_x2_0(models.ShuffleNetV2):
+    """ShuffleNetv2_x2_0 base definition"""
+
     def __init__(
         self,
         pre_trained=True,

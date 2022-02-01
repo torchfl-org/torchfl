@@ -16,6 +16,8 @@ from torchfl.compatibility import ACTIVATION_FUNCTIONS_BY_NAME
 
 
 class SqueezeNet1_0(models.squeezenet1_0(pretrained=True, progress=True)):
+    """SqueezeNet1_0 base definition"""
+
     def __init__(
         self, feature_extract=True, num_classes=10, act_fn_name="relu", **kwargs
     ) -> None:
@@ -49,6 +51,8 @@ class SqueezeNet1_0(models.squeezenet1_0(pretrained=True, progress=True)):
 
 
 class SqueezeNet1_1(models.squeezenet1_1(pretrained=True, progress=True)):
+    """SqueezeNet1_1 base definition"""
+
     def __init__(
         self, feature_extract=True, num_classes=10, act_fn_name="relu", **kwargs
     ) -> None:

@@ -11,6 +11,8 @@ from torchfl.compatibility import ACTIVATION_FUNCTIONS_BY_NAME
 
 
 class LeNet(nn.Module):
+    """LeNet base definition"""
+
     def __init__(
         self, num_classes=10, num_channels=1, act_fn_name="relu", **kwargs
     ) -> None:
@@ -52,4 +54,12 @@ class LeNet(nn.Module):
         self.output_net = nn.Sequential(nn.Linear(84, self.hparams.num_classes))
 
     def forward(self, x):
+        """Forward propagation
+
+        Args:
+            x (torch.Tensor): Input Tensor
+
+        Returns:
+            torch.Tensor: Returns the tensor after forward propagation
+        """
         return self.output_net(self.conv_net(self.input_net(x)))

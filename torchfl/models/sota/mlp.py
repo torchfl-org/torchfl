@@ -15,6 +15,8 @@ from torchfl.compatibility import ACTIVATION_FUNCTIONS_BY_NAME
 
 
 class LinearBlock(nn.Module):
+    """LinearBlock base definition"""
+
     def __init__(self, c_in, c_out, act_fn, dropout=False):
         """Constructor
 
@@ -33,17 +35,27 @@ class LinearBlock(nn.Module):
             self.linear_block = nn.Sequential(nn.Linear(c_in, c_out), act_fn())
 
     def forward(self, x):
+        """Forward propagation
+
+        Args:
+            x (torch.Tensor): Input Tensor
+
+        Returns:
+            torch.Tensor: Returns the tensor after forward propagation
+        """
         return self.linear_block(x)
 
 
 class MLP(nn.Module):
+    """MLP base definition"""
+
     def __init__(
         self,
         num_classes=10,
         num_channels=1,
         img_w=28,
         img_h=28,
-        hidden_dims=[256, 128],
+        hidden_dims=(256, 128),
         act_fn_name="relu",
         **kwargs
     ):
@@ -104,4 +116,12 @@ class MLP(nn.Module):
         )
 
     def forward(self, x):
+        """Forward propagation
+
+        Args:
+            x (torch.Tensor): Input Tensor
+
+        Returns:
+            torch.Tensor: Returns the tensor after forward propagation
+        """
         return self.output_net(self.hidden_net(self.input_net(x)))

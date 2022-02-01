@@ -3,7 +3,7 @@
 
 """Contains the model mappings for specific datasets."""
 
-from typing import Type, Literal, Dict, Any
+from typing import Dict, Any
 from torchfl.models.core.cifar.cifar10 import (
     alexnet as cifar10_alexnet,
     densenet as cifar10_densenet,

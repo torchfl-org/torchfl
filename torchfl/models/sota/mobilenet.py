@@ -21,6 +21,8 @@ from functools import partial
 
 
 class MobileNetV2(models.mobilenet.MobileNetV2):
+    """MobileNetV2 base definition"""
+
     def __init__(
         self,
         pre_trained=True,
@@ -74,6 +76,8 @@ class MobileNetV2(models.mobilenet.MobileNetV2):
 
 
 class MobileNetV3Small(models.mobilenet.MobileNetV3):
+    """MobileNetV3Small base definition"""
+
     def __init__(
         self,
         pre_trained=True,
@@ -134,6 +138,8 @@ class MobileNetV3Small(models.mobilenet.MobileNetV3):
 
 
 class MobileNetV3Large(models.mobilenet.MobileNetV3):
+    """MobileNetV3Large base definition"""
+
     def __init__(
         self,
         pre_trained=True,

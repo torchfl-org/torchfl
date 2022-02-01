@@ -20,6 +20,8 @@ class ShuffleNetv2_x0_5(
         pretrained=True, progress=True, quantize=True
     )
 ):
+    """Quantized ShuffleNetv2_x0_5 base definition"""
+
     def __init__(
         self, feature_extract=True, num_classes=10, act_fn_name="relu", **kwargs
     ) -> None:
@@ -55,6 +57,8 @@ class ShuffleNetv2_x1_0(
         pretrained=True, progress=True, quantize=True
     )
 ):
+    """Quantized ShuffleNetv2_x1_0 base definition"""
+
     def __init__(
         self, feature_extract=True, num_classes=10, act_fn_name="relu", **kwargs
     ) -> None:

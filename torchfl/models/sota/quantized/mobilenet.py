@@ -20,6 +20,8 @@ class MobileNetV2(
         pretrained=True, progress=True, quantize=True
     )
 ):
+    """Quantized MobileNetV2 base definition"""
+
     def __init__(
         self, feature_extract=True, num_classes=10, act_fn_name="relu", **kwargs
     ) -> None:
@@ -55,6 +57,8 @@ class MobileNetV3Large(
         pretrained=True, progress=True, quantize=True
     )
 ):
+    """Quantized MobileNetV3Large base definition"""
+
     def __init__(
         self, feature_extract=True, num_classes=10, act_fn_name="relu", **kwargs
     ) -> None:
