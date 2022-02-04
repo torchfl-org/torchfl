@@ -24,6 +24,7 @@ class CIFAR10(pl.LightningModule):
         # FIXME - finish all the wrappers and add tests.
         # FIXME - jump to reorganizing the data modules for torch lightning
         # FIXME - finish the tests for the data loading modules
+        # FIXME - fix the tox pipeline errors (flake8 and mypy/typecheck)
         # FIXME - move on to the training wrapper (see trello)
 
 
