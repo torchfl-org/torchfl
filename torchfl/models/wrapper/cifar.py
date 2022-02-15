@@ -449,9 +449,102 @@ class CIFAR10(pl.LightningModule):
 
 
 class CIFAR100(pl.LightningModule):
-    """PyTorch Lightning wrapper for CIFAR10 dataset."""
+    """PyTorch Lightning wrapper for CIFAR100 dataset."""
 
-    def __init__(self, model: str, optimizer: OPTIMIZERS_LITERAL) -> None:
+    def __init__(
+        self,
+        model_name: CIFAR_MODELS_LITERAL,
+        optimizer_name: OPTIMIZERS_LITERAL,
+        optimizer_hparams: Dict[str, Any],
+        model_hparams: Optional[Dict[str, Any]] = None,
+    ) -> None:
+        """Default constructor.
+
+        Args:
+            model_name (CIFAR_MODELS_LITERAL): Name of the model to be used. Only choose from the available models.
+            optimizer_name (OPTIMIZERS_LITERAL): Name of optimizer to be used. Only choose from the available models.
+            optimizer_hparams(Dict[str, Any]): Hyperparameters to initialize the optimizer.
+            model_hparams (Optional[Dict[str, Any]], optional): Optional override the default model hparams. Defaults to None.
+        """
         super().__init__()
-        # FIXME from here - figuring out the hyperparameters part
-        
+        self.model = create_model(
+            dataset_name="cifar100", model_name=model_name, model_hparams=model_hparams
+        )
+        combined_hparams: Dict[str, Any] = {
+            "model_hparams": vars(self.model.hparams),
+            "optimizer_hparams": {
+                "optimizer_name": optimizer_name,
+                "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name],
+                "config": optimizer_hparams,
+            },
+        }
+        self.save_hyperparameters(combined_hparams)
+        self.loss_module = nn.CrossEntropyLoss()
+
+    def forward(self, imgs: Tensor) -> Tensor:
+        """Forward propagation
+
+        Args:
+            imgs (Tensor): Images for forward propagation.
+
+        Returns:
+            Tensor: PyTorch Tensor generated from forward propagation.
+        """
+        return self.model(imgs)
+
+    def configure_optimizers(self):
+        """Configuring the optimizer and scheduler for training process."""
+        OPTIMIZER_FN = self.hparams.optimizer_hparams["optimizer_fn"]
+        optimizer: OPTIMIZER_FN = OPTIMIZER_FN(
+            self.parameters(), **self.hparams.optimizer_hparams["config"]
+        )
+        scheduler = optim.lr_scheduler.MultiStepLR(
+            optimizer, milestones=[100, 150], gamma=0.1
+        )
+        return [optimizer], [scheduler]
+
+    def training_step(self, batch: Tuple[Tensor, Tensor], batch_idx: int) -> Tensor:
+        """Training step
+
+        Args:
+            batch (Tuple[Tensor, Tensor]): Batch of the training data.
+            batch_idx (int): Index of the given batch.
+
+        Returns:
+            Tensor: PyTorch Tensor to call ".backward" on
+        """
+        imgs, labels = batch
+        preds: Tensor = self.model(imgs)
+        loss: Tensor = self.loss_module(preds, labels)
+        acc: Tensor = (preds.argmax(dim=-1) == labels).float().mean()
+
+        # Logs the accuracy per epoch (weighted average over batches)
+        self.log("train_acc", acc, on_step=False, on_epoch=True)
+        self.log("train_loss", loss)
+        return loss
+
+    def validation_step(self, batch: Tuple[Tensor, Tensor], batch_idx: int) -> None:
+        """Validation step
+
+        Args:
+            batch (Tuple[Tensor, Tensor]): Batch of the validation data.
+            batch_idx (int): Index of the given batch.
+        """
+        imgs, labels = batch
+        preds: Tensor = self.model(imgs).argmax(dim=-1)
+        acc: Tensor = (labels == preds).float().mean()
+        # By default logs it per epoch (weighted average over batches)
+        self.log("val_acc", acc)
+
+    def test_step(self, batch: Tuple[Tensor, Tensor], batch_idx: int) -> None:
+        """Test step
+
+        Args:
+            batch (Tuple[Tensor, Tensor]): Batch of the testing data.
+            batch_idx (int): Index of the given batch.
+        """
+        imgs, labels = batch
+        preds: Tensor = self.model(imgs).argmax(dim=-1)
+        acc: Tensor = (labels == preds).float().mean()
+        # By default logs it per epoch (weighted average over batches), and returns it afterwards
+        self.log("test_acc", acc)
