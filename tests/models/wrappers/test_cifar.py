@@ -86,7 +86,8 @@ def test_cifar10_wrapper(cifar10_train_loader, cifar10_test_loader):
     """Testing the CIFAR10 model wrapper with PyTorch Lightning wrapper.
 
     Args:
-        cifar10_loader (Dataset): PyTorch Dataset object.
+        cifar10_train_loader (Dataset): PyTorch Dataset object.
+        cifar10_test_loader (Dataset): PyTorch Dataset object.
     """
     model = CIFAR10(
         "densenet121", "sgd", {"lr": 0.1, "momentum": 0.9}, {"num_channels": 3}
@@ -103,7 +104,8 @@ def test_cifar100_wrapper(cifar100_train_loader, cifar100_test_loader):
     """Testing the CIFAR100 model wrapper with PyTorch lightning wrapper.
 
     Args:
-        cifar100_loader (Dataset): PyTorch Dataset object.
+        cifar100_train_loader (Dataset): PyTorch Dataset object.
+        cifar100_test_loader (Dataset): PyTorch Dataset object.
     """
     model = CIFAR100(
         "densenet121", "sgd", {"lr": 0.1, "momentum": 0.9}, {"num_channels": 3}
