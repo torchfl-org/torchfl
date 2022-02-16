@@ -323,24 +323,6 @@ def create_model(
         )
 
 
-def validate_model_hparams(model_hparams: Dict[str, Any]) -> bool:
-    """Validate the hyperparameters supplied for the model.
-
-    Args:
-        model_hparams (Dict[str, Any]): A dictionary containing hyperparameters of the models and their values.
-
-    Returns:
-        bool: True if valid, else False.
-    """
-    ALLOWED_HPARAMS = {"pre_trained", "feature_extract", "num_channels"}
-    if len(model_hparams.keys()) != 3:
-        return False
-    for k in model_hparams:
-        if k not in ALLOWED_HPARAMS:
-            return False
-    return True
-
-
 ###############
 # End Utils #
 ###############
