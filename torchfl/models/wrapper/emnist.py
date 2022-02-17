@@ -12,6 +12,7 @@ from torchfl.models.core.emnist.balanced.densenet import (
     DenseNet201 as BalancedDenseNet201,
 )
 from torchfl.models.core.emnist.balanced.lenet import LeNet as BalancedLeNet
+from torchfl.models.core.emnist.balanced.mlp import MLP as BalancedMLP
 from torchfl.models.core.emnist.balanced.mobilenet import (
     MobileNetV2 as BalancedMobileNetV2,
     MobileNetV3Small as BalancedMobileNetV3Small,
@@ -56,6 +57,7 @@ from torchfl.models.core.emnist.byclass.densenet import (
     DenseNet201 as ByClassDenseNet201,
 )
 from torchfl.models.core.emnist.byclass.lenet import LeNet as ByClassLeNet
+from torchfl.models.core.emnist.byclass.mlp import MLP as ByClassMLP
 from torchfl.models.core.emnist.byclass.mobilenet import (
     MobileNetV2 as ByClassMobileNetV2,
     MobileNetV3Small as ByClassMobileNetV3Small,
@@ -100,6 +102,7 @@ from torchfl.models.core.emnist.bymerge.densenet import (
     DenseNet201 as ByMergeDenseNet201,
 )
 from torchfl.models.core.emnist.bymerge.lenet import LeNet as ByMergeLeNet
+from torchfl.models.core.emnist.bymerge.mlp import MLP as ByMergeMLP
 from torchfl.models.core.emnist.bymerge.mobilenet import (
     MobileNetV2 as ByMergeMobileNetV2,
     MobileNetV3Small as ByMergeMobileNetV3Small,
@@ -144,6 +147,7 @@ from torchfl.models.core.emnist.digits.densenet import (
     DenseNet201 as DigitsDenseNet201,
 )
 from torchfl.models.core.emnist.digits.lenet import LeNet as DigitsLeNet
+from torchfl.models.core.emnist.digits.mlp import MLP as DigitsMLP
 from torchfl.models.core.emnist.digits.mobilenet import (
     MobileNetV2 as DigitsMobileNetV2,
     MobileNetV3Small as DigitsMobileNetV3Small,
@@ -188,6 +192,7 @@ from torchfl.models.core.emnist.letters.densenet import (
     DenseNet201 as LettersDenseNet201,
 )
 from torchfl.models.core.emnist.letters.lenet import LeNet as LettersLeNet
+from torchfl.models.core.emnist.letters.mlp import MLP as LettersMLP
 from torchfl.models.core.emnist.letters.mobilenet import (
     MobileNetV2 as LettersMobileNetV2,
     MobileNetV3Small as LettersMobileNetV3Small,
@@ -232,6 +237,7 @@ from torchfl.models.core.emnist.mnist.densenet import (
     DenseNet201 as MNISTDenseNet201,
 )
 from torchfl.models.core.emnist.mnist.lenet import LeNet as MNISTLeNet
+from torchfl.models.core.emnist.mnist.mlp import MLP as MNISTMLP
 from torchfl.models.core.emnist.mnist.mobilenet import (
     MobileNetV2 as MNISTMobileNetV2,
     MobileNetV3Small as MNISTMobileNetV3Small,
@@ -285,6 +291,7 @@ EMNIST_MODELS: List[str] = [
     "densenet169",
     "densenet201",
     "lenet",
+    "mlp",
     "mobilenetv2",
     "mobilenetv3small",
     "mobilenetv3large",
@@ -321,6 +328,7 @@ EMNIST_MODELS_LITERAL: Type[
         "densenet169",
         "densenet201",
         "lenet",
+        "mlp",
         "mobilenetv2",
         "mobilenetv3small",
         "mobilenetv3large",
@@ -355,6 +363,7 @@ EMNIST_MODELS_LITERAL: Type[
     "densenet169",
     "densenet201",
     "lenet",
+    "mlp",
     "mobilenetv2",
     "mobilenetv2small",
     "mobilenetv3large",
@@ -390,6 +399,7 @@ EMNIST_BALANCED_MODELS_MAPPING: Dict[str, Any] = {
     "densenet169": BalancedDenseNet169,
     "densenet201": BalancedDenseNet201,
     "lenet": BalancedLeNet,
+    "mlp": BalancedMLP,
     "mobilenetv2": BalancedMobileNetV2,
     "mobilenetv3small": BalancedMobileNetV3Small,
     "mobilenetv3large": BalancedMobileNetV3Large,
@@ -425,6 +435,7 @@ EMNIST_BYCLASS_MODELS_MAPPING: Dict[str, Any] = {
     "densenet169": ByClassDenseNet169,
     "densenet201": ByClassDenseNet201,
     "lenet": ByClassLeNet,
+    "mlp": ByClassMLP,
     "mobilenetv2": ByClassMobileNetV2,
     "mobilenetv3small": ByClassMobileNetV3Small,
     "mobilenetv3large": ByClassMobileNetV3Large,
@@ -460,6 +471,7 @@ EMNIST_BYMERGE_MODELS_MAPPING: Dict[str, Any] = {
     "densenet169": ByMergeDenseNet169,
     "densenet201": ByMergeDenseNet201,
     "lenet": ByMergeLeNet,
+    "mlp": ByMergeMLP,
     "mobilenetv2": ByMergeMobileNetV2,
     "mobilenetv3small": ByMergeMobileNetV3Small,
     "mobilenetv3large": ByMergeMobileNetV3Large,
@@ -495,6 +507,7 @@ EMNIST_DIGITS_MODELS_MAPPING: Dict[str, Any] = {
     "densenet169": DigitsDenseNet169,
     "densenet201": DigitsDenseNet201,
     "lenet": DigitsLeNet,
+    "mlp": DigitsMLP,
     "mobilenetv2": DigitsMobileNetV2,
     "mobilenetv3small": DigitsMobileNetV3Small,
     "mobilenetv3large": DigitsMobileNetV3Large,
@@ -530,6 +543,7 @@ EMNIST_LETTERS_MODELS_MAPPING: Dict[str, Any] = {
     "densenet169": LettersDenseNet169,
     "densenet201": LettersDenseNet201,
     "lenet": LettersLeNet,
+    "mlp": LettersMLP,
     "mobilenetv2": LettersMobileNetV2,
     "mobilenetv3small": LettersMobileNetV3Small,
     "mobilenetv3large": LettersMobileNetV3Large,
@@ -565,6 +579,7 @@ EMNIST_MNIST_MODELS_MAPPING: Dict[str, Any] = {
     "densenet169": MNISTDenseNet169,
     "densenet201": MNISTDenseNet201,
     "lenet": MNISTLeNet,
+    "mlp": MNISTMLP,
     "mobilenetv2": MNISTMobileNetV2,
     "mobilenetv3small": MNISTMobileNetV3Small,
     "mobilenetv3large": MNISTMobileNetV3Large,
