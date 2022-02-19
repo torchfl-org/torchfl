@@ -148,7 +148,7 @@ class EMNISTDataModule(pl.LightningDataModule):
         num_validation_images: int = int(total_images * self.validation_split)
         num_training_images: int = total_images - num_validation_images
         if (stage == "fit") or (not stage):
-            curr_dataset = EMNIST(
+            self.emnist_train_full = EMNIST(
                 self.data_dir,
                 train=True,
                 split=self.dataset_name,
@@ -156,11 +156,11 @@ class EMNISTDataModule(pl.LightningDataModule):
                 transform=self.train_transform,
             )
             if self.dataset_name == "letters":
-                curr_dataset.targets.apply_(
+                self.emnist_train_full.targets.apply_(
                     lambda x: (x - 1)
                 )  # patch to eliminate the N/A label in the original letters dataset
             self.emnist_train, self.emnist_val = random_split(
-                curr_dataset,
+                self.emnist_train_full,
                 [num_training_images, num_validation_images],
             )
 
@@ -233,23 +233,14 @@ class EMNISTDataModule(pl.LightningDataModule):
         Returns:
             Dict[int, DataLoader]: collection of workers as the keys and the PyTorch DataLoader object as values (used for training).
         """
-        combined_hparams: Dict[str, Any] = {
-            "dataloader_hparams": vars(self.hparams),
-            "fl_hparams": {
-                "split_type": "iid",
-                "num_workers": num_workers,
-                "workers_batch_size": workers_batch_size,
-            },
-        }
-        self.save_hyperparameters(combined_hparams)
-        items: int = len(self.emnist_train) // num_workers
+        items: int = len(self.emnist_train_full) // num_workers
         distribution: np.ndarray = np.random.randint(
-            low=0, high=len(self.emnist_train), size=(num_workers, items)
+            low=0, high=len(self.emnist_train_full), size=(num_workers, items)
         )
         federated: Dict[int, Dataset] = dict()
         for i in range(len(distribution)):
             federated[i] = DataLoader(
-                DatasetSplit(self.emnist_train, distribution[i]),
+                DatasetSplit(self.emnist_train_full, distribution[i]),
                 batch_size=workers_batch_size,
                 shuffle=True,
             )
@@ -268,27 +259,17 @@ class EMNISTDataModule(pl.LightningDataModule):
         Returns:
             Dict[int, DataLoader]: collection of workers as the keys and the PyTorch DataLoader object as values (used for training).
         """
-        combined_hparams: Dict[str, Any] = {
-            "dataloader_hparams": vars(self.hparams),
-            "fl_hparams": {
-                "split_type": "non-iid",
-                "niid_factor": niid_factor,
-                "num_workers": num_workers,
-                "workers_batch_size": workers_batch_size,
-            },
-        }
-        self.save_hyperparameters(combined_hparams)
         shards: int = num_workers * niid_factor
-        items: int = len(self.emnist_train) // shards
+        items: int = len(self.emnist_train_full) // shards
         idx_shard: List[int] = list(range(shards))
         classes: np.ndarray = np.array([])
-        if isinstance(self.emnist_train.targets, list):
-            classes = np.array(self.emnist_train.targets)
+        if isinstance(self.emnist_train_full.targets, list):
+            classes = np.array(self.emnist_train_full.targets)
         else:
-            classes = self.emnist_train.targets.numpy()
+            classes = self.emnist_train_full.targets.numpy()
 
         idxs_labels: np.ndarray = np.vstack(
-            (np.arange(len(self.emnist_train)), classes)
+            (np.arange(len(self.emnist_train_full)), classes)
         )
         idxs_labels = idxs_labels[:, idxs_labels[1, :].argsort()]
         idxs: np.ndarray = idxs_labels[0, :]
@@ -310,7 +291,7 @@ class EMNISTDataModule(pl.LightningDataModule):
         federated: Dict[int, Dataset] = dict()
         for i in distribution:
             federated[i] = DataLoader(
-                DatasetSplit(self.emnist_train, distribution[i]),
+                DatasetSplit(self.emnist_train_full, distribution[i]),
                 batch_size=workers_batch_size,
                 shuffle=True,
             )

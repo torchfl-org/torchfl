@@ -126,13 +126,14 @@ class FashionMNISTDataModule(pl.LightningDataModule):
         num_validation_images: int = int(total_images * self.validation_split)
         num_training_images: int = total_images - num_validation_images
         if (stage == "fit") or (not stage):
+            self.fashionmnist_train_full = FashionMNIST(
+                self.data_dir,
+                train=True,
+                download=True,
+                transform=self.train_transform,
+            )
             self.fashionmnist_train, self.fashionmnist_val = random_split(
-                FashionMNIST(
-                    self.data_dir,
-                    train=True,
-                    download=True,
-                    transform=self.train_transform,
-                ),
+                self.fashionmnist_train_full,
                 [num_training_images, num_validation_images],
             )
 
@@ -195,23 +196,14 @@ class FashionMNISTDataModule(pl.LightningDataModule):
         Returns:
             Dict[int, DataLoader]: collection of workers as the keys and the PyTorch DataLoader object as values (used for training).
         """
-        combined_hparams: Dict[str, Any] = {
-            "dataloader_hparams": vars(self.hparams),
-            "fl_hparams": {
-                "split_type": "iid",
-                "num_workers": num_workers,
-                "workers_batch_size": workers_batch_size,
-            },
-        }
-        self.save_hyperparameters(combined_hparams)
-        items: int = len(self.fashionmnist_train) // num_workers
+        items: int = len(self.fashionmnist_train_full) // num_workers
         distribution: np.ndarray = np.random.randint(
-            low=0, high=len(self.fashionmnist_train), size=(num_workers, items)
+            low=0, high=len(self.fashionmnist_train_full), size=(num_workers, items)
         )
         federated: Dict[int, Dataset] = dict()
         for i in range(len(distribution)):
             federated[i] = DataLoader(
-                DatasetSplit(self.fashionmnist_train, distribution[i]),
+                DatasetSplit(self.fashionmnist_train_full, distribution[i]),
                 batch_size=workers_batch_size,
                 shuffle=True,
             )
@@ -230,27 +222,17 @@ class FashionMNISTDataModule(pl.LightningDataModule):
         Returns:
             Dict[int, DataLoader]: collection of workers as the keys and the PyTorch DataLoader object as values (used for training).
         """
-        combined_hparams: Dict[str, Any] = {
-            "dataloader_hparams": vars(self.hparams),
-            "fl_hparams": {
-                "split_type": "non-iid",
-                "niid_factor": niid_factor,
-                "num_workers": num_workers,
-                "workers_batch_size": workers_batch_size,
-            },
-        }
-        self.save_hyperparameters(combined_hparams)
         shards: int = num_workers * niid_factor
-        items: int = len(self.fashionmnist_train) // shards
+        items: int = len(self.fashionmnist_train_full) // shards
         idx_shard: List[int] = list(range(shards))
         classes: np.ndarray = np.array([])
-        if isinstance(self.fashionmnist_train.targets, list):
-            classes = np.array(self.fashionmnist_train.targets)
+        if isinstance(self.fashionmnist_train_full.targets, list):
+            classes = np.array(self.fashionmnist_train_full.targets)
         else:
-            classes = self.fashionmnist_train.targets.numpy()
+            classes = self.fashionmnist_train_full.targets.numpy()
 
         idxs_labels: np.ndarray = np.vstack(
-            (np.arange(len(self.fashionmnist_train)), classes)
+            (np.arange(len(self.fashionmnist_train_full)), classes)
         )
         idxs_labels = idxs_labels[:, idxs_labels[1, :].argsort()]
         idxs: np.ndarray = idxs_labels[0, :]
@@ -272,7 +254,7 @@ class FashionMNISTDataModule(pl.LightningDataModule):
         federated: Dict[int, Dataset] = dict()
         for i in distribution:
             federated[i] = DataLoader(
-                DatasetSplit(self.fashionmnist_train, distribution[i]),
+                DatasetSplit(self.fashionmnist_train_full, distribution[i]),
                 batch_size=workers_batch_size,
                 shuffle=True,
             )
