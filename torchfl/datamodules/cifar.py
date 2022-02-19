@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""PyTorch Lightning DataModule for CIFAR(cifar10 and cifar100) dataset.
+"""PyTorch LightningDataModule for CIFAR(cifar10 and cifar100) dataset.
 
 Raises:
     ValueError: The given dataset name is not supported. Supported: cifar10, cifar100.
@@ -23,10 +23,27 @@ torch.manual_seed(42)
 np.random.seed(42)
 pl.seed_everything(42)
 
-SUPPORTED_MODELS: Set[str] = {"cifar10", "cifar100"}
-SUPPORTED_MODELS_LITERAL: Type[Literal["cifar10", "cifar100"]] = Literal[
+###################
+# Begin Constants #
+###################
+
+SUPPORTED_DATASETS: Set[str] = {"cifar10", "cifar100"}
+SUPPORTED_DATASETS_LITERAL: Type[Literal["cifar10", "cifar100"]] = Literal[
     "cifar10", "cifar100"
 ]
+
+DEFAULT_TRANSFORMS: transforms.Compose = transforms.Compose(
+    [
+        transforms.RandomCrop(32, padding=4),
+        transforms.RandomHorizontalFlip(),
+        transforms.ToTensor(),
+        transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
+    ]
+)
+
+#################
+# End Constants #
+#################
 
 
 class DatasetSplit(Dataset):
@@ -68,48 +85,51 @@ class CIFARDataModule(pl.LightningDataModule):
 
     def __init__(
         self,
-        data_dir: str = os.pardir,
-        dataset_name: SUPPORTED_MODELS_LITERAL = "cifar10",
+        data_dir: str = os.path.join(os.pardir, "data"),
+        dataset_name: SUPPORTED_DATASETS_LITERAL = "cifar10",
         validation_split: float = 0.1,
         train_batch_size: int = 32,
         validation_batch_size: int = 32,
         test_batch_size: int = 32,
         predict_batch_size: int = 32,
+        train_transforms: transforms.Compose = DEFAULT_TRANSFORMS,
+        val_transforms: transforms.Compose = DEFAULT_TRANSFORMS,
+        test_transforms: transforms.Compose = DEFAULT_TRANSFORMS,
+        predict_transforms: transforms.Compose = DEFAULT_TRANSFORMS,
     ):  # type: ignore
         """Constructor
 
         Args:
             data_dir (str, optional): Default directory to download the dataset to. Defaults to os.pardir.
-            dataset_name (SUPPORTED_MODELS_LITERAL, optional): Name of the dataset to be used. Defaults to "cifar10".
+            dataset_name (SUPPORTED_DATASETS_LITERAL, optional): Name of the dataset to be used. Defaults to "cifar10".
             validation_split (float, optional): Fraction of training images to be used as validation. Defaults to 0.1.
             train_batch_size (int, optional): Default batch size of the training data. Defaults to 32.
             validation_batch_size (int, optional): Default batch size of the validation data. Defaults to 32.
             test_batch_size (int, optional): Default batch size of the test data. Defaults to 32.
             predict_batch_size (int, optional): Default batch size of the predict data. Defaults to 32.
+            train_transform (transforms.Compose, optional): Transformations to apply to the training dataset. Defaults to DEFAULT_TRANSFORMS.
+            val_transform (transforms.Compose, optional): Transformations to apply to the validation dataset. Defaults to DEFAULT_TRANSFORMS.
+            test_transform (transforms.Compose, optional): Transformations to apply to the testing dataset. Defaults to DEFAULT_TRANSFORMS.
+            predict_transform (transforms.Compose, optional): Transformations to apply to the prediction dataset. Defaults to DEFAULT_TRANSFORMS.
 
         Raises:
             ValueError: The given dataset name is not supported. Supported: cifar10, cifar100.
         """
         super().__init__()
         self.data_dir: str = data_dir
-        if dataset_name not in SUPPORTED_MODELS:
+        if dataset_name not in SUPPORTED_DATASETS:
             raise ValueError(f"{dataset_name}: Not a supported dataset.")
         self.dataset_name: str = dataset_name
-        self.transform: transforms.Compose = transforms.Compose(
-            [
-                transforms.RandomCrop(32, padding=4),
-                transforms.RandomHorizontalFlip(),
-                transforms.ToTensor(),
-                transforms.Normalize(
-                    (0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)
-                ),
-            ]
-        )
+        self.train_transform: transforms.Compose = train_transforms
+        self.val_transform: transforms.Compose = val_transforms
+        self.test_transform: transforms.Compose = test_transforms
+        self.predict_transform: transforms.Compose = predict_transforms
         self.validation_split: float = validation_split
         self.train_batch_size: int = train_batch_size
         self.validation_batch_size: int = validation_batch_size
         self.test_batch_size: int = test_batch_size
         self.predict_batch_size: int = predict_batch_size
+        self.save_hyperparameters()
 
     def prepare_data(self) -> None:
         """Downloading the data if not already available."""
@@ -136,17 +156,23 @@ class CIFARDataModule(pl.LightningDataModule):
                         self.data_dir,
                         train=True,
                         download=True,
-                        transform=self.transform,
+                        transform=self.train_transform,
                     ),
                     [num_training_images, num_validation_images],
                 )
             if (stage == "test") or (not stage):
                 self.cifar_test = CIFAR10(
-                    self.data_dir, train=False, download=True, transform=self.transform
+                    self.data_dir,
+                    train=False,
+                    download=True,
+                    transform=self.test_transform,
                 )
             if (stage == "predict") or (not stage):
                 self.cifar_predict = CIFAR10(
-                    self.data_dir, train=False, download=True, transform=self.transform
+                    self.data_dir,
+                    train=False,
+                    download=True,
+                    transform=self.predict_transform,
                 )
         elif self.dataset_name == "cifar100":
             total_images: int = len(CIFAR10(self.data_dir, train=True, download=True))
@@ -158,17 +184,17 @@ class CIFARDataModule(pl.LightningDataModule):
                         self.data_dir,
                         train=True,
                         download=True,
-                        transform=self.transform,
+                        transform=self.train_transform,
                     ),
                     [num_training_images, num_validation_images],
                 )
             if (stage == "test") or (not stage):
                 self.cifar_test = CIFAR100(
-                    self.data_dir, train=False, transform=self.transform
+                    self.data_dir, train=False, transform=self.test_transform
                 )
             if (stage == "predict") or (not stage):
                 self.cifar_predict = CIFAR100(
-                    self.data_dir, train=False, transform=self.transform
+                    self.data_dir, train=False, transform=self.predict_transform
                 )
 
     def train_dataloader(self) -> DataLoader:
@@ -215,6 +241,15 @@ class CIFARDataModule(pl.LightningDataModule):
         Returns:
             Dict[int, DataLoader]: collection of workers as the keys and the PyTorch DataLoader object as values (used for training).
         """
+        combined_hparams: Dict[str, Any] = {
+            "dataloader_hparams": vars(self.hparams),
+            "fl_hparams": {
+                "split_type": "iid",
+                "num_workers": num_workers,
+                "workers_batch_size": workers_batch_size,
+            },
+        }
+        self.save_hyperparameters(combined_hparams)
         items: int = len(self.cifar_train) // num_workers
         distribution: np.ndarray = np.random.randint(
             low=0, high=len(self.cifar_train), size=(num_workers, items)
@@ -241,6 +276,16 @@ class CIFARDataModule(pl.LightningDataModule):
         Returns:
             Dict[int, DataLoader]: collection of workers as the keys and the PyTorch DataLoader object as values (used for training).
         """
+        combined_hparams: Dict[str, Any] = {
+            "dataloader_hparams": vars(self.hparams),
+            "fl_hparams": {
+                "split_type": "non-iid",
+                "niid_factor": niid_factor,
+                "num_workers": num_workers,
+                "workers_batch_size": workers_batch_size,
+            },
+        }
+        self.save_hyperparameters(combined_hparams)
         shards: int = num_workers * niid_factor
         items: int = len(self.cifar_train) // shards
         idx_shard: List[int] = list(range(shards))
