@@ -4,11 +4,10 @@
 """Tests for FashionMNIST model wrapper in `torchfl` package."""
 
 import pytest
-from torchvision import datasets, transforms
-import os
+from torchvision import transforms
+from torchfl.datamodules.fashionmnist import FashionMNISTDataModule
 from torchfl.models.wrapper.fashionmnist import FashionMNIST
 from pytorch_lightning import Trainer
-from torch.utils.data import DataLoader
 
 data_transforms = {
     "train_single_channel": transforms.Compose(
@@ -32,100 +31,52 @@ data_transforms = {
 
 
 @pytest.fixture
-def fashionmnist_train_single_channel_loader():
-    """Fixture for FashionMNIST single channel train dataset.
+def fashionmnist_single_channel_data_module():
+    """Fixture for FashionMNIST single channel data module.
+
     Returns:
-        Dataset: PyTorch Dataset object.
+        FashionMNISTDataModule: PyTorch LightningDataModule for FashionMNIST.
     """
     global data_transforms
-    return datasets.FashionMNIST(
-        root=os.path.join(os.pardir, "data"),
-        train=True,
-        download=True,
-        transform=data_transforms["train_single_channel"],
+    return FashionMNISTDataModule(
+        train_transforms=data_transforms["train_single_channel"]
     )
 
 
 @pytest.fixture
-def fashionmnist_test_single_channel_loader():
-    """Fixture for FashionMNIST single channel test dataset.
+def fashionmnist_three_channel_data_module():
+    """Fixture for FashionMNIST three channel data module.
+
     Returns:
-        Dataset: PyTorch Dataset object.
+        FashionMNISTDataModule: PyTorch LightningDataModule for FashionMNIST.
     """
     global data_transforms
-    return datasets.FashionMNIST(
-        root=os.path.join(os.pardir, "data"),
-        train=False,
-        download=True,
-        transform=data_transforms["train_single_channel"],
+    return FashionMNISTDataModule(
+        train_transforms=data_transforms["train_three_channel"]
     )
 
 
-@pytest.fixture
-def fashionmnist_train_three_channel_loader():
-    """Fixture for FashionMNIST three channel train dataset.
-    Returns:
-        Dataset: PyTorch Dataset object.
-    """
-    global data_transforms
-    return datasets.FashionMNIST(
-        root=os.path.join(os.pardir, "data"),
-        train=True,
-        download=True,
-        transform=data_transforms["train_three_channel"],
-    )
-
-
-@pytest.fixture
-def fashionmnist_test_three_channel_loader():
-    """Fixture for FashionMNIST three channel test dataset.
-    Returns:
-        Dataset: PyTorch Dataset object.
-    """
-    global data_transforms
-    return datasets.FashionMNIST(
-        root=os.path.join(os.pardir, "data"),
-        train=False,
-        download=True,
-        transform=data_transforms["train_three_channel"],
-    )
-
-
-def test_fashionmnist_single_channel_wrapper(
-    fashionmnist_train_single_channel_loader, fashionmnist_test_single_channel_loader
-):
+def test_fashionmnist_single_channel_wrapper(fashionmnist_single_channel_data_module):
     """Testing the FashionMNIST model wrapper with PyTorch Lightning wrapper.
 
     Args:
-        fashionmnist_train_three_channel_loader (Dataset): PyTorch Dataset object.
-        fashionmnist_test_three_channel_loader (Dataset): PyTorch Dataset object.
+        FashionMNISTDataModule: PyTorch LightningDataModule for FashionMNIST.
     """
     model = FashionMNIST(
         "densenet121", "sgd", {"lr": 0.1, "momentum": 0.9}, {"num_channels": 1}
     )
     trainer = Trainer(fast_dev_run=True)
-    trainer.fit(
-        model,
-        DataLoader(dataset=fashionmnist_train_single_channel_loader, batch_size=1),
-        DataLoader(dataset=fashionmnist_test_single_channel_loader, batch_size=1),
-    )
+    trainer.fit(model, datamodule=fashionmnist_single_channel_data_module)
 
 
-def test_fashionmnist_three_channel_wrapper(
-    fashionmnist_train_three_channel_loader, fashionmnist_test_three_channel_loader
-):
+def test_fashionmnist_three_channel_wrapper(fashionmnist_three_channel_data_module):
     """Testing the FashionMNIST model wrapper with PyTorch Lightning wrapper.
 
     Args:
-        fashionmnist_train_three_channel_loader (Dataset): PyTorch Dataset object.
-        fashionmnist_test_three_channel_loader (Dataset): PyTorch Dataset object.
+        FashionMNISTDataModule: PyTorch LightningDataModule for FashionMNIST.
     """
     model = FashionMNIST(
         "densenet121", "sgd", {"lr": 0.1, "momentum": 0.9}, {"num_channels": 3}
     )
     trainer = Trainer(fast_dev_run=True)
-    trainer.fit(
-        model,
-        DataLoader(dataset=fashionmnist_train_three_channel_loader, batch_size=1),
-        DataLoader(dataset=fashionmnist_test_three_channel_loader, batch_size=1),
-    )
+    trainer.fit(model, datamodule=fashionmnist_three_channel_data_module)
