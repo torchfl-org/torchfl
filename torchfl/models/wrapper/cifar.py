@@ -173,7 +173,7 @@ CIFAR_MODELS_LITERAL: Type[
         "vgg19",
         "vgg19_bn",
     ]
-] = Literal[
+] = Literal[  # type: ignore
     "alexnet",
     "densenet121",
     "densenet161",
@@ -331,8 +331,8 @@ class CIFAR10(pl.LightningModule):
 
     def __init__(
         self,
-        model_name: CIFAR_MODELS_LITERAL,
-        optimizer_name: OPTIMIZERS_LITERAL,
+        model_name: CIFAR_MODELS_LITERAL,  # type: ignore
+        optimizer_name: OPTIMIZERS_LITERAL,  # type: ignore
         optimizer_hparams: Dict[str, Any],
         model_hparams: Optional[Dict[str, Any]] = None,
     ) -> None:
@@ -433,8 +433,8 @@ class CIFAR100(pl.LightningModule):
 
     def __init__(
         self,
-        model_name: CIFAR_MODELS_LITERAL,
-        optimizer_name: OPTIMIZERS_LITERAL,
+        model_name: CIFAR_MODELS_LITERAL,  # type: ignore
+        optimizer_name: OPTIMIZERS_LITERAL,  # type: ignore
         optimizer_hparams: Dict[str, Any],
         model_hparams: Optional[Dict[str, Any]] = None,
     ) -> None:

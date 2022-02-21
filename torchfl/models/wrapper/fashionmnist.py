@@ -133,7 +133,7 @@ FASHIONMNIST_MODELS_LITERAL: Type[
         "vgg19",
         "vgg19_bn",
     ]
-] = Literal[
+] = Literal[  # type: ignore
     "alexnet",
     "densenet121",
     "densenet161",
@@ -248,8 +248,8 @@ class FashionMNIST(pl.LightningModule):
 
     def __init__(
         self,
-        model_name: FASHIONMNIST_MODELS_LITERAL,
-        optimizer_name: OPTIMIZERS_LITERAL,
+        model_name: FASHIONMNIST_MODELS_LITERAL,  # type: ignore
+        optimizer_name: OPTIMIZERS_LITERAL,  # type: ignore
         optimizer_hparams: Dict[str, Any],
         model_hparams: Optional[Dict[str, Any]] = None,
     ) -> None:

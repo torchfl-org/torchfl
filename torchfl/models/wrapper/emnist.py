@@ -356,7 +356,7 @@ EMNIST_MODELS_LITERAL: Type[
         "vgg19",
         "vgg19_bn",
     ]
-] = Literal[
+] = Literal[  # type: ignore
     "alexnet",
     "densenet121",
     "densenet161",
@@ -701,8 +701,8 @@ class BalancedEMNIST(pl.LightningModule):
 
     def __init__(
         self,
-        model_name: EMNIST_MODELS_LITERAL,
-        optimizer_name: OPTIMIZERS_LITERAL,
+        model_name: EMNIST_MODELS_LITERAL,  # type: ignore
+        optimizer_name: OPTIMIZERS_LITERAL,  # type: ignore
         optimizer_hparams: Dict[str, Any],
         model_hparams: Optional[Dict[str, Any]] = None,
     ) -> None:
@@ -803,8 +803,8 @@ class ByClassEMNIST(pl.LightningModule):
 
     def __init__(
         self,
-        model_name: EMNIST_MODELS_LITERAL,
-        optimizer_name: OPTIMIZERS_LITERAL,
+        model_name: EMNIST_MODELS_LITERAL,  # type: ignore
+        optimizer_name: OPTIMIZERS_LITERAL,  # type: ignore
         optimizer_hparams: Dict[str, Any],
         model_hparams: Optional[Dict[str, Any]] = None,
     ) -> None:
@@ -905,8 +905,8 @@ class ByMergeEMNIST(pl.LightningModule):
 
     def __init__(
         self,
-        model_name: EMNIST_MODELS_LITERAL,
-        optimizer_name: OPTIMIZERS_LITERAL,
+        model_name: EMNIST_MODELS_LITERAL,  # type: ignore
+        optimizer_name: OPTIMIZERS_LITERAL,  # type: ignore
         optimizer_hparams: Dict[str, Any],
         model_hparams: Optional[Dict[str, Any]] = None,
     ) -> None:
@@ -1007,8 +1007,8 @@ class LettersEMNIST(pl.LightningModule):
 
     def __init__(
         self,
-        model_name: EMNIST_MODELS_LITERAL,
-        optimizer_name: OPTIMIZERS_LITERAL,
+        model_name: EMNIST_MODELS_LITERAL,  # type: ignore
+        optimizer_name: OPTIMIZERS_LITERAL,  # type: ignore
         optimizer_hparams: Dict[str, Any],
         model_hparams: Optional[Dict[str, Any]] = None,
     ) -> None:
@@ -1109,8 +1109,8 @@ class DigitsEMNIST(pl.LightningModule):
 
     def __init__(
         self,
-        model_name: EMNIST_MODELS_LITERAL,
-        optimizer_name: OPTIMIZERS_LITERAL,
+        model_name: EMNIST_MODELS_LITERAL,  # type: ignore
+        optimizer_name: OPTIMIZERS_LITERAL,  # type: ignore
         optimizer_hparams: Dict[str, Any],
         model_hparams: Optional[Dict[str, Any]] = None,
     ) -> None:
@@ -1211,8 +1211,8 @@ class MNISTEMNIST(pl.LightningModule):
 
     def __init__(
         self,
-        model_name: EMNIST_MODELS_LITERAL,
-        optimizer_name: OPTIMIZERS_LITERAL,
+        model_name: EMNIST_MODELS_LITERAL,  # type: ignore
+        optimizer_name: OPTIMIZERS_LITERAL,  # type: ignore
         optimizer_hparams: Dict[str, Any],
         model_hparams: Optional[Dict[str, Any]] = None,
     ) -> None:
