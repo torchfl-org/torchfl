@@ -3,7 +3,7 @@
 
 """Contains the PyTorch Lightning wrapper module for FashionMNIST dataset."""
 
-from typing import List, Optional, Type, Literal, Union, Type, Dict, Any, Tuple
+from typing import List, Optional, Type, Literal, Union, Dict, Any, Tuple
 from torchfl.models.core.fashionmnist.alexnet import AlexNet as FashionMNISTAlexNet
 from torchfl.models.core.fashionmnist.densenet import (
     DenseNet121 as FashionMNISTDenseNet121,
@@ -327,8 +327,8 @@ class FashionMNIST(pl.LightningModule):
 
     def configure_optimizers(self):
         """Configuring the optimizer and scheduler for training process."""
-        OPTIMIZER_FN = self.hparams.optimizer_hparams["optimizer_fn"]
-        optimizer: OPTIMIZER_FN = OPTIMIZER_FN(
+        optimizer_fn = self.hparams.optimizer_hparams["optimizer_fn"]
+        optimizer: optimizer_fn = optimizer_fn(
             self.parameters(), **self.hparams.optimizer_hparams["config"]
         )
         scheduler = optim.lr_scheduler.MultiStepLR(
@@ -336,11 +336,14 @@ class FashionMNIST(pl.LightningModule):
         )
         return [optimizer], [scheduler]
 
-    def training_step(self, batch: Tuple[Tensor, Tensor]) -> Tensor:  # type: ignore
+    def training_step(
+        self, batch: Tuple[Tensor, Tensor], batch_idx: int
+    ) -> Tensor:  # type: ignore
         """Training step
 
         Args:
             batch (Tuple[Tensor, Tensor]): Batch of the training data.
+            batch_idx (int): Index of the batch.
 
         Returns:
             Tensor: PyTorch Tensor to call ".backward" on
@@ -351,30 +354,39 @@ class FashionMNIST(pl.LightningModule):
         acc: Tensor = (preds.argmax(dim=-1) == labels).float().mean()
 
         # Logs the accuracy per epoch (weighted average over batches)
+        self.log("batch_idx", batch_idx)
         self.log("train_acc", acc, on_step=False, on_epoch=True)
         self.log("train_loss", loss)
         return loss
 
-    def validation_step(self, batch: Tuple[Tensor, Tensor]) -> None:  # type: ignore
+    def validation_step(
+        self, batch: Tuple[Tensor, Tensor], batch_idx: int
+    ) -> None:  # type: ignore
         """Validation step
 
         Args:
             batch (Tuple[Tensor, Tensor]): Batch of the validation data.
+            batch_idx (int): Index of the batch.
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs).argmax(dim=-1)
         acc: Tensor = (labels == preds).float().mean()
         # By default logs it per epoch (weighted average over batches)
+        self.log("batch_idx", batch_idx)
         self.log("val_acc", acc)
 
-    def test_step(self, batch: Tuple[Tensor, Tensor]) -> None:  # type: ignore
+    def test_step(
+        self, batch: Tuple[Tensor, Tensor], batch_idx: int
+    ) -> None:  # type: ignore
         """Test step
 
         Args:
             batch (Tuple[Tensor, Tensor]): Batch of the testing data.
+            batch_idx (int): Index of the batch.
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs).argmax(dim=-1)
         acc: Tensor = (labels == preds).float().mean()
         # By default logs it per epoch (weighted average over batches), and returns it afterwards
+        self.log("batch_idx", batch_idx)
         self.log("test_acc", acc)
