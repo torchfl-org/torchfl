@@ -238,7 +238,7 @@ class EMNISTDataModule(pl.LightningDataModule):
         distribution: np.ndarray = np.random.randint(
             low=0, high=len(self.emnist_train_full), size=(num_workers, items)
         )
-        federated: Dict[int, Dataset] = dict()
+        federated: Dict[int, DataLoader] = dict()
         for i in range(len(distribution)):
             federated[i] = DataLoader(
                 DatasetSplit(self.emnist_train_full, distribution[i]),
@@ -289,7 +289,7 @@ class EMNISTDataModule(pl.LightningDataModule):
                         (distribution[i], idxs[rand * items : (rand + 1) * items]),
                         axis=0,
                     )
-        federated: Dict[int, Dataset] = dict()
+        federated: Dict[int, DataLoader] = dict()
         for i in distribution:
             federated[i] = DataLoader(
                 DatasetSplit(self.emnist_train_full, distribution[i]),

@@ -24,6 +24,7 @@ import sys
 sys.path.insert(0, os.path.abspath(".."))
 
 import torchfl
+from typing import List, Dict
 
 # -- General configuration ---------------------------------------------
 
@@ -66,7 +67,7 @@ release = torchfl.__version__
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language: List[str] = ["en"]
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -106,20 +107,11 @@ htmlhelp_basename = "torchfldoc"
 
 
 # -- Options for LaTeX output ------------------------------------------
-
-latex_elements = {
-    # The paper size ('letterpaper' or 'a4paper').
-    #
-    # 'papersize': 'letterpaper',
-    # The font size ('10pt', '11pt' or '12pt').
-    #
-    # 'pointsize': '10pt',
-    # Additional stuff for the LaTeX preamble.
-    #
-    # 'preamble': '',
-    # Latex figure (float) alignment
-    #
-    # 'figure_align': 'htbp',
+latex_elements: Dict[str, str] = {
+    "papersize": "letterpaper",
+    "pointsize": "12pt",
+    "figure_align": "htbp",
+    "preamble": "",
 }
 
 # Grouping the document tree into LaTeX files. List of tuples

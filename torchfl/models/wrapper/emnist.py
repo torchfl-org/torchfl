@@ -3,7 +3,7 @@
 
 """Contains the PyTorch Lightning wrapper modules for all EMNIST datasets."""
 
-from typing import List, Optional, Type, Literal, Dict, Any, Tuple
+from typing import List, Optional, Type, Literal, Union, Type, Dict, Any, Tuple
 from torchfl.models.core.emnist.balanced.alexnet import AlexNet as BalancedAlexNet
 from torchfl.models.core.emnist.balanced.densenet import (
     DenseNet121 as BalancedDenseNet121,
@@ -392,7 +392,222 @@ EMNIST_MODELS_LITERAL: Type[
     "vgg19_bn",
 ]
 
-EMNIST_BALANCED_MODELS_MAPPING: Dict[str, Any] = {
+EMNIST_BALANCED_MODEL_TYPE = Union[
+    Type[BalancedAlexNet],
+    Type[BalancedDenseNet121],
+    Type[BalancedDenseNet161],
+    Type[BalancedDenseNet169],
+    Type[BalancedDenseNet201],
+    Type[BalancedLeNet],
+    Type[BalancedMLP],
+    Type[BalancedMobileNetV2],
+    Type[BalancedMobileNetV3Large],
+    Type[BalancedMobileNetV3Small],
+    Type[BalancedResNet18],
+    Type[BalancedResNet34],
+    Type[BalancedResNet50],
+    Type[BalancedResNet101],
+    Type[BalancedResNet152],
+    Type[BalancedResNext50_32X4D],
+    Type[BalancedResNext101_32X8D],
+    Type[BalancedWideResNet50_2],
+    Type[BalancedWideResNet101_2],
+    Type[BalancedShuffleNetv2_x0_5],
+    Type[BalancedShuffleNetv2_x1_0],
+    Type[BalancedShuffleNetv2_x1_5],
+    Type[BalancedShuffleNetv2_x2_0],
+    Type[BalancedSqueezeNet1_0],
+    Type[BalancedSqueezeNet1_1],
+    Type[BalancedVGG11],
+    Type[BalancedVGG11_BN],
+    Type[BalancedVGG13],
+    Type[BalancedVGG13_BN],
+    Type[BalancedVGG16],
+    Type[BalancedVGG16_BN],
+    Type[BalancedVGG19],
+    Type[BalancedVGG19_BN],
+]
+EMNIST_BYCLASS_MODEL_TYPE = Union[
+    Type[ByClassAlexNet],
+    Type[ByClassDenseNet121],
+    Type[ByClassDenseNet161],
+    Type[ByClassDenseNet169],
+    Type[ByClassDenseNet201],
+    Type[ByClassLeNet],
+    Type[ByClassMLP],
+    Type[ByClassMobileNetV2],
+    Type[ByClassMobileNetV3Large],
+    Type[ByClassMobileNetV3Small],
+    Type[ByClassResNet18],
+    Type[ByClassResNet34],
+    Type[ByClassResNet50],
+    Type[ByClassResNet101],
+    Type[ByClassResNet152],
+    Type[ByClassResNext50_32X4D],
+    Type[ByClassResNext101_32X8D],
+    Type[ByClassWideResNet50_2],
+    Type[ByClassWideResNet101_2],
+    Type[ByClassShuffleNetv2_x0_5],
+    Type[ByClassShuffleNetv2_x1_0],
+    Type[ByClassShuffleNetv2_x1_5],
+    Type[ByClassShuffleNetv2_x2_0],
+    Type[ByClassSqueezeNet1_0],
+    Type[ByClassSqueezeNet1_1],
+    Type[ByClassVGG11],
+    Type[ByClassVGG11_BN],
+    Type[ByClassVGG13],
+    Type[ByClassVGG13_BN],
+    Type[ByClassVGG16],
+    Type[ByClassVGG16_BN],
+    Type[ByClassVGG19],
+    Type[ByClassVGG19_BN],
+]
+
+EMNIST_BYMERGE_MODEL_TYPE = Union[
+    Type[ByMergeAlexNet],
+    Type[ByMergeDenseNet121],
+    Type[ByMergeDenseNet161],
+    Type[ByMergeDenseNet169],
+    Type[ByMergeDenseNet201],
+    Type[ByMergeLeNet],
+    Type[ByMergeMLP],
+    Type[ByMergeMobileNetV2],
+    Type[ByMergeMobileNetV3Large],
+    Type[ByMergeMobileNetV3Small],
+    Type[ByMergeResNet18],
+    Type[ByMergeResNet34],
+    Type[ByMergeResNet50],
+    Type[ByMergeResNet101],
+    Type[ByMergeResNet152],
+    Type[ByMergeResNext50_32X4D],
+    Type[ByMergeResNext101_32X8D],
+    Type[ByMergeWideResNet50_2],
+    Type[ByMergeWideResNet101_2],
+    Type[ByMergeShuffleNetv2_x0_5],
+    Type[ByMergeShuffleNetv2_x1_0],
+    Type[ByMergeShuffleNetv2_x1_5],
+    Type[ByMergeShuffleNetv2_x2_0],
+    Type[ByMergeSqueezeNet1_0],
+    Type[ByMergeSqueezeNet1_1],
+    Type[ByMergeVGG11],
+    Type[ByMergeVGG11_BN],
+    Type[ByMergeVGG13],
+    Type[ByMergeVGG13_BN],
+    Type[ByMergeVGG16],
+    Type[ByMergeVGG16_BN],
+    Type[ByMergeVGG19],
+    Type[ByMergeVGG19_BN],
+]
+
+EMNIST_DIGITS_MODEL_TYPE = Union[
+    Type[DigitsAlexNet],
+    Type[DigitsDenseNet121],
+    Type[DigitsDenseNet161],
+    Type[DigitsDenseNet169],
+    Type[DigitsDenseNet201],
+    Type[DigitsLeNet],
+    Type[DigitsMLP],
+    Type[DigitsMobileNetV2],
+    Type[DigitsMobileNetV3Large],
+    Type[DigitsMobileNetV3Small],
+    Type[DigitsResNet18],
+    Type[DigitsResNet34],
+    Type[DigitsResNet50],
+    Type[DigitsResNet101],
+    Type[DigitsResNet152],
+    Type[DigitsResNext50_32X4D],
+    Type[DigitsResNext101_32X8D],
+    Type[DigitsWideResNet50_2],
+    Type[DigitsWideResNet101_2],
+    Type[DigitsShuffleNetv2_x0_5],
+    Type[DigitsShuffleNetv2_x1_0],
+    Type[DigitsShuffleNetv2_x1_5],
+    Type[DigitsShuffleNetv2_x2_0],
+    Type[DigitsSqueezeNet1_0],
+    Type[DigitsSqueezeNet1_1],
+    Type[DigitsVGG11],
+    Type[DigitsVGG11_BN],
+    Type[DigitsVGG13],
+    Type[DigitsVGG13_BN],
+    Type[DigitsVGG16],
+    Type[DigitsVGG16_BN],
+    Type[DigitsVGG19],
+    Type[DigitsVGG19_BN],
+]
+
+EMNIST_LETTERS_MODEL_TYPE = Union[
+    Type[LettersAlexNet],
+    Type[LettersDenseNet121],
+    Type[LettersDenseNet161],
+    Type[LettersDenseNet169],
+    Type[LettersDenseNet201],
+    Type[LettersLeNet],
+    Type[LettersMLP],
+    Type[LettersMobileNetV2],
+    Type[LettersMobileNetV3Large],
+    Type[LettersMobileNetV3Small],
+    Type[LettersResNet18],
+    Type[LettersResNet34],
+    Type[LettersResNet50],
+    Type[LettersResNet101],
+    Type[LettersResNet152],
+    Type[LettersResNext50_32X4D],
+    Type[LettersResNext101_32X8D],
+    Type[LettersWideResNet50_2],
+    Type[LettersWideResNet101_2],
+    Type[LettersShuffleNetv2_x0_5],
+    Type[LettersShuffleNetv2_x1_0],
+    Type[LettersShuffleNetv2_x1_5],
+    Type[LettersShuffleNetv2_x2_0],
+    Type[LettersSqueezeNet1_0],
+    Type[LettersSqueezeNet1_1],
+    Type[LettersVGG11],
+    Type[LettersVGG11_BN],
+    Type[LettersVGG13],
+    Type[LettersVGG13_BN],
+    Type[LettersVGG16],
+    Type[LettersVGG16_BN],
+    Type[LettersVGG19],
+    Type[LettersVGG19_BN],
+]
+
+EMNIST_MNIST_MODEL_TYPE = Union[
+    Type[MNISTAlexNet],
+    Type[MNISTDenseNet121],
+    Type[MNISTDenseNet161],
+    Type[MNISTDenseNet169],
+    Type[MNISTDenseNet201],
+    Type[MNISTLeNet],
+    Type[MNISTMLP],
+    Type[MNISTMobileNetV2],
+    Type[MNISTMobileNetV3Large],
+    Type[MNISTMobileNetV3Small],
+    Type[MNISTResNet18],
+    Type[MNISTResNet34],
+    Type[MNISTResNet50],
+    Type[MNISTResNet101],
+    Type[MNISTResNet152],
+    Type[MNISTResNext50_32X4D],
+    Type[MNISTResNext101_32X8D],
+    Type[MNISTWideResNet50_2],
+    Type[MNISTWideResNet101_2],
+    Type[MNISTShuffleNetv2_x0_5],
+    Type[MNISTShuffleNetv2_x1_0],
+    Type[MNISTShuffleNetv2_x1_5],
+    Type[MNISTShuffleNetv2_x2_0],
+    Type[MNISTSqueezeNet1_0],
+    Type[MNISTSqueezeNet1_1],
+    Type[MNISTVGG11],
+    Type[MNISTVGG11_BN],
+    Type[MNISTVGG13],
+    Type[MNISTVGG13_BN],
+    Type[MNISTVGG16],
+    Type[MNISTVGG16_BN],
+    Type[MNISTVGG19],
+    Type[MNISTVGG19_BN],
+]
+
+EMNIST_BALANCED_MODELS_MAPPING: Dict[str, EMNIST_BALANCED_MODEL_TYPE] = {
     "alexnet": BalancedAlexNet,
     "densenet121": BalancedDenseNet121,
     "densenet161": BalancedDenseNet161,
@@ -428,7 +643,7 @@ EMNIST_BALANCED_MODELS_MAPPING: Dict[str, Any] = {
     "vgg19_bn": BalancedVGG19_BN,
 }
 
-EMNIST_BYCLASS_MODELS_MAPPING: Dict[str, Any] = {
+EMNIST_BYCLASS_MODELS_MAPPING: Dict[str, EMNIST_BYCLASS_MODEL_TYPE] = {
     "alexnet": ByClassAlexNet,
     "densenet121": ByClassDenseNet121,
     "densenet161": ByClassDenseNet161,
@@ -464,7 +679,7 @@ EMNIST_BYCLASS_MODELS_MAPPING: Dict[str, Any] = {
     "vgg19_bn": ByClassVGG19_BN,
 }
 
-EMNIST_BYMERGE_MODELS_MAPPING: Dict[str, Any] = {
+EMNIST_BYMERGE_MODELS_MAPPING: Dict[str, EMNIST_BYMERGE_MODEL_TYPE] = {
     "alexnet": ByMergeAlexNet,
     "densenet121": ByMergeDenseNet121,
     "densenet161": ByMergeDenseNet161,
@@ -500,7 +715,7 @@ EMNIST_BYMERGE_MODELS_MAPPING: Dict[str, Any] = {
     "vgg19_bn": ByMergeVGG19_BN,
 }
 
-EMNIST_DIGITS_MODELS_MAPPING: Dict[str, Any] = {
+EMNIST_DIGITS_MODELS_MAPPING: Dict[str, EMNIST_DIGITS_MODEL_TYPE] = {
     "alexnet": DigitsAlexNet,
     "densenet121": DigitsDenseNet121,
     "densenet161": DigitsDenseNet161,
@@ -536,7 +751,7 @@ EMNIST_DIGITS_MODELS_MAPPING: Dict[str, Any] = {
     "vgg19_bn": DigitsVGG19_BN,
 }
 
-EMNIST_LETTERS_MODELS_MAPPING: Dict[str, Any] = {
+EMNIST_LETTERS_MODELS_MAPPING: Dict[str, EMNIST_LETTERS_MODEL_TYPE] = {
     "alexnet": LettersAlexNet,
     "densenet121": LettersDenseNet121,
     "densenet161": LettersDenseNet161,
@@ -572,7 +787,7 @@ EMNIST_LETTERS_MODELS_MAPPING: Dict[str, Any] = {
     "vgg19_bn": LettersVGG19_BN,
 }
 
-EMNIST_MNIST_MODELS_MAPPING: Dict[str, Any] = {
+EMNIST_MNIST_MODELS_MAPPING: Dict[str, EMNIST_MNIST_MODEL_TYPE] = {
     "alexnet": MNISTAlexNet,
     "densenet121": MNISTDenseNet121,
     "densenet161": MNISTDenseNet161,
@@ -611,7 +826,14 @@ EMNIST_MNIST_MODELS_MAPPING: Dict[str, Any] = {
 
 def create_model(
     dataset_name: str, model_name: str, model_hparams: Optional[Dict[str, Any]] = None
-) -> nn.Module:
+) -> Union[
+    EMNIST_BALANCED_MODEL_TYPE,
+    EMNIST_BYCLASS_MODEL_TYPE,
+    EMNIST_BYMERGE_MODEL_TYPE,
+    EMNIST_DIGITS_MODEL_TYPE,
+    EMNIST_LETTERS_MODEL_TYPE,
+    EMNIST_MNIST_MODEL_TYPE,
+]:
     """Helper function to create a model from the available options.
 
     Args:
@@ -729,7 +951,7 @@ class BalancedEMNIST(pl.LightningModule):
         self.save_hyperparameters(combined_hparams)
         self.loss_module = nn.CrossEntropyLoss()
 
-    def forward(self, imgs: Tensor) -> Tensor:
+    def forward(self, imgs: Tensor) -> Any:  # type: ignore
         """Forward propagation
 
         Args:
@@ -751,12 +973,11 @@ class BalancedEMNIST(pl.LightningModule):
         )
         return [optimizer], [scheduler]
 
-    def training_step(self, batch: Tuple[Tensor, Tensor], batch_idx: int) -> Tensor:
+    def training_step(self, batch: Tuple[Tensor, Tensor]) -> Tensor:  # type: ignore
         """Training step
 
         Args:
             batch (Tuple[Tensor, Tensor]): Batch of the training data.
-            batch_idx (int): Index of the given batch.
 
         Returns:
             Tensor: PyTorch Tensor to call ".backward" on
@@ -771,12 +992,11 @@ class BalancedEMNIST(pl.LightningModule):
         self.log("train_loss", loss)
         return loss
 
-    def validation_step(self, batch: Tuple[Tensor, Tensor], batch_idx: int) -> None:
+    def validation_step(self, batch: Tuple[Tensor, Tensor]) -> None:  # type: ignore
         """Validation step
 
         Args:
             batch (Tuple[Tensor, Tensor]): Batch of the validation data.
-            batch_idx (int): Index of the given batch.
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs).argmax(dim=-1)
@@ -784,12 +1004,11 @@ class BalancedEMNIST(pl.LightningModule):
         # By default logs it per epoch (weighted average over batches)
         self.log("val_acc", acc)
 
-    def test_step(self, batch: Tuple[Tensor, Tensor], batch_idx: int) -> None:
+    def test_step(self, batch: Tuple[Tensor, Tensor]) -> None:  # type: ignore
         """Test step
 
         Args:
             batch (Tuple[Tensor, Tensor]): Batch of the testing data.
-            batch_idx (int): Index of the given batch.
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs).argmax(dim=-1)
@@ -831,7 +1050,7 @@ class ByClassEMNIST(pl.LightningModule):
         self.save_hyperparameters(combined_hparams)
         self.loss_module = nn.CrossEntropyLoss()
 
-    def forward(self, imgs: Tensor) -> Tensor:
+    def forward(self, imgs: Tensor) -> Any:  # type: ignore
         """Forward propagation
 
         Args:
@@ -853,12 +1072,11 @@ class ByClassEMNIST(pl.LightningModule):
         )
         return [optimizer], [scheduler]
 
-    def training_step(self, batch: Tuple[Tensor, Tensor], batch_idx: int) -> Tensor:
+    def training_step(self, batch: Tuple[Tensor, Tensor]) -> Tensor:  # type: ignore
         """Training step
 
         Args:
             batch (Tuple[Tensor, Tensor]): Batch of the training data.
-            batch_idx (int): Index of the given batch.
 
         Returns:
             Tensor: PyTorch Tensor to call ".backward" on
@@ -873,12 +1091,11 @@ class ByClassEMNIST(pl.LightningModule):
         self.log("train_loss", loss)
         return loss
 
-    def validation_step(self, batch: Tuple[Tensor, Tensor], batch_idx: int) -> None:
+    def validation_step(self, batch: Tuple[Tensor, Tensor]) -> None:  # type: ignore
         """Validation step
 
         Args:
             batch (Tuple[Tensor, Tensor]): Batch of the validation data.
-            batch_idx (int): Index of the given batch.
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs).argmax(dim=-1)
@@ -886,12 +1103,11 @@ class ByClassEMNIST(pl.LightningModule):
         # By default logs it per epoch (weighted average over batches)
         self.log("val_acc", acc)
 
-    def test_step(self, batch: Tuple[Tensor, Tensor], batch_idx: int) -> None:
+    def test_step(self, batch: Tuple[Tensor, Tensor]) -> None:  # type: ignore
         """Test step
 
         Args:
             batch (Tuple[Tensor, Tensor]): Batch of the testing data.
-            batch_idx (int): Index of the given batch.
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs).argmax(dim=-1)
@@ -933,7 +1149,7 @@ class ByMergeEMNIST(pl.LightningModule):
         self.save_hyperparameters(combined_hparams)
         self.loss_module = nn.CrossEntropyLoss()
 
-    def forward(self, imgs: Tensor) -> Tensor:
+    def forward(self, imgs: Tensor) -> Any:  # type: ignore
         """Forward propagation
 
         Args:
@@ -955,12 +1171,11 @@ class ByMergeEMNIST(pl.LightningModule):
         )
         return [optimizer], [scheduler]
 
-    def training_step(self, batch: Tuple[Tensor, Tensor], batch_idx: int) -> Tensor:
+    def training_step(self, batch: Tuple[Tensor, Tensor]) -> Tensor:  # type: ignore
         """Training step
 
         Args:
             batch (Tuple[Tensor, Tensor]): Batch of the training data.
-            batch_idx (int): Index of the given batch.
 
         Returns:
             Tensor: PyTorch Tensor to call ".backward" on
@@ -975,12 +1190,11 @@ class ByMergeEMNIST(pl.LightningModule):
         self.log("train_loss", loss)
         return loss
 
-    def validation_step(self, batch: Tuple[Tensor, Tensor], batch_idx: int) -> None:
+    def validation_step(self, batch: Tuple[Tensor, Tensor]) -> None:  # type: ignore
         """Validation step
 
         Args:
             batch (Tuple[Tensor, Tensor]): Batch of the validation data.
-            batch_idx (int): Index of the given batch.
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs).argmax(dim=-1)
@@ -988,12 +1202,11 @@ class ByMergeEMNIST(pl.LightningModule):
         # By default logs it per epoch (weighted average over batches)
         self.log("val_acc", acc)
 
-    def test_step(self, batch: Tuple[Tensor, Tensor], batch_idx: int) -> None:
+    def test_step(self, batch: Tuple[Tensor, Tensor]) -> None:  # type: ignore
         """Test step
 
         Args:
             batch (Tuple[Tensor, Tensor]): Batch of the testing data.
-            batch_idx (int): Index of the given batch.
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs).argmax(dim=-1)
@@ -1035,7 +1248,7 @@ class LettersEMNIST(pl.LightningModule):
         self.save_hyperparameters(combined_hparams)
         self.loss_module = nn.CrossEntropyLoss()
 
-    def forward(self, imgs: Tensor) -> Tensor:
+    def forward(self, imgs: Tensor) -> Any:  # type: ignore
         """Forward propagation
 
         Args:
@@ -1057,12 +1270,11 @@ class LettersEMNIST(pl.LightningModule):
         )
         return [optimizer], [scheduler]
 
-    def training_step(self, batch: Tuple[Tensor, Tensor], batch_idx: int) -> Tensor:
+    def training_step(self, batch: Tuple[Tensor, Tensor]) -> Tensor:  # type: ignore
         """Training step
 
         Args:
             batch (Tuple[Tensor, Tensor]): Batch of the training data.
-            batch_idx (int): Index of the given batch.
 
         Returns:
             Tensor: PyTorch Tensor to call ".backward" on
@@ -1077,12 +1289,11 @@ class LettersEMNIST(pl.LightningModule):
         self.log("train_loss", loss)
         return loss
 
-    def validation_step(self, batch: Tuple[Tensor, Tensor], batch_idx: int) -> None:
+    def validation_step(self, batch: Tuple[Tensor, Tensor]) -> None:  # type: ignore
         """Validation step
 
         Args:
             batch (Tuple[Tensor, Tensor]): Batch of the validation data.
-            batch_idx (int): Index of the given batch.
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs).argmax(dim=-1)
@@ -1090,12 +1301,11 @@ class LettersEMNIST(pl.LightningModule):
         # By default logs it per epoch (weighted average over batches)
         self.log("val_acc", acc)
 
-    def test_step(self, batch: Tuple[Tensor, Tensor], batch_idx: int) -> None:
+    def test_step(self, batch: Tuple[Tensor, Tensor]) -> None:  # type: ignore
         """Test step
 
         Args:
             batch (Tuple[Tensor, Tensor]): Batch of the testing data.
-            batch_idx (int): Index of the given batch.
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs).argmax(dim=-1)
@@ -1137,7 +1347,7 @@ class DigitsEMNIST(pl.LightningModule):
         self.save_hyperparameters(combined_hparams)
         self.loss_module = nn.CrossEntropyLoss()
 
-    def forward(self, imgs: Tensor) -> Tensor:
+    def forward(self, imgs: Tensor) -> Any:  # type: ignore
         """Forward propagation
 
         Args:
@@ -1159,12 +1369,11 @@ class DigitsEMNIST(pl.LightningModule):
         )
         return [optimizer], [scheduler]
 
-    def training_step(self, batch: Tuple[Tensor, Tensor], batch_idx: int) -> Tensor:
+    def training_step(self, batch: Tuple[Tensor, Tensor]) -> Tensor:  # type: ignore
         """Training step
 
         Args:
             batch (Tuple[Tensor, Tensor]): Batch of the training data.
-            batch_idx (int): Index of the given batch.
 
         Returns:
             Tensor: PyTorch Tensor to call ".backward" on
@@ -1179,12 +1388,11 @@ class DigitsEMNIST(pl.LightningModule):
         self.log("train_loss", loss)
         return loss
 
-    def validation_step(self, batch: Tuple[Tensor, Tensor], batch_idx: int) -> None:
+    def validation_step(self, batch: Tuple[Tensor, Tensor]) -> None:  # type: ignore
         """Validation step
 
         Args:
             batch (Tuple[Tensor, Tensor]): Batch of the validation data.
-            batch_idx (int): Index of the given batch.
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs).argmax(dim=-1)
@@ -1192,12 +1400,11 @@ class DigitsEMNIST(pl.LightningModule):
         # By default logs it per epoch (weighted average over batches)
         self.log("val_acc", acc)
 
-    def test_step(self, batch: Tuple[Tensor, Tensor], batch_idx: int) -> None:
+    def test_step(self, batch: Tuple[Tensor, Tensor]) -> None:  # type: ignore
         """Test step
 
         Args:
             batch (Tuple[Tensor, Tensor]): Batch of the testing data.
-            batch_idx (int): Index of the given batch.
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs).argmax(dim=-1)
@@ -1239,7 +1446,7 @@ class MNISTEMNIST(pl.LightningModule):
         self.save_hyperparameters(combined_hparams)
         self.loss_module = nn.CrossEntropyLoss()
 
-    def forward(self, imgs: Tensor) -> Tensor:
+    def forward(self, imgs: Tensor) -> Any:  # type: ignore
         """Forward propagation
 
         Args:
@@ -1261,12 +1468,11 @@ class MNISTEMNIST(pl.LightningModule):
         )
         return [optimizer], [scheduler]
 
-    def training_step(self, batch: Tuple[Tensor, Tensor], batch_idx: int) -> Tensor:
+    def training_step(self, batch: Tuple[Tensor, Tensor]) -> Tensor:  # type: ignore
         """Training step
 
         Args:
             batch (Tuple[Tensor, Tensor]): Batch of the training data.
-            batch_idx (int): Index of the given batch.
 
         Returns:
             Tensor: PyTorch Tensor to call ".backward" on
@@ -1281,12 +1487,11 @@ class MNISTEMNIST(pl.LightningModule):
         self.log("train_loss", loss)
         return loss
 
-    def validation_step(self, batch: Tuple[Tensor, Tensor], batch_idx: int) -> None:
+    def validation_step(self, batch: Tuple[Tensor, Tensor]) -> None:  # type: ignore
         """Validation step
 
         Args:
             batch (Tuple[Tensor, Tensor]): Batch of the validation data.
-            batch_idx (int): Index of the given batch.
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs).argmax(dim=-1)
@@ -1294,12 +1499,11 @@ class MNISTEMNIST(pl.LightningModule):
         # By default logs it per epoch (weighted average over batches)
         self.log("val_acc", acc)
 
-    def test_step(self, batch: Tuple[Tensor, Tensor], batch_idx: int) -> None:
+    def test_step(self, batch: Tuple[Tensor, Tensor]) -> None:  # type: ignore
         """Test step
 
         Args:
             batch (Tuple[Tensor, Tensor]): Batch of the testing data.
-            batch_idx (int): Index of the given batch.
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs).argmax(dim=-1)

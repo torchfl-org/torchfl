@@ -3,7 +3,7 @@
 
 """Contains the PyTorch Lightning wrapper modules for CIFAR10 and CIFAR100 dataset."""
 
-from typing import List, Optional, Type, Literal, Dict, Any, Tuple
+from typing import List, Optional, Type, Literal, Union, Type, Dict, Any, Tuple
 from torchfl.models.core.cifar.cifar10.alexnet import AlexNet as CIFAR10AlexNet
 from torchfl.models.core.cifar.cifar10.densenet import (
     DenseNet121 as CIFAR10DenseNet121,
@@ -208,7 +208,73 @@ CIFAR_MODELS_LITERAL: Type[
     "vgg19_bn",
 ]
 
-CIFAR10_MODELS_MAPPING: Dict[str, Any] = {
+CIFAR10_MODEL_TYPE = Union[
+    Type[CIFAR10AlexNet],
+    Type[CIFAR10DenseNet121],
+    Type[CIFAR10DenseNet161],
+    Type[CIFAR10DenseNet169],
+    Type[CIFAR10DenseNet201],
+    Type[CIFAR10LeNet],
+    Type[CIFAR10MobileNetV2],
+    Type[CIFAR10MobileNetV3Large],
+    Type[CIFAR10MobileNetV3Small],
+    Type[CIFAR10ResNet18],
+    Type[CIFAR10ResNet34],
+    Type[CIFAR10ResNet50],
+    Type[CIFAR10ResNet101],
+    Type[CIFAR10ResNet152],
+    Type[CIFAR10ResNext50_32X4D],
+    Type[CIFAR10ResNext101_32X8D],
+    Type[CIFAR10ShuffleNetv2_x0_5],
+    Type[CIFAR10ShuffleNetv2_x1_0],
+    Type[CIFAR10ShuffleNetv2_x1_5],
+    Type[CIFAR10ShuffleNetv2_x2_0],
+    Type[CIFAR10SqueezeNet1_0],
+    Type[CIFAR10SqueezeNet1_1],
+    Type[CIFAR10VGG11],
+    Type[CIFAR10VGG11_BN],
+    Type[CIFAR10VGG13],
+    Type[CIFAR10VGG13_BN],
+    Type[CIFAR10VGG16],
+    Type[CIFAR10VGG16_BN],
+    Type[CIFAR10VGG19],
+    Type[CIFAR10VGG19_BN],
+]
+
+CIFAR100_MODEL_TYPE = Union[
+    Type[CIFAR100AlexNet],
+    Type[CIFAR100DenseNet121],
+    Type[CIFAR100DenseNet161],
+    Type[CIFAR100DenseNet169],
+    Type[CIFAR100DenseNet201],
+    Type[CIFAR100LeNet],
+    Type[CIFAR100MobileNetV2],
+    Type[CIFAR100MobileNetV3Large],
+    Type[CIFAR100MobileNetV3Small],
+    Type[CIFAR100ResNet18],
+    Type[CIFAR100ResNet34],
+    Type[CIFAR100ResNet50],
+    Type[CIFAR100ResNet101],
+    Type[CIFAR100ResNet152],
+    Type[CIFAR100ResNext50_32X4D],
+    Type[CIFAR100ResNext101_32X8D],
+    Type[CIFAR100ShuffleNetv2_x0_5],
+    Type[CIFAR100ShuffleNetv2_x1_0],
+    Type[CIFAR100ShuffleNetv2_x1_5],
+    Type[CIFAR100ShuffleNetv2_x2_0],
+    Type[CIFAR100SqueezeNet1_0],
+    Type[CIFAR100SqueezeNet1_1],
+    Type[CIFAR100VGG11],
+    Type[CIFAR100VGG11_BN],
+    Type[CIFAR100VGG13],
+    Type[CIFAR100VGG13_BN],
+    Type[CIFAR100VGG16],
+    Type[CIFAR100VGG16_BN],
+    Type[CIFAR100VGG19],
+    Type[CIFAR100VGG19_BN],
+]
+
+CIFAR10_MODELS_MAPPING: Dict[str, CIFAR10_MODEL_TYPE] = {
     "alexnet": CIFAR10AlexNet,
     "densenet121": CIFAR10DenseNet121,
     "densenet161": CIFAR10DenseNet161,
@@ -243,7 +309,7 @@ CIFAR10_MODELS_MAPPING: Dict[str, Any] = {
     "vgg19_bn": CIFAR10VGG19_BN,
 }
 
-CIFAR100_MODELS_MAPPING: Dict[str, Any] = {
+CIFAR100_MODELS_MAPPING: Dict[str, CIFAR100_MODEL_TYPE] = {
     "alexnet": CIFAR100AlexNet,
     "densenet121": CIFAR100DenseNet121,
     "densenet161": CIFAR100DenseNet161,
@@ -280,7 +346,11 @@ CIFAR100_MODELS_MAPPING: Dict[str, Any] = {
 
 
 def create_model(
-    dataset_name: str, model_name: str, model_hparams: Optional[Dict[str, Any]] = None
+    dataset_name: str,
+    model_name: str,
+    model_hparams: Optional[
+        Dict[str, Union[CIFAR10_MODEL_TYPE, CIFAR100_MODEL_TYPE]]
+    ] = None,
 ) -> nn.Module:
     """Helper function to create a model from the available options.
 
@@ -359,7 +429,7 @@ class CIFAR10(pl.LightningModule):
         self.save_hyperparameters(combined_hparams)
         self.loss_module = nn.CrossEntropyLoss()
 
-    def forward(self, imgs: Tensor) -> Tensor:
+    def forward(self, imgs: Tensor) -> Any:  # type: ignore
         """Forward propagation
 
         Args:
@@ -381,12 +451,11 @@ class CIFAR10(pl.LightningModule):
         )
         return [optimizer], [scheduler]
 
-    def training_step(self, batch: Tuple[Tensor, Tensor], batch_idx: int) -> Tensor:
+    def training_step(self, batch: Tuple[Tensor, Tensor]) -> Tensor:  # type: ignore
         """Training step
 
         Args:
             batch (Tuple[Tensor, Tensor]): Batch of the training data.
-            batch_idx (int): Index of the given batch.
 
         Returns:
             Tensor: PyTorch Tensor to call ".backward" on
@@ -401,12 +470,11 @@ class CIFAR10(pl.LightningModule):
         self.log("train_loss", loss)
         return loss
 
-    def validation_step(self, batch: Tuple[Tensor, Tensor], batch_idx: int) -> None:
+    def validation_step(self, batch: Tuple[Tensor, Tensor]) -> None:  # type: ignore
         """Validation step
 
         Args:
             batch (Tuple[Tensor, Tensor]): Batch of the validation data.
-            batch_idx (int): Index of the given batch.
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs).argmax(dim=-1)
@@ -414,12 +482,11 @@ class CIFAR10(pl.LightningModule):
         # By default logs it per epoch (weighted average over batches)
         self.log("val_acc", acc)
 
-    def test_step(self, batch: Tuple[Tensor, Tensor], batch_idx: int) -> None:
+    def test_step(self, batch: Tuple[Tensor, Tensor]) -> None:  # type: ignore
         """Test step
 
         Args:
             batch (Tuple[Tensor, Tensor]): Batch of the testing data.
-            batch_idx (int): Index of the given batch.
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs).argmax(dim=-1)
@@ -461,7 +528,7 @@ class CIFAR100(pl.LightningModule):
         self.save_hyperparameters(combined_hparams)
         self.loss_module = nn.CrossEntropyLoss()
 
-    def forward(self, imgs: Tensor) -> Tensor:
+    def forward(self, imgs: Tensor) -> Any:  # type: ignore
         """Forward propagation
 
         Args:
@@ -483,7 +550,7 @@ class CIFAR100(pl.LightningModule):
         )
         return [optimizer], [scheduler]
 
-    def training_step(self, batch: Tuple[Tensor, Tensor], batch_idx: int) -> Tensor:
+    def training_step(self, batch: Tuple[Tensor, Tensor]) -> Tensor:  # type: ignore
         """Training step
 
         Args:
@@ -503,7 +570,7 @@ class CIFAR100(pl.LightningModule):
         self.log("train_loss", loss)
         return loss
 
-    def validation_step(self, batch: Tuple[Tensor, Tensor], batch_idx: int) -> None:
+    def validation_step(self, batch: Tuple[Tensor, Tensor]) -> None:  # type: ignore
         """Validation step
 
         Args:
@@ -516,7 +583,7 @@ class CIFAR100(pl.LightningModule):
         # By default logs it per epoch (weighted average over batches)
         self.log("val_acc", acc)
 
-    def test_step(self, batch: Tuple[Tensor, Tensor], batch_idx: int) -> None:
+    def test_step(self, batch: Tuple[Tensor, Tensor]) -> None:  # type: ignore
         """Test step
 
         Args:

@@ -3,7 +3,7 @@
 
 """Contains the PyTorch Lightning wrapper module for FashionMNIST dataset."""
 
-from typing import List, Optional, Type, Literal, Dict, Any, Tuple
+from typing import List, Optional, Type, Literal, Union, Type, Dict, Any, Tuple
 from torchfl.models.core.fashionmnist.alexnet import AlexNet as FashionMNISTAlexNet
 from torchfl.models.core.fashionmnist.densenet import (
     DenseNet121 as FashionMNISTDenseNet121,
@@ -169,7 +169,43 @@ FASHIONMNIST_MODELS_LITERAL: Type[
     "vgg19_bn",
 ]
 
-FASHIONMNIST_MODELS_MAPPING: Dict[str, Any] = {
+FASHIONMNIST_MODEL_TYPE = Union[
+    Type[FashionMNISTAlexNet],
+    Type[FashionMNISTDenseNet121],
+    Type[FashionMNISTDenseNet161],
+    Type[FashionMNISTDenseNet169],
+    Type[FashionMNISTDenseNet201],
+    Type[FashionMNISTLeNet],
+    Type[FashionMNISTMLP],
+    Type[FashionMNISTMobileNetV2],
+    Type[FashionMNISTMobileNetV3Large],
+    Type[FashionMNISTMobileNetV3Small],
+    Type[FashionMNISTResNet18],
+    Type[FashionMNISTResNet34],
+    Type[FashionMNISTResNet50],
+    Type[FashionMNISTResNet101],
+    Type[FashionMNISTResNet152],
+    Type[FashionMNISTResNext50_32X4D],
+    Type[FashionMNISTResNext101_32X8D],
+    Type[FashionMNISTWideResNet50_2],
+    Type[FashionMNISTWideResNet101_2],
+    Type[FashionMNISTShuffleNetv2_x0_5],
+    Type[FashionMNISTShuffleNetv2_x1_0],
+    Type[FashionMNISTShuffleNetv2_x1_5],
+    Type[FashionMNISTShuffleNetv2_x2_0],
+    Type[FashionMNISTSqueezeNet1_0],
+    Type[FashionMNISTSqueezeNet1_1],
+    Type[FashionMNISTVGG11],
+    Type[FashionMNISTVGG11_BN],
+    Type[FashionMNISTVGG13],
+    Type[FashionMNISTVGG13_BN],
+    Type[FashionMNISTVGG16],
+    Type[FashionMNISTVGG16_BN],
+    Type[FashionMNISTVGG19],
+    Type[FashionMNISTVGG19_BN],
+]
+
+FASHIONMNIST_MODELS_MAPPING: Dict[str, FASHIONMNIST_MODEL_TYPE] = {
     "alexnet": FashionMNISTAlexNet,
     "densenet121": FashionMNISTDenseNet121,
     "densenet161": FashionMNISTDenseNet161,
@@ -208,7 +244,7 @@ FASHIONMNIST_MODELS_MAPPING: Dict[str, Any] = {
 
 def create_model(
     dataset_name: str, model_name: str, model_hparams: Optional[Dict[str, Any]] = None
-) -> nn.Module:
+) -> FASHIONMNIST_MODEL_TYPE:
     """Helper function to create a model from the available options.
 
     Args:
@@ -278,7 +314,7 @@ class FashionMNIST(pl.LightningModule):
         self.save_hyperparameters(combined_hparams)
         self.loss_module = nn.CrossEntropyLoss()
 
-    def forward(self, imgs: Tensor) -> Tensor:
+    def forward(self, imgs: Tensor) -> Any:  # type: ignore
         """Forward propagation
 
         Args:
@@ -300,12 +336,11 @@ class FashionMNIST(pl.LightningModule):
         )
         return [optimizer], [scheduler]
 
-    def training_step(self, batch: Tuple[Tensor, Tensor], batch_idx: int) -> Tensor:
+    def training_step(self, batch: Tuple[Tensor, Tensor]) -> Tensor:  # type: ignore
         """Training step
 
         Args:
             batch (Tuple[Tensor, Tensor]): Batch of the training data.
-            batch_idx (int): Index of the given batch.
 
         Returns:
             Tensor: PyTorch Tensor to call ".backward" on
@@ -320,12 +355,11 @@ class FashionMNIST(pl.LightningModule):
         self.log("train_loss", loss)
         return loss
 
-    def validation_step(self, batch: Tuple[Tensor, Tensor], batch_idx: int) -> None:
+    def validation_step(self, batch: Tuple[Tensor, Tensor]) -> None:  # type: ignore
         """Validation step
 
         Args:
             batch (Tuple[Tensor, Tensor]): Batch of the validation data.
-            batch_idx (int): Index of the given batch.
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs).argmax(dim=-1)
@@ -333,12 +367,11 @@ class FashionMNIST(pl.LightningModule):
         # By default logs it per epoch (weighted average over batches)
         self.log("val_acc", acc)
 
-    def test_step(self, batch: Tuple[Tensor, Tensor], batch_idx: int) -> None:
+    def test_step(self, batch: Tuple[Tensor, Tensor]) -> None:  # type: ignore
         """Test step
 
         Args:
             batch (Tuple[Tensor, Tensor]): Batch of the testing data.
-            batch_idx (int): Index of the given batch.
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs).argmax(dim=-1)
