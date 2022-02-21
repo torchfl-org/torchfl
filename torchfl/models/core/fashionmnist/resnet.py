@@ -15,10 +15,20 @@ Contains:
     - WideResNet101_2
 """
 
-import torchfl.models.sota.resnet as BaseResNet
+from torchfl.models.sota.resnet import (  # type: ignore[attr-defined]
+    ResNet18 as BaseResNet18,
+    ResNet34 as BaseResNet34,
+    ResNet50 as BaseResNet50,
+    ResNet101 as BaseResNet101,
+    ResNet152 as BaseResNet152,
+    ResNext50_32X4D as BaseResNext50_32X4D,
+    ResNext101_32X8D as BaseResNext101_32X8D,
+    WideResNet50_2 as BaseWideResNet50_2,
+    WideResNet101_2 as BaseWideResNet101_2,
+)
 
 
-class ResNet18(BaseResNet.ResNet18):
+class ResNet18(BaseResNet18):
     def __init__(self, pre_trained=True, feature_extract=False, num_channels=1) -> None:
         """Constructor
 
@@ -36,7 +46,7 @@ class ResNet18(BaseResNet.ResNet18):
         )
 
 
-class ResNet34(BaseResNet.ResNet34):
+class ResNet34(BaseResNet34):
     def __init__(self, pre_trained=True, feature_extract=False, num_channels=1) -> None:
         """Constructor
 
@@ -54,7 +64,7 @@ class ResNet34(BaseResNet.ResNet34):
         )
 
 
-class ResNet50(BaseResNet.ResNet50):
+class ResNet50(BaseResNet50):
     def __init__(self, pre_trained=True, feature_extract=False, num_channels=1) -> None:
         """Constructor
 
@@ -72,7 +82,7 @@ class ResNet50(BaseResNet.ResNet50):
         )
 
 
-class ResNet101(BaseResNet.ResNet101):
+class ResNet101(BaseResNet101):
     def __init__(self, pre_trained=True, feature_extract=False, num_channels=1) -> None:
         """Constructor
 
@@ -90,7 +100,7 @@ class ResNet101(BaseResNet.ResNet101):
         )
 
 
-class ResNet152(BaseResNet.ResNet152):
+class ResNet152(BaseResNet152):
     def __init__(self, pre_trained=True, feature_extract=False, num_channels=1) -> None:
         """Constructor
 
@@ -108,7 +118,7 @@ class ResNet152(BaseResNet.ResNet152):
         )
 
 
-class ResNext50_32X4D(BaseResNet.ResNext50_32X4D):
+class ResNext50_32X4D(BaseResNext50_32X4D):
     def __init__(self, pre_trained=True, feature_extract=False, num_channels=1) -> None:
         """Constructor
 
@@ -126,7 +136,7 @@ class ResNext50_32X4D(BaseResNet.ResNext50_32X4D):
         )
 
 
-class ResNext101_32X8D(BaseResNet.ResNext101_32X8D):
+class ResNext101_32X8D(BaseResNext101_32X8D):
     def __init__(self, pre_trained=True, feature_extract=False, num_channels=1) -> None:
         """Constructor
 
@@ -144,7 +154,7 @@ class ResNext101_32X8D(BaseResNet.ResNext101_32X8D):
         )
 
 
-class WideResNet50_2(BaseResNet.WideResNet50_2):
+class WideResNet50_2(BaseWideResNet50_2):
     def __init__(self, pre_trained=True, feature_extract=False, num_channels=1) -> None:
         """Constructor
 
@@ -162,7 +172,7 @@ class WideResNet50_2(BaseResNet.WideResNet50_2):
         )
 
 
-class WideResNet101_2(BaseResNet.WideResNet101_2):
+class WideResNet101_2(BaseWideResNet101_2):
     def __init__(self, pre_trained=True, feature_extract=False, num_channels=1) -> None:
         """Constructor
 

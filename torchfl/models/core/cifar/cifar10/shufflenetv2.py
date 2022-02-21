@@ -10,10 +10,15 @@ Contains:
     - ShuffleNetv2_x2_0
 """
 
-import torchfl.models.sota.shufflenetv2 as BaseShuffleNetv2
+from torchfl.models.sota.shufflenetv2 import (  # type: ignore[attr-defined]
+    ShuffleNetv2_x0_5 as BaseShuffleNetv2_x0_5,
+    ShuffleNetv2_x1_0 as BaseShuffleNetv2_x1_0,
+    ShuffleNetv2_x1_5 as BaseShuffleNetv2_x1_5,
+    ShuffleNetv2_x2_0 as BaseShuffleNetv2_x2_0,
+)
 
 
-class ShuffleNetv2_x0_5(BaseShuffleNetv2.ShuffleNetv2_x0_5):
+class ShuffleNetv2_x0_5(BaseShuffleNetv2_x0_5):
     def __init__(self, pre_trained=True, feature_extract=False, num_channels=3) -> None:
         """Constructor
 
@@ -31,7 +36,7 @@ class ShuffleNetv2_x0_5(BaseShuffleNetv2.ShuffleNetv2_x0_5):
         )
 
 
-class ShuffleNetv2_x1_0(BaseShuffleNetv2.ShuffleNetv2_x1_0):
+class ShuffleNetv2_x1_0(BaseShuffleNetv2_x1_0):
     def __init__(self, pre_trained=True, feature_extract=False, num_channels=3) -> None:
         """Constructor
 
@@ -49,7 +54,7 @@ class ShuffleNetv2_x1_0(BaseShuffleNetv2.ShuffleNetv2_x1_0):
         )
 
 
-class ShuffleNetv2_x1_5(BaseShuffleNetv2.ShuffleNetv2_x1_5):
+class ShuffleNetv2_x1_5(BaseShuffleNetv2_x1_5):
     def __init__(
         self, pre_trained=False, feature_extract=False, num_channels=3
     ) -> None:
@@ -69,7 +74,7 @@ class ShuffleNetv2_x1_5(BaseShuffleNetv2.ShuffleNetv2_x1_5):
         )
 
 
-class ShuffleNetv2_x2_0(BaseShuffleNetv2.ShuffleNetv2_x2_0):
+class ShuffleNetv2_x2_0(BaseShuffleNetv2_x2_0):
     def __init__(
         self, pre_trained=False, feature_extract=False, num_channels=3
     ) -> None:

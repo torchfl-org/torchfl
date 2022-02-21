@@ -3,7 +3,7 @@
 
 """Contains the MLP model implementations for EMNIST (letters) dataset."""
 
-from torchfl.models.sota.mlp import MLP as BaseMLP
+from torchfl.models.sota.mlp import MLP as BaseMLP  # type: ignore[attr-defined]
 
 
 class MLP(BaseMLP):

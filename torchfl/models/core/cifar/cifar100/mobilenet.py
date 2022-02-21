@@ -9,10 +9,14 @@ Contains:
     - MobileNetV3Large
 """
 
-import torchfl.models.sota.mobilenet as BaseMobileNet
+from torchfl.models.sota.mobilenet import (  # type: ignore[attr-defined]
+    MobileNetV2 as BaseMobileNetV2,
+    MobileNetV3Large as BaseMobileNetV3Large,
+    MobileNetV3Small as BaseMobileNetV3Small,
+)
 
 
-class MobileNetV2(BaseMobileNet.MobileNetV2):
+class MobileNetV2(BaseMobileNetV2):
     def __init__(self, pre_trained=True, feature_extract=False, num_channels=3) -> None:
         """Constructor
 
@@ -30,7 +34,7 @@ class MobileNetV2(BaseMobileNet.MobileNetV2):
         )
 
 
-class MobileNetV3Small(BaseMobileNet.MobileNetV3Small):
+class MobileNetV3Small(BaseMobileNetV3Small):
     def __init__(self, pre_trained=True, feature_extract=False, num_channels=3) -> None:
         """Constructor
 
@@ -48,7 +52,7 @@ class MobileNetV3Small(BaseMobileNet.MobileNetV3Small):
         )
 
 
-class MobileNetV3Large(BaseMobileNet.MobileNetV3Large):
+class MobileNetV3Large(BaseMobileNetV3Large):
     def __init__(self, pre_trained=True, feature_extract=False, num_channels=3) -> None:
         """Constructor
 

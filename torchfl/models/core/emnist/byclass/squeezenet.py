@@ -8,10 +8,13 @@ Contains:
     - SqueezeNet1_1
 """
 
-import torchfl.models.sota.squeezenet as BaseSqueezeNet
+from torchfl.models.sota.squeezenet import (  # type: ignore[attr-defined]
+    SqueezeNet1_0 as BaseSqueezeNet1_0,
+    SqueezeNet1_1 as BaseSqueezeNet1_1,
+)
 
 
-class SqueezeNet1_0(BaseSqueezeNet.SqueezeNet1_0):
+class SqueezeNet1_0(BaseSqueezeNet1_0):
     def __init__(self, pre_trained=True, feature_extract=False, num_channels=1) -> None:
         """Constructor
 
@@ -29,7 +32,7 @@ class SqueezeNet1_0(BaseSqueezeNet.SqueezeNet1_0):
         )
 
 
-class SqueezeNet1_1(BaseSqueezeNet.SqueezeNet1_1):
+class SqueezeNet1_1(BaseSqueezeNet1_1):
     def __init__(self, pre_trained=True, feature_extract=False, num_channels=1) -> None:
         """Constructor
 

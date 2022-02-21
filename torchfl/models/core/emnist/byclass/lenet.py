@@ -3,7 +3,7 @@
 
 """Contains the LeNet model implementations for EMNIST (by class) dataset."""
 
-from torchfl.models.sota.lenet import LeNet as BaseLeNet
+from torchfl.models.sota.lenet import LeNet as BaseLeNet  # type: ignore[attr-defined]
 
 
 class LeNet(BaseLeNet):

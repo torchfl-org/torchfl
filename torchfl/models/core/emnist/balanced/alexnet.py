@@ -3,7 +3,7 @@
 
 """Contains the AlexNet model implementations for EMNIST (balanced) dataset."""
 
-from torchfl.models.sota.alexnet import (
+from torchfl.models.sota.alexnet import (  # type: ignore[attr-defined]
     AlexNet as BaseAlexNet,
 )  # type: ignore[attr-defined]
 
