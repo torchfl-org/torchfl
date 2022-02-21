@@ -10,10 +10,15 @@ Contains:
     - DenseNet201
 """
 
-import torchfl.models.sota.densenet as BaseDenseNet
+from torchfl.models.sota.densenet import (  # type: ignore[attr-defined]
+    DenseNet121 as BaseDenseNet121,
+    DenseNet161 as BaseDenseNet161,
+    DenseNet169 as BaseDenseNet169,
+    DenseNet201 as BaseDenseNet201,
+)
 
 
-class DenseNet121(BaseDenseNet.DenseNet121):
+class DenseNet121(BaseDenseNet121):
     def __init__(self, pre_trained=True, feature_extract=False, num_channels=1) -> None:
         """Constructor
 
@@ -31,7 +36,7 @@ class DenseNet121(BaseDenseNet.DenseNet121):
         )
 
 
-class DenseNet161(BaseDenseNet.DenseNet161):
+class DenseNet161(BaseDenseNet161):
     def __init__(self, pre_trained=True, feature_extract=False, num_channels=1) -> None:
         """Constructor
 
@@ -49,7 +54,7 @@ class DenseNet161(BaseDenseNet.DenseNet161):
         )
 
 
-class DenseNet169(BaseDenseNet.DenseNet169):
+class DenseNet169(BaseDenseNet169):
     def __init__(self, pre_trained=True, feature_extract=False, num_channels=1) -> None:
         """Constructor
 
@@ -67,7 +72,7 @@ class DenseNet169(BaseDenseNet.DenseNet169):
         )
 
 
-class DenseNet201(BaseDenseNet.DenseNet201):
+class DenseNet201(BaseDenseNet201):
     def __init__(self, pre_trained=True, feature_extract=False, num_channels=1) -> None:
         """Constructor
 
