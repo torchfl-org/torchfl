@@ -5,10 +5,7 @@
 import pytest
 from torchvision import datasets, transforms
 import os
-from torchfl.models.core.emnist.byclass.squeezenet import (
-    SqueezeNet1_0,
-    SqueezeNet1_1,
-)
+from torchfl.models.core.emnist.byclass.squeezenet import SqueezeNet1_0, SqueezeNet1_1
 import torch
 
 data_transforms = {
@@ -17,14 +14,7 @@ data_transforms = {
             transforms.RandomResizedCrop(224),
             transforms.RandomHorizontalFlip(),
             transforms.ToTensor(),
-            transforms.Normalize(
-                [
-                    0.485,
-                ],
-                [
-                    0.229,
-                ],
-            ),
+            transforms.Normalize([0.485], [0.229]),
         ]
     ),
     "train_3_channels": transforms.Compose(

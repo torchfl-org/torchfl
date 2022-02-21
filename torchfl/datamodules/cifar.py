@@ -158,8 +158,7 @@ class CIFARDataModule(pl.LightningDataModule):
                     transform=self.train_transform,
                 )
                 self.cifar_train, self.cifar_val = random_split(
-                    self.cifar_train_full,
-                    [num_training_images, num_validation_images],
+                    self.cifar_train_full, [num_training_images, num_validation_images]
                 )
             if (stage == "test") or (not stage):
                 self.cifar_test = CIFAR10(
@@ -187,8 +186,7 @@ class CIFARDataModule(pl.LightningDataModule):
                     transform=self.train_transform,
                 )
                 self.cifar_train, self.cifar_val = random_split(
-                    self.cifar_train_full,
-                    [num_training_images, num_validation_images],
+                    self.cifar_train_full, [num_training_images, num_validation_images]
                 )
             if (stage == "test") or (not stage):
                 self.cifar_test = CIFAR100(

@@ -9,7 +9,7 @@ from torchfl.models.core.fashionmnist.shufflenetv2 import (
     ShuffleNetv2_x0_5,
     ShuffleNetv2_x1_0,
     ShuffleNetv2_x1_5,
-    ShuffleNetv2_x2_0
+    ShuffleNetv2_x2_0,
 )
 import torch
 
@@ -19,14 +19,7 @@ data_transforms = {
             transforms.RandomResizedCrop(224),
             transforms.RandomHorizontalFlip(),
             transforms.ToTensor(),
-            transforms.Normalize(
-                [
-                    0.485,
-                ],
-                [
-                    0.229,
-                ],
-            ),
+            transforms.Normalize([0.485], [0.229]),
         ]
     ),
     "train_3_channels": transforms.Compose(
@@ -73,7 +66,9 @@ def fashionmnist_3_channel_loader():
     )
 
 
-def test_shufflenetv2_x05_single_channel_ouput_shape(fashionmnist_single_channel_loader):
+def test_shufflenetv2_x05_single_channel_ouput_shape(
+    fashionmnist_single_channel_loader
+):
     """Testing the ShuffleNetV2 output for a single-channel FashionMNIST image.
 
     Args:
@@ -98,7 +93,10 @@ def test_shufflenetv2_x05_3_channels_output_shape(fashionmnist_3_channel_loader)
     out = model(torch.reshape(fashionmnist_3_channel_loader[0][0], (1, 3, 224, 224)))
     assert out.size() == torch.Size([1, 10])
 
-def test_shufflenetv2_x10_single_channel_ouput_shape(fashionmnist_single_channel_loader):
+
+def test_shufflenetv2_x10_single_channel_ouput_shape(
+    fashionmnist_single_channel_loader
+):
     """Testing the ShuffleNetV2 output for a single-channel FashionMNIST image.
 
     Args:
@@ -123,7 +121,10 @@ def test_shufflenetv2_x10_3_channels_output_shape(fashionmnist_3_channel_loader)
     out = model(torch.reshape(fashionmnist_3_channel_loader[0][0], (1, 3, 224, 224)))
     assert out.size() == torch.Size([1, 10])
 
-def test_shufflenetv2_x15_single_channel_ouput_shape(fashionmnist_single_channel_loader):
+
+def test_shufflenetv2_x15_single_channel_ouput_shape(
+    fashionmnist_single_channel_loader
+):
     """Testing the ShuffleNetV2 output for a single-channel FashionMNIST image.
 
     Args:
@@ -149,7 +150,9 @@ def test_shufflenetv2_x15_3_channels_output_shape(fashionmnist_3_channel_loader)
     assert out.size() == torch.Size([1, 10])
 
 
-def test_shufflenetv2_x20_single_channel_ouput_shape(fashionmnist_single_channel_loader):
+def test_shufflenetv2_x20_single_channel_ouput_shape(
+    fashionmnist_single_channel_loader
+):
     """Testing the ShuffleNetV2 output for a single-channel FashionMNIST image.
 
     Args:

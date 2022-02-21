@@ -45,7 +45,8 @@ def emnist_balanced_single_channel_data_module():
     """
     global data_transforms
     return EMNISTDataModule(
-        dataset_name="balanced", train_transforms=data_transforms["train_single_channel"]
+        dataset_name="balanced",
+        train_transforms=data_transforms["train_single_channel"],
     )
 
 

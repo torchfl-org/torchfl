@@ -9,7 +9,7 @@ from torchfl.models.core.emnist.byclass.shufflenetv2 import (
     ShuffleNetv2_x0_5,
     ShuffleNetv2_x1_0,
     ShuffleNetv2_x1_5,
-    ShuffleNetv2_x2_0
+    ShuffleNetv2_x2_0,
 )
 import torch
 
@@ -19,14 +19,7 @@ data_transforms = {
             transforms.RandomResizedCrop(224),
             transforms.RandomHorizontalFlip(),
             transforms.ToTensor(),
-            transforms.Normalize(
-                [
-                    0.485,
-                ],
-                [
-                    0.229,
-                ],
-            ),
+            transforms.Normalize([0.485], [0.229]),
         ]
     ),
     "train_3_channels": transforms.Compose(
@@ -39,6 +32,7 @@ data_transforms = {
         ]
     ),
 }
+
 
 @pytest.fixture
 def single_channel_loader():
@@ -73,6 +67,7 @@ def three_channel_loader():
         transform=data_transforms["train_3_channels"],
     )
 
+
 def test_shufflenetv2_x05_single_channel_ouput_shape(single_channel_loader):
     """Testing the ShuffleNetV2 output for a single-channel EMNIST image.
 
@@ -81,9 +76,7 @@ def test_shufflenetv2_x05_single_channel_ouput_shape(single_channel_loader):
     """
     model = ShuffleNetv2_x0_5(pre_trained=True, feature_extract=True, num_channels=1)
     model.zero_grad()
-    out = model(
-        torch.reshape(single_channel_loader[0][0], (1, 1, 224, 224))
-    )
+    out = model(torch.reshape(single_channel_loader[0][0], (1, 1, 224, 224)))
     assert out.size() == torch.Size([1, 62])
 
 
@@ -98,6 +91,7 @@ def test_shufflenetv2_x05_3_channels_output_shape(three_channel_loader):
     out = model(torch.reshape(three_channel_loader[0][0], (1, 3, 224, 224)))
     assert out.size() == torch.Size([1, 62])
 
+
 def test_shufflenetv2_x10_single_channel_ouput_shape(single_channel_loader):
     """Testing the ShuffleNetV2 output for a single-channel EMNIST image.
 
@@ -106,9 +100,7 @@ def test_shufflenetv2_x10_single_channel_ouput_shape(single_channel_loader):
     """
     model = ShuffleNetv2_x1_0(pre_trained=True, feature_extract=True, num_channels=1)
     model.zero_grad()
-    out = model(
-        torch.reshape(single_channel_loader[0][0], (1, 1, 224, 224))
-    )
+    out = model(torch.reshape(single_channel_loader[0][0], (1, 1, 224, 224)))
     assert out.size() == torch.Size([1, 62])
 
 
@@ -123,6 +115,7 @@ def test_shufflenetv2_x10_3_channels_output_shape(three_channel_loader):
     out = model(torch.reshape(three_channel_loader[0][0], (1, 3, 224, 224)))
     assert out.size() == torch.Size([1, 62])
 
+
 def test_shufflenetv2_x15_single_channel_ouput_shape(single_channel_loader):
     """Testing the ShuffleNetV2 output for a single-channel EMNIST image.
 
@@ -131,9 +124,7 @@ def test_shufflenetv2_x15_single_channel_ouput_shape(single_channel_loader):
     """
     model = ShuffleNetv2_x1_5(pre_trained=False, feature_extract=True, num_channels=1)
     model.zero_grad()
-    out = model(
-        torch.reshape(single_channel_loader[0][0], (1, 1, 224, 224))
-    )
+    out = model(torch.reshape(single_channel_loader[0][0], (1, 1, 224, 224)))
     assert out.size() == torch.Size([1, 62])
 
 
@@ -157,9 +148,7 @@ def test_shufflenetv2_x20_single_channel_ouput_shape(single_channel_loader):
     """
     model = ShuffleNetv2_x2_0(pre_trained=False, feature_extract=True, num_channels=1)
     model.zero_grad()
-    out = model(
-        torch.reshape(single_channel_loader[0][0], (1, 1, 224, 224))
-    )
+    out = model(torch.reshape(single_channel_loader[0][0], (1, 1, 224, 224)))
     assert out.size() == torch.Size([1, 62])
 
 

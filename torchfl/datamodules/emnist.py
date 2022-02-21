@@ -160,8 +160,7 @@ class EMNISTDataModule(pl.LightningDataModule):
                     lambda x: (x - 1)
                 )  # patch to eliminate the N/A label in the original letters dataset
             self.emnist_train, self.emnist_val = random_split(
-                self.emnist_train_full,
-                [num_training_images, num_validation_images],
+                self.emnist_train_full, [num_training_images, num_validation_images]
             )
 
         if (stage == "test") or (not stage):

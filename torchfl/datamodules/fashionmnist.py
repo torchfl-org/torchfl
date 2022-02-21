@@ -127,10 +127,7 @@ class FashionMNISTDataModule(pl.LightningDataModule):
         num_training_images: int = total_images - num_validation_images
         if (stage == "fit") or (not stage):
             self.fashionmnist_train_full = FashionMNIST(
-                self.data_dir,
-                train=True,
-                download=True,
-                transform=self.train_transform,
+                self.data_dir, train=True, download=True, transform=self.train_transform
             )
             self.fashionmnist_train, self.fashionmnist_val = random_split(
                 self.fashionmnist_train_full,
@@ -139,10 +136,7 @@ class FashionMNISTDataModule(pl.LightningDataModule):
 
         if (stage == "test") or (not stage):
             self.fashionmnist_test = FashionMNIST(
-                self.data_dir,
-                train=False,
-                download=True,
-                transform=self.test_transform,
+                self.data_dir, train=False, download=True, transform=self.test_transform
             )
         if (stage == "predict") or (not stage):
             self.fashionmnist_predict = FashionMNIST(

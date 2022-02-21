@@ -207,9 +207,7 @@ FASHIONMNIST_MODELS_MAPPING: Dict[str, Any] = {
 
 
 def create_model(
-    dataset_name: str,
-    model_name: str,
-    model_hparams: Optional[Dict[str, Any]] = None,
+    dataset_name: str, model_name: str, model_hparams: Optional[Dict[str, Any]] = None
 ) -> nn.Module:
     """Helper function to create a model from the available options.
 
