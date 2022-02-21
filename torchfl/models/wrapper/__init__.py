@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Sub-package for wrapper model implementations used by torchfl."""
 
 __author__ = """Vivek Khimani"""

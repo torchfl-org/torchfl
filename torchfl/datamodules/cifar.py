@@ -28,9 +28,11 @@ pl.seed_everything(42)
 ###################
 
 SUPPORTED_DATASETS: Set[str] = {"cifar10", "cifar100"}
-SUPPORTED_DATASETS_LITERAL: Type[Literal["cifar10", "cifar100"]] = Literal[
+SUPPORTED_DATASETS_LITERAL: Type[
+    Literal["cifar10", "cifar100"]
+] = Literal[  # type: ignore
     "cifar10", "cifar100"
-]
+]  # type: ignore
 
 DEFAULT_TRANSFORMS: transforms.Compose = transforms.Compose(
     [
@@ -86,7 +88,7 @@ class CIFARDataModule(pl.LightningDataModule):
     def __init__(
         self,
         data_dir: str = os.path.join(os.pardir, "data"),
-        dataset_name: SUPPORTED_DATASETS_LITERAL = "cifar10",
+        dataset_name: SUPPORTED_DATASETS_LITERAL = "cifar10",  # type: ignore
         validation_split: float = 0.1,
         train_batch_size: int = 32,
         validation_batch_size: int = 32,
@@ -146,10 +148,13 @@ class CIFARDataModule(pl.LightningDataModule):
         Args:
             stage (Optional[str], optional): Current stage of the PyTorch training process used for setup. Defaults to None.
         """
+        total_images: Optional[int] = None
+        num_validation_images: Optional[int] = None
+        num_training_images: Optional[int] = None
         if self.dataset_name == "cifar10":
-            total_images: int = len(CIFAR10(self.data_dir, train=True, download=True))
-            num_validation_images: int = int(total_images * self.validation_split)
-            num_training_images: int = total_images - num_validation_images
+            total_images = len(CIFAR10(self.data_dir, train=True, download=True))
+            num_validation_images = int(total_images * self.validation_split)
+            num_training_images = total_images - num_validation_images
             if (stage == "fit") or (not stage):
                 self.cifar_train_full = CIFAR10(
                     self.data_dir,
@@ -175,9 +180,9 @@ class CIFARDataModule(pl.LightningDataModule):
                     transform=self.predict_transform,
                 )
         elif self.dataset_name == "cifar100":
-            total_images: int = len(CIFAR10(self.data_dir, train=True, download=True))
-            num_validation_images: int = int(total_images * self.validation_split)
-            num_training_images: int = total_images - num_validation_images
+            total_images = len(CIFAR10(self.data_dir, train=True, download=True))
+            num_validation_images = int(total_images * self.validation_split)
+            num_training_images = total_images - num_validation_images
             if (stage == "fit") or (not stage):
                 self.cifar_train_full = CIFAR100(
                     self.data_dir,

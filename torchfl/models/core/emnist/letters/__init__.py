@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Sub-package for EMNIST (letters) model implementations provided by torchfl."""
 
 __author__ = """Vivek Khimani"""

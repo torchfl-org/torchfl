@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Sub-package for datamodules used by torchfl."""
 
 __author__ = """Vivek Khimani"""

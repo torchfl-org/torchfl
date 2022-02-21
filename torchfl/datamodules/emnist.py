@@ -35,9 +35,11 @@ SUPPORTED_DATASETS: Set[str] = {
     "letters",
     "mnist",
 }
-SUPPORTED_DATASETS_LITERAL: Type[
+SUPPORTED_DATASETS_LITERAL: Type[  # type: ignore
     Literal["balanced", "byclass", "bymerge", "digits", "letters", "mnist"]
-] = Literal["balanced", "byclass", "bymerge", "digits", "letters", "mnist"]
+] = Literal[
+    "balanced", "byclass", "bymerge", "digits", "letters", "mnist"
+]  # type: ignore
 
 DEFAULT_TRANSFORMS: transforms.Compose = transforms.Compose(
     [transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))]
@@ -87,7 +89,7 @@ class EMNISTDataModule(pl.LightningDataModule):
     def __init__(
         self,
         data_dir: str = os.path.join(os.pardir, "data"),
-        dataset_name: SUPPORTED_DATASETS_LITERAL = "mnist",
+        dataset_name: SUPPORTED_DATASETS_LITERAL = "mnist",  # type: ignore
         validation_split: float = 0.1,
         train_batch_size: int = 32,
         validation_batch_size: int = 32,

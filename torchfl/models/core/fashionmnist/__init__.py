@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Sub-package for FashionMNIST model implementations provided by torchfl."""
 
 __author__ = """Vivek Khimani"""
