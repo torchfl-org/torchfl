@@ -31,7 +31,7 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
     ],
-    description="A Python library for implementing concurrent (multi-threaded and multi-processed) federated learning using PyTorch API.",
+    description="A Python library for rapid prototyping, experimenting, and logging of federated learning using state-of-the-art models and datasets. Built using PyTorch and PyTorch Lightning.",
     entry_points={"console_scripts": ["torchfl=torchfl.cli:main"]},
     install_requires=requirements,
     license="GNU General Public License v3",
