@@ -25,7 +25,12 @@ pl.seed_everything(42)
 ###################
 
 DEFAULT_TRANSFORMS: transforms.Compose = transforms.Compose(
-    [transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))]
+    [
+        transforms.RandomResizedCrop(224),
+        transforms.RandomHorizontalFlip(),
+        transforms.ToTensor(),
+        transforms.Normalize((0.1307,), (0.3081,)),
+    ]
 )
 #################
 # End Constants #
@@ -152,7 +157,11 @@ class FashionMNISTDataModule(pl.LightningDataModule):
         Returns:
             DataLoader: PyTorch DataLoader object.
         """
-        return DataLoader(self.fashionmnist_train, batch_size=self.train_batch_size)
+        return DataLoader(
+            self.fashionmnist_train,
+            batch_size=self.train_batch_size,
+            num_workers=os.cpu_count() or 0,
+        )
 
     def val_dataloader(self) -> DataLoader:
         """Validation DataLoader wrapper.
@@ -160,7 +169,11 @@ class FashionMNISTDataModule(pl.LightningDataModule):
         Returns:
             DataLoader: PyTorch DataLoader object.
         """
-        return DataLoader(self.fashionmnist_val, batch_size=self.validation_batch_size)
+        return DataLoader(
+            self.fashionmnist_val,
+            batch_size=self.validation_batch_size,
+            num_workers=os.cpu_count() or 0,
+        )
 
     def test_dataloader(self) -> DataLoader:
         """Test DataLoader wrapper.
@@ -168,7 +181,11 @@ class FashionMNISTDataModule(pl.LightningDataModule):
         Returns:
             DataLoader: PyTorch DataLoader object.
         """
-        return DataLoader(self.fashionmnist_test, batch_size=self.test_batch_size)
+        return DataLoader(
+            self.fashionmnist_test,
+            batch_size=self.test_batch_size,
+            num_workers=os.cpu_count() or 0,
+        )
 
     def predict_dataloader(self) -> DataLoader:
         """Predict DataLoader object.
@@ -176,7 +193,11 @@ class FashionMNISTDataModule(pl.LightningDataModule):
         Returns:
             DataLoader: PyTorch DataLoader object.
         """
-        return DataLoader(self.fashionmnist_predict, batch_size=self.predict_batch_size)
+        return DataLoader(
+            self.fashionmnist_predict,
+            batch_size=self.predict_batch_size,
+            num_workers=os.cpu_count() or 0,
+        )
 
     def federated_iid_dataloader(
         self, num_workers: int = 10, workers_batch_size: int = 10
@@ -200,6 +221,7 @@ class FashionMNISTDataModule(pl.LightningDataModule):
                 DatasetSplit(self.fashionmnist_train_full, distribution[i]),
                 batch_size=workers_batch_size,
                 shuffle=True,
+                num_workers=os.cpu_count() or 0,
             )
         return federated
 
@@ -251,5 +273,6 @@ class FashionMNISTDataModule(pl.LightningDataModule):
                 DatasetSplit(self.fashionmnist_train_full, distribution[i]),
                 batch_size=workers_batch_size,
                 shuffle=True,
+                num_workers=os.cpu_count() or 0,
             )
         return federated

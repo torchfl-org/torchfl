@@ -36,7 +36,7 @@ SUPPORTED_DATASETS_LITERAL: Type[
 
 DEFAULT_TRANSFORMS: transforms.Compose = transforms.Compose(
     [
-        transforms.RandomCrop(32, padding=4),
+        transforms.RandomResizedCrop(224),
         transforms.RandomHorizontalFlip(),
         transforms.ToTensor(),
         transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
@@ -208,7 +208,11 @@ class CIFARDataModule(pl.LightningDataModule):
         Returns:
             DataLoader: PyTorch DataLoader object.
         """
-        return DataLoader(self.cifar_train, batch_size=self.train_batch_size)
+        return DataLoader(
+            self.cifar_train,
+            batch_size=self.train_batch_size,
+            num_workers=os.cpu_count() or 0,
+        )
 
     def val_dataloader(self) -> DataLoader:
         """Validation DataLoader wrapper.
@@ -216,7 +220,11 @@ class CIFARDataModule(pl.LightningDataModule):
         Returns:
             DataLoader: PyTorch DataLoader object.
         """
-        return DataLoader(self.cifar_val, batch_size=self.validation_batch_size)
+        return DataLoader(
+            self.cifar_val,
+            batch_size=self.validation_batch_size,
+            num_workers=os.cpu_count() or 0,
+        )
 
     def test_dataloader(self) -> DataLoader:
         """Test DataLoader wrapper.
@@ -224,7 +232,11 @@ class CIFARDataModule(pl.LightningDataModule):
         Returns:
             DataLoader: PyTorch DataLoader object.
         """
-        return DataLoader(self.cifar_test, batch_size=self.test_batch_size)
+        return DataLoader(
+            self.cifar_test,
+            batch_size=self.test_batch_size,
+            num_workers=os.cpu_count() or 0,
+        )
 
     def predict_dataloader(self) -> DataLoader:
         """Predict DataLoader object.
@@ -232,7 +244,11 @@ class CIFARDataModule(pl.LightningDataModule):
         Returns:
             DataLoader: PyTorch DataLoader object.
         """
-        return DataLoader(self.cifar_predict, batch_size=self.predict_batch_size)
+        return DataLoader(
+            self.cifar_predict,
+            batch_size=self.predict_batch_size,
+            num_workers=os.cpu_count() or 0,
+        )
 
     def federated_iid_dataloader(
         self, num_workers: int = 10, workers_batch_size: int = 10
@@ -256,6 +272,7 @@ class CIFARDataModule(pl.LightningDataModule):
                 DatasetSplit(self.cifar_train_full, distribution[i]),
                 batch_size=workers_batch_size,
                 shuffle=True,
+                num_workers=os.cpu_count() or 0,
             )
         return federated
 
@@ -307,5 +324,6 @@ class CIFARDataModule(pl.LightningDataModule):
                 DatasetSplit(self.cifar_train_full, distribution[i]),
                 batch_size=workers_batch_size,
                 shuffle=True,
+                num_workers=os.cpu_count() or 0,
             )
         return federated
