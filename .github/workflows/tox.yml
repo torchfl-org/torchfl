@@ -1,15 +1,19 @@
-name: torchfl
+name: tox
 
 on:
   push:
-    branches:
-      - master
+    paths:
+      - '**.py'
   pull_request:
     types:
       - "opened"
       - "edited"
       - "reopened"
       - "ready_for_review"
+    branches:
+      - "master"
+    paths:
+      - "**.py"
     
 
 jobs:
