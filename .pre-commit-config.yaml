@@ -13,7 +13,6 @@ repos:
     -   id: debug-statements
     -   id: fix-encoding-pragma
     -   id: detect-private-key
-    -   id: detect-aws-credentials
     -   id: check-executables-have-shebangs
 -   repo: https://github.com/psf/black
     rev: 19.3b0
