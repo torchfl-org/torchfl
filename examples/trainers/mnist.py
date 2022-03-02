@@ -77,7 +77,7 @@ def train_model_from_scratch(
         model = MNISTEMNIST("mlp", "adam", {"lr": 0.001}, {"img_w": 224, "img_h": 224})
         trainer.fit(model, datamodule.train_dataloader(), datamodule.val_dataloader())
         model = model.load_from_checkpoint(
-            trainer.checkpoint_callback.best_model_path,  # type: ignore
+            trainer.checkpoint_callback.best_model_path  # type: ignore
         )
 
     # test best model based on the validation and test set

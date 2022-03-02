@@ -1,0 +1,37 @@
+name: docs
+
+on:
+  push:
+    paths:
+      - "docs/"
+      - "AUTHORS.rst"
+      - "CONTRIBUTING.rst"
+      - "HISTORY.rst"
+  pull_request:
+    branches:
+      - "master"
+    paths:
+      - "docs/"
+      - "examples/"
+      - "AUTHORS.rst"
+      - "CONTRIBUTING.rst"
+      - "HISTORY.rst"
+
+jobs:
+  doc8:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9"]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install tox tox-gh-actions
+      - name: doc8 with tox
+        run: tox -e doc8
