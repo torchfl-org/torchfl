@@ -41,7 +41,7 @@ def train_model_from_scratch(
         accelerator="auto",
         auto_lr_find=True,
         enable_progress_bar=True,
-        max_epochs=10,
+        max_epochs=1,
         num_nodes=torch.cuda.device_count(),
         num_processes=1,
         resume_from_checkpoint=checkpoint_load_path,
@@ -69,13 +69,15 @@ def train_model_from_scratch(
 
     # check if the model can be loaded from a given checkpoint
     if checkpoint_load_path and os.path.isfile(checkpoint_load_path):
-        model = MNISTEMNIST.load_from_checkpoint(checkpoint_load_path)
+        model = MNISTEMNIST(
+            "mlp", "adam", {"lr": 0.001}, {"img_w": 224, "img_h": 224}
+        ).load_from_checkpoint(checkpoint_load_path)
     else:
         pl.seed_everything(42)
-        model = MNISTEMNIST("alexnet", "adam", {"lr": 0.001})
+        model = MNISTEMNIST("mlp", "adam", {"lr": 0.001}, {"img_w": 224, "img_h": 224})
         trainer.fit(model, datamodule.train_dataloader(), datamodule.val_dataloader())
-        model = MNISTEMNIST.load_from_checkpoint(
-            trainer.checkpoint_callback.best_model_path  # type: ignore
+        model = model.load_from_checkpoint(
+            trainer.checkpoint_callback.best_model_path,  # type: ignore
         )
 
     # test best model based on the validation and test set
