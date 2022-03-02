@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Tests for `torchfl` package."""
+"""Test for `torchfl` package."""
 
 import pytest
 
