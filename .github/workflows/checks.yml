@@ -1,16 +1,6 @@
 name: checks
 
 on:
-  push:
-    paths-ignore:
-      - "docs/"
-      - "examples/"
-      - "AUTHORS.rst"
-      - "CONTRIBUTING.rst"
-      - "HISTORY.rst"
-      - "LICENSE"
-      - "Makefile"
-      - "MANIFEST.in"
   pull_request:
     branches:
       - "master"

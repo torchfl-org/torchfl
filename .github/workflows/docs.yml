@@ -1,21 +1,9 @@
 name: docs
 
 on:
-  push:
-    paths:
-      - "docs/"
-      - "AUTHORS.rst"
-      - "CONTRIBUTING.rst"
-      - "HISTORY.rst"
   pull_request:
     branches:
       - "master"
-    paths:
-      - "docs/"
-      - "examples/"
-      - "AUTHORS.rst"
-      - "CONTRIBUTING.rst"
-      - "HISTORY.rst"
 
 jobs:
   doc8:
