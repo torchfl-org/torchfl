@@ -18,8 +18,12 @@ jobs:
         id: verify-changed-datamodules
         with:
           files: |
-            tests/datamodules/
-            torchfl/datamodules/
+            tests/datamodules/test_cifar.py
+            tests/datamodules/test_emnist.py
+            tests/datamodules/test_fashionmnist.py
+            torchfl/datamodules/cifar.py
+            torchfl/datamodules/emnist.py
+            torchfl/datamodules/fashionmnist.py
       - name: Set up Python ${{ matrix.python-version }} if files were changed
         uses: actions/setup-python@v2
         if: steps.verify-changed-datamodules.outputs.files_changed == 'true'
