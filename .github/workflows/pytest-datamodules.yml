@@ -44,5 +44,6 @@ jobs:
           python -m pip install -r requirements_dev.txt
       - name: PyTest for datamodules
         run: |
+          echo ${{needs.changedfiles.outputs.datamodules}}
           coverage run -m pytest tests/datamodules/
           coverage report --fail-under 80 tests/datamodules/*.py
