@@ -18,8 +18,8 @@ jobs:
         id: verify-changed-datamodules
         with:
           files: |
-            tests/datamodules/**
-            torchfl/datamodules/**
+            tests/datamodules/
+            torchfl/datamodules/
       - name: Set up Python ${{ matrix.python-version }} if files were changed
         uses: actions/setup-python@v2
         if: steps.verify-changed-datamodules.outputs.files_changed == 'true'
@@ -36,4 +36,3 @@ jobs:
         run: |
           coverage run -m pytest tests/datamodules/
           coverage report --fail-under 80 tests/datamodules/
-

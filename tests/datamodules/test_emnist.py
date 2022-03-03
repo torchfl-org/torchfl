@@ -12,7 +12,7 @@ def emnist_balanced_data_module():
     """Fixture for EMNIST PyTorch LightningDataModule
 
     Returns:
-        EMNISTDataModule: PyTorch LightningDataModule for EMNIST.
+        EMNISTDataModule: PyTorch LightningDataModule for EMNIST
     """
     return EMNISTDataModule(dataset_name="balanced")
 
