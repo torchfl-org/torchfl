@@ -7,19 +7,6 @@ from torchfl.datamodules.emnist import EMNISTDataModule
 from collections import Counter
 
 
-def collate_federated(agent_data):
-    """Helper method for collating the federated dataset for an agent.
-    Args:
-        agent_data (DataLoader): data owned by a given agent
-    Returns:
-        List: list of labels
-    """
-    all = list()
-    for i in agent_data:
-        all.extend(i[1].tolist())
-    return all
-
-
 @pytest.fixture
 def emnist_balanced_data_module():
     """Fixture for EMNIST PyTorch LightningDataModule
@@ -133,9 +120,8 @@ def test_emnist_balanced_federated_iid_split(emnist_balanced_data_module):
     emnist_balanced_data_module.setup(stage="fit")
     dataloader = emnist_balanced_data_module.federated_iid_dataloader()
     assert len(dataloader.keys()) == 10
-    collated_labels = collate_federated(dataloader[0])
-    assert len(collated_labels) == 11280
-    frequency = Counter(collated_labels)
+    assert len(dataloader[0].dataset) == 11280
+    frequency = Counter(list(dataloader[0].dataset.targets))
     assert len(frequency.keys()) == 47
 
 
@@ -149,10 +135,12 @@ def test_emnist_balanced_federated_non_iid_split(emnist_balanced_data_module):
     emnist_balanced_data_module.setup(stage="fit")
     dataloader = emnist_balanced_data_module.federated_non_iid_dataloader()
     assert len(dataloader.keys()) == 10
-    collated_labels = collate_federated(dataloader[0])
-    assert len(collated_labels) == 11280
-    frequency = Counter(collated_labels)
-    assert len(frequency.keys()) == 7
+    all_freq = list()
+    for i in range(10):
+        assert len(dataloader[i].dataset) == 11280
+        frequency = Counter(list(dataloader[i].dataset.targets))
+        all_freq.append(len(frequency.keys()))
+    assert max(all_freq) == 7
 
 
 ############
@@ -208,9 +196,8 @@ def test_emnist_byclass_federated_iid_split(emnist_byclass_data_module):
     emnist_byclass_data_module.setup(stage="fit")
     dataloader = emnist_byclass_data_module.federated_iid_dataloader()
     assert len(dataloader.keys()) == 10
-    collated_labels = collate_federated(dataloader[0])
-    assert len(collated_labels) == 69793
-    frequency = Counter(collated_labels)
+    assert len(dataloader[0].dataset) == 69793
+    frequency = Counter(list(dataloader[0].dataset.targets))
     assert len(frequency.keys()) == 62
 
 
@@ -224,10 +211,12 @@ def test_emnist_byclass_federated_non_iid_split(emnist_byclass_data_module):
     emnist_byclass_data_module.setup(stage="fit")
     dataloader = emnist_byclass_data_module.federated_non_iid_dataloader()
     assert len(dataloader.keys()) == 10
-    collated_labels = collate_federated(dataloader[0])
-    assert len(collated_labels) == 69792
-    frequency = Counter(collated_labels)
-    assert len(frequency.keys()) == 13
+    all_freq = list()
+    for i in range(10):
+        assert len(dataloader[i].dataset) == 69792
+        frequency = Counter(list(dataloader[i].dataset.targets))
+        all_freq.append(len(frequency.keys()))
+    assert max(all_freq) == 13
 
 
 ############
@@ -283,9 +272,8 @@ def test_emnist_bymerge_federated_iid_split(emnist_bymerge_data_module):
     emnist_bymerge_data_module.setup(stage="fit")
     dataloader = emnist_bymerge_data_module.federated_iid_dataloader()
     assert len(dataloader.keys()) == 10
-    collated_labels = collate_federated(dataloader[0])
-    assert len(collated_labels) == 69793
-    frequency = Counter(collated_labels)
+    assert len(dataloader[0].dataset) == 69793
+    frequency = Counter(list(dataloader[0].dataset.targets))
     assert len(frequency.keys()) == 47
 
 
@@ -299,10 +287,12 @@ def test_emnist_bymerge_federated_non_iid_split(emnist_bymerge_data_module):
     emnist_bymerge_data_module.setup(stage="fit")
     dataloader = emnist_bymerge_data_module.federated_non_iid_dataloader()
     assert len(dataloader.keys()) == 10
-    collated_labels = collate_federated(dataloader[0])
-    assert len(collated_labels) == 69792
-    frequency = Counter(collated_labels)
-    assert len(frequency.keys()) == 5
+    all_freq = list()
+    for i in range(10):
+        assert len(dataloader[i].dataset) == 69792
+        frequency = Counter(list(dataloader[i].dataset.targets))
+        all_freq.append(len(frequency.keys()))
+    assert max(all_freq) == 10
 
 
 ##########
@@ -358,9 +348,8 @@ def test_emnist_digits_federated_iid_split(emnist_digits_data_module):
     emnist_digits_data_module.setup(stage="fit")
     dataloader = emnist_digits_data_module.federated_iid_dataloader()
     assert len(dataloader.keys()) == 10
-    collated_labels = collate_federated(dataloader[0])
-    assert len(collated_labels) == 24000
-    frequency = Counter(collated_labels)
+    assert len(dataloader[0].dataset) == 24000
+    frequency = Counter(list(dataloader[0].dataset.targets))
     assert len(frequency.keys()) == 10
 
 
@@ -374,10 +363,12 @@ def test_emnist_digits_federated_non_iid_split(emnist_digits_data_module):
     emnist_digits_data_module.setup(stage="fit")
     dataloader = emnist_digits_data_module.federated_non_iid_dataloader()
     assert len(dataloader.keys()) == 10
-    collated_labels = collate_federated(dataloader[0])
-    assert len(collated_labels) == 24000
-    frequency = Counter(collated_labels)
-    assert len(frequency.keys()) == 2
+    all_freq = list()
+    for i in range(10):
+        assert len(dataloader[i].dataset) == 24000
+        frequency = Counter(list(dataloader[i].dataset.targets))
+        all_freq.append(len(frequency.keys()))
+    assert max(all_freq) == 2
 
 
 ###########
@@ -433,9 +424,8 @@ def test_emnist_letters_federated_iid_split(emnist_letters_data_module):
     emnist_letters_data_module.setup(stage="fit")
     dataloader = emnist_letters_data_module.federated_iid_dataloader()
     assert len(dataloader.keys()) == 10
-    collated_labels = collate_federated(dataloader[0])
-    assert len(collated_labels) == 12480
-    frequency = Counter(collated_labels)
+    assert len(dataloader[0].dataset) == 12480
+    frequency = Counter(list(dataloader[0].dataset.targets))
     assert len(frequency.keys()) == 26
 
 
@@ -449,10 +439,12 @@ def test_emnist_letters_federated_non_iid_split(emnist_letters_data_module):
     emnist_letters_data_module.setup(stage="fit")
     dataloader = emnist_letters_data_module.federated_non_iid_dataloader()
     assert len(dataloader.keys()) == 10
-    collated_labels = collate_federated(dataloader[0])
-    assert len(collated_labels) == 12480
-    frequency = Counter(collated_labels)
-    assert len(frequency.keys()) == 4
+    all_freq = list()
+    for i in range(10):
+        assert len(dataloader[i].dataset) == 12480
+        frequency = Counter(list(dataloader[i].dataset.targets))
+        all_freq.append(len(frequency.keys()))
+    assert max(all_freq) == 5
 
 
 #########
@@ -508,9 +500,8 @@ def test_emnist_mnist_federated_iid_split(emnist_mnist_data_module):
     emnist_mnist_data_module.setup(stage="fit")
     dataloader = emnist_mnist_data_module.federated_iid_dataloader()
     assert len(dataloader.keys()) == 10
-    collated_labels = collate_federated(dataloader[0])
-    assert len(collated_labels) == 6000
-    frequency = Counter(collated_labels)
+    assert len(dataloader[0].dataset) == 6000
+    frequency = Counter(list(dataloader[0].dataset.targets))
     assert len(frequency.keys()) == 10
 
 
@@ -524,7 +515,9 @@ def test_emnist_mnist_federated_non_iid_split(emnist_mnist_data_module):
     emnist_mnist_data_module.setup(stage="fit")
     dataloader = emnist_mnist_data_module.federated_non_iid_dataloader()
     assert len(dataloader.keys()) == 10
-    collated_labels = collate_federated(dataloader[0])
-    assert len(collated_labels) == 6000
-    frequency = Counter(collated_labels)
-    assert len(frequency.keys()) == 2
+    all_freq = list()
+    for i in range(10):
+        assert len(dataloader[i].dataset) == 6000
+        frequency = Counter(list(dataloader[i].dataset.targets))
+        all_freq.append(len(frequency.keys()))
+    assert max(all_freq) == 2

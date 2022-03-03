@@ -7,19 +7,6 @@ from torchfl.datamodules.cifar import CIFARDataModule
 from collections import Counter
 
 
-def collate_federated(agent_data):
-    """Helper method for collating the federated dataset for an agent.
-    Args:
-        agent_data (DataLoader): data owned by a given agent
-    Returns:
-        List: list of labels
-    """
-    all = list()
-    for i in agent_data:
-        all.extend(i[1].tolist())
-    return all
-
-
 @pytest.fixture
 def cifar10_data_module():
     """Fixture for CIFAR10 PyTorch LightningDataModule
@@ -88,9 +75,8 @@ def test_cifar10_federated_iid_split(cifar10_data_module):
     cifar10_data_module.setup(stage="fit")
     dataloader = cifar10_data_module.federated_iid_dataloader()
     assert len(dataloader.keys()) == 10
-    collated_labels = collate_federated(dataloader[0])
-    assert len(collated_labels) == 5000
-    frequency = Counter(collated_labels)
+    assert len(dataloader[0].dataset) == 5000
+    frequency = Counter(list(dataloader[0].dataset.targets))
     assert len(frequency.keys()) == 10
 
 
@@ -104,9 +90,8 @@ def test_cifar10_federated_non_iid_split(cifar10_data_module):
     cifar10_data_module.setup(stage="fit")
     dataloader = cifar10_data_module.federated_non_iid_dataloader()
     assert len(dataloader.keys()) == 10
-    collated_labels = collate_federated(dataloader[0])
-    assert len(collated_labels) == 5000
-    frequency = Counter(collated_labels)
+    assert len(dataloader[0].dataset) == 5000
+    frequency = Counter(list(dataloader[0].dataset.targets))
     assert len(frequency.keys()) == 2
 
 
@@ -158,9 +143,8 @@ def test_cifar100_federated_iid_split(cifar100_data_module):
     cifar100_data_module.setup(stage="fit")
     dataloader = cifar100_data_module.federated_iid_dataloader()
     assert len(dataloader.keys()) == 10
-    collated_labels = collate_federated(dataloader[0])
-    assert len(collated_labels) == 5000
-    frequency = Counter(collated_labels)
+    assert len(dataloader[0].dataset) == 5000
+    frequency = Counter(list(dataloader[0].dataset.targets))
     assert len(frequency.keys()) == 100
 
 
@@ -174,7 +158,6 @@ def test_cifar100_federated_non_iid_split(cifar100_data_module):
     cifar100_data_module.setup(stage="fit")
     dataloader = cifar100_data_module.federated_non_iid_dataloader()
     assert len(dataloader.keys()) == 10
-    collated_labels = collate_federated(dataloader[0])
-    assert len(collated_labels) == 5000
-    frequency = Counter(collated_labels)
+    assert len(dataloader[0].dataset) == 5000
+    frequency = Counter(list(dataloader[0].dataset.targets))
     assert len(frequency.keys()) == 10

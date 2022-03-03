@@ -60,6 +60,12 @@ class DatasetSplit(Dataset):
         """
         self.dataset: Dataset = dataset
         self.idxs: Iterable[int] = list(idxs)
+        all_targets: np.ndarray = (
+            np.array(dataset.targets)
+            if isinstance(dataset.targets, list)
+            else dataset.targets.numpy()
+        )
+        self.targets: np.ndarray = all_targets[self.idxs]
 
     def __len__(self) -> int:
         """Overriding the length method.
@@ -292,11 +298,11 @@ class CIFARDataModule(pl.LightningDataModule):
         shards: int = num_workers * niid_factor
         items: int = len(self.cifar_train_full) // shards
         idx_shard: List[int] = list(range(shards))
-        classes: np.ndarray = np.array([])
-        if isinstance(self.cifar_train_full.targets, list):
-            classes = np.array(self.cifar_train_full.targets)
-        else:
-            classes = self.cifar_train_full.targets.numpy()
+        classes: np.ndarray = (
+            np.array(self.cifar_train_full.targets)
+            if isinstance(self.cifar_train_full.targets, list)
+            else self.cifar_train_full.targets.numpy()
+        )
 
         idxs_labels: np.ndarray = np.vstack(
             (np.arange(len(self.cifar_train_full)), classes)
@@ -306,7 +312,7 @@ class CIFARDataModule(pl.LightningDataModule):
         distribution: Dict[int, np.ndarray] = {
             i: np.array([], dtype="int64") for i in range(num_workers)
         }
-
+        np.random.seed(42)
         while idx_shard:
             for i in range(num_workers):
                 rand_set: Set[int] = set(
