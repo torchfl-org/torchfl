@@ -6,7 +6,7 @@ on:
       - "master"
 
 jobs:
-  test-datamodules:
+  test-datamodules-cifar:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -18,8 +18,8 @@ jobs:
         id: verify-changed-datamodules
         with:
           files: |
-            tests/datamodules/**
-            torchfl/datamodules/**
+            tests/datamodules/test_cifar.py
+            torchfl/datamodules/cifar.py
       - name: Set up Python ${{ matrix.python-version }} if files were changed
         uses: actions/setup-python@v2
         if: steps.verify-changed-datamodules.outputs.files_changed == 'true'
@@ -32,6 +32,5 @@ jobs:
           python -m pip install -r requirements_dev.txt
       - name: PyTest for datamodules
         run: |
-          coverage run -m pytest tests/datamodules
-          coverage run
-          coverage report --fail-under 80 --source torchfl/datamodules/* --include tests/datamodules/*
+          coverage run -m pytest tests/datamodules/test
+          coverage report --fail-under 80 --source torchfl/datamodules/cifar.py --include tests/datamodules/test_cifar.py
