@@ -3,7 +3,7 @@ name: docs
 on:
   pull_request:
     branches:
-      - "master"
+      - master
 
 jobs:
   doc8:

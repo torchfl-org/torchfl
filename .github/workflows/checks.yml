@@ -3,16 +3,16 @@ name: checks
 on:
   pull_request:
     branches:
-      - "master"
+      - master
     paths-ignore:
-      - "docs/"
-      - "examples/"
-      - "AUTHORS.rst"
-      - "CONTRIBUTING.rst"
-      - "HISTORY.rst"
-      - "LICENSE"
-      - "Makefile"
-      - "MANIFEST.in"
+      - docs/
+      - examples/
+      - AUTHORS.rst
+      - CONTRIBUTING.rst
+      - HISTORY.rst
+      - LICENSE
+      - Makefile
+      - MANIFEST.in
 
 jobs:
   typecheck:
