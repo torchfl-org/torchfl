@@ -26,6 +26,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
+        if: steps.verify-changed-datamodules.outputs.files_changed == 'true'
         run: |
           python -m pip install --upgrade pip
           python -m pip install pytest coverage
@@ -33,5 +34,5 @@ jobs:
       - name: PyTest for datamodules
         run: |
           coverage run -m pytest tests/datamodules
-          coverage report
-          coverage report --fail-under 80 --include tests/*
+          coverage run
+          coverage report --fail-under 80 --source torchfl/datamodules/* --include tests/datamodules/*
