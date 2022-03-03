@@ -13,11 +13,12 @@ jobs:
         python-version: ["3.9"]
     steps:
       - uses: actions/checkout@v1
+        with:
+          fetch-depth: 0
       - name: Changed files
         uses: tj-actions/changed-files@v17.2
         id: verify-changed-datamodules
         with:
-          fetch-depth: 0
           separator: '\n'
           files: |
             tests/datamodules/test_cifar.py
