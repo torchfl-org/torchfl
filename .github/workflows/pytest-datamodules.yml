@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Verify Changed Files
-        uses: tj-actions/verify-changed-files@v8.8
+        uses: tj-actions/changed-files@v17.2
         id: verify-changed-datamodules
         with:
           files: |
@@ -26,17 +26,17 @@ jobs:
             torchfl/datamodules/fashionmnist.py
       - name: Set up Python ${{ matrix.python-version }} if files were changed
         uses: actions/setup-python@v2
-        if: steps.verify-changed-datamodules.outputs.files_changed == 'true'
+        if: steps.verify-changed-datamodules.outputs.any_changed == 'true'
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
-        if: steps.verify-changed-datamodules.outputs.files_changed == 'true'
+        if: steps.verify-changed-datamodules.outputs.any_changed == 'true'
         run: |
           python -m pip install --upgrade pip
           python -m pip install pytest coverage
           python -m pip install -r requirements_dev.txt
       - name: PyTest for datamodules
-        if: steps.verify-changed-datamodules.outputs.files_changed == 'true'
+        if: steps.verify-changed-datamodules.outputs.any_changed == 'true'
         run: |
           coverage run -m pytest tests/datamodules/
-          coverage report --fail-under 80 tests/datamodules/
+          coverage report --fail-under 80 tests/datamodules/*.py
