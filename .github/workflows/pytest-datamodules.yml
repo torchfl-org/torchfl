@@ -17,6 +17,7 @@ jobs:
         uses: tj-actions/changed-files@v17.2
         id: verify-changed-datamodules
         with:
+          fetch-depth: 0
           separator: '\n'
           files: |
             tests/datamodules/test_cifar.py
