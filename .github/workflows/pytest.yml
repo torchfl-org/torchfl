@@ -32,5 +32,5 @@ jobs:
           python -m pip install -r requirements_dev.txt
       - name: PyTest for datamodules
         run: |
-          coverage run -m pytest tests/datamodules/cifar.py
+          coverage run -m pytest tests/datamodules/test_cifar.py
           coverage report --fail-under 80 --source torchfl/datamodules/cifar.py --include tests/datamodules/test_cifar.py
