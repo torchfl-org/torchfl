@@ -20,9 +20,7 @@ jobs:
       models-emnist-letters: ${{ steps.changes.outputs.models-emnist-letters }}
       models-emnist-mnist: ${{ steps.changes.outputs.models-emnist-mnist }}
       models-fashionmnist: ${{ steps.changes.outputs.models-fashionmnist }}
-      models-wrappers-cifar: ${{ steps.changes.outputs.models-wrappers-cifar }}
-      models-wrappers-emnist: ${{ steps.changes.outputs.models-wrappers-emnist }}
-      models-wrappers-fashionmnist: ${{ steps.changes.outputs.models-wrappers-fashionmnist }}
+      models-wrappers: ${{ steps.changes.outputs.models-wrappers }}
       models-sota: ${{ steps.changes.outputs.models-sota }}
     steps:
       # Make sure we have some code to diff.
@@ -46,7 +44,7 @@ jobs:
           echo "::set-output name=models-fashionmnist::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.head.sha }} ${{ github.event.pull_request.base.sha }} | grep -E "tests/models/fashionmnist|torchfl/models/core/fashionmnist" | xargs)"
           echo "::set-output name=models-wrappers::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.head.sha }} ${{ github.event.pull_request.base.sha }} | grep -E "tests/models/wrappers|torchfl/models/wrapper" | xargs)"
           echo "::set-output name=models-sota::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.head.sha }} ${{ github.event.pull_request.base.sha }} | grep -E "torchfl/models/sota" | xargs)"
-  test-models-cifar-cifar10:
+  test-models:
     runs-on: ubuntu-latest
     needs: changedfiles
     strategy:
