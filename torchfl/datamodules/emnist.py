@@ -42,7 +42,12 @@ SUPPORTED_DATASETS_LITERAL: Type[  # type: ignore
 ]  # type: ignore
 
 DEFAULT_TRANSFORMS: transforms.Compose = transforms.Compose(
-    [transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))]
+    [
+        transforms.RandomResizedCrop(224),
+        transforms.RandomHorizontalFlip(),
+        transforms.ToTensor(),
+        transforms.Normalize((0.1307,), (0.3081,)),
+    ]
 )
 #################
 # End Constants #
@@ -61,6 +66,12 @@ class DatasetSplit(Dataset):
         """
         self.dataset: Dataset = dataset
         self.idxs: Iterable[int] = list(idxs)
+        all_targets: np.ndarray = (
+            np.array(dataset.targets)
+            if isinstance(dataset.targets, list)
+            else dataset.targets.numpy()
+        )
+        self.targets: np.ndarray = all_targets[self.idxs]
 
     def __len__(self) -> int:
         """Overriding the length method.
@@ -196,7 +207,11 @@ class EMNISTDataModule(pl.LightningDataModule):
         Returns:
             DataLoader: PyTorch DataLoader object.
         """
-        return DataLoader(self.emnist_train, batch_size=self.train_batch_size)
+        return DataLoader(
+            self.emnist_train,
+            batch_size=self.train_batch_size,
+            num_workers=os.cpu_count() or 0,
+        )
 
     def val_dataloader(self) -> DataLoader:
         """Validation DataLoader wrapper.
@@ -204,7 +219,11 @@ class EMNISTDataModule(pl.LightningDataModule):
         Returns:
             DataLoader: PyTorch DataLoader object.
         """
-        return DataLoader(self.emnist_val, batch_size=self.validation_batch_size)
+        return DataLoader(
+            self.emnist_val,
+            batch_size=self.validation_batch_size,
+            num_workers=os.cpu_count() or 0,
+        )
 
     def test_dataloader(self) -> DataLoader:
         """Test DataLoader wrapper.
@@ -212,7 +231,11 @@ class EMNISTDataModule(pl.LightningDataModule):
         Returns:
             DataLoader: PyTorch DataLoader object.
         """
-        return DataLoader(self.emnist_test, batch_size=self.test_batch_size)
+        return DataLoader(
+            self.emnist_test,
+            batch_size=self.test_batch_size,
+            num_workers=os.cpu_count() or 0,
+        )
 
     def predict_dataloader(self) -> DataLoader:
         """Predict DataLoader object.
@@ -220,7 +243,11 @@ class EMNISTDataModule(pl.LightningDataModule):
         Returns:
             DataLoader: PyTorch DataLoader object.
         """
-        return DataLoader(self.emnist_predict, batch_size=self.predict_batch_size)
+        return DataLoader(
+            self.emnist_predict,
+            batch_size=self.predict_batch_size,
+            num_workers=os.cpu_count() or 0,
+        )
 
     def federated_iid_dataloader(
         self, num_workers: int = 10, workers_batch_size: int = 10
@@ -244,6 +271,7 @@ class EMNISTDataModule(pl.LightningDataModule):
                 DatasetSplit(self.emnist_train_full, distribution[i]),
                 batch_size=workers_batch_size,
                 shuffle=True,
+                num_workers=os.cpu_count() or 0,
             )
         return federated
 
@@ -263,11 +291,11 @@ class EMNISTDataModule(pl.LightningDataModule):
         shards: int = num_workers * niid_factor
         items: int = len(self.emnist_train_full) // shards
         idx_shard: List[int] = list(range(shards))
-        classes: np.ndarray = np.array([])
-        if isinstance(self.emnist_train_full.targets, list):
-            classes = np.array(self.emnist_train_full.targets)
-        else:
-            classes = self.emnist_train_full.targets.numpy()
+        classes: np.ndarray = (
+            np.array(self.emnist_train_full.targets)
+            if isinstance(self.emnist_train_full.targets, list)
+            else self.emnist_train_full.targets.numpy()
+        )
 
         idxs_labels: np.ndarray = np.vstack(
             (np.arange(len(self.emnist_train_full)), classes)
@@ -277,7 +305,7 @@ class EMNISTDataModule(pl.LightningDataModule):
         distribution: Dict[int, np.ndarray] = {
             i: np.array([], dtype="int64") for i in range(num_workers)
         }
-
+        np.random.seed(42)
         while idx_shard:
             for i in range(num_workers):
                 rand_set: Set[int] = set(
@@ -295,5 +323,6 @@ class EMNISTDataModule(pl.LightningDataModule):
                 DatasetSplit(self.emnist_train_full, distribution[i]),
                 batch_size=workers_batch_size,
                 shuffle=True,
+                num_workers=os.cpu_count() or 0,
             )
         return federated

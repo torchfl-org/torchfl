@@ -11,7 +11,7 @@ with open("README.rst") as readme_file:
 with open("HISTORY.rst") as history_file:
     history = history_file.read()
 
-with open("dev_requirements.txt") as fp:
+with open("requirements_dev.txt") as fp:
     requirements = fp.read()
 
 test_requirements = ["pytest>=3"]
@@ -26,12 +26,9 @@ setup(
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Natural Language :: English",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
     ],
-    description="A Python library for implementing concurrent (multi-threaded and multi-processed) federated learning using PyTorch API.",
+    description="A Python library for rapid prototyping, experimenting, and logging of federated learning using state-of-the-art models and datasets. Built using PyTorch and PyTorch Lightning.",
     entry_points={"console_scripts": ["torchfl=torchfl.cli:main"]},
     install_requires=requirements,
     license="GNU General Public License v3",

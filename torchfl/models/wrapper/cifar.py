@@ -451,7 +451,7 @@ class CIFAR10(pl.LightningModule):
         )
         return [optimizer], [scheduler]
 
-    def training_step(
+    def training_step(  # type: ignore
         self, batch: Tuple[Tensor, Tensor], batch_idx: int
     ) -> Tensor:  # type: ignore
         """Training step
@@ -474,7 +474,7 @@ class CIFAR10(pl.LightningModule):
         self.log("train_loss", loss)
         return loss
 
-    def validation_step(
+    def validation_step(  # type: ignore
         self, batch: Tuple[Tensor, Tensor], batch_idx: int
     ) -> None:  # type: ignore
         """Validation step
@@ -490,7 +490,7 @@ class CIFAR10(pl.LightningModule):
         self.log("batch_idx", batch_idx)
         self.log("val_acc", acc)
 
-    def test_step(
+    def test_step(  # type: ignore
         self, batch: Tuple[Tensor, Tensor], batch_idx: int
     ) -> None:  # type: ignore
         """Test step
@@ -562,7 +562,7 @@ class CIFAR100(pl.LightningModule):
         )
         return [optimizer], [scheduler]
 
-    def training_step(
+    def training_step(  # type: ignore
         self, batch: Tuple[Tensor, Tensor], batch_idx: int
     ) -> Tensor:  # type: ignore
         """Training step
@@ -585,7 +585,7 @@ class CIFAR100(pl.LightningModule):
         self.log("train_loss", loss)
         return loss
 
-    def validation_step(
+    def validation_step(  # type: ignore
         self, batch: Tuple[Tensor, Tensor], batch_idx: int
     ) -> None:  # type: ignore
         """Validation step
@@ -601,7 +601,7 @@ class CIFAR100(pl.LightningModule):
         self.log("batch_idx", batch_idx)
         self.log("val_acc", acc)
 
-    def test_step(
+    def test_step(  # type: ignore
         self, batch: Tuple[Tensor, Tensor], batch_idx: int
     ) -> None:  # type: ignore
         """Test step

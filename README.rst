@@ -39,3 +39,13 @@ This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypack
 
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
+
+Support
+-------
+If you feel generous and want to show some extra appreciation, support this project:
+
+.. image:: https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png
+        :width: 100
+        :height: 50
+        :alt: BuyMeACoffee Logo
+        :target: https://www.buymeacoffee.com/vivekkhimani

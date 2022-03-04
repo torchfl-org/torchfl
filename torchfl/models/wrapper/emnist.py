@@ -973,7 +973,7 @@ class BalancedEMNIST(pl.LightningModule):
         )
         return [optimizer], [scheduler]
 
-    def training_step(
+    def training_step(  # type: ignore
         self, batch: Tuple[Tensor, Tensor], batch_idx: int
     ) -> Tensor:  # type: ignore
         """Training step
@@ -996,7 +996,7 @@ class BalancedEMNIST(pl.LightningModule):
         self.log("train_loss", loss)
         return loss
 
-    def validation_step(
+    def validation_step(  # type: ignore
         self, batch: Tuple[Tensor, Tensor], batch_idx: int
     ) -> None:  # type: ignore
         """Validation step
@@ -1012,7 +1012,7 @@ class BalancedEMNIST(pl.LightningModule):
         self.log("batch_idx", batch_idx)
         self.log("val_acc", acc)
 
-    def test_step(
+    def test_step(  # type: ignore
         self, batch: Tuple[Tensor, Tensor], batch_idx: int
     ) -> None:  # type: ignore
         """Test step
@@ -1084,7 +1084,7 @@ class ByClassEMNIST(pl.LightningModule):
         )
         return [optimizer], [scheduler]
 
-    def training_step(
+    def training_step(  # type: ignore
         self, batch: Tuple[Tensor, Tensor], batch_idx: int
     ) -> Tensor:  # type: ignore
         """Training step
@@ -1107,7 +1107,7 @@ class ByClassEMNIST(pl.LightningModule):
         self.log("train_loss", loss)
         return loss
 
-    def validation_step(
+    def validation_step(  # type: ignore
         self, batch: Tuple[Tensor, Tensor], batch_idx: int
     ) -> None:  # type: ignore
         """Validation step
@@ -1123,7 +1123,7 @@ class ByClassEMNIST(pl.LightningModule):
         self.log("batch_idx", batch_idx)
         self.log("val_acc", acc)
 
-    def test_step(
+    def test_step(  # type: ignore
         self, batch: Tuple[Tensor, Tensor], batch_idx: int
     ) -> None:  # type: ignore
         """Test step
@@ -1195,7 +1195,7 @@ class ByMergeEMNIST(pl.LightningModule):
         )
         return [optimizer], [scheduler]
 
-    def training_step(
+    def training_step(  # type: ignore
         self, batch: Tuple[Tensor, Tensor], batch_idx: int
     ) -> Tensor:  # type: ignore
         """Training step
@@ -1218,7 +1218,7 @@ class ByMergeEMNIST(pl.LightningModule):
         self.log("train_loss", loss)
         return loss
 
-    def validation_step(
+    def validation_step(  # type: ignore
         self, batch: Tuple[Tensor, Tensor], batch_idx: int
     ) -> None:  # type: ignore
         """Validation step
@@ -1234,7 +1234,7 @@ class ByMergeEMNIST(pl.LightningModule):
         self.log("batch_idx", batch_idx)
         self.log("val_acc", acc)
 
-    def test_step(
+    def test_step(  # type: ignore
         self, batch: Tuple[Tensor, Tensor], batch_idx: int
     ) -> None:  # type: ignore
         """Test step
@@ -1306,7 +1306,7 @@ class LettersEMNIST(pl.LightningModule):
         )
         return [optimizer], [scheduler]
 
-    def training_step(
+    def training_step(  # type: ignore
         self, batch: Tuple[Tensor, Tensor], batch_idx: int
     ) -> Tensor:  # type: ignore
         """Training step
@@ -1329,7 +1329,7 @@ class LettersEMNIST(pl.LightningModule):
         self.log("train_loss", loss)
         return loss
 
-    def validation_step(
+    def validation_step(  # type: ignore
         self, batch: Tuple[Tensor, Tensor], batch_idx: int
     ) -> None:  # type: ignore
         """Validation step
@@ -1345,7 +1345,7 @@ class LettersEMNIST(pl.LightningModule):
         self.log("batch_idx", batch_idx)
         self.log("val_acc", acc)
 
-    def test_step(
+    def test_step(  # type: ignore
         self, batch: Tuple[Tensor, Tensor], batch_idx: int
     ) -> None:  # type: ignore
         """Test step
@@ -1417,7 +1417,7 @@ class DigitsEMNIST(pl.LightningModule):
         )
         return [optimizer], [scheduler]
 
-    def training_step(
+    def training_step(  # type: ignore
         self, batch: Tuple[Tensor, Tensor], batch_idx: int
     ) -> Tensor:  # type: ignore
         """Training step
@@ -1440,7 +1440,7 @@ class DigitsEMNIST(pl.LightningModule):
         self.log("train_loss", loss)
         return loss
 
-    def validation_step(
+    def validation_step(  # type: ignore
         self, batch: Tuple[Tensor, Tensor], batch_idx: int
     ) -> None:  # type: ignore
         """Validation step
@@ -1456,7 +1456,7 @@ class DigitsEMNIST(pl.LightningModule):
         self.log("batch_idx", batch_idx)
         self.log("val_acc", acc)
 
-    def test_step(
+    def test_step(  # type: ignore
         self, batch: Tuple[Tensor, Tensor], batch_idx: int
     ) -> None:  # type: ignore
         """Test step
@@ -1528,7 +1528,7 @@ class MNISTEMNIST(pl.LightningModule):
         )
         return [optimizer], [scheduler]
 
-    def training_step(
+    def training_step(  # type: ignore
         self, batch: Tuple[Tensor, Tensor], batch_idx: int
     ) -> Tensor:  # type: ignore
         """Training step
@@ -1551,7 +1551,7 @@ class MNISTEMNIST(pl.LightningModule):
         self.log("train_loss", loss)
         return loss
 
-    def validation_step(
+    def validation_step(  # type: ignore
         self, batch: Tuple[Tensor, Tensor], batch_idx: int
     ) -> None:  # type: ignore
         """Validation step
@@ -1567,7 +1567,7 @@ class MNISTEMNIST(pl.LightningModule):
         self.log("batch_idx", batch_idx)
         self.log("val_acc", acc)
 
-    def test_step(
+    def test_step(  # type: ignore
         self, batch: Tuple[Tensor, Tensor], batch_idx: int
     ) -> None:  # type: ignore
         """Test step

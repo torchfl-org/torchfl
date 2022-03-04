@@ -7,19 +7,6 @@ from torchfl.datamodules.fashionmnist import FashionMNISTDataModule
 from collections import Counter
 
 
-def collate_federated(agent_data):
-    """Helper method for collating the federated dataset for an agent.
-    Args:
-        agent_data (DataLoader): data owned by a given agent
-    Returns:
-        List: list of labels
-    """
-    all = list()
-    for i in agent_data:
-        all.extend(i[1].tolist())
-    return all
-
-
 @pytest.fixture
 def fashionmnist_data_module():
     """Fixture for FashionMNIST PyTorch LightningDataModule
@@ -78,9 +65,8 @@ def test_fashionmnist_federated_iid_split(fashionmnist_data_module):
     fashionmnist_data_module.setup(stage="fit")
     dataloader = fashionmnist_data_module.federated_iid_dataloader()
     assert len(dataloader.keys()) == 10
-    collated_labels = collate_federated(dataloader[0])
-    assert len(collated_labels) == 6000
-    frequency = Counter(collated_labels)
+    assert len(dataloader[0].dataset) == 6000
+    frequency = Counter(list(dataloader[0].dataset.targets))
     assert len(frequency.keys()) == 10
 
 
@@ -94,7 +80,9 @@ def test_fashionmnist_federated_non_iid_split(fashionmnist_data_module):
     fashionmnist_data_module.setup(stage="fit")
     dataloader = fashionmnist_data_module.federated_non_iid_dataloader()
     assert len(dataloader.keys()) == 10
-    collated_labels = collate_federated(dataloader[0])
-    assert len(collated_labels) == 6000
-    frequency = Counter(collated_labels)
-    assert len(frequency.keys()) == 2
+    all_freq = list()
+    for i in range(10):
+        assert len(dataloader[i].dataset) == 6000
+        frequency = Counter(list(dataloader[i].dataset.targets))
+        all_freq.append(len(frequency.keys()))
+    assert max(all_freq) == 2

@@ -107,3 +107,6 @@ ENV/
 
 # PyTorch dataset files
 data/
+
+# Log files or run files
+runs/
