@@ -1,7 +1,11 @@
+.. image:: https://www.cs.drexel.edu/~vck29/torchfl-github.png
+        :width: 960
+        :height: 480
+        :alt: BuyMeACoffee Logo
+        :target: https://www.buymeacoffee.com/vivekkhimani
 =======
 torchfl
 =======
-
 
 .. image:: https://img.shields.io/pypi/v/torchfl.svg
         :target: https://pypi.python.org/pypi/torchfl
@@ -20,7 +24,7 @@ torchfl
 
 
 
-A Python library for rapid prototyping, experimenting, and logging of federated learning using state-of-the-art models and datasets. Built using PyTorch and PyTorch Lightning.
+A Python library for rapid prototyping and experimentation of federated learning using state-of-the-art models and datasets. Built using PyTorch and PyTorch Lightning.
 
 
 * Free software: GNU General Public License v3
@@ -31,14 +35,6 @@ Features
 --------
 
 * TODO
-
-Credits
--------
-
-This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
-
-.. _Cookiecutter: https://github.com/audreyr/cookiecutter
-.. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
 
 Support
 -------
