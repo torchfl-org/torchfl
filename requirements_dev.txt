@@ -4,3 +4,4 @@ torchvision==0.11.2
 pytorch-lightning==1.5.7
 tox==3.14.0
 setuptools==59.5.0
+coverage==4.5.4
