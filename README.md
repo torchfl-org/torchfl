@@ -8,7 +8,7 @@
 - [Installation](#installation)
 - [Documentation](#docs)
 - [Examples](#examples)
-- [Contributing] (#contributing)
+- [Contributing](#contributing)
 - [Authors](#authors)
 - [License](#license)
 
