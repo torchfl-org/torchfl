@@ -151,7 +151,7 @@ FIXME. This section needs to be updated once the actual infrastructure has been 
 We truly appreciate everyone contributing to and helping us build this community! Thanks for all the love and support. A big shoutout to everyone who has contributed to this project.
 #### Core Developers
 1. Vivek Khimani
-	- Email: [mailto:vivekkhimani07@gmail.com](vivekkhimani07@gmail.com)
+	- Email: [vivekkhimani07@gmail.com](mailto:vivekkhimani07@gmail.com)
 	- Website: [https://vivekkhimani.github.io](https://vivekkhimani.github.io)
 	- Github Profile: [https://github.com/vivekkhimani](https://github.com/vivekkhimani)
 	- Buy Me a Coffee: [https://www.buymeacoffee.com/vivekkhimani](https://www.buymeacoffee.com/vivekkhimani)
