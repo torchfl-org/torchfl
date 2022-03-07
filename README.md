@@ -5,8 +5,8 @@
 ## Table of Contents
 
 - [Key Features](#features)
-- [Available Models](#models)
-- [Available Datasets](#datasets)
+- [Available Models](#available-models)
+- [Available Datasets](#available-datasets)
 - [Installation](#installation)
 - [Examples](#examples)
 - [Contributing](#contributing)
@@ -35,3 +35,27 @@ FIXME - add a table here.
 Following datasets have been wrapped inside a ```LightningDataModule``` and made available for the initial release of ```torchfl```. To add a new dataset, check the source code in ```torchfl.datamodules```, add tests, and create a PR with ```Features``` tag.
 
 FIXME - add a table here.
+
+## Installation
+### Stable Release
+As of now, ```torchfl``` is available on PyPI and can be installed using the following command in your terminal:
+```
+pip install torchfl
+```
+This is the preferred method to install ```torchfl``` with the most stable release.
+If you don't have [pip](https://pip.pypa.io/en/stable/) installed, this [Python installation guide](http://docs.python-guide.org/en/latest/starting/installation/) can guide you through the process.
+
+### From sources
+The sources for ```torchfl``` can be downloaded from the official [Github repository](https://github.com/vivekkhimani/torchfl).
+You can either clone the public repository:
+```
+git clone git://github.com/vivekkhimani/torchfl
+```
+or download the [tarball](https://github.com/vivekkhimani/torchfl/tarball/master):
+```
+curl -OJL https://github.com/vivekkhimani/torchfl/tarball/master
+```
+Once you have the copy of the source downloaded, you can install it using:
+```
+python setup.py install
+```
