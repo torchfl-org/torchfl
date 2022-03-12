@@ -15,12 +15,13 @@
 ## Features
 
 - Python 3.6+ support. Built using ```torch-1.10.1```, ```torchvision-0.11.2```, and ```pytorch-lightning-1.5.7```.
-- Customizable implementations for state-of-the-art deep learning models which can be trained in federated or non-federated settings.
+- Customizable implementations for state-of-the-art deep learning [models](#available-models) which can be trained in federated or non-federated settings.
 - Supports finetuning of the pre-trained deep learning models, allowing for faster training using transfer learning.
-- Datamodules stuff. FIXME.
-- Bottom-up approach to add custom models and datasets on the go. FIXME
-- Federated learning support. FIXME.
-- Loggers support and checkpointing using Lightning Modules. FIXME.
+- PyTorch LightningDataModule wrappers for the most commonly used [datasets](#available-datasets) to reduce the boilerplate code before experiments. 
+- Built using the bottom-up approach for the datamodules and models which ensures abstractions while allowing for customization.
+- Provides implementation of the federated learning (FL) samplers, aggregators, and wrappers, to prototype FL experiments on-the-go.
+- Backwards compatible with the PyTorch LightningDataModule, LightningModule, loggers, and DevOps tools.
+- More details about the examples and usage can be found [below](#examples-and-usage).
 - For more documentation related to the usage, visit - https://torchfl.readthedocs.io/. 
 
 ## Installation
@@ -53,9 +54,184 @@ After installing ```torchfl```, it can be used in the following manner.
 FIXME - add the usage code snippets and link to full examples here.
 
 ## Available Models
-For the initial release, ```torchfl``` will only support state-of-the-art computer vision models. The following table summarizes the available models, support for pre-training, and the possibility of using the finetuned implementations.
+For the initial release, ```torchfl``` will only support state-of-the-art computer vision models. The following table summarizes the available models, support for pre-training, and the possibility of feature-extracting. Please note that the models have been tested with all the available datasets. Therefore, the link to the tests will be provided in the next section.
 
-FIXME - add a table here.
+<table>
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Pre-Training</th>
+			<th>Feature Extraction</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><a href="https://github.com/vivekkhimani/torchfl/blob/master/torchfl/models/sota/alexnet.py" target="_blank">AlexNet</a></td>
+			<td>:white_check_mark:</td>
+			<td>:white_check_mark:</td>
+		</tr>
+		<tr>
+			<td><a href="https://github.com/vivekkhimani/torchfl/blob/master/torchfl/models/sota/densenet.py#L20" target="_blank">DenseNet121</a></td>
+			<td>:white_check_mark:</td>
+			<td>:white_check_mark:</td>
+		</tr>
+		<tr>
+			<td><a href="https://github.com/vivekkhimani/torchfl/blob/master/torchfl/models/sota/densenet.py#L78" target="_blank">DenseNet161</a></td>
+			<td>:white_check_mark:</td>
+			<td>:white_check_mark:</td>
+		</tr>
+		<tr>
+			<td><a href="https://github.com/vivekkhimani/torchfl/blob/master/torchfl/models/sota/densenet.py#L136" target="_blank">DenseNet169</a></td>
+			<td>:white_check_mark:</td>
+			<td>:white_check_mark:</td>
+		</tr>
+		<tr>
+			<td><a href="https://github.com/vivekkhimani/torchfl/blob/master/torchfl/models/sota/densenet.py#L194" target="_blank">DenseNet201</a></td>
+			<td>:white_check_mark:</td>
+			<td>:white_check_mark:</td>
+		</tr>
+		<tr>
+			<td><a href="https://github.com/vivekkhimani/torchfl/blob/master/torchfl/models/sota/lenet.py" target="_blank">LeNet</a></td>
+			<td>:x:</td>
+			<td>:x:</td>
+		</tr>
+		<tr>
+			<td><a href="https://github.com/vivekkhimani/torchfl/blob/master/torchfl/models/sota/mlp.py" target="_blank">MLP</a></td>
+			<td>:x:</td>
+			<td>:x:</td>
+		</tr>
+		<tr>
+			<td><a href="https://github.com/vivekkhimani/torchfl/blob/master/torchfl/models/sota/mobilenet.py#L23" target="_blank">MobileNetV2</a></td>
+			<td>:white_check_mark:</td>
+			<td>:white_check_mark:</td>
+		</tr>
+		<tr>
+			<td><a href="https://github.com/vivekkhimani/torchfl/blob/master/torchfl/models/sota/mobilenet.py#L78" target="_blank">MobileNetV3Small</a></td>
+			<td>:white_check_mark:</td>
+			<td>:white_check_mark:</td>
+		</tr>
+		<tr>
+			<td><a href="https://github.com/vivekkhimani/torchfl/blob/master/torchfl/models/sota/mobilenet.py#L140" target="_blank">MobileNetV3Large</a></td>
+			<td>:white_check_mark:</td>
+			<td>:white_check_mark:</td>
+		</tr>
+		<tr>
+			<td><a href="https://github.com/vivekkhimani/torchfl/blob/master/torchfl/models/sota/resnet.py#L26" target="_blank">ResNet18</a></td>
+			<td>:white_check_mark:</td>
+			<td>:white_check_mark:</td>
+		</tr>
+		<tr>
+			<td><a href="https://github.com/vivekkhimani/torchfl/blob/master/torchfl/models/sota/resnet.py#L76" target="_blank">ResNet34</a></td>
+			<td>:white_check_mark:</td>
+			<td>:white_check_mark:</td>
+		</tr>
+		<tr>
+			<td><a href="https://github.com/vivekkhimani/torchfl/blob/master/torchfl/models/sota/resnet.py#L125" target="_blank">ResNet50</a></td>
+			<td>:white_check_mark:</td>
+			<td>:white_check_mark:</td>
+		</tr>
+		<tr>
+			<td><a href="https://github.com/vivekkhimani/torchfl/blob/master/torchfl/models/sota/resnet.py#L174" target="_blank">ResNet101</a></td>
+			<td>:white_check_mark:</td>
+			<td>:white_check_mark:</td>
+		</tr>
+		<tr>
+			<td><a href="https://github.com/vivekkhimani/torchfl/blob/master/torchfl/models/sota/resnet.py#L223" target="_blank">ResNet152</a></td>
+			<td>:white_check_mark:</td>
+			<td>:white_check_mark:</td>
+		</tr>
+		<tr>
+			<td><a href="https://github.com/vivekkhimani/torchfl/blob/master/torchfl/models/sota/resnet.py#L272" target="_blank">ResNext50(32x4d)</a></td>
+			<td>:white_check_mark:</td>
+			<td>:white_check_mark:</td>
+		</tr>
+		<tr>
+			<td><a href="https://github.com/vivekkhimani/torchfl/blob/master/torchfl/models/sota/resnet.py#L323" target="_blank">ResNext101(32x8d)</a></td>
+			<td>:white_check_mark:</td>
+			<td>:white_check_mark:</td>
+		</tr>
+		<tr>
+			<td><a href="https://github.com/vivekkhimani/torchfl/blob/master/torchfl/models/sota/resnet.py#L374" target="_blank">WideResNet(50x2)</a></td>
+			<td>:white_check_mark:</td>
+			<td>:white_check_mark:</td>
+		</tr>
+		<tr>
+			<td><a href="https://github.com/vivekkhimani/torchfl/blob/master/torchfl/models/sota/resnet.py#L425" target="_blank">WideResNet(101x2)</a></td>
+			<td>:white_check_mark:</td>
+			<td>:white_check_mark:</td>
+		</tr>
+		<tr>
+			<td><a href="https://github.com/vivekkhimani/torchfl/blob/master/torchfl/models/sota/shufflenetv2.py#L20" target="_blank">ShuffleNetv2(x0.5)</a></td>
+			<td>:white_check_mark:</td>
+			<td>:white_check_mark:</td>
+		</tr>
+		<tr>
+			<td><a href="https://github.com/vivekkhimani/torchfl/blob/master/torchfl/models/sota/shufflenetv2.py#L74" target="_blank">ShuffleNetv2(x1.0)</a></td>
+			<td>:white_check_mark:</td>
+			<td>:white_check_mark:</td>
+		</tr>
+		<tr>
+			<td><a href="https://github.com/vivekkhimani/torchfl/blob/master/torchfl/models/sota/shufflenetv2.py#L128" target="_blank">ShuffleNetv2(x1.5)</a></td>
+			<td>:x:</td>
+			<td>:x:</td>
+		</tr>
+		<tr>
+			<td><a href="https://github.com/vivekkhimani/torchfl/blob/master/torchfl/models/sota/shufflenetv2.py#L83" target="_blank">ShuffleNetv2(x2.0)</a></td>
+			<td>:x:</td>
+			<td>:x:</td>
+		</tr>
+		<tr>
+			<td><a href="https://github.com/vivekkhimani/torchfl/blob/master/torchfl/models/sota/squeezenet.py#L19" target="_blank">SqueezeNet1.0</a></td>
+			<td>:white_check_mark:</td>
+			<td>:white_check_mark:</td>
+		</tr>
+		<tr>
+			<td><a href="https://github.com/vivekkhimani/torchfl/blob/master/torchfl/models/sota/squeezenet.py#L83" target="_blank">SqueezeNet1.1</a></td>
+			<td>:white_check_mark:</td>
+			<td>:white_check_mark:</td>
+		</tr>
+		<tr>
+			<td><a href="https://github.com/vivekkhimani/torchfl/blob/master/torchfl/models/sota/vgg.py#L45" target="_blank">VGG11</a></td>
+			<td>:white_check_mark:</td>
+			<td>:white_check_mark:</td>
+		</tr>
+		<tr>
+			<td><a href="https://github.com/vivekkhimani/torchfl/blob/master/torchfl/models/sota/vgg.py#L95" target="_blank">VGG11_BatchNorm</a></td>
+			<td>:white_check_mark:</td>
+			<td>:white_check_mark:</td>
+		</tr>
+		<tr>
+			<td><a href="https://github.com/vivekkhimani/torchfl/blob/master/torchfl/models/sota/vgg.py#L145" target="_blank">VGG13</a></td>
+			<td>:white_check_mark:</td>
+			<td>:white_check_mark:</td>
+		</tr>
+		<tr>
+			<td><a href="https://github.com/vivekkhimani/torchfl/blob/master/torchfl/models/sota/vgg.py#L195" target="_blank">VGG13_BatchNorm</a></td>
+			<td>:white_check_mark:</td>
+			<td>:white_check_mark:</td>
+		</tr>
+		<tr>
+			<td><a href="https://github.com/vivekkhimani/torchfl/blob/master/torchfl/models/sota/vgg.py#L245" target="_blank">VGG16</a></td>
+			<td>:white_check_mark:</td>
+			<td>:white_check_mark:</td>
+		</tr>
+		<tr>
+			<td><a href="https://github.com/vivekkhimani/torchfl/blob/master/torchfl/models/sota/vgg.py#L295" target="_blank">VGG16_BatchNorm</a></td>
+			<td>:white_check_mark:</td>
+			<td>:white_check_mark:</td>
+		</tr>
+		<tr>
+			<td><a href="https://github.com/vivekkhimani/torchfl/blob/master/torchfl/models/sota/vgg.py#L345" target="_blank">VGG19</a></td>
+			<td>:white_check_mark:</td>
+			<td>:white_check_mark:</td>
+		</tr>
+		<tr>
+			<td><a href="https://github.com/vivekkhimani/torchfl/blob/master/torchfl/models/sota/vgg.py#L395" target="_blank">VGG19_BatchNorm</a></td>
+			<td>:white_check_mark:</td>
+			<td>:white_check_mark:</td>
+		</tr>
+	</tbody>
+</table>
 
 
 ## Available Datasets
@@ -136,7 +312,7 @@ Before you submit a pull request, check that it meets these guidelines:
 	- Try adding new test cases for new features or enhancements and make changes to the CI pipelines accordingly.
 	- Modify the existing tests (if required) for the bug fixes.
 2. If the pull request adds functionality, the docs should be updated. Put your new functionality into a function with a docstring, and add the feature to the list in ```README.md```.
-3. The pull request should pass all the existingg CI pipelines (Github Actions) and the new/modified workflows should be added as required.
+3. The pull request should pass all the existing CI pipelines (Github Actions) and the new/modified workflows should be added as required.
 
 ### Deploying
 A reminder for the maintainers on how to deploy. Make sure all your changes are committed (including an entry in HISTORY.rst). Then run:
@@ -150,11 +326,11 @@ FIXME. This section needs to be updated once the actual infrastructure has been 
 ### Credits
 We truly appreciate everyone contributing to and helping us build this community! Thanks for all the love and support. A big shoutout to everyone who has contributed to this project.
 #### Core Developers
-1. Vivek Khimani
-	- Email: [vivekkhimani07@gmail.com](mailto:vivekkhimani07@gmail.com)
-	- Website: [https://vivekkhimani.github.io](https://vivekkhimani.github.io)
-	- Github Profile: [https://github.com/vivekkhimani](https://github.com/vivekkhimani)
-	- Buy Me a Coffee: [https://www.buymeacoffee.com/vivekkhimani](https://www.buymeacoffee.com/vivekkhimani)
+1. <b>Vivek Khimani</b>
+	- <b>Email:</b> [vivekkhimani07@gmail.com](mailto:vivekkhimani07@gmail.com)
+	- <b>Website:</b> [https://vivekkhimani.github.io](https://vivekkhimani.github.io)
+	- <b>Github:</b> [https://github.com/vivekkhimani](https://github.com/vivekkhimani)
+	- <b>Buy Me a Coffee:</b> [https://www.buymeacoffee.com/vivekkhimani](https://www.buymeacoffee.com/vivekkhimani)
 
 #### Contributors
 None yet. Why not be the first?
