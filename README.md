@@ -323,7 +323,62 @@ For the initial release, ```torchfl``` will only support state-of-the-art comput
 ## Available Datasets
 Following datasets have been wrapped inside a ```LightningDataModule``` and made available for the initial release of ```torchfl```. To add a new dataset, check the source code in ```torchfl.datamodules```, add tests, and create a PR with ```Features``` tag.
 
-FIXME - add a table here.
+<table>
+	<thead>
+		<tr>
+			<th>Group</th>
+			<th>Datasets</th>
+			<th>IID Split</th>
+			<th>Non-IID Split</th>
+			<th>Datamodules Tests</th>
+			<th>Supported Models</th>
+			<th>Supported Models Tests</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><a href="https://github.com/vivekkhimani/torchfl/blob/master/torchfl/datamodules/cifar.py">CIFAR</a></td>
+			<td>
+				<ul>
+					<li><a href="http://pytorch.org/vision/main/generated/torchvision.datasets.CIFAR10.html">CIFAR10</a></li>
+					<li><a href="http://pytorch.org/vision/main/generated/torchvision.datasets.CIFAR100.html">CIFAR100</a></li>
+				</ul>
+			</td>
+			<td>:white_check_mark:</td>
+			<td>:white_check_mark:</td>
+			<td><a href="https://github.com/vivekkhimani/torchfl/blob/master/tests/datamodules/test_cifar.py">tests/datamodules/test_cifar.py</a></td>
+			<td>
+				<ul>
+					<li><a href="https://github.com/vivekkhimani/torchfl/tree/master/torchfl/models/core/cifar/cifar10">CIFAR10 Models</a></li>
+					<li><a href="https://github.com/vivekkhimani/torchfl/tree/master/torchfl/models/core/cifar/cifar100">CIFAR100 Models</a></li>
+				</ul>
+			</td>
+			<td>
+				<ul>
+					<li><a href="https://github.com/vivekkhimani/torchfl/tree/master/tests/models/cifar/cifar10">CIFAR10 Tests</a></li>
+					<li><a href="https://github.com/vivekkhimani/torchfl/tree/master/tests/models/cifar/cifar100">CIFAR100 Tests</a></li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<td>EMNIST</td>
+			<td>FIXME</td>
+			<td>FIXME</td>
+			<td>FIXME</td>
+			<td>FIXME</td>
+			<td>FIXME</td>
+			<td>FIXME</td>
+		</tr>
+		<tr>
+			<td>FashionMNIST</td>
+			<td>FIXME</td>
+			<td>FIXME</td>
+			<td>FIXME</td>
+			<td>FIXME</td>
+			<td>FIXME</td>
+			<td>FIXME</td>
+	</tbody>
+</table>
 
 ## Contributing
 Contributions are welcome, and they are greatly appreciated! Every little bit helps, and credit will always be given.
@@ -379,9 +434,15 @@ tox
 ```
 Run ```tox --help``` to explore more features for tox.
 6. Your changes need to pass the existing test cases and add the new ones if required under the ```tests``` directory. Following approaches can be used to run the test cases.
+- To run all the test cases.
 ```
-FIXME
+$ coverage run -m pytest tests
 ```
+- To run a specific file containing the test cases.
+```
+$ coverage run -m pytest <path-to-the-file>
+```
+	
 7. Commit your changes and push your branch to GitHub:
 ```
 $ git add --all
@@ -390,7 +451,6 @@ $ git push origin <name-of-your-bugfix-or-feature>
 ```
 8. Submit a pull request through the Github web interface.
 9. Once the pull request has been submitted, the following continuous integration pipelines on Github Actions will be trigger. Ensure that all of them pass before one of the maintainers can review the request.
-FIXME - add the link to GitHub actions and the table for it too! (maybe on the top for more aesthetic)
 
 ### Pull Request Guidelines
 Before you submit a pull request, check that it meets these guidelines:
@@ -399,6 +459,7 @@ Before you submit a pull request, check that it meets these guidelines:
 	- Modify the existing tests (if required) for the bug fixes.
 2. If the pull request adds functionality, the docs should be updated. Put your new functionality into a function with a docstring, and add the feature to the list in ```README.md```.
 3. The pull request should pass all the existing CI pipelines (Github Actions) and the new/modified workflows should be added as required.
+4. Please note that the test cases should only be run in the CI pipeline if the direct/indirect dependencies of the tests have changed. Look at the [workflow YAML files](https://github.com/vivekkhimani/torchfl/tree/master/.github/workflows) for more details or reach out to one of the contributors.
 
 ### Deploying
 A reminder for the maintainers on how to deploy. Make sure all your changes are committed (including an entry in HISTORY.rst). Then run:
