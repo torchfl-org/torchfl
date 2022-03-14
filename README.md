@@ -49,9 +49,30 @@ $ python setup.py install
 ```
 
 ## Examples and Usage
-After installing ```torchfl```, it can be used in the following manner.
+Although ```torchfl``` is primarily built for quick prototyping of federated learning experiments, the models, datasets, and abstractions can also speed up the non-federated learning experiments. In this section, we will explore examples and usages under both the settings.
 
-FIXME - add the usage code snippets and link to full examples here.
+### Non-Federated Learning
+The following steps should be followed on a high-level to train a non-federated learning experiment.
+
+1. Import ```torchfl``` or just the relevant modules.
+
+	```python
+	from torchfl.datamodules.emnist import EMNISTDataModule
+	from torchfl.models.wrapper.emnist import MNISTEMNIST
+	```
+2. Something
+3. Something
+
+For full non-federated learning example scripts, check [examples/trainers](https://github.com/vivekkhimani/torchfl/tree/master/examples/trainers).
+
+### Federated Learning
+The following steps should be followed on a high-level to train a federated learning experiment.
+
+1. FIXME later
+2. FIXME later
+3. FIXME later
+
+For full federated learning example scripts, check [examples/federated](https://github.com/vivekkhimani/torchfl/tree/master/examples/federated).
 
 ## Available Models
 For the initial release, ```torchfl``` will only support state-of-the-art computer vision models. The following table summarizes the available models, support for pre-training, and the possibility of feature-extracting. Please note that the models have been tested with all the available datasets. Therefore, the link to the tests will be provided in the next section.
