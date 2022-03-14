@@ -93,7 +93,7 @@ The following steps should be followed on a high-level to train a non-federated 
 		...
 	)
 	```
-	More details about the [Trainer API](https://pytorch-lightning.readthedocs.io/en/latest/common/trainer.html#) can be found on their official website.
+	More details about the PyTorch Lightning [Trainer API](https://pytorch-lightning.readthedocs.io/en/latest/common/trainer.html#) can be found on their official website.
 	
 3. Prepare the dataset using the wrappers provided by ```torchfl.datamodules```.
 	```python
@@ -102,8 +102,30 @@ The following steps should be followed on a high-level to train a non-federated 
 	datamodule.setup()
 	```
 	
-4. Initialize the model isomg the wrappers provided by ```torchfl.models.wrappers```
+4. Initialize the model using the wrappers provided by ```torchfl.models.wrappers```.
 	```python
+	# check if the model can be loaded from a given checkpoint
+	if (checkpoint_load_path) and os.path.isfile(checkpoint_load_path):
+		model = MNISTEMNIST(
+			"densenet121", "adam", {"lr": 0.001}
+			).load_from_checkpoint(checkpoint_load_path)
+	else:
+		pl.seed_everything(42)
+		model = MNISTEMNIST("densenet121", "adam", {"lr": 0.001})
+		trainer.fit(model, datamodule.train_dataloader(), datamodule.val_dataloader())
+		        model = model.load_from_checkpoint(
+            trainer.checkpoint_callback.best_model_path
+        )
+	```
+
+5. Collect the results.
+	```python
+	val_result = trainer.test(
+		model, test_dataloaders=datamodule.val_dataloader(), verbose=True
+	)
+	test_result = trainer.test(
+		model, test_dataloaders=datamodule.test_dataloader(), verbose=True
+	)
 	```
 
 For full non-federated learning example scripts, check [examples/trainers](https://github.com/vivekkhimani/torchfl/tree/master/examples/trainers).
