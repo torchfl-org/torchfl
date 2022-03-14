@@ -52,16 +52,59 @@ $ python setup.py install
 Although ```torchfl``` is primarily built for quick prototyping of federated learning experiments, the models, datasets, and abstractions can also speed up the non-federated learning experiments. In this section, we will explore examples and usages under both the settings.
 
 ### Non-Federated Learning
-The following steps should be followed on a high-level to train a non-federated learning experiment.
+The following steps should be followed on a high-level to train a non-federated learning experiment. We are using the ```EMNIST (MNIST)``` dataset and ```densenet121``` for this example.
 
-1. Import ```torchfl``` or just the relevant modules.
-
+1. Import the relevant modules.
 	```python
 	from torchfl.datamodules.emnist import EMNISTDataModule
 	from torchfl.models.wrapper.emnist import MNISTEMNIST
 	```
-2. Something
-3. Something
+	
+	```python
+	import pytorch_lightning as pl
+	from pytorch_lightning.loggers import TensorBoardLogger
+	from pytorch_lightning.callbacks import (
+		ModelCheckpoint,
+		LearningRateMonitor,
+		DeviceStatsMonitor,
+		ModelSummary,
+		ProgressBar,
+		...
+	)
+	```
+	For more details, view the full list of PyTorch Lightning [callbacks](https://pytorch-lightning.readthedocs.io/en/stable/extensions/callbacks.html#callback) and [loggers](https://pytorch-lightning.readthedocs.io/en/latest/common/loggers.html#loggers) on the official website.
+2. Setup the PyTorch Lightning trainer.
+	```python
+	trainer = pl.Trainer(
+		...
+		logger=[
+			TensorBoardLogger(
+				name=experiment_name,
+				save_dir=os.path.join(checkpoint_save_path, experiment_name),
+			)
+		],
+		callbacks=[
+			ModelCheckpoint(save_weights_only=True, mode="max", monitor="val_acc",
+			LearningRateMonitor("epoch"),
+			DeviceStatsMonitor(),
+			ModelSummary(),
+			ProgressBar(),
+		],
+		...
+	)
+	```
+	More details about the [Trainer API](https://pytorch-lightning.readthedocs.io/en/latest/common/trainer.html#) can be found on their official website.
+	
+3. Prepare the dataset using the wrappers provided by ```torchfl.datamodules```.
+	```python
+	datamodule = EMNISTDataModule(dataset_name="mnist")
+	datamodule.prepare_data()
+	datamodule.setup()
+	```
+	
+4. Initialize the model isomg the wrappers provided by ```torchfl.models.wrappers```
+	```python
+	```
 
 For full non-federated learning example scripts, check [examples/trainers](https://github.com/vivekkhimani/torchfl/tree/master/examples/trainers).
 
