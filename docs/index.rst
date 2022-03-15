@@ -11,8 +11,8 @@ Documentation
    :caption: Table of Contents:
 
    installation
+   usage
    examples
-   modules
    contributing
    authors
    history
