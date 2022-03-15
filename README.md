@@ -1,5 +1,5 @@
 <div align="center">
-	<img src="docs/source/_static/images/torchfl-github.png" width="960px" height="480px">
+	<img src="docs/_static/images/torchfl-github.png" width="960px" height="480px">
 </div>
 
 ## Table of Contents

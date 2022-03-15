@@ -1,20 +1,19 @@
-Welcome to torchfl's documentation!
-======================================
+Documentation
+=============
+
+.. image:: ./_static/images/torchfl-github.png
+   :width: 700
+   :height: 350
+   :alt: Logo
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+   :maxdepth: 4
+   :caption: Table of Contents:
 
-   readme
    installation
-   usage
+   examples
    modules
    contributing
    authors
    history
 
-Indices and tables
-==================
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
