@@ -323,6 +323,7 @@ For the initial release, ```torchfl``` will only support state-of-the-art comput
 ## Available Datasets
 Following datasets have been wrapped inside a ```LightningDataModule``` and made available for the initial release of ```torchfl```. To add a new dataset, check the source code in ```torchfl.datamodules```, add tests, and create a PR with ```Features``` tag.
 
+
 <table>
 	<thead>
 		<tr>
@@ -331,8 +332,8 @@ Following datasets have been wrapped inside a ```LightningDataModule``` and made
 			<th>IID Split</th>
 			<th>Non-IID Split</th>
 			<th>Datamodules Tests</th>
-			<th>Supported Models</th>
-			<th>Supported Models Tests</th>
+			<th>Models</th>
+			<th>Models Tests</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -346,37 +347,74 @@ Following datasets have been wrapped inside a ```LightningDataModule``` and made
 			</td>
 			<td>:white_check_mark:</td>
 			<td>:white_check_mark:</td>
-			<td><a href="https://github.com/vivekkhimani/torchfl/blob/master/tests/datamodules/test_cifar.py">tests/datamodules/test_cifar.py</a></td>
 			<td>
-				<ul>
-					<li><a href="https://github.com/vivekkhimani/torchfl/tree/master/torchfl/models/core/cifar/cifar10">CIFAR10 Models</a></li>
-					<li><a href="https://github.com/vivekkhimani/torchfl/tree/master/torchfl/models/core/cifar/cifar100">CIFAR100 Models</a></li>
-				</ul>
+				<a href="https://github.com/vivekkhimani/torchfl/actions/workflows/pytest-datamodules.yml"><img src="https://github.com/vivekkhimani/torchfl/actions/workflows/pytest-datamodules.yml/badge.svg"></a>
 			</td>
 			<td>
 				<ul>
-					<li><a href="https://github.com/vivekkhimani/torchfl/tree/master/tests/models/cifar/cifar10">CIFAR10 Tests</a></li>
-					<li><a href="https://github.com/vivekkhimani/torchfl/tree/master/tests/models/cifar/cifar100">CIFAR100 Tests</a></li>
+					<li>
+						<a href="https://github.com/vivekkhimani/torchfl/tree/master/torchfl/models/core/cifar/cifar10">CIFAR10</a>
+					</li>
+					<li>
+						<a href="https://github.com/vivekkhimani/torchfl/tree/master/torchfl/models/core/cifar/cifar100">CIFAR100</a>
+					</li>
 				</ul>
+			</td>
+			<td>
+				<a href="https://github.com/vivekkhimani/torchfl/actions/workflows/pytest-models.yml"><img src="https://github.com/vivekkhimani/torchfl/actions/workflows/pytest-models.yml/badge.svg"></a>
 			</td>
 		</tr>
 		<tr>
-			<td>EMNIST</td>
-			<td>FIXME</td>
-			<td>FIXME</td>
-			<td>FIXME</td>
-			<td>FIXME</td>
-			<td>FIXME</td>
-			<td>FIXME</td>
+			<td><a href="https://github.com/vivekkhimani/torchfl/blob/master/torchfl/datamodules/emnist.py">EMNIST</a></td>
+			<td>
+				<ul>
+					<li><a href="https://pytorch.org/vision/main/generated/torchvision.datasets.EMNIST.html">By Class</a></li>
+					<li><a href="https://pytorch.org/vision/main/generated/torchvision.datasets.EMNIST.html">By Merge</a></li>
+					<li><a href="https://pytorch.org/vision/main/generated/torchvision.datasets.EMNIST.html">Balanced</a></li>
+					<li><a href="https://pytorch.org/vision/main/generated/torchvision.datasets.EMNIST.html">Digits</a></li>
+					<li><a href="https://pytorch.org/vision/main/generated/torchvision.datasets.EMNIST.html">Letters</a></li>
+					<li><a href="https://pytorch.org/vision/main/generated/torchvision.datasets.EMNIST.html">MNIST</a></li>
+				</ul>
+			</td>
+			<td>:white_check_mark:</td>
+			<td>:white_check_mark:</td>
+			<td><a href="https://github.com/vivekkhimani/torchfl/actions/workflows/pytest-datamodules.yml"><img src="https://github.com/vivekkhimani/torchfl/actions/workflows/pytest-datamodules.yml/badge.svg"></a></td>
+			<td>
+				<ul>
+					<li>
+						<a href="https://github.com/vivekkhimani/torchfl/tree/master/torchfl/models/core/emnist/byclass">By Class</a>
+					</li>
+					<li>
+						<a href="https://github.com/vivekkhimani/torchfl/tree/master/torchfl/models/core/emnist/bymerge">By Merge</a>
+					</li>
+					<li>
+						<a href="https://github.com/vivekkhimani/torchfl/tree/master/torchfl/models/core/emnist/balanced">Balanced</a>
+					</li>
+					<li>
+						<a href="https://github.com/vivekkhimani/torchfl/tree/master/torchfl/models/core/emnist/digits">Digits</a>
+					</li>
+					<li>
+						<a href="https://github.com/vivekkhimani/torchfl/tree/master/torchfl/models/core/emnist/letters">Letters</a>
+					</li>
+					<li>
+						<a href="https://github.com/vivekkhimani/torchfl/tree/master/torchfl/models/core/emnist/mnist">MNIST</a>
+					</li>
+				</ul>
+			</td>
+			<td>
+				<a href="https://github.com/vivekkhimani/torchfl/actions/workflows/pytest-models.yml"><img src="https://github.com/vivekkhimani/torchfl/actions/workflows/pytest-models.yml/badge.svg"></a>
+			</td>
 		</tr>
 		<tr>
-			<td>FashionMNIST</td>
-			<td>FIXME</td>
-			<td>FIXME</td>
-			<td>FIXME</td>
-			<td>FIXME</td>
-			<td>FIXME</td>
-			<td>FIXME</td>
+			<td><a href="https://github.com/vivekkhimani/torchfl/blob/master/torchfl/datamodules/fashionmnist.py">FashionMNIST</a></td>
+			<td><a href="https://pytorch.org/vision/main/generated/torchvision.datasets.FashionMNIST.html">FashionMNIST</a></td>
+			<td>:white_check_mark:</td>
+			<td>:white_check_mark:</td>
+			<td><a href="https://github.com/vivekkhimani/torchfl/actions/workflows/pytest-datamodules.yml"><img src="https://github.com/vivekkhimani/torchfl/actions/workflows/pytest-datamodules.yml/badge.svg"></a></td>
+			<td><a href="https://github.com/vivekkhimani/torchfl/tree/master/torchfl/models/core/fashionmnist">FashionMNIST</a></td>
+			<td>
+				<a href="https://github.com/vivekkhimani/torchfl/actions/workflows/pytest-models.yml"><img src="https://github.com/vivekkhimani/torchfl/actions/workflows/pytest-models.yml/badge.svg"></a>
+			</td>
 	</tbody>
 </table>
 
@@ -468,7 +506,6 @@ $ bump2version patch # possible: major / minor / patch
 $ git push
 $ git push --tags
 ```
-FIXME. This section needs to be updated once the actual infrastructure has been setup.
 
 ### Credits
 We truly appreciate everyone contributing to and helping us build this community! Thanks for all the love and support. A big shoutout to everyone who has contributed to this project.
