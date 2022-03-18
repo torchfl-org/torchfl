@@ -17,12 +17,12 @@
 - Python 3.6+ support. Built using ```torch-1.10.1```, ```torchvision-0.11.2```, and ```pytorch-lightning-1.5.7```.
 - Customizable implementations for state-of-the-art deep learning [models](#available-models) which can be trained in federated or non-federated settings.
 - Supports finetuning of the pre-trained deep learning models, allowing for faster training using transfer learning.
-- PyTorch LightningDataModule wrappers for the most commonly used [datasets](#available-datasets) to reduce the boilerplate code before experiments. 
+- PyTorch LightningDataModule wrappers for the most commonly used [datasets](#available-datasets) to reduce the boilerplate code before experiments.
 - Built using the bottom-up approach for the datamodules and models which ensures abstractions while allowing for customization.
 - Provides implementation of the federated learning (FL) samplers, aggregators, and wrappers, to prototype FL experiments on-the-go.
 - Backwards compatible with the PyTorch LightningDataModule, LightningModule, loggers, and DevOps tools.
 - More details about the examples and usage can be found [below](#examples-and-usage).
-- For more documentation related to the usage, visit - https://torchfl.readthedocs.io/. 
+- For more documentation related to the usage, visit - https://torchfl.readthedocs.io/.
 
 ## Installation
 ### Stable Release
@@ -59,7 +59,7 @@ The following steps should be followed on a high-level to train a non-federated 
 	from torchfl.datamodules.emnist import EMNISTDataModule
 	from torchfl.models.wrapper.emnist import MNISTEMNIST
 	```
-	
+
 	```python
 	import pytorch_lightning as pl
 	from pytorch_lightning.loggers import TensorBoardLogger
@@ -94,14 +94,14 @@ The following steps should be followed on a high-level to train a non-federated 
 	)
 	```
 	More details about the PyTorch Lightning [Trainer API](https://pytorch-lightning.readthedocs.io/en/latest/common/trainer.html#) can be found on their official website.
-	
+
 3. Prepare the dataset using the wrappers provided by ```torchfl.datamodules```.
 	```python
 	datamodule = EMNISTDataModule(dataset_name="mnist")
 	datamodule.prepare_data()
 	datamodule.setup()
 	```
-	
+
 4. Initialize the model using the wrappers provided by ```torchfl.models.wrappers```.
 	```python
 	# check if the model can be loaded from a given checkpoint
@@ -484,7 +484,7 @@ $ coverage run -m pytest tests
 ```
 $ coverage run -m pytest <path-to-the-file>
 ```
-	
+
 7. Commit your changes and push your branch to GitHub:
 ```
 $ git add --all

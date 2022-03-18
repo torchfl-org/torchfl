@@ -16,4 +16,3 @@ Documentation
    contributing
    authors
    history
-

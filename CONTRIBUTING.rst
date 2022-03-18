@@ -32,7 +32,7 @@ wanted" is open to whoever wants to implement it.
 Implement Features
 ~~~~~~~~~~~~~~~~~~
 
-Look through the GitHub issues for features. Anything tagged with "enhancement", 
+Look through the GitHub issues for features. Anything tagged with "enhancement",
 "help wanted", and "feature" is open to whoever wants to implement it.
 
 Write Documentation
@@ -87,7 +87,7 @@ Ready to contribute? Here's how to set up `torchfl` for local development.
    under the ``tests`` directory. Following approaches can be used to run tests.
 
        * To run all the test cases::
-            
+
             $ coverage run -m pytest tests
 
        * To run a specific file containing the test cases::
