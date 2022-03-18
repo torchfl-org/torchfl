@@ -21,10 +21,10 @@ class LinearBlock(nn.Module):
         """Constructor
 
         Args:
-            c_in - Number of incoming channels.
-            c_out - Number of outgoing channels.
-            act_fn - Activation class constructor (e.g. nn.ReLU).
-            dropout - If the dropout needs to be added.
+            - c_in - Number of incoming channels.
+            - c_out - Number of outgoing channels.
+            - act_fn - Activation class constructor (e.g. nn.ReLU).
+            - dropout - If the dropout needs to be added.
         """
         super().__init__()
         if dropout:
@@ -38,10 +38,10 @@ class LinearBlock(nn.Module):
         """Forward propagation
 
         Args:
-            x (torch.Tensor): Input Tensor
+            - x (torch.Tensor): Input Tensor
 
         Returns:
-            torch.Tensor: Returns the tensor after forward propagation
+            - torch.Tensor: Returns the tensor after forward propagation
         """
         return self.linear_block(x)
 
@@ -62,12 +62,12 @@ class MLP(nn.Module):
         """Constructor
 
         Args:
-            num_classes (int, optional): Number of classification outputs. Defaults to 10.
-            num_channels (int, optional): Number of channels for the images in the dataset. Defaults to 1.
-            img_w (int, optional): Width of the incoming image. Defaults to 28.
-            img_h (int, optional): Heigh of the incoming image. Defaults to 28.
-            hidden_dims (List[int], optional): Dimensions of the hidden layers. Defaults to [256, 128].
-            act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
+            - num_classes (int, optional): Number of classification outputs. Defaults to 10.
+            - num_channels (int, optional): Number of channels for the images in the dataset. Defaults to 1.
+            - img_w (int, optional): Width of the incoming image. Defaults to 28.
+            - img_h (int, optional): Heigh of the incoming image. Defaults to 28.
+            - hidden_dims (List[int], optional): Dimensions of the hidden layers. Defaults to [256, 128].
+            - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
         super().__init__()
         self.hparams = SimpleNamespace(
@@ -119,9 +119,9 @@ class MLP(nn.Module):
         """Forward propagation
 
         Args:
-            x (torch.Tensor): Input Tensor
+            - x (torch.Tensor): Input Tensor
 
         Returns:
-            torch.Tensor: Returns the tensor after forward propagation
+            - torch.Tensor: Returns the tensor after forward propagation
         """
         return self.output_net(self.hidden_net(self.input_net(x)))

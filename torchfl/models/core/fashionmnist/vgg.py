@@ -30,9 +30,9 @@ class VGG11(BaseVGG11):
         """Constructor
 
         Args:
-            pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
-            feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
-            num_channels (int, optional): Number of incoming channels. Defaults to 1.
+            - pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
+            - feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
+            - num_channels (int, optional): Number of incoming channels. Defaults to 1.
         """
         super(VGG11, self).__init__(
             pre_trained=pre_trained,
@@ -48,9 +48,9 @@ class VGG11_BN(BaseVGG11_BN):
         """Constructor
 
         Args:
-            pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
-            feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
-            num_channels (int, optional): Number of incoming channels. Defaults to 1.
+            - pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
+            - feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
+            - num_channels (int, optional): Number of incoming channels. Defaults to 1.
         """
         super(VGG11_BN, self).__init__(
             pre_trained=pre_trained,
@@ -66,9 +66,9 @@ class VGG13(BaseVGG13):
         """Constructor
 
         Args:
-            pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
-            feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
-            num_channels (int, optional): Number of incoming channels. Defaults to 1.
+            - pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
+            - feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
+            - num_channels (int, optional): Number of incoming channels. Defaults to 1.
         """
         super(VGG13, self).__init__(
             pre_trained=pre_trained,
@@ -84,9 +84,9 @@ class VGG13_BN(BaseVGG13_BN):
         """Constructor
 
         Args:
-            pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
-            feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
-            num_channels (int, optional): Number of incoming channels. Defaults to 1.
+            - pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
+            - feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
+            - num_channels (int, optional): Number of incoming channels. Defaults to 1.
         """
         super(VGG13_BN, self).__init__(
             pre_trained=pre_trained,
@@ -102,9 +102,9 @@ class VGG16(BaseVGG16):
         """Constructor
 
         Args:
-            pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
-            feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
-            num_channels (int, optional): Number of incoming channels. Defaults to 1.
+            - pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
+            - feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
+            - num_channels (int, optional): Number of incoming channels. Defaults to 1.
         """
         super(VGG16, self).__init__(
             pre_trained=pre_trained,
@@ -120,9 +120,9 @@ class VGG16_BN(BaseVGG16_BN):
         """Constructor
 
         Args:
-            pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
-            feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
-            num_channels (int, optional): Number of incoming channels. Defaults to 1.
+            - pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
+            - feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
+            - num_channels (int, optional): Number of incoming channels. Defaults to 1.
         """
         super(VGG16_BN, self).__init__(
             pre_trained=pre_trained,
@@ -138,9 +138,9 @@ class VGG19(BaseVGG19):
         """Constructor
 
         Args:
-            pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
-            feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
-            num_channels (int, optional): Number of incoming channels. Defaults to 1.
+            - pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
+            - feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
+            - num_channels (int, optional): Number of incoming channels. Defaults to 1.
         """
         super(VGG19, self).__init__(
             pre_trained=pre_trained,
@@ -156,9 +156,9 @@ class VGG19_BN(BaseVGG19_BN):
         """Constructor
 
         Args:
-            pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
-            feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
-            num_channels (int, optional): Number of incoming channels. Defaults to 1.
+            - pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
+            - feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
+            - num_channels (int, optional): Number of incoming channels. Defaults to 1.
         """
         super(VGG19_BN, self).__init__(
             pre_trained=pre_trained,

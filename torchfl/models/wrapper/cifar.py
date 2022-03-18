@@ -355,15 +355,15 @@ def create_model(
     """Helper function to create a model from the available options.
 
     Args:
-        dataset_name (str): Name of the dataset.
-        model_name (str): Name of the model for the dataset.
-        model_hparams (Optional[Dict[str, Any]]): Hyperparameters for the model. Defaults to None.
+        - dataset_name (str): Name of the dataset.
+        - model_name (str): Name of the model for the dataset.
+        - model_hparams (Optional[Dict[str, Any]]): Hyperparameters for the model. Defaults to None.
 
     Returns:
-        nn.Module: PyTorch model definition.
+        - nn.Module: PyTorch model definition.
 
     Raises:
-        ValueError: Unsupported dataset name or model.
+        - ValueError: Unsupported dataset name or model.
     """
     if dataset_name == "cifar10":
         if model_name not in CIFAR10_MODELS_MAPPING:
@@ -409,10 +409,10 @@ class CIFAR10(pl.LightningModule):
         """Default constructor.
 
         Args:
-            model_name (CIFAR_MODELS_LITERAL): Name of the model to be used. Only choose from the available models.
-            optimizer_name (OPTIMIZERS_LITERAL): Name of optimizer to be used. Only choose from the available models.
-            optimizer_hparams(Dict[str, Any]): Hyperparameters to initialize the optimizer.
-            model_hparams (Optional[Dict[str, Any]], optional): Optional override the default model hparams. Defaults to None.
+            - model_name (CIFAR_MODELS_LITERAL): Name of the model to be used. Only choose from the available models.
+            - optimizer_name (OPTIMIZERS_LITERAL): Name of optimizer to be used. Only choose from the available models.
+            - optimizer_hparams(Dict[str, Any]): Hyperparameters to initialize the optimizer.
+            - model_hparams (Optional[Dict[str, Any]], optional): Optional override the default model hparams. Defaults to None.
         """
         super().__init__()
         self.model = create_model(
@@ -433,10 +433,10 @@ class CIFAR10(pl.LightningModule):
         """Forward propagation
 
         Args:
-            imgs (Tensor): Images for forward propagation.
+            - imgs (Tensor): Images for forward propagation.
 
         Returns:
-            Tensor: PyTorch Tensor generated from forward propagation.
+            - Tensor: PyTorch Tensor generated from forward propagation.
         """
         return self.model(imgs)
 
@@ -457,11 +457,11 @@ class CIFAR10(pl.LightningModule):
         """Training step
 
         Args:
-            batch (Tuple[Tensor, Tensor]): Batch of the training data.
-            batch_idx (int): Index of the batch.
+            - batch (Tuple[Tensor, Tensor]): Batch of the training data.
+            - batch_idx (int): Index of the batch.
 
         Returns:
-            Tensor: PyTorch Tensor to call ".backward" on
+            - Tensor: PyTorch Tensor to call ".backward" on
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs)
@@ -480,8 +480,8 @@ class CIFAR10(pl.LightningModule):
         """Validation step
 
         Args:
-            batch (Tuple[Tensor, Tensor]): Batch of the validation data.
-            batch_idx (int): Index of the batch.
+            - batch (Tuple[Tensor, Tensor]): Batch of the validation data.
+            - batch_idx (int): Index of the batch.
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs).argmax(dim=-1)
@@ -496,8 +496,8 @@ class CIFAR10(pl.LightningModule):
         """Test step
 
         Args:
-            batch (Tuple[Tensor, Tensor]): Batch of the testing data.
-            batch_idx (int): Index of the batch.
+            - batch (Tuple[Tensor, Tensor]): Batch of the testing data.
+            - batch_idx (int): Index of the batch.
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs).argmax(dim=-1)
@@ -520,10 +520,10 @@ class CIFAR100(pl.LightningModule):
         """Default constructor.
 
         Args:
-            model_name (CIFAR_MODELS_LITERAL): Name of the model to be used. Only choose from the available models.
-            optimizer_name (OPTIMIZERS_LITERAL): Name of optimizer to be used. Only choose from the available models.
-            optimizer_hparams(Dict[str, Any]): Hyperparameters to initialize the optimizer.
-            model_hparams (Optional[Dict[str, Any]], optional): Optional override the default model hparams. Defaults to None.
+            - model_name (CIFAR_MODELS_LITERAL): Name of the model to be used. Only choose from the available models.
+            - optimizer_name (OPTIMIZERS_LITERAL): Name of optimizer to be used. Only choose from the available models.
+            - optimizer_hparams(Dict[str, Any]): Hyperparameters to initialize the optimizer.
+            - model_hparams (Optional[Dict[str, Any]], optional): Optional override the default model hparams. Defaults to None.
         """
         super().__init__()
         self.model = create_model(
@@ -544,10 +544,10 @@ class CIFAR100(pl.LightningModule):
         """Forward propagation
 
         Args:
-            imgs (Tensor): Images for forward propagation.
+            - imgs (Tensor): Images for forward propagation.
 
         Returns:
-            Tensor: PyTorch Tensor generated from forward propagation.
+            - Tensor: PyTorch Tensor generated from forward propagation.
         """
         return self.model(imgs)
 
@@ -568,11 +568,11 @@ class CIFAR100(pl.LightningModule):
         """Training step
 
         Args:
-            batch (Tuple[Tensor, Tensor]): Batch of the training data.
-            batch_idx (int): Index of the batch.
+            - batch (Tuple[Tensor, Tensor]): Batch of the training data.
+            - batch_idx (int): Index of the batch.
 
         Returns:
-            Tensor: PyTorch Tensor to call ".backward" on
+            - Tensor: PyTorch Tensor to call ".backward" on
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs)
@@ -591,8 +591,8 @@ class CIFAR100(pl.LightningModule):
         """Validation step
 
         Args:
-            batch (Tuple[Tensor, Tensor]): Batch of the validation data.
-            batch_idx (int): Index of the given batch.
+            - batch (Tuple[Tensor, Tensor]): Batch of the validation data.
+            - batch_idx (int): Index of the given batch.
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs).argmax(dim=-1)
@@ -607,8 +607,8 @@ class CIFAR100(pl.LightningModule):
         """Test step
 
         Args:
-            batch (Tuple[Tensor, Tensor]): Batch of the testing data.
-            batch_idx (int): Index of the given batch.
+            - batch (Tuple[Tensor, Tensor]): Batch of the testing data.
+            - batch_idx (int): Index of the given batch.
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs).argmax(dim=-1)

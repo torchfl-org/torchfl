@@ -11,7 +11,7 @@ class LeNet(BaseLeNet):
         """Constructor
 
         Args:
-            num_channels (int, optional): Number of incoming channels. Defaults to 1.
+            - num_channels (int, optional): Number of incoming channels. Defaults to 1.
         """
         super(LeNet, self).__init__(
             num_classes=26, num_channels=num_channels, act_fn_name="tanh"

@@ -466,11 +466,15 @@ $ python setup.py develop
 $ git checkout -b name-of-your-bugfix-or-feature
 ```
 Now you can make your changes locally and maintain them on your own branch.
+
+
 5. When you're done making changes, check that your changes pass flake8 and the tests, including testing other Python versions with tox:
 ```
 tox
 ```
 Run ```tox --help``` to explore more features for tox.
+
+
 6. Your changes need to pass the existing test cases and add the new ones if required under the ```tests``` directory. Following approaches can be used to run the test cases.
 - To run all the test cases.
 ```
@@ -488,7 +492,7 @@ $ git commit -m "Your detailed description of your changes."
 $ git push origin <name-of-your-bugfix-or-feature>
 ```
 8. Submit a pull request through the Github web interface.
-9. Once the pull request has been submitted, the following continuous integration pipelines on Github Actions will be trigger. Ensure that all of them pass before one of the maintainers can review the request.
+9. Once the pull request has been submitted, the continuous integration pipelines on Github Actions will be triggered. Ensure that all of them pass before one of the maintainers can review the request.
 
 ### Pull Request Guidelines
 Before you submit a pull request, check that it meets these guidelines:

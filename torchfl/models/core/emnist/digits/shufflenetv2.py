@@ -23,9 +23,9 @@ class ShuffleNetv2_x0_5(BaseShuffleNetv2_x0_5):
         """Constructor
 
         Args:
-            pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
-            feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
-            num_channels (int, optional): Number of incoming channels. Defaults to 1.
+            - pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
+            - feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
+            - num_channels (int, optional): Number of incoming channels. Defaults to 1.
         """
         super(ShuffleNetv2_x0_5, self).__init__(
             pre_trained=pre_trained,
@@ -41,9 +41,9 @@ class ShuffleNetv2_x1_0(BaseShuffleNetv2_x1_0):
         """Constructor
 
         Args:
-            pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
-            feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
-            num_channels (int, optional): Number of incoming channels. Defaults to 1.
+            - pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
+            - feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
+            - num_channels (int, optional): Number of incoming channels. Defaults to 1.
         """
         super(ShuffleNetv2_x1_0, self).__init__(
             pre_trained=pre_trained,
@@ -61,9 +61,9 @@ class ShuffleNetv2_x1_5(BaseShuffleNetv2_x1_5):
         """Constructor
 
         Args:
-            pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to False.
-            feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
-            num_channels (int, optional): Number of incoming channels. Defaults to 1.
+            - pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to False.
+            - feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
+            - num_channels (int, optional): Number of incoming channels. Defaults to 1.
         """
         super(ShuffleNetv2_x1_5, self).__init__(
             pre_trained=pre_trained,
@@ -81,9 +81,9 @@ class ShuffleNetv2_x2_0(BaseShuffleNetv2_x2_0):
         """Constructor
 
         Args:
-            pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to False.
-            feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
-            num_channels (int, optional): Number of incoming channels. Defaults to 1.
+            - pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to False.
+            - feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
+            - num_channels (int, optional): Number of incoming channels. Defaults to 1.
         """
         super(ShuffleNetv2_x2_0, self).__init__(
             pre_trained=pre_trained,
