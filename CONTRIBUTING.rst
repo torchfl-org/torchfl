@@ -119,13 +119,6 @@ Before you submit a pull request, check that it meets these guidelines:
    https://travis-ci.com/vivekkhimani/torchfl/pull_requests
    and make sure that the tests pass for all supported Python versions.
 
-Tips
-----
-
-To run a subset of tests::
-
-$ pytest tests.test_torchfl
-
 
 Deploying
 ---------

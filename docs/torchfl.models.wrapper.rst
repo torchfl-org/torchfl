@@ -1,3 +1,5 @@
+.. _torchfl.wrapper:
+
 torchfl.models.wrapper package
 ==============================
 

@@ -1,3 +1,5 @@
+.. _torchfl.datamodules:
+
 torchfl.datamodules package
 ===========================
 

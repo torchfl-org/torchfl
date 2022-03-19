@@ -84,7 +84,7 @@ The following steps should be followed on a high-level to train a non-federated 
 			)
 		],
 		callbacks=[
-			ModelCheckpoint(save_weights_only=True, mode="max", monitor="val_acc",
+			ModelCheckpoint(save_weights_only=True, mode="max", monitor="val_acc"),
 			LearningRateMonitor("epoch"),
 			DeviceStatsMonitor(),
 			ModelSummary(),
@@ -113,7 +113,7 @@ The following steps should be followed on a high-level to train a non-federated 
 		pl.seed_everything(42)
 		model = MNISTEMNIST("densenet121", "adam", {"lr": 0.001})
 		trainer.fit(model, datamodule.train_dataloader(), datamodule.val_dataloader())
-		        model = model.load_from_checkpoint(
+		model = model.load_from_checkpoint(
             trainer.checkpoint_callback.best_model_path
         )
 	```
