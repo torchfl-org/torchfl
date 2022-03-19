@@ -60,61 +60,56 @@ jobs:
           python -m pip install pytest coverage
           python -m pip install -r requirements_dev.txt
       - name: PyTest for CIFAR10 models
-        if: ${{needs.changedfiles.outputs.models-cifar-cifar10}}
+        if: ${{needs.changedfiles.outputs.models-cifar-cifar10}} || $${{needs.changedfiles.outputs.models-sota}}
         run: |
           echo ${{needs.changedfiles.outputs.models-cifar-cifar10}}
           coverage run -m pytest tests/models/cifar/cifar10
           coverage report --fail-under 80 tests/models/cifar/cifar10/*.py
       - name: PyTest for CIFAR100 models
-        if: ${{needs.changedfiles.outputs.models-cifar-cifar100}}
+        if: ${{needs.changedfiles.outputs.models-cifar-cifar100}} || ${{needs.changedfiles.outputs.models-sota}}
         run: |
           echo ${{needs.changedfiles.outputs.models-cifar-cifar100}}
           coverage run -m pytest tests/models/cifar/cifar100
           coverage report --fail-under 80 tests/models/cifar/cifar100/*.py
       - name: PyTest for EMNIST balanced models
-        if: ${{needs.changedfiles.outputs.models-emnist-balanced}}
+        if: ${{needs.changedfiles.outputs.models-emnist-balanced}} || ${{needs.changedfiles.outputs.models-sota}}
         run: |
           echo ${{needs.changedfiles.outputs.models-emnist-balanced}}
           coverage run -m pytest tests/models/emnist/balanced
           coverage report --fail-under 80 tests/models/emnist/balanced/*.py
       - name: PyTest for EMNIST byclass models
-        if: ${{needs.changedfiles.outputs.models-emnist-byclass}}
+        if: ${{needs.changedfiles.outputs.models-emnist-byclass}} || ${{needs.changedfiles.outputs.models-sota}}
         run: |
           echo ${{needs.changedfiles.outputs.models-emnist-byclass}}
           coverage run -m pytest tests/models/emnist/byclass
           coverage report --fail-under 80 tests/models/emnist/byclass/*.py
       - name: PyTest for EMNIST bymerge models
-        if: ${{needs.changedfiles.outputs.models-emnist-bymerge}}
+        if: ${{needs.changedfiles.outputs.models-emnist-bymerge}} || ${{needs.changedfiles.outputs.models-sota}}
         run: |
           echo ${{needs.changedfiles.outputs.models-emnist-bymerge}}
           coverage run -m pytest tests/models/emnist/bymerge
           coverage report --fail-under 80 tests/models/emnist/bymerge/*.py
       - name: PyTest for EMNIST digits models
-        if: ${{needs.changedfiles.outputs.models-emnist-digits}}
+        if: ${{needs.changedfiles.outputs.models-emnist-digits}} || ${{needs.changedfiles.outputs.models-sota}}
         run: |
           echo ${{needs.changedfiles.outputs.models-emnist-digits}}
           coverage run -m pytest tests/models/emnist/digits
           coverage report --fail-under 80 tests/models/emnist/digits/*.py
       - name: PyTest for EMNIST letters models
-        if: ${{needs.changedfiles.outputs.models-emnist-letters}}
+        if: ${{needs.changedfiles.outputs.models-emnist-letters}} || ${{needs.changedfiles.outputs.models-sota}}
         run: |
           echo ${{needs.changedfiles.outputs.models-emnist-letters}}
           coverage run -m pytest tests/models/emnist/letters
           coverage report --fail-under 80 tests/models/emnist/letters/*.py
       - name: PyTest for EMNIST mnist models
-        if: ${{needs.changedfiles.outputs.models-emnist-mnist}}
+        if: ${{needs.changedfiles.outputs.models-emnist-mnist}} || ${{needs.changedfiles.outputs.models-sota}}
         run: |
           echo ${{needs.changedfiles.outputs.models-emnist-mnist}}
           coverage run -m pytest tests/models/emnist/mnist
           coverage report --fail-under 80 tests/models/emnist/mnist/*.py
       - name: PyTest for FashionMNIST models
-        if: ${{needs.changedfiles.outputs.models-fashionmnist}}
+        if: ${{needs.changedfiles.outputs.models-fashionmnist}} || ${{needs.changedfiles.outputs.models-sota}}
         run: |
           echo ${{needs.changedfiles.outputs.models-fashionmnist}}
           coverage run -m pytest tests/models/fashionmnist
           coverage report --fail-under 80 tests/models/fashionmnist/*.py
-      - name: PyTest for sota models
-        if: ${{needs.changedfiles.outputs.models-sota}}
-        run: |
-          echo ${{needs.changedfiles.outputs.models-sota}}
-          coverage run -m pytest tests/models
