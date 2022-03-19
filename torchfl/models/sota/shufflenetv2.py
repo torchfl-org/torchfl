@@ -32,11 +32,11 @@ class ShuffleNetv2_x0_5(models.ShuffleNetV2):
         """Constructor
 
         Args:
-            pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
-            feature_extract (bool, optional): Only trains the sequential layers of the pre-trained model. If False, the entire model is finetuned. Defaults to True.
-            num_classes (int, optional): Number of classification outputs. Defaults to 10.
-            num_channels (int, optional): Number of incoming channels. Defaults to 3.
-            act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
+            - pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
+            - feature_extract (bool, optional): Only trains the sequential layers of the pre-trained model. If False, the entire model is finetuned. Defaults to True.
+            - num_classes (int, optional): Number of classification outputs. Defaults to 10.
+            - num_channels (int, optional): Number of incoming channels. Defaults to 3.
+            - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
         super(ShuffleNetv2_x0_5, self).__init__(
             stages_repeats=[4, 8, 4], stages_out_channels=[24, 48, 96, 192, 1024]
@@ -86,11 +86,11 @@ class ShuffleNetv2_x1_0(models.ShuffleNetV2):
         """Constructor
 
         Args:
-            pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
-            feature_extract (bool, optional): Only trains the sequential layers of the pre-trained model. If False, the entire model is finetuned. Defaults to True.
-            num_classes (int, optional): Number of classification outputs. Defaults to 10.
-            num_channels (int, optional): Number of incoming channels. Defaults to 3.
-            act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
+            - pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
+            - feature_extract (bool, optional): Only trains the sequential layers of the pre-trained model. If False, the entire model is finetuned. Defaults to True.
+            - num_classes (int, optional): Number of classification outputs. Defaults to 10.
+            - num_channels (int, optional): Number of incoming channels. Defaults to 3.
+            - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
         super(ShuffleNetv2_x1_0, self).__init__(
             stages_repeats=[4, 8, 4], stages_out_channels=[24, 116, 232, 464, 1024]
@@ -140,14 +140,14 @@ class ShuffleNetv2_x1_5(models.ShuffleNetV2):
         """Constructor
 
         Args:
-            pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
-            feature_extract (bool, optional): Only trains the sequential layers of the pre-trained model. If False, the entire model is finetuned. Defaults to True.
-            num_classes (int, optional): Number of classification outputs. Defaults to 10.
-            num_channels (int, optional): Number of incoming channels. Defaults to 3.
-            act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
+            - pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
+            - feature_extract (bool, optional): Only trains the sequential layers of the pre-trained model. If False, the entire model is finetuned. Defaults to True.
+            - num_classes (int, optional): Number of classification outputs. Defaults to 10.
+            - num_channels (int, optional): Number of incoming channels. Defaults to 3.
+            - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
 
         Raise:
-            NotImplementedError: pretrained models not implemented.
+            - NotImplementedError: pretrained models not implemented.
         """
         super(ShuffleNetv2_x1_5, self).__init__(
             stages_repeats=[4, 8, 4], stages_out_channels=[24, 176, 352, 704, 1024]
@@ -195,14 +195,14 @@ class ShuffleNetv2_x2_0(models.ShuffleNetV2):
         """Constructor
 
         Args:
-            pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
-            feature_extract (bool, optional): Only trains the sequential layers of the pre-trained model. If False, the entire model is finetuned. Defaults to True.
-            num_classes (int, optional): Number of classification outputs. Defaults to 10.
-            num_channels (int, optional): Number of incoming channels. Defaults to 3.
-            act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
+            - pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
+            - feature_extract (bool, optional): Only trains the sequential layers of the pre-trained model. If False, the entire model is finetuned. Defaults to True.
+            - num_classes (int, optional): Number of classification outputs. Defaults to 10.
+            - num_channels (int, optional): Number of incoming channels. Defaults to 3.
+            - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
 
         Raise:
-            NotImplementedError: pretrained models not implemented.
+            - NotImplementedError: pretrained models not implemented.
         """
         super(ShuffleNetv2_x2_0, self).__init__(
             stages_repeats=[4, 8, 4], stages_out_channels=[24, 244, 488, 976, 2048]

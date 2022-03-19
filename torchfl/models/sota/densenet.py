@@ -32,11 +32,11 @@ class DenseNet121(models.DenseNet):
         """Constructor
 
         Args:
-            pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
-            feature_extract (bool, optional): Only trains the sequential layers of the pre-trained model. If False, the entire model is finetuned. Defaults to True.
-            num_classes (int, optional): Number of classification outputs. Defaults to 10.
-            num_channels (int, optional): Number of incoming channels. Defaults to 3.
-            act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
+            - pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
+            - feature_extract (bool, optional): Only trains the sequential layers of the pre-trained model. If False, the entire model is finetuned. Defaults to True.
+            - num_classes (int, optional): Number of classification outputs. Defaults to 10.
+            - num_channels (int, optional): Number of incoming channels. Defaults to 3.
+            - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
         super(DenseNet121, self).__init__(
             growth_rate=32, block_config=(6, 12, 24, 16), num_init_features=64
@@ -90,11 +90,11 @@ class DenseNet161(models.DenseNet):
         """Constructor
 
         Args:
-            pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
-            feature_extract (bool, optional): Only trains the sequential layers of the pre-trained model. If False, the entire model is finetuned. Defaults to True.
-            num_classes (int, optional): Number of classification outputs. Defaults to 10.
-            num_channels (int, optional): Number of incoming channels. Defaults to 3.
-            act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
+            - pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
+            - feature_extract (bool, optional): Only trains the sequential layers of the pre-trained model. If False, the entire model is finetuned. Defaults to True.
+            - num_classes (int, optional): Number of classification outputs. Defaults to 10.
+            - num_channels (int, optional): Number of incoming channels. Defaults to 3.
+            - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
         super(DenseNet161, self).__init__(
             growth_rate=48, block_config=(6, 12, 36, 24), num_init_features=96
@@ -148,11 +148,11 @@ class DenseNet169(models.DenseNet):
         """Constructor
 
         Args:
-            pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
-            feature_extract (bool, optional): Only trains the sequential layers of the pre-trained model. If False, the entire model is finetuned. Defaults to True.
-            num_classes (int, optional): Number of classification outputs. Defaults to 10.
-            num_channels (int, optional): Number of incoming channels. Defaults to 3.
-            act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
+            - pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
+            - feature_extract (bool, optional): Only trains the sequential layers of the pre-trained model. If False, the entire model is finetuned. Defaults to True.
+            - num_classes (int, optional): Number of classification outputs. Defaults to 10.
+            - num_channels (int, optional): Number of incoming channels. Defaults to 3.
+            - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
         super(DenseNet169, self).__init__(
             growth_rate=32, block_config=(6, 12, 32, 32), num_init_features=64
@@ -206,11 +206,11 @@ class DenseNet201(models.DenseNet):
         """Constructor
 
         Args:
-            pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
-            feature_extract (bool, optional): Only trains the sequential layers of the pre-trained model. If False, the entire model is finetuned. Defaults to True.
-            num_classes (int, optional): Number of classification outputs. Defaults to 10.
-            num_channels (int, optional): Number of incoming channels. Defaults to 3.
-            act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
+            - pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
+            - feature_extract (bool, optional): Only trains the sequential layers of the pre-trained model. If False, the entire model is finetuned. Defaults to True.
+            - num_classes (int, optional): Number of classification outputs. Defaults to 10.
+            - num_channels (int, optional): Number of incoming channels. Defaults to 3.
+            - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
         super(DenseNet201, self).__init__(
             growth_rate=32, block_config=(6, 12, 48, 32), num_init_features=64

@@ -35,11 +35,11 @@ class MobileNetV2(models.mobilenet.MobileNetV2):
         """Constructor
 
         Args:
-            pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
-            feature_extract (bool, optional): Only trains the sequential layers of the pre-trained model. If False, the entire model is finetuned. Defaults to True.
-            num_classes (int, optional): Number of classification outputs. Defaults to 10.
-            num_channels (int, optional): Number of incoming channels. Defaults to 3.
-            act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
+            - pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
+            - feature_extract (bool, optional): Only trains the sequential layers of the pre-trained model. If False, the entire model is finetuned. Defaults to True.
+            - num_classes (int, optional): Number of classification outputs. Defaults to 10.
+            - num_channels (int, optional): Number of incoming channels. Defaults to 3.
+            - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
         super(MobileNetV2, self).__init__()
         self.hparams = SimpleNamespace(
@@ -90,11 +90,11 @@ class MobileNetV3Small(models.mobilenet.MobileNetV3):
         """Constructor
 
         Args:
-            pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
-            feature_extract (bool, optional): Only trains the sequential layers of the pre-trained model. If False, the entire model is finetuned. Defaults to True.
-            num_classes (int, optional): Number of classification outputs. Defaults to 10.
-            num_channels (int, optional): Number of incoming channels. Defaults to 3.
-            act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
+            - pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
+            - feature_extract (bool, optional): Only trains the sequential layers of the pre-trained model. If False, the entire model is finetuned. Defaults to True.
+            - num_classes (int, optional): Number of classification outputs. Defaults to 10.
+            - num_channels (int, optional): Number of incoming channels. Defaults to 3.
+            - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
         inverted_residual_setting, last_channel = _mobilenet_v3_conf(
             "mobilenet_v3_small"
@@ -152,11 +152,11 @@ class MobileNetV3Large(models.mobilenet.MobileNetV3):
         """Constructor
 
         Args:
-            pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
-            feature_extract (bool, optional): Only trains the sequential layers of the pre-trained model. If False, the entire model is finetuned. Defaults to True.
-            num_classes (int, optional): Number of classification outputs. Defaults to 10.
-            num_channels (int, optional): Number of incoming channels. Defaults to 3.
-            act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
+            - pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
+            - feature_extract (bool, optional): Only trains the sequential layers of the pre-trained model. If False, the entire model is finetuned. Defaults to True.
+            - num_classes (int, optional): Number of classification outputs. Defaults to 10.
+            - num_channels (int, optional): Number of incoming channels. Defaults to 3.
+            - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
         inverted_residual_setting, last_channel = _mobilenet_v3_conf(
             "mobilenet_v3_large"

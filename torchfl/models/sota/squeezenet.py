@@ -31,11 +31,11 @@ class SqueezeNet1_0(models.SqueezeNet):
         """Constructor
 
         Args:
-            pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
-            feature_extract (bool, optional): Only trains the sequential layers of the pre-trained model. If False, the entire model is finetuned. Defaults to True.
-            num_classes (int, optional): Number of classification outputs. Defaults to 10.
-            num_channels (int, optional): Number of incoming channels. Defaults to 3.
-            act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
+            - pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
+            - feature_extract (bool, optional): Only trains the sequential layers of the pre-trained model. If False, the entire model is finetuned. Defaults to True.
+            - num_classes (int, optional): Number of classification outputs. Defaults to 10.
+            - num_channels (int, optional): Number of incoming channels. Defaults to 3.
+            - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
         super(SqueezeNet1_0, self).__init__(version="1_0")
         self.hparams = SimpleNamespace(
@@ -95,11 +95,11 @@ class SqueezeNet1_1(models.SqueezeNet):
         """Constructor
 
         Args:
-            pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
-            feature_extract (bool, optional): Only trains the sequential layers of the pre-trained model. If False, the entire model is finetuned. Defaults to True.
-            num_classes (int, optional): Number of classification outputs. Defaults to 10.
-            num_channels (int, optional): Number of incoming channels. Defaults to 3.
-            act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
+            - pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
+            - feature_extract (bool, optional): Only trains the sequential layers of the pre-trained model. If False, the entire model is finetuned. Defaults to True.
+            - num_classes (int, optional): Number of classification outputs. Defaults to 10.
+            - num_channels (int, optional): Number of incoming channels. Defaults to 3.
+            - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
         super(SqueezeNet1_1, self).__init__(version="1_1")
         self.hparams = SimpleNamespace(

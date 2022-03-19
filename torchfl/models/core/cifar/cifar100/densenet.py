@@ -23,9 +23,9 @@ class DenseNet121(BaseDenseNet121):
         """Constructor
 
         Args:
-            pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
-            feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
-            num_channels (int, optional): Number of incoming channels. Defaults to 3.
+            - pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
+            - feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
+            - num_channels (int, optional): Number of incoming channels. Defaults to 3.
         """
         super(DenseNet121, self).__init__(
             pre_trained=pre_trained,
@@ -41,9 +41,9 @@ class DenseNet161(BaseDenseNet161):
         """Constructor
 
         Args:
-            pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
-            feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
-            num_channels (int, optional): Number of incoming channels. Defaults to 3.
+            - pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
+            - feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
+            - num_channels (int, optional): Number of incoming channels. Defaults to 3.
         """
         super(DenseNet161, self).__init__(
             pre_trained=pre_trained,
@@ -59,9 +59,9 @@ class DenseNet169(BaseDenseNet169):
         """Constructor
 
         Args:
-            pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
-            feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
-            num_channels (int, optional): Number of incoming channels. Defaults to 3.
+            - pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
+            - feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
+            - num_channels (int, optional): Number of incoming channels. Defaults to 3.
         """
         super(DenseNet169, self).__init__(
             pre_trained=pre_trained,
@@ -77,9 +77,9 @@ class DenseNet201(BaseDenseNet201):
         """Constructor
 
         Args:
-            pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
-            feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
-            num_channels (int, optional): Number of incoming channels. Defaults to 3.
+            - pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
+            - feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
+            - num_channels (int, optional): Number of incoming channels. Defaults to 3.
         """
         super(DenseNet201, self).__init__(
             pre_trained=pre_trained,

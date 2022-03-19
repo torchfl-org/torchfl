@@ -11,9 +11,9 @@ class MLP(BaseMLP):
         """Constructor
 
         Args:
-            num_channels (int, optional): Number of incoming channels. Defaults to 1.
-            img_w (int, optional): Width of the input image. Defaults to 28.
-            img_h (int, optional): Height of the input image. Defaults to 28.
+            - num_channels (int, optional): Number of incoming channels. Defaults to 1.
+            - img_w (int, optional): Width of the input image. Defaults to 28.
+            - img_h (int, optional): Height of the input image. Defaults to 28.
         """
         super(MLP, self).__init__(
             num_classes=26,

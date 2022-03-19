@@ -111,11 +111,10 @@ jobs:
         if: ${{needs.changedfiles.outputs.models-fashionmnist}}
         run: |
           echo ${{needs.changedfiles.outputs.models-fashionmnist}}
-          coverage run -m pytest tests/models/emnist/mnist
+          coverage run -m pytest tests/models/fashionmnist
           coverage report --fail-under 80 tests/models/fashionmnist/*.py
       - name: PyTest for sota models
         if: ${{needs.changedfiles.outputs.models-sota}}
         run: |
           echo ${{needs.changedfiles.outputs.models-sota}}
           coverage run -m pytest tests/models
-          coverage report --fail-under 80 tests/models

@@ -4,11 +4,11 @@
 """PyTorch LightningDataModule for EMNIST (balanced, byclass, bymerge, digits, letters, mnist) dataset.
 
 Raises:
-    ValueError: The given dataset name is not supported. Supported: balanced, byclass, bymerge, digits, letters, mnist.
+    - ValueError: The given dataset name is not supported. Supported: balanced, byclass, bymerge, digits, letters, mnist.
 
 Returns:
-    DatasetSplit: Implementation of PyTorch key-value based Dataset.
-    EMNISTDataModule: PyTorch LightningDataModule for EMNIST datasets. Supports iid and non-iid splits.
+    - DatasetSplit: Implementation of PyTorch key-value based Dataset.
+    - EMNISTDataModule: PyTorch LightningDataModule for EMNIST datasets. Supports iid and non-iid splits.
 """
 import torch
 import numpy as np
@@ -61,8 +61,8 @@ class DatasetSplit(Dataset):
         """Constructor
 
         Args:
-            dataset (Dataset): PyTorch Dataset.
-            idxs (Iterable[int]): collection of indices.
+            - dataset (Dataset): PyTorch Dataset.
+            - idxs (Iterable[int]): collection of indices.
         """
         self.dataset: Dataset = dataset
         self.idxs: Iterable[int] = list(idxs)
@@ -77,7 +77,7 @@ class DatasetSplit(Dataset):
         """Overriding the length method.
 
         Returns:
-            int: length of the collection of indices.
+            - int: length of the collection of indices.
         """
         return len(self.idxs)  # type: ignore
 
@@ -85,10 +85,10 @@ class DatasetSplit(Dataset):
         """Overriding the get method.
 
         Args:
-            index (int): index for querying.
+            - index (int): index for querying.
 
         Returns:
-            Tuple[Any, Any]: returns the key-value pair as a tuple.
+            - Tuple[Any, Any]: returns the key-value pair as a tuple.
         """
         image, label = self.dataset[self.idxs[index]]  # type: ignore
         return image, label
@@ -114,19 +114,19 @@ class EMNISTDataModule(pl.LightningDataModule):
         """Constructor
 
         Args:
-            data_dir (str, optional): Default directory to download the dataset to. Defaults to os.pardir.
-            dataset_name (SUPPORTED_DATASETS_LITERAL, optional): Name of the dataset to be used. Defaults to "mnist".
-            validation_split (float, optional): Fraction of training images to be used as validation. Defaults to 0.1.
-            train_batch_size (int, optional): Default batch size of the training data. Defaults to 32.
-            validation_batch_size (int, optional): Default batch size of the validation data. Defaults to 32.
-            test_batch_size (int, optional): Default batch size of the test data. Defaults to 32.
-            predict_batch_size (int, optional): Default batch size of the predict data. Defaults to 32.
-            train_transform (transforms.Compose, optional): Transformations to apply to the training dataset. Defaults to DEFAULT_TRANSFORMS.
-            val_transform (transforms.Compose, optional): Transformations to apply to the validation dataset. Defaults to DEFAULT_TRANSFORMS.
-            test_transform (transforms.Compose, optional): Transformations to apply to the testing dataset. Defaults to DEFAULT_TRANSFORMS.
-            predict_transform (transforms.Compose, optional): Transformations to apply to the prediction dataset. Defaults to DEFAULT_TRANSFORMS.
+            - data_dir (str, optional): Default directory to download the dataset to. Defaults to os.pardir.
+            - dataset_name (SUPPORTED_DATASETS_LITERAL, optional): Name of the dataset to be used. Defaults to "mnist".
+            - validation_split (float, optional): Fraction of training images to be used as validation. Defaults to 0.1.
+            - train_batch_size (int, optional): Default batch size of the training data. Defaults to 32.
+            - validation_batch_size (int, optional): Default batch size of the validation data. Defaults to 32.
+            - test_batch_size (int, optional): Default batch size of the test data. Defaults to 32.
+            - predict_batch_size (int, optional): Default batch size of the predict data. Defaults to 32.
+            - train_transform (transforms.Compose, optional): Transformations to apply to the training dataset. Defaults to DEFAULT_TRANSFORMS.
+            - val_transform (transforms.Compose, optional): Transformations to apply to the validation dataset. Defaults to DEFAULT_TRANSFORMS.
+            - test_transform (transforms.Compose, optional): Transformations to apply to the testing dataset. Defaults to DEFAULT_TRANSFORMS.
+            - predict_transform (transforms.Compose, optional): Transformations to apply to the prediction dataset. Defaults to DEFAULT_TRANSFORMS.
         Raises:
-            ValueError: The given dataset name is not supported. Supported: cifar10, cifar100.
+            - ValueError: The given dataset name is not supported. Supported: cifar10, cifar100.
         """
         super().__init__()
         self.data_dir: str = data_dir
@@ -153,7 +153,7 @@ class EMNISTDataModule(pl.LightningDataModule):
         """Setup before training/testing/validation/prediction using the dataset.
 
         Args:
-            stage (Optional[str], optional): Current stage of the PyTorch training process used for setup. Defaults to None.
+            - stage (Optional[str], optional): Current stage of the PyTorch training process used for setup. Defaults to None.
         """
         total_images: int = len(
             EMNIST(self.data_dir, train=True, split=self.dataset_name, download=True)
@@ -205,7 +205,7 @@ class EMNISTDataModule(pl.LightningDataModule):
         """Training DataLoader wrapper.
 
         Returns:
-            DataLoader: PyTorch DataLoader object.
+            - DataLoader: PyTorch DataLoader object.
         """
         return DataLoader(
             self.emnist_train,
@@ -217,7 +217,7 @@ class EMNISTDataModule(pl.LightningDataModule):
         """Validation DataLoader wrapper.
 
         Returns:
-            DataLoader: PyTorch DataLoader object.
+            - DataLoader: PyTorch DataLoader object.
         """
         return DataLoader(
             self.emnist_val,
@@ -229,7 +229,7 @@ class EMNISTDataModule(pl.LightningDataModule):
         """Test DataLoader wrapper.
 
         Returns:
-            DataLoader: PyTorch DataLoader object.
+            - DataLoader: PyTorch DataLoader object.
         """
         return DataLoader(
             self.emnist_test,
@@ -241,7 +241,7 @@ class EMNISTDataModule(pl.LightningDataModule):
         """Predict DataLoader object.
 
         Returns:
-            DataLoader: PyTorch DataLoader object.
+            - DataLoader: PyTorch DataLoader object.
         """
         return DataLoader(
             self.emnist_predict,
@@ -255,11 +255,11 @@ class EMNISTDataModule(pl.LightningDataModule):
         """Loads the training dataset as iid split among the workers.
 
         Args:
-            num_workers (int, optional): number of workers for federated learning. Defaults to 10.
-            worker_bs (int, optional): batch size of the dataset for workers training locally. Defaults to 10.
+            - num_workers (int, optional): number of workers for federated learning. Defaults to 10.
+            - worker_bs (int, optional): batch size of the dataset for workers training locally. Defaults to 10.
 
         Returns:
-            Dict[int, DataLoader]: collection of workers as the keys and the PyTorch DataLoader object as values (used for training).
+            - Dict[int, DataLoader]: collection of workers as the keys and the PyTorch DataLoader object as values (used for training).
         """
         items: int = len(self.emnist_train_full) // num_workers
         distribution: np.ndarray = np.random.randint(
@@ -281,12 +281,12 @@ class EMNISTDataModule(pl.LightningDataModule):
         """Loads the training dataset as non-iid split among the workers.
 
         Args:
-            num_workers (int, optional): number of workers for federated learning. Defaults to 10.
-            worker_bs (int, optional): batch size of the dataset for workers training locally. Defaults to 10.
-            niid_factor (int, optional): max number of classes held by each niid agent. lower the number, more measure of non-iidness. Defaults to 2.
+            - num_workers (int, optional): number of workers for federated learning. Defaults to 10.
+            - worker_bs (int, optional): batch size of the dataset for workers training locally. Defaults to 10.
+            - niid_factor (int, optional): max number of classes held by each niid agent. lower the number, more measure of non-iidness. Defaults to 2.
 
         Returns:
-            Dict[int, DataLoader]: collection of workers as the keys and the PyTorch DataLoader object as values (used for training).
+            - Dict[int, DataLoader]: collection of workers as the keys and the PyTorch DataLoader object as values (used for training).
         """
         shards: int = num_workers * niid_factor
         items: int = len(self.emnist_train_full) // shards

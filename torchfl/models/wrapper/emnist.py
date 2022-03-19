@@ -931,10 +931,10 @@ class BalancedEMNIST(pl.LightningModule):
         """Default constructor.
 
         Args:
-            model_name (EMNIST_MODELS_LITERAL): Name of the model to be used. Only choose from the available models.
-            optimizer_name (OPTIMIZERS_LITERAL): Name of optimizer to be used. Only choose from the available models.
-            optimizer_hparams(Dict[str, Any]): Hyperparameters to initialize the optimizer.
-            model_hparams (Optional[Dict[str, Any]], optional): Optional override the default model hparams. Defaults to None.
+            - model_name (EMNIST_MODELS_LITERAL): Name of the model to be used. Only choose from the available models.
+            - optimizer_name (OPTIMIZERS_LITERAL): Name of optimizer to be used. Only choose from the available models.
+            - optimizer_hparams(Dict[str, Any]): Hyperparameters to initialize the optimizer.
+            - model_hparams (Optional[Dict[str, Any]], optional): Optional override the default model hparams. Defaults to None.
         """
         super().__init__()
         self.model = create_model(
@@ -955,10 +955,10 @@ class BalancedEMNIST(pl.LightningModule):
         """Forward propagation
 
         Args:
-            imgs (Tensor): Images for forward propagation.
+            - imgs (Tensor): Images for forward propagation.
 
         Returns:
-            Tensor: PyTorch Tensor generated from forward propagation.
+            - Tensor: PyTorch Tensor generated from forward propagation.
         """
         return self.model(imgs)
 
@@ -979,11 +979,11 @@ class BalancedEMNIST(pl.LightningModule):
         """Training step
 
         Args:
-            batch (Tuple[Tensor, Tensor]): Batch of the training data.
-            batch_idx (int): Index of the batch.
+            - batch (Tuple[Tensor, Tensor]): Batch of the training data.
+            - batch_idx (int): Index of the batch.
 
         Returns:
-            Tensor: PyTorch Tensor to call ".backward" on
+            - Tensor: PyTorch Tensor to call ".backward" on
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs)
@@ -1002,8 +1002,8 @@ class BalancedEMNIST(pl.LightningModule):
         """Validation step
 
         Args:
-            batch (Tuple[Tensor, Tensor]): Batch of the validation data.
-            batch_idx (int): Index of the batch.
+            - batch (Tuple[Tensor, Tensor]): Batch of the validation data.
+            - batch_idx (int): Index of the batch.
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs).argmax(dim=-1)
@@ -1018,8 +1018,8 @@ class BalancedEMNIST(pl.LightningModule):
         """Test step
 
         Args:
-            batch (Tuple[Tensor, Tensor]): Batch of the testing data.
-            batch_idx (int): Index of the batch.
+            - batch (Tuple[Tensor, Tensor]): Batch of the testing data.
+            - batch_idx (int): Index of the batch.
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs).argmax(dim=-1)
@@ -1042,10 +1042,10 @@ class ByClassEMNIST(pl.LightningModule):
         """Default constructor.
 
         Args:
-            model_name (EMNIST_MODELS_LITERAL): Name of the model to be used. Only choose from the available models.
-            optimizer_name (OPTIMIZERS_LITERAL): Name of optimizer to be used. Only choose from the available models.
-            optimizer_hparams(Dict[str, Any]): Hyperparameters to initialize the optimizer.
-            model_hparams (Optional[Dict[str, Any]], optional): Optional override the default model hparams. Defaults to None.
+            - model_name (EMNIST_MODELS_LITERAL): Name of the model to be used. Only choose from the available models.
+            - optimizer_name (OPTIMIZERS_LITERAL): Name of optimizer to be used. Only choose from the available models.
+            - optimizer_hparams(Dict[str, Any]): Hyperparameters to initialize the optimizer.
+            - model_hparams (Optional[Dict[str, Any]], optional): Optional override the default model hparams. Defaults to None.
         """
         super().__init__()
         self.model = create_model(
@@ -1066,10 +1066,10 @@ class ByClassEMNIST(pl.LightningModule):
         """Forward propagation
 
         Args:
-            imgs (Tensor): Images for forward propagation.
+            - imgs (Tensor): Images for forward propagation.
 
         Returns:
-            Tensor: PyTorch Tensor generated from forward propagation.
+            - Tensor: PyTorch Tensor generated from forward propagation.
         """
         return self.model(imgs)
 
@@ -1090,11 +1090,11 @@ class ByClassEMNIST(pl.LightningModule):
         """Training step
 
         Args:
-            batch (Tuple[Tensor, Tensor]): Batch of the training data.
-            batch_idx (int): Index of the batch.
+            - batch (Tuple[Tensor, Tensor]): Batch of the training data.
+            - batch_idx (int): Index of the batch.
 
         Returns:
-            Tensor: PyTorch Tensor to call ".backward" on
+            - Tensor: PyTorch Tensor to call ".backward" on
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs)
@@ -1113,8 +1113,8 @@ class ByClassEMNIST(pl.LightningModule):
         """Validation step
 
         Args:
-            batch (Tuple[Tensor, Tensor]): Batch of the validation data.
-            batch_idx (int): Index of the batch.
+            - batch (Tuple[Tensor, Tensor]): Batch of the validation data.
+            - batch_idx (int): Index of the batch.
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs).argmax(dim=-1)
@@ -1129,8 +1129,8 @@ class ByClassEMNIST(pl.LightningModule):
         """Test step
 
         Args:
-            batch (Tuple[Tensor, Tensor]): Batch of the testing data.
-            batch_idx (int): Index of the batch.
+            - batch (Tuple[Tensor, Tensor]): Batch of the testing data.
+            - batch_idx (int): Index of the batch.
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs).argmax(dim=-1)
@@ -1153,10 +1153,10 @@ class ByMergeEMNIST(pl.LightningModule):
         """Default constructor.
 
         Args:
-            model_name (EMNIST_MODELS_LITERAL): Name of the model to be used. Only choose from the available models.
-            optimizer_name (OPTIMIZERS_LITERAL): Name of optimizer to be used. Only choose from the available models.
-            optimizer_hparams(Dict[str, Any]): Hyperparameters to initialize the optimizer.
-            model_hparams (Optional[Dict[str, Any]], optional): Optional override the default model hparams. Defaults to None.
+            - model_name (EMNIST_MODELS_LITERAL): Name of the model to be used. Only choose from the available models.
+            - optimizer_name (OPTIMIZERS_LITERAL): Name of optimizer to be used. Only choose from the available models.
+            - optimizer_hparams(Dict[str, Any]): Hyperparameters to initialize the optimizer.
+            - model_hparams (Optional[Dict[str, Any]], optional): Optional override the default model hparams. Defaults to None.
         """
         super().__init__()
         self.model = create_model(
@@ -1177,10 +1177,10 @@ class ByMergeEMNIST(pl.LightningModule):
         """Forward propagation
 
         Args:
-            imgs (Tensor): Images for forward propagation.
+            - imgs (Tensor): Images for forward propagation.
 
         Returns:
-            Tensor: PyTorch Tensor generated from forward propagation.
+            - Tensor: PyTorch Tensor generated from forward propagation.
         """
         return self.model(imgs)
 
@@ -1201,11 +1201,11 @@ class ByMergeEMNIST(pl.LightningModule):
         """Training step
 
         Args:
-            batch (Tuple[Tensor, Tensor]): Batch of the training data.
-            batch_idx (int): Index of the batch.
+            - batch (Tuple[Tensor, Tensor]): Batch of the training data.
+            - batch_idx (int): Index of the batch.
 
         Returns:
-            Tensor: PyTorch Tensor to call ".backward" on
+            - Tensor: PyTorch Tensor to call ".backward" on
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs)
@@ -1224,8 +1224,8 @@ class ByMergeEMNIST(pl.LightningModule):
         """Validation step
 
         Args:
-            batch (Tuple[Tensor, Tensor]): Batch of the validation data.
-            batch_idx (int): Index of the batch.
+            - batch (Tuple[Tensor, Tensor]): Batch of the validation data.
+            - batch_idx (int): Index of the batch.
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs).argmax(dim=-1)
@@ -1240,8 +1240,8 @@ class ByMergeEMNIST(pl.LightningModule):
         """Test step
 
         Args:
-            batch (Tuple[Tensor, Tensor]): Batch of the testing data.
-            batch_idx (int): Index of the batch.
+            - batch (Tuple[Tensor, Tensor]): Batch of the testing data.
+            - batch_idx (int): Index of the batch.
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs).argmax(dim=-1)
@@ -1264,10 +1264,10 @@ class LettersEMNIST(pl.LightningModule):
         """Default constructor.
 
         Args:
-            model_name (EMNIST_MODELS_LITERAL): Name of the model to be used. Only choose from the available models.
-            optimizer_name (OPTIMIZERS_LITERAL): Name of optimizer to be used. Only choose from the available models.
-            optimizer_hparams(Dict[str, Any]): Hyperparameters to initialize the optimizer.
-            model_hparams (Optional[Dict[str, Any]], optional): Optional override the default model hparams. Defaults to None.
+            - model_name (EMNIST_MODELS_LITERAL): Name of the model to be used. Only choose from the available models.
+            - optimizer_name (OPTIMIZERS_LITERAL): Name of optimizer to be used. Only choose from the available models.
+            - optimizer_hparams(Dict[str, Any]): Hyperparameters to initialize the optimizer.
+            - model_hparams (Optional[Dict[str, Any]], optional): Optional override the default model hparams. Defaults to None.
         """
         super().__init__()
         self.model = create_model(
@@ -1288,10 +1288,10 @@ class LettersEMNIST(pl.LightningModule):
         """Forward propagation
 
         Args:
-            imgs (Tensor): Images for forward propagation.
+            - imgs (Tensor): Images for forward propagation.
 
         Returns:
-            Tensor: PyTorch Tensor generated from forward propagation.
+            - Tensor: PyTorch Tensor generated from forward propagation.
         """
         return self.model(imgs)
 
@@ -1312,11 +1312,11 @@ class LettersEMNIST(pl.LightningModule):
         """Training step
 
         Args:
-            batch (Tuple[Tensor, Tensor]): Batch of the training data.
-            batch_idx (int): Index of the batch.
+            - batch (Tuple[Tensor, Tensor]): Batch of the training data.
+            - batch_idx (int): Index of the batch.
 
         Returns:
-            Tensor: PyTorch Tensor to call ".backward" on
+            - Tensor: PyTorch Tensor to call ".backward" on
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs)
@@ -1335,8 +1335,8 @@ class LettersEMNIST(pl.LightningModule):
         """Validation step
 
         Args:
-            batch (Tuple[Tensor, Tensor]): Batch of the validation data.
-            batch_idx (int): Index of the batch.
+            - batch (Tuple[Tensor, Tensor]): Batch of the validation data.
+            - batch_idx (int): Index of the batch.
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs).argmax(dim=-1)
@@ -1351,8 +1351,8 @@ class LettersEMNIST(pl.LightningModule):
         """Test step
 
         Args:
-            batch (Tuple[Tensor, Tensor]): Batch of the testing data.
-            batch_idx (int): Index of the batch.
+            - batch (Tuple[Tensor, Tensor]): Batch of the testing data.
+            - batch_idx (int): Index of the batch.
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs).argmax(dim=-1)
@@ -1375,10 +1375,10 @@ class DigitsEMNIST(pl.LightningModule):
         """Default constructor.
 
         Args:
-            model_name (EMNIST_MODELS_LITERAL): Name of the model to be used. Only choose from the available models.
-            optimizer_name (OPTIMIZERS_LITERAL): Name of optimizer to be used. Only choose from the available models.
-            optimizer_hparams(Dict[str, Any]): Hyperparameters to initialize the optimizer.
-            model_hparams (Optional[Dict[str, Any]], optional): Optional override the default model hparams. Defaults to None.
+            - model_name (EMNIST_MODELS_LITERAL): Name of the model to be used. Only choose from the available models.
+            - optimizer_name (OPTIMIZERS_LITERAL): Name of optimizer to be used. Only choose from the available models.
+            - optimizer_hparams(Dict[str, Any]): Hyperparameters to initialize the optimizer.
+            - model_hparams (Optional[Dict[str, Any]], optional): Optional override the default model hparams. Defaults to None.
         """
         super().__init__()
         self.model = create_model(
@@ -1399,10 +1399,10 @@ class DigitsEMNIST(pl.LightningModule):
         """Forward propagation
 
         Args:
-            imgs (Tensor): Images for forward propagation.
+            - imgs (Tensor): Images for forward propagation.
 
         Returns:
-            Tensor: PyTorch Tensor generated from forward propagation.
+            - Tensor: PyTorch Tensor generated from forward propagation.
         """
         return self.model(imgs)
 
@@ -1423,11 +1423,11 @@ class DigitsEMNIST(pl.LightningModule):
         """Training step
 
         Args:
-            batch (Tuple[Tensor, Tensor]): Batch of the training data.
-            batch_idx (int): Index of the batch.
+            - batch (Tuple[Tensor, Tensor]): Batch of the training data.
+            - batch_idx (int): Index of the batch.
 
         Returns:
-            Tensor: PyTorch Tensor to call ".backward" on
+            - Tensor: PyTorch Tensor to call ".backward" on
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs)
@@ -1446,8 +1446,8 @@ class DigitsEMNIST(pl.LightningModule):
         """Validation step
 
         Args:
-            batch (Tuple[Tensor, Tensor]): Batch of the validation data.
-            batch_idx (int): Index of the batch.
+            - batch (Tuple[Tensor, Tensor]): Batch of the validation data.
+            - batch_idx (int): Index of the batch.
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs).argmax(dim=-1)
@@ -1462,8 +1462,8 @@ class DigitsEMNIST(pl.LightningModule):
         """Test step
 
         Args:
-            batch (Tuple[Tensor, Tensor]): Batch of the testing data.
-            batch_idx (int): Index of the batch.
+            - batch (Tuple[Tensor, Tensor]): Batch of the testing data.
+            - batch_idx (int): Index of the batch.
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs).argmax(dim=-1)
@@ -1486,10 +1486,10 @@ class MNISTEMNIST(pl.LightningModule):
         """Default constructor.
 
         Args:
-            model_name (EMNIST_MODELS_LITERAL): Name of the model to be used. Only choose from the available models.
-            optimizer_name (OPTIMIZERS_LITERAL): Name of optimizer to be used. Only choose from the available models.
-            optimizer_hparams(Dict[str, Any]): Hyperparameters to initialize the optimizer.
-            model_hparams (Optional[Dict[str, Any]], optional): Optional override the default model hparams. Defaults to None.
+            - model_name (EMNIST_MODELS_LITERAL): Name of the model to be used. Only choose from the available models.
+            - optimizer_name (OPTIMIZERS_LITERAL): Name of optimizer to be used. Only choose from the available models.
+            - optimizer_hparams(Dict[str, Any]): Hyperparameters to initialize the optimizer.
+            - model_hparams (Optional[Dict[str, Any]], optional): Optional override the default model hparams. Defaults to None.
         """
         super().__init__()
         self.model = create_model(
@@ -1510,10 +1510,10 @@ class MNISTEMNIST(pl.LightningModule):
         """Forward propagation
 
         Args:
-            imgs (Tensor): Images for forward propagation.
+            - imgs (Tensor): Images for forward propagation.
 
         Returns:
-            Tensor: PyTorch Tensor generated from forward propagation.
+            - Tensor: PyTorch Tensor generated from forward propagation.
         """
         return self.model(imgs)
 
@@ -1534,11 +1534,11 @@ class MNISTEMNIST(pl.LightningModule):
         """Training step
 
         Args:
-            batch (Tuple[Tensor, Tensor]): Batch of the training data.
-            batch_idx (int): Index of the batch.
+            - batch (Tuple[Tensor, Tensor]): Batch of the training data.
+            - batch_idx (int): Index of the batch.
 
         Returns:
-            Tensor: PyTorch Tensor to call ".backward" on
+            - Tensor: PyTorch Tensor to call ".backward" on
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs)
@@ -1557,8 +1557,8 @@ class MNISTEMNIST(pl.LightningModule):
         """Validation step
 
         Args:
-            batch (Tuple[Tensor, Tensor]): Batch of the validation data.
-            batch_idx (int): Index of the batch.
+            - batch (Tuple[Tensor, Tensor]): Batch of the validation data.
+            - batch_idx (int): Index of the batch.
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs).argmax(dim=-1)
@@ -1573,8 +1573,8 @@ class MNISTEMNIST(pl.LightningModule):
         """Test step
 
         Args:
-            batch (Tuple[Tensor, Tensor]): Batch of the testing data.
-            batch_idx (int): Index of the batch.
+            - batch (Tuple[Tensor, Tensor]): Batch of the testing data.
+            - batch_idx (int): Index of the batch.
         """
         imgs, labels = batch
         preds: Tensor = self.model(imgs).argmax(dim=-1)

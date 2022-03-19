@@ -19,9 +19,9 @@ class SqueezeNet1_0(BaseSqueezeNet1_0):
         """Constructor
 
         Args:
-            pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
-            feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
-            num_channels (int, optional): Number of incoming channels. Defaults to 1.
+            - pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
+            - feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
+            - num_channels (int, optional): Number of incoming channels. Defaults to 1.
         """
         super(SqueezeNet1_0, self).__init__(
             pre_trained=pre_trained,
@@ -37,9 +37,9 @@ class SqueezeNet1_1(BaseSqueezeNet1_1):
         """Constructor
 
         Args:
-            pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
-            feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
-            num_channels (int, optional): Number of incoming channels. Defaults to 1.
+            - pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
+            - feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
+            - num_channels (int, optional): Number of incoming channels. Defaults to 1.
         """
         super(SqueezeNet1_1, self).__init__(
             pre_trained=pre_trained,

@@ -19,9 +19,9 @@ class LeNet(nn.Module):
         """Constructor
 
         Args:
-            num_classes (int, optional): Number of classification outputs. Defaults to 10.
-            num_channels (int, optional): Number of channels for the images in the dataset. Defaults to 3.
-            act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
+            - num_classes (int, optional): Number of classification outputs. Defaults to 10.
+            - num_channels (int, optional): Number of channels for the images in the dataset. Defaults to 3.
+            - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
         super(LeNet, self).__init__()
         self.hparams = SimpleNamespace(
@@ -57,9 +57,9 @@ class LeNet(nn.Module):
         """Forward propagation
 
         Args:
-            x (torch.Tensor): Input Tensor
+            - x (torch.Tensor): Input Tensor
 
         Returns:
-            torch.Tensor: Returns the tensor after forward propagation
+            - torch.Tensor: Returns the tensor after forward propagation
         """
         return self.output_net(self.conv_net(self.input_net(x)))

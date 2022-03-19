@@ -13,9 +13,9 @@ class AlexNet(BaseAlexNet):
         """Constructor
 
         Args:
-            pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
-            feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
-            num_channels (int, optional): Number of incoming channels. Defaults to 1.
+            - pre_trained (bool, optional): Use the model pre-trained on the ImageNet dataset. Defaults to True.
+            - feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
+            - num_channels (int, optional): Number of incoming channels. Defaults to 1.
         """
         super(AlexNet, self).__init__(
             pre_trained=pre_trained,
