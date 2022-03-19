@@ -118,4 +118,3 @@ jobs:
         run: |
           echo ${{needs.changedfiles.outputs.models-sota}}
           coverage run -m pytest tests/models
-          coverage report --fail-under 80 tests/models
