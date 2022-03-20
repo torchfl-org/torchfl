@@ -113,9 +113,6 @@ The following steps should be followed on a high-level to train a non-federated 
 		pl.seed_everything(42)
 		model = MNISTEMNIST("densenet121", "adam", {"lr": 0.001})
 		trainer.fit(model, datamodule.train_dataloader(), datamodule.val_dataloader())
-		model = model.load_from_checkpoint(
-            trainer.checkpoint_callback.best_model_path
-        )
 	```
 
 5. Collect the results.
@@ -127,6 +124,10 @@ The following steps should be followed on a high-level to train a non-federated 
 		model, test_dataloaders=datamodule.test_dataloader(), verbose=True
 	)
 	```
+
+6. The corresponding files for the experiment (model checkpoints and logger metadata) will be stored at ```default_root_dir``` argument given to the PyTorch Lightning ```Trainer``` object in Step 2. For this experiment, we use the [Tensorboard](https://www.tensorflow.org/tensorboard) logger. To view the logs (and related plots and metrics), go to the ```default_root_dir``` path and find the Tensorboard log files. Upload the files to the Tensorboard Development portal following the instructions [here](https://tensorboard.dev/#get-started). Once the log files are uploaded, a unique url to your experiment will be generated which can be shared with ease! An example can be found [here](https://tensorboard.dev/experiment/Q1tw19FySLSjLN6CW5DaUw/).
+
+7. Note that, ```torchfl``` is compatible with all the loggers supported by PyTorch Lightning. More information about the PyTorch Lightning loggers can be found [here](https://pytorch-lightning.readthedocs.io/en/latest/common/loggers.html#loggers).
 
 For full non-federated learning example scripts, check [examples/trainers](https://github.com/vivekkhimani/torchfl/tree/master/examples/trainers).
 
