@@ -148,10 +148,7 @@ def train_pretrained_model(
             model_name="mobilenetv3small",
             optimizer_name="adam",
             optimizer_hparams={"lr": 0.001},
-            model_hparams={
-                "pre_trained": True,
-                "feature_extract": False,
-            },
+            model_hparams={"pre_trained": True, "feature_extract": False},
         ).load_from_checkpoint(checkpoint_load_path)
     else:
         pl.seed_everything(42)
@@ -159,10 +156,7 @@ def train_pretrained_model(
             model_name="mobilenetv3small",
             optimizer_name="adam",
             optimizer_hparams={"lr": 0.001},
-            model_hparams={
-                "pre_trained": True,
-                "feature_extract": False,
-            },
+            model_hparams={"pre_trained": True, "feature_extract": False},
         )
         trainer.fit(model, datamodule.train_dataloader(), datamodule.val_dataloader())
 
@@ -236,10 +230,7 @@ def train_feature_extraction_model(
             model_name="mobilenetv3small",
             optimizer_name="adam",
             optimizer_hparams={"lr": 0.001},
-            model_hparams={
-                "pre_trained": True,
-                "feature_extract": True,
-            },
+            model_hparams={"pre_trained": True, "feature_extract": True},
         ).load_from_checkpoint(checkpoint_load_path)
     else:
         pl.seed_everything(42)
@@ -247,10 +238,7 @@ def train_feature_extraction_model(
             model_name="mobilenetv3small",
             optimizer_name="adam",
             optimizer_hparams={"lr": 0.001},
-            model_hparams={
-                "pre_trained": True,
-                "feature_extract": True,
-            },
+            model_hparams={"pre_trained": True, "feature_extract": True},
         )
         trainer.fit(model, datamodule.train_dataloader(), datamodule.val_dataloader())
 
