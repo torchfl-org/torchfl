@@ -154,6 +154,10 @@ class CIFARDataModule(pl.LightningDataModule):
         Args:
             - stage (Optional[str], optional): Current stage of the PyTorch training process used for setup. Defaults to None.
         """
+        # It would be a good idea if you mentioned on the documentation what are the possible options of stage parameter
+        # Also, what will happen if user does not give a valid entry for the stage?
+        # In this case you could return error/raise exeption OR assign to stage a default value
+     
         total_images: Optional[int] = None
         num_validation_images: Optional[int] = None
         num_training_images: Optional[int] = None
@@ -186,7 +190,7 @@ class CIFARDataModule(pl.LightningDataModule):
                     transform=self.predict_transform,
                 )
         elif self.dataset_name == "cifar100":
-            total_images = len(CIFAR10(self.data_dir, train=True, download=True))
+            total_images = len(CIFAR10(self.data_dir, train=True, download=True)) #JO: should not that be CIFAR100?
             num_validation_images = int(total_images * self.validation_split)
             num_training_images = total_images - num_validation_images
             if (stage == "fit") or (not stage):
@@ -268,6 +272,7 @@ class CIFARDataModule(pl.LightningDataModule):
         Returns:
             - Dict[int, DataLoader]: collection of workers as the keys and the PyTorch DataLoader object as values (used for training).
         """
+        # worker_bs --> workers_batch_size ?
         items: int = len(self.cifar_train_full) // num_workers
         distribution: np.ndarray = np.random.randint(
             low=0, high=len(self.cifar_train_full), size=(num_workers, items)
@@ -295,6 +300,7 @@ class CIFARDataModule(pl.LightningDataModule):
         Returns:
             - Dict[int, DataLoader]: collection of workers as the keys and the PyTorch DataLoader object as values (used for training).
         """
+        # worker_bs --> workers_batch_size ?
         shards: int = num_workers * niid_factor
         items: int = len(self.cifar_train_full) // shards
         idx_shard: List[int] = list(range(shards))
