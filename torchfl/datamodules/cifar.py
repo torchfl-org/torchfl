@@ -153,11 +153,7 @@ class CIFARDataModule(pl.LightningDataModule):
 
         Args:
             - stage (Optional[str], optional): Current stage of the PyTorch training process used for setup. Defaults to None.
-        """
-        # It would be a good idea if you mentioned on the documentation what are the possible options of stage parameter
-        # Also, what will happen if user does not give a valid entry for the stage?
-        # In this case you could return error/raise exeption OR assign to stage a default value
-     
+        """   
         total_images: Optional[int] = None
         num_validation_images: Optional[int] = None
         num_training_images: Optional[int] = None
