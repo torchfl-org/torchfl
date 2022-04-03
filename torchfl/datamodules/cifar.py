@@ -190,7 +190,7 @@ class CIFARDataModule(pl.LightningDataModule):
                     transform=self.predict_transform,
                 )
         elif self.dataset_name == "cifar100":
-            total_images = len(CIFAR10(self.data_dir, train=True, download=True)) #JO: should not that be CIFAR100?
+            total_images = len(CIFAR100(self.data_dir, train=True, download=True))
             num_validation_images = int(total_images * self.validation_split)
             num_training_images = total_images - num_validation_images
             if (stage == "fit") or (not stage):
@@ -267,12 +267,11 @@ class CIFARDataModule(pl.LightningDataModule):
 
         Args:
             - num_workers (int, optional): number of workers for federated learning. Defaults to 10.
-            - worker_bs (int, optional): batch size of the dataset for workers training locally. Defaults to 10.
+            - workers_batch_size (int, optional): batch size of the dataset for workers training locally. Defaults to 10.
 
         Returns:
             - Dict[int, DataLoader]: collection of workers as the keys and the PyTorch DataLoader object as values (used for training).
         """
-        # worker_bs --> workers_batch_size ?
         items: int = len(self.cifar_train_full) // num_workers
         distribution: np.ndarray = np.random.randint(
             low=0, high=len(self.cifar_train_full), size=(num_workers, items)
@@ -294,13 +293,12 @@ class CIFARDataModule(pl.LightningDataModule):
 
         Args:
             - num_workers (int, optional): number of workers for federated learning. Defaults to 10.
-            - worker_bs (int, optional): batch size of the dataset for workers training locally. Defaults to 10.
+            - workers_batch_size (int, optional): batch size of the dataset for workers training locally. Defaults to 10.
             - niid_factor (int, optional): max number of classes held by each niid agent. lower the number, more measure of non-iidness. Defaults to 2.
 
         Returns:
             - Dict[int, DataLoader]: collection of workers as the keys and the PyTorch DataLoader object as values (used for training).
         """
-        # worker_bs --> workers_batch_size ?
         shards: int = num_workers * niid_factor
         items: int = len(self.cifar_train_full) // shards
         idx_shard: List[int] = list(range(shards))
