@@ -67,7 +67,7 @@ def fashionmnist_3_channel_loader():
 
 
 def test_shufflenetv2_x05_single_channel_ouput_shape(
-    fashionmnist_single_channel_loader
+    fashionmnist_single_channel_loader,
 ):
     """Testing the ShuffleNetV2 output for a single-channel FashionMNIST image.
 
@@ -95,7 +95,7 @@ def test_shufflenetv2_x05_3_channels_output_shape(fashionmnist_3_channel_loader)
 
 
 def test_shufflenetv2_x10_single_channel_ouput_shape(
-    fashionmnist_single_channel_loader
+    fashionmnist_single_channel_loader,
 ):
     """Testing the ShuffleNetV2 output for a single-channel FashionMNIST image.
 
@@ -123,7 +123,7 @@ def test_shufflenetv2_x10_3_channels_output_shape(fashionmnist_3_channel_loader)
 
 
 def test_shufflenetv2_x15_single_channel_ouput_shape(
-    fashionmnist_single_channel_loader
+    fashionmnist_single_channel_loader,
 ):
     """Testing the ShuffleNetV2 output for a single-channel FashionMNIST image.
 
@@ -151,7 +151,7 @@ def test_shufflenetv2_x15_3_channels_output_shape(fashionmnist_3_channel_loader)
 
 
 def test_shufflenetv2_x20_single_channel_ouput_shape(
-    fashionmnist_single_channel_loader
+    fashionmnist_single_channel_loader,
 ):
     """Testing the ShuffleNetV2 output for a single-channel FashionMNIST image.
 
