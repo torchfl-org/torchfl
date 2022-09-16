@@ -186,7 +186,7 @@ class CIFARDataModule(pl.LightningDataModule):
                     transform=self.predict_transform,
                 )
         elif self.dataset_name == "cifar100":
-            total_images = len(CIFAR10(self.data_dir, train=True, download=True))
+            total_images = len(CIFAR100(self.data_dir, train=True, download=True))
             num_validation_images = int(total_images * self.validation_split)
             num_training_images = total_images - num_validation_images
             if (stage == "fit") or (not stage):
