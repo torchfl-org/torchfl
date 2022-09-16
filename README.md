@@ -1,6 +1,24 @@
 <div align="center">
 	<img src="https://raw.githubusercontent.com/vivekkhimani/torchfl/master/docs/_static/images/torchfl-github.png" width="960px" height="480px">
 </div>
+<hr>
+<div align="center">
+	<a href="https://pypi.org/project/torchfl"><img src="https://img.shields.io/pypi/v/torchfl"></a>
+	<a href="https://github.com/vivekkhimani/torchfl"><img src="https://img.shields.io/github/v/release/vivekkhimani/torchfl"></a>
+	<a href="https://pypi.org/project/torchfl"><img src="https://img.shields.io/pypi/pyversions/torchfl"></a>
+	<a href="https://pypi.org/project/torchfl"><img src="https://img.shields.io/pypi/wheel/torchfl"></a>
+	<a href="https://pypi.org/project/torchfl"><img src="https://img.shields.io/pypi/implementation/torchfl"></a>
+	<a href="https://github.com/vivekkhimani/torchfl"><img src="https://img.shields.io/github/contributors/vivekkhimani/torchfl"></a>
+	<a href="https://github.com/vivekkhimani/torchfl"><img src="https://img.shields.io/github/commit-activity/w/vivekkhimani/torchfl"></a>
+	<a href="https://pypi.org/project/torchfl"><img src="https://img.shields.io/pypi/dm/torchfl"></a>
+	<a href="https://github.com/vivekkhimani/torchfl"><img src="https://img.shields.io/github/directory-file-count/vivekkhimani/torchfl"></a>
+	<a href="https://github.com/vivekkhimani/torchfl"><img src="https://img.shields.io/github/languages/count/vivekkhimani/torchfl"></a>
+	<a href="https://github.com/vivekkhimani/torchfl"><img src="https://img.shields.io/github/languages/top/vivekkhimani/torchfl"></a>
+	<a href="https://github.com/vivekkhimani/torchfl"><img src="https://img.shields.io/github/search/vivekkhimani/torchfl/torchfl"></a>
+	<a href="https://torchfl.readthedocs.io"><img src="https://img.shields.io/readthedocs/torchfl"</a>
+	<a href="https://github.com/vivekkhimani/torchfl/blob/master/LICENSE"><img src="https://img.shields.io/pypi/l/torchfl"></a>
+</div>
+<hr>
 
 ## Table of Contents
 
