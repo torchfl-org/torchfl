@@ -99,6 +99,8 @@ FASHIONMNIST_MODELS: List[str] = [
 
 
 class FASHIONMNIST_MODELS_ENUM(enum.Enum):
+    """Enum for supported FashionMNIST models."""
+
     ALEXNET = "alexnet"
     DENSENET121 = "densenet121"
     DENSENET161 = "densenet161"

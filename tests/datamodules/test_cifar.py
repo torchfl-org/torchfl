@@ -4,6 +4,7 @@
 """Tests for CIFAR PyTorch LightningDataModule module in `torchfl` package."""
 import pytest
 from torchfl.datamodules.cifar import CIFARDataModule
+from torchfl.datamodules.cifar import SUPPORTED_DATASETS_TYPE
 from collections import Counter
 
 
@@ -14,7 +15,7 @@ def cifar10_data_module():
     Returns:
         CIFARDataModule: PyTorch LightningDataModule for CIFAR10.
     """
-    return CIFARDataModule(dataset_name="cifar10")
+    return CIFARDataModule(dataset_name=SUPPORTED_DATASETS_TYPE.CIFAR10)
 
 
 @pytest.fixture
@@ -24,7 +25,7 @@ def cifar100_data_module():
     Returns:
         CIFARDataModule: PyTorch LightningDataModule for CIFAR100.
     """
-    return CIFARDataModule(dataset_name="cifar100")
+    return CIFARDataModule(dataset_name=SUPPORTED_DATASETS_TYPE.CIFAR100)
 
 
 def test_cifar10_train_val_split(cifar10_data_module):

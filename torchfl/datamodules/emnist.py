@@ -40,6 +40,8 @@ SUPPORTED_DATASETS: Set[str] = {
 
 
 class SUPPORTED_DATASETS_TYPE(enum.Enum):
+    """Enum for supported EMNIST datasets."""
+
     BALANCED = "balanced"
     BYCLASS = "byclass"
     BYMERGE = "bymerge"
@@ -139,7 +141,7 @@ class EMNISTDataModule(pl.LightningDataModule):
         if not os.path.exists(TORCHFL_DIR):
             os.mkdir(TORCHFL_DIR)
         self.data_dir: str = data_dir
-        if dataset_name not in SUPPORTED_DATASETS:
+        if dataset_name.value not in SUPPORTED_DATASETS:
             raise ValueError(f"{dataset_name}: Not a supported dataset.")
         self.dataset_name: str = dataset_name.value
         self.train_transform: transforms.Compose = train_transforms

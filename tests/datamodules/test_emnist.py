@@ -4,6 +4,7 @@
 """Tests for EMNIST PyTorch LightningDataModule module in `torchfl` package."""
 import pytest
 from torchfl.datamodules.emnist import EMNISTDataModule
+from torchfl.datamodules.emnist import SUPPORTED_DATASETS_TYPE
 from collections import Counter
 
 
@@ -14,7 +15,7 @@ def emnist_balanced_data_module():
     Returns:
         EMNISTDataModule: PyTorch LightningDataModule for EMNIST
     """
-    return EMNISTDataModule(dataset_name="balanced")
+    return EMNISTDataModule(dataset_name=SUPPORTED_DATASETS_TYPE.BALANCED)
 
 
 @pytest.fixture
@@ -24,7 +25,7 @@ def emnist_byclass_data_module():
     Returns:
         EMNISTDataModule: PyTorch LightningDataModule for EMNIST
     """
-    return EMNISTDataModule(dataset_name="byclass")
+    return EMNISTDataModule(dataset_name=SUPPORTED_DATASETS_TYPE.BYCLASS)
 
 
 @pytest.fixture
@@ -34,7 +35,7 @@ def emnist_bymerge_data_module():
     Returns:
         EMNISTDataModule: PyTorch LightningDataModule for EMNIST.
     """
-    return EMNISTDataModule(dataset_name="bymerge")
+    return EMNISTDataModule(dataset_name=SUPPORTED_DATASETS_TYPE.BYMERGE)
 
 
 @pytest.fixture
@@ -44,7 +45,7 @@ def emnist_digits_data_module():
     Returns:
         EMNISTDataModule: PyTorch LightningDataModule for EMNIST.
     """
-    return EMNISTDataModule(dataset_name="digits")
+    return EMNISTDataModule(dataset_name=SUPPORTED_DATASETS_TYPE.DIGITS)
 
 
 @pytest.fixture
@@ -54,7 +55,7 @@ def emnist_letters_data_module():
     Returns:
         EMNISTDataModule: PyTorch LightningDataModule for EMNIST.
     """
-    return EMNISTDataModule(dataset_name="letters")
+    return EMNISTDataModule(dataset_name=SUPPORTED_DATASETS_TYPE.LETTERS)
 
 
 @pytest.fixture
@@ -64,7 +65,7 @@ def emnist_mnist_data_module():
     Returns:
         EMNISTDataModule: PyTorch LightningDataModule for EMNIST.
     """
-    return EMNISTDataModule(dataset_name="mnist")
+    return EMNISTDataModule(dataset_name=SUPPORTED_DATASETS_TYPE.MNIST)
 
 
 ############

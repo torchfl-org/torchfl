@@ -4,6 +4,8 @@
 
 """Defines the constants to ensure the consistency and compatibility between the files."""
 import enum
+import os
+from pathlib import Path
 from typing import Dict, Any
 from torch.optim import (
     Adadelta,
@@ -22,7 +24,7 @@ from torch.optim import (
 )
 from torch.nn import Tanh, ReLU, LeakyReLU, GELU
 
-
+TORCHFL_DIR: str = os.path.join(Path.home(), ".torchfl")
 DATASETS = ["mnist", "emnist_digits", "cifar10"]
 OPTIMIZERS = [
     "adadelta",
@@ -43,12 +45,16 @@ ACTIVATION_FUNCTIONS = ["tanh", "relu", "leakyrelu", "gelu"]
 
 
 class DATASETS_TYPE(enum.Enum):
+    """Enum class for the supported datasets."""
+
     MNIST = "mnist"
     EMNIST_DIGITS = "emnist_digits"
     CIFAR10 = "cifar10"
 
 
 class OPTIMIZERS_TYPE(enum.Enum):
+    """Enum class for the supported optimizers."""
+
     ADAM = "adam"
     ADAMW = "adamw"
     ADAMAX = "adamax"

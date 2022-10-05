@@ -323,6 +323,8 @@ EMNIST_MODELS: List[str] = [
 
 
 class EMNIST_MODELS_ENUM(enum.Enum):
+    """Enum for supported EMNIST models."""
+
     ALEXNET = "alexnet"
     DENSENET121 = "densenet121"
     DENSENET161 = "densenet161"

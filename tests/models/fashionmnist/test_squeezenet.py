@@ -5,6 +5,7 @@
 import pytest
 from torchvision import datasets, transforms
 import os
+from torchfl.compatibility import TORCHFL_DIR
 from torchfl.models.core.fashionmnist.squeezenet import SqueezeNet1_0, SqueezeNet1_1
 import torch
 
@@ -38,7 +39,7 @@ def fashionmnist_single_channel_loader():
     """
     global data_transforms
     return datasets.FashionMNIST(
-        root=os.path.join(os.pardir, "data"),
+        root=os.path.join(TORCHFL_DIR, "data"),
         train=True,
         download=True,
         transform=data_transforms["train_single_channel"],
@@ -54,7 +55,7 @@ def fashionmnist_3_channel_loader():
     """
     global data_transforms
     return datasets.FashionMNIST(
-        root=os.path.join(os.pardir, "data"),
+        root=os.path.join(TORCHFL_DIR, "data"),
         train=True,
         download=True,
         transform=data_transforms["train_3_channels"],

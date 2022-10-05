@@ -5,6 +5,7 @@
 import pytest
 from torchvision import datasets, transforms
 import os
+from torchfl.compatibility import TORCHFL_DIR
 from torchfl.models.core.emnist.bymerge.alexnet import AlexNet
 import torch
 
@@ -38,7 +39,7 @@ def emnist_single_channel_loader():
     """
     global data_transforms
     return datasets.EMNIST(
-        root=os.path.join(os.pardir, "data"),
+        root=os.path.join(TORCHFL_DIR, "data"),
         train=True,
         download=True,
         split="bymerge",
@@ -55,7 +56,7 @@ def emnist_3_channel_loader():
     """
     global data_transforms
     return datasets.EMNIST(
-        root=os.path.join(os.pardir, "data"),
+        root=os.path.join(TORCHFL_DIR, "data"),
         train=True,
         split="byclass",
         download=True,

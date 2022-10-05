@@ -42,6 +42,8 @@ DEFAULT_TRANSFORMS: transforms.Compose = transforms.Compose(
 
 
 class SUPPORTED_DATASETS_TYPE(enum.Enum):
+    """Enum for supported datasets."""
+
     CIFAR10 = "cifar10"
     CIFAR100 = "cifar100"
 
@@ -131,7 +133,7 @@ class CIFARDataModule(pl.LightningDataModule):
         if not os.path.exists(TORCHFL_DIR):
             os.mkdir(TORCHFL_DIR)
         self.data_dir: str = data_dir
-        if dataset_name not in SUPPORTED_DATASETS:
+        if dataset_name.value not in SUPPORTED_DATASETS:
             raise ValueError(f"{dataset_name}: Not a supported dataset.")
         self.dataset_name: str = dataset_name.value
         self.train_transform: transforms.Compose = train_transforms

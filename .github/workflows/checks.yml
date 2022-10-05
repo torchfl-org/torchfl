@@ -68,7 +68,7 @@ jobs:
   pre-commit:
     strategy:
       matrix:
-        os: ["ubuntu-latest", "macos-latest", "windows-latest"]
+        os: ["ubuntu-latest", "macos-latest"]   # skip pre-commit step on "windows-latest" because of some platform-specific hooks
         python-version: ["3.6", "3.7", "3.8", "3.9", "3.10"]
     runs-on: ${{ matrix.os }}
     steps:
@@ -87,7 +87,7 @@ jobs:
     strategy:
       matrix:
         os: ["ubuntu-latest", "macos-latest", "windows-latest"]
-        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10"]
+        python-version: ["3.8", "3.9", "3.10"]  # skip bandit step on python <3.8 because of platform-specific dependency.
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v1

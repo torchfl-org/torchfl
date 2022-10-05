@@ -141,6 +141,8 @@ CIFAR_MODELS: List[str] = [
 
 
 class CIFAR_MODELS_ENUM(enum.Enum):
+    """Enum for supported CIFAR models."""
+
     ALEXNET = "alexnet"
     DENSENET121 = "densenet121"
     DENSENET161 = "densenet161"
