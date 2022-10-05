@@ -10,10 +10,11 @@ on:
 
 jobs:
   doc8:
-    runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.9"]
+        os: ["ubuntu-latest", "macos-latest", "windows-latest"]
+        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10"]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v1
       - name: Set up Python ${{ matrix.python-version }}
