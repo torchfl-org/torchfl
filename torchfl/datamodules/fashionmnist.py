@@ -9,6 +9,7 @@ Returns:
 """
 import torch
 import numpy as np
+from pathlib import Path
 import pytorch_lightning as pl
 from typing import Iterable, Tuple, Any, Optional, Dict, List, Set
 import os
@@ -23,7 +24,7 @@ pl.seed_everything(42)
 ###################
 # Begin Constants #
 ###################
-
+TORCHFL_DIR: str = os.path.join(Path.home(), ".torchfl")
 DEFAULT_TRANSFORMS: transforms.Compose = transforms.Compose(
     [
         transforms.RandomResizedCrop(224),
@@ -82,7 +83,7 @@ class FashionMNISTDataModule(pl.LightningDataModule):
 
     def __init__(
         self,
-        data_dir: str = os.path.join(os.pardir, "data"),
+        data_dir: str = os.path.join(TORCHFL_DIR, "data"),
         validation_split: float = 0.1,
         train_batch_size: int = 32,
         validation_batch_size: int = 32,
@@ -110,6 +111,8 @@ class FashionMNISTDataModule(pl.LightningDataModule):
             - ValueError: The given dataset name is not supported. Supported: cifar10, cifar100.
         """
         super().__init__()
+        if not os.path.exists(TORCHFL_DIR):
+            os.mkdir(TORCHFL_DIR)
         self.data_dir: str = data_dir
         self.train_transform: transforms.Compose = train_transforms
         self.val_transform: transforms.Compose = val_transforms

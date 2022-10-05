@@ -12,6 +12,7 @@ Returns:
 """
 import torch
 import numpy as np
+from pathlib import Path
 import pytorch_lightning as pl
 from typing import Set, Type, Literal, Iterable, Tuple, Any, Optional, Dict, List
 import os
@@ -26,7 +27,7 @@ pl.seed_everything(42)
 ###################
 # Begin Constants #
 ###################
-
+TORCHFL_DIR: str = os.path.join(Path.home(), ".torchfl")
 SUPPORTED_DATASETS: Set[str] = {"cifar10", "cifar100"}
 SUPPORTED_DATASETS_LITERAL: Type[
     Literal["cifar10", "cifar100"]
@@ -93,7 +94,7 @@ class CIFARDataModule(pl.LightningDataModule):
 
     def __init__(
         self,
-        data_dir: str = os.path.join(os.pardir, "data"),
+        data_dir: str = os.path.join(TORCHFL_DIR, "data"),
         dataset_name: SUPPORTED_DATASETS_LITERAL = "cifar10",  # type: ignore
         validation_split: float = 0.1,
         train_batch_size: int = 32,
@@ -124,6 +125,8 @@ class CIFARDataModule(pl.LightningDataModule):
             - ValueError: The given dataset name is not supported. Supported: cifar10, cifar100.
         """
         super().__init__()
+        if not os.path.exists(TORCHFL_DIR):
+            os.mkdir(TORCHFL_DIR)
         self.data_dir: str = data_dir
         if dataset_name not in SUPPORTED_DATASETS:
             raise ValueError(f"{dataset_name}: Not a supported dataset.")
