@@ -5,6 +5,7 @@
 import pytest
 from torchvision import datasets, transforms
 import os
+from torchfl.compatibility import TORCHFL_DIR
 from torchfl.models.core.emnist.digits.resnet import (
     ResNet18,
     ResNet34,
@@ -48,7 +49,7 @@ def single_channel_loader():
     """
     global data_transforms
     return datasets.EMNIST(
-        root=os.path.join(os.pardir, "data"),
+        root=os.path.join(TORCHFL_DIR, "data"),
         train=True,
         download=True,
         split="digits",
@@ -65,7 +66,7 @@ def three_channel_loader():
     """
     global data_transforms
     return datasets.EMNIST(
-        root=os.path.join(os.pardir, "data"),
+        root=os.path.join(TORCHFL_DIR, "data"),
         train=True,
         download=True,
         split="digits",

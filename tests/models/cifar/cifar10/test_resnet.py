@@ -5,6 +5,7 @@
 import pytest
 from torchvision import datasets, transforms
 import os
+from torchfl.compatibility import TORCHFL_DIR
 from torchfl.models.core.cifar.cifar10.resnet import (
     ResNet18,
     ResNet34,
@@ -39,7 +40,7 @@ def three_channel_loader():
     """
     global data_transforms
     return datasets.CIFAR10(
-        root=os.path.join(os.pardir, "data"),
+        root=os.path.join(TORCHFL_DIR, "data"),
         train=True,
         download=True,
         transform=data_transforms["train"],

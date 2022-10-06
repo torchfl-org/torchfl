@@ -3,7 +3,8 @@
 
 """Contains the PyTorch Lightning wrapper modules for all EMNIST datasets."""
 
-from typing import List, Optional, Type, Literal, Union, Dict, Any, Tuple
+import enum
+from typing import List, Optional, Type, Union, Dict, Any, Tuple
 from torchfl.models.core.emnist.balanced.alexnet import AlexNet as BalancedAlexNet
 from torchfl.models.core.emnist.balanced.densenet import (
     DenseNet121 as BalancedDenseNet121,
@@ -276,7 +277,7 @@ from torchfl.models.core.emnist.mnist.vgg import (
 )
 import pytorch_lightning as pl
 import torch.nn as nn
-from torchfl.compatibility import OPTIMIZERS_LITERAL, OPTIMIZERS_BY_NAME
+from torchfl.compatibility import OPTIMIZERS_TYPE, OPTIMIZERS_BY_NAME
 from torch import Tensor, optim
 
 pl.seed_everything(42)
@@ -320,77 +321,44 @@ EMNIST_MODELS: List[str] = [
     "vgg19_bn",
 ]
 
-EMNIST_MODELS_LITERAL: Type[
-    Literal[
-        "alexnet",
-        "densenet121",
-        "densenet161",
-        "densenet169",
-        "densenet201",
-        "lenet",
-        "mlp",
-        "mobilenetv2",
-        "mobilenetv3small",
-        "mobilenetv3large",
-        "resnet18",
-        "resnet34",
-        "resnet50",
-        "resnet101",
-        "resnet152",
-        "resnext50_32x4d",
-        "resnext101_32x8d",
-        "wideresnet50_2",
-        "wideresnet101_2",
-        "shufflenetv2_x0_5",
-        "shufflenetv2_x1_0",
-        "shufflenetv2_x1_5",
-        "shufflenetv2_x2_0",
-        "squeezenet1_0",
-        "squeezenet1_1",
-        "vgg11",
-        "vgg11_bn",
-        "vgg13",
-        "vgg13_bn",
-        "vgg16",
-        "vgg16_bn",
-        "vgg19",
-        "vgg19_bn",
-    ]
-] = Literal[  # type: ignore
-    "alexnet",
-    "densenet121",
-    "densenet161",
-    "densenet169",
-    "densenet201",
-    "lenet",
-    "mlp",
-    "mobilenetv2",
-    "mobilenetv2small",
-    "mobilenetv3large",
-    "resnet18",
-    "resnet34",
-    "resnet50",
-    "resnet101",
-    "resnet152",
-    "resnext50_32x4d",
-    "resnext101_32x8d",
-    "wideresnet50_2",
-    "wideresnet101_2",
-    "shufflenetv2_x0_5",
-    "shufflenetv2_x1_0",
-    "shufflenetv2_x1_5",
-    "shufflenetv2_x2_0",
-    "squeezenet1_0",
-    "squeezenet1_1",
-    "vgg11",
-    "vgg11_bn",
-    "vgg13",
-    "vgg13_bn",
-    "vgg16",
-    "vgg16_bn",
-    "vgg19",
-    "vgg19_bn",
-]
+
+class EMNIST_MODELS_ENUM(enum.Enum):
+    """Enum for supported EMNIST models."""
+
+    ALEXNET = "alexnet"
+    DENSENET121 = "densenet121"
+    DENSENET161 = "densenet161"
+    DENSENET169 = "densenet169"
+    DENSENET201 = "densenet201"
+    LENET = "lenet"
+    MLP = "mlp"
+    MOBILENETV2 = "mobilenetv2"
+    MOBILENETV3SMALL = "mobilenetv3small"
+    MOBILENETV3LARGE = "mobilenetv3large"
+    RESNET18 = "resnet18"
+    RESNET34 = "resnet34"
+    RESNET50 = "resnet50"
+    RESNET101 = "resnet101"
+    RESNET152 = "resnet152"
+    RESNEXT50_32X4D = "resnext50_32x4d"
+    RESNEXT101_32X8D = "resnext101_32x8d"
+    WIDERESNET50_2 = "wideresnet50_2"
+    WIDERESNET101_2 = "wideresnet101_2"
+    SHUFFLENETV2_X0_5 = "shufflenetv2_x0_5"
+    SHUFFLENETV2_X1_0 = "shufflenetv2_x1_0"
+    SHUFFLENETV2_X1_5 = "shufflenetv2_x1_5"
+    SHUFFLENETV2_X2_0 = "shufflenetv2_x2_0"
+    SQUEEZENET1_0 = "squeezenet1_0"
+    SQUEEZENET1_1 = "squeezenet1_1"
+    VGG11 = "vgg11"
+    VGG11_BN = "vgg11_bn"
+    VGG13 = "vgg13"
+    VGG13_BN = "vgg13_bn"
+    VGG16 = "vgg16"
+    VGG16_BN = "vgg16_bn"
+    VGG19 = "vgg19"
+    VGG19_BN = "vgg19_bn"
+
 
 EMNIST_BALANCED_MODEL_TYPE = Union[
     Type[BalancedAlexNet],
@@ -923,28 +891,30 @@ class BalancedEMNIST(pl.LightningModule):
 
     def __init__(
         self,
-        model_name: EMNIST_MODELS_LITERAL,  # type: ignore
-        optimizer_name: OPTIMIZERS_LITERAL,  # type: ignore
+        model_name: EMNIST_MODELS_ENUM,
+        optimizer_name: OPTIMIZERS_TYPE,
         optimizer_hparams: Dict[str, Any],
         model_hparams: Optional[Dict[str, Any]] = None,
     ) -> None:
         """Default constructor.
 
         Args:
-            - model_name (EMNIST_MODELS_LITERAL): Name of the model to be used. Only choose from the available models.
-            - optimizer_name (OPTIMIZERS_LITERAL): Name of optimizer to be used. Only choose from the available models.
+            - model_name (str): Name of the model to be used. Only choose from the available models.
+            - optimizer_name (str): Name of optimizer to be used. Only choose from the available models.
             - optimizer_hparams(Dict[str, Any]): Hyperparameters to initialize the optimizer.
             - model_hparams (Optional[Dict[str, Any]], optional): Optional override the default model hparams. Defaults to None.
         """
         super().__init__()
         self.model = create_model(
-            dataset_name="balanced", model_name=model_name, model_hparams=model_hparams
+            dataset_name="balanced",
+            model_name=model_name.value,
+            model_hparams=model_hparams,
         )
         combined_hparams: Dict[str, Any] = {
             "model_hparams": vars(self.model.hparams),
             "optimizer_hparams": {
-                "optimizer_name": optimizer_name,
-                "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name],
+                "optimizer_name": optimizer_name.value,
+                "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name.value],
                 "config": optimizer_hparams,
             },
         }
@@ -1034,28 +1004,30 @@ class ByClassEMNIST(pl.LightningModule):
 
     def __init__(
         self,
-        model_name: EMNIST_MODELS_LITERAL,  # type: ignore
-        optimizer_name: OPTIMIZERS_LITERAL,  # type: ignore
+        model_name: EMNIST_MODELS_ENUM,
+        optimizer_name: OPTIMIZERS_TYPE,
         optimizer_hparams: Dict[str, Any],
         model_hparams: Optional[Dict[str, Any]] = None,
     ) -> None:
         """Default constructor.
 
         Args:
-            - model_name (EMNIST_MODELS_LITERAL): Name of the model to be used. Only choose from the available models.
-            - optimizer_name (OPTIMIZERS_LITERAL): Name of optimizer to be used. Only choose from the available models.
+            - model_name (str): Name of the model to be used. Only choose from the available models.
+            - optimizer_name (str): Name of optimizer to be used. Only choose from the available models.
             - optimizer_hparams(Dict[str, Any]): Hyperparameters to initialize the optimizer.
             - model_hparams (Optional[Dict[str, Any]], optional): Optional override the default model hparams. Defaults to None.
         """
         super().__init__()
         self.model = create_model(
-            dataset_name="byclass", model_name=model_name, model_hparams=model_hparams
+            dataset_name="byclass",
+            model_name=model_name.value,
+            model_hparams=model_hparams,
         )
         combined_hparams: Dict[str, Any] = {
             "model_hparams": vars(self.model.hparams),
             "optimizer_hparams": {
                 "optimizer_name": optimizer_name,
-                "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name],
+                "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name.value],
                 "config": optimizer_hparams,
             },
         }
@@ -1145,28 +1117,30 @@ class ByMergeEMNIST(pl.LightningModule):
 
     def __init__(
         self,
-        model_name: EMNIST_MODELS_LITERAL,  # type: ignore
-        optimizer_name: OPTIMIZERS_LITERAL,  # type: ignore
+        model_name: EMNIST_MODELS_ENUM,
+        optimizer_name: OPTIMIZERS_TYPE,
         optimizer_hparams: Dict[str, Any],
         model_hparams: Optional[Dict[str, Any]] = None,
     ) -> None:
         """Default constructor.
 
         Args:
-            - model_name (EMNIST_MODELS_LITERAL): Name of the model to be used. Only choose from the available models.
-            - optimizer_name (OPTIMIZERS_LITERAL): Name of optimizer to be used. Only choose from the available models.
+            - model_name (str): Name of the model to be used. Only choose from the available models.
+            - optimizer_name (str): Name of optimizer to be used. Only choose from the available models.
             - optimizer_hparams(Dict[str, Any]): Hyperparameters to initialize the optimizer.
             - model_hparams (Optional[Dict[str, Any]], optional): Optional override the default model hparams. Defaults to None.
         """
         super().__init__()
         self.model = create_model(
-            dataset_name="bymerge", model_name=model_name, model_hparams=model_hparams
+            dataset_name="bymerge",
+            model_name=model_name.value,
+            model_hparams=model_hparams,
         )
         combined_hparams: Dict[str, Any] = {
             "model_hparams": vars(self.model.hparams),
             "optimizer_hparams": {
                 "optimizer_name": optimizer_name,
-                "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name],
+                "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name.value],
                 "config": optimizer_hparams,
             },
         }
@@ -1256,28 +1230,30 @@ class LettersEMNIST(pl.LightningModule):
 
     def __init__(
         self,
-        model_name: EMNIST_MODELS_LITERAL,  # type: ignore
-        optimizer_name: OPTIMIZERS_LITERAL,  # type: ignore
+        model_name: EMNIST_MODELS_ENUM,
+        optimizer_name: OPTIMIZERS_TYPE,
         optimizer_hparams: Dict[str, Any],
         model_hparams: Optional[Dict[str, Any]] = None,
     ) -> None:
         """Default constructor.
 
         Args:
-            - model_name (EMNIST_MODELS_LITERAL): Name of the model to be used. Only choose from the available models.
-            - optimizer_name (OPTIMIZERS_LITERAL): Name of optimizer to be used. Only choose from the available models.
+            - model_name (str): Name of the model to be used. Only choose from the available models.
+            - optimizer_name (str): Name of optimizer to be used. Only choose from the available models.
             - optimizer_hparams(Dict[str, Any]): Hyperparameters to initialize the optimizer.
             - model_hparams (Optional[Dict[str, Any]], optional): Optional override the default model hparams. Defaults to None.
         """
         super().__init__()
         self.model = create_model(
-            dataset_name="letters", model_name=model_name, model_hparams=model_hparams
+            dataset_name="letters",
+            model_name=model_name.value,
+            model_hparams=model_hparams,
         )
         combined_hparams: Dict[str, Any] = {
             "model_hparams": vars(self.model.hparams),
             "optimizer_hparams": {
                 "optimizer_name": optimizer_name,
-                "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name],
+                "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name.value],
                 "config": optimizer_hparams,
             },
         }
@@ -1367,28 +1343,30 @@ class DigitsEMNIST(pl.LightningModule):
 
     def __init__(
         self,
-        model_name: EMNIST_MODELS_LITERAL,  # type: ignore
-        optimizer_name: OPTIMIZERS_LITERAL,  # type: ignore
+        model_name: EMNIST_MODELS_ENUM,
+        optimizer_name: OPTIMIZERS_TYPE,
         optimizer_hparams: Dict[str, Any],
         model_hparams: Optional[Dict[str, Any]] = None,
     ) -> None:
         """Default constructor.
 
         Args:
-            - model_name (EMNIST_MODELS_LITERAL): Name of the model to be used. Only choose from the available models.
-            - optimizer_name (OPTIMIZERS_LITERAL): Name of optimizer to be used. Only choose from the available models.
+            - model_name (str): Name of the model to be used. Only choose from the available models.
+            - optimizer_name (str): Name of optimizer to be used. Only choose from the available models.
             - optimizer_hparams(Dict[str, Any]): Hyperparameters to initialize the optimizer.
             - model_hparams (Optional[Dict[str, Any]], optional): Optional override the default model hparams. Defaults to None.
         """
         super().__init__()
         self.model = create_model(
-            dataset_name="digits", model_name=model_name, model_hparams=model_hparams
+            dataset_name="digits",
+            model_name=model_name.value,
+            model_hparams=model_hparams,
         )
         combined_hparams: Dict[str, Any] = {
             "model_hparams": vars(self.model.hparams),
             "optimizer_hparams": {
                 "optimizer_name": optimizer_name,
-                "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name],
+                "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name.value],
                 "config": optimizer_hparams,
             },
         }
@@ -1478,28 +1456,30 @@ class MNISTEMNIST(pl.LightningModule):
 
     def __init__(
         self,
-        model_name: EMNIST_MODELS_LITERAL,  # type: ignore
-        optimizer_name: OPTIMIZERS_LITERAL,  # type: ignore
+        model_name: EMNIST_MODELS_ENUM,
+        optimizer_name: OPTIMIZERS_TYPE,
         optimizer_hparams: Dict[str, Any],
         model_hparams: Optional[Dict[str, Any]] = None,
     ) -> None:
         """Default constructor.
 
         Args:
-            - model_name (EMNIST_MODELS_LITERAL): Name of the model to be used. Only choose from the available models.
-            - optimizer_name (OPTIMIZERS_LITERAL): Name of optimizer to be used. Only choose from the available models.
+            - model_name (str): Name of the model to be used. Only choose from the available models.
+            - optimizer_name (str): Name of optimizer to be used. Only choose from the available models.
             - optimizer_hparams(Dict[str, Any]): Hyperparameters to initialize the optimizer.
             - model_hparams (Optional[Dict[str, Any]], optional): Optional override the default model hparams. Defaults to None.
         """
         super().__init__()
         self.model = create_model(
-            dataset_name="mnist", model_name=model_name, model_hparams=model_hparams
+            dataset_name="mnist",
+            model_name=model_name.value,
+            model_hparams=model_hparams,
         )
         combined_hparams: Dict[str, Any] = {
             "model_hparams": vars(self.model.hparams),
             "optimizer_hparams": {
                 "optimizer_name": optimizer_name,
-                "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name],
+                "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name.value],
                 "config": optimizer_hparams,
             },
         }

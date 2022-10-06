@@ -7,6 +7,7 @@ Returns:
     - DatasetSplit: Implementation of PyTorch key-value based Dataset.
     - FashionMNISTDataModule: PyTorch LightningDataModule for FashionMNIST datasets. Supports iid and non-iid splits.
 """
+import enum
 import torch
 import numpy as np
 from pathlib import Path
@@ -33,6 +34,14 @@ DEFAULT_TRANSFORMS: transforms.Compose = transforms.Compose(
         transforms.Normalize((0.1307,), (0.3081,)),
     ]
 )
+
+
+class SUPPORTED_DATASETS_TYPE(enum.Enum):
+    """Enum for supported FashionMNIST datasets."""
+
+    FASHIONMNIST = "FashionMNIST"
+
+
 #################
 # End Constants #
 #################
@@ -41,15 +50,15 @@ DEFAULT_TRANSFORMS: transforms.Compose = transforms.Compose(
 class DatasetSplit(Dataset):
     """Implementation of PyTorch key-value based Dataset."""
 
-    def __init__(self, dataset: Dataset, idxs: Iterable[int]) -> None:
+    def __init__(self, dataset: Any, idxs: Iterable[int]) -> None:
         """Constructor
 
         Args:
             - dataset (Dataset): PyTorch Dataset.
-            - idxs (Iterable[int]): collection of indices.
+            - idxs (List[int]): collection of indices.
         """
-        self.dataset: Dataset = dataset
-        self.idxs: Iterable[int] = list(idxs)
+        self.dataset: Any = dataset
+        self.idxs: List[int] = list(idxs)
         all_targets: np.ndarray = (
             np.array(dataset.targets)
             if isinstance(dataset.targets, list)
@@ -63,7 +72,7 @@ class DatasetSplit(Dataset):
         Returns:
             - int: length of the collection of indices.
         """
-        return len(self.idxs)  # type: ignore
+        return len(self.idxs)
 
     def __getitem__(self, index: int) -> Tuple[Any, Any]:
         """Overriding the get method.
@@ -74,7 +83,7 @@ class DatasetSplit(Dataset):
         Returns:
             - Tuple[Any, Any]: returns the key-value pair as a tuple.
         """
-        image, label = self.dataset[self.idxs[index]]  # type: ignore
+        image, label = self.dataset[self.idxs[index]]
         return image, label
 
 

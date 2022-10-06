@@ -10,11 +10,12 @@ Returns:
     - DatasetSplit: Implementation of PyTorch key-value based Dataset.
     - CIFARDataModule: PyTorch LightningDataModule for CIFAR datasets. Supports iid and non-iid splits.
 """
+import enum
 import torch
 import numpy as np
 from pathlib import Path
 import pytorch_lightning as pl
-from typing import Set, Type, Literal, Iterable, Tuple, Any, Optional, Dict, List
+from typing import Set, Iterable, Tuple, Any, Optional, Dict, List
 import os
 from torch.utils.data import random_split, DataLoader, Dataset
 from torchvision.datasets import CIFAR10, CIFAR100
@@ -29,11 +30,6 @@ pl.seed_everything(42)
 ###################
 TORCHFL_DIR: str = os.path.join(Path.home(), ".torchfl")
 SUPPORTED_DATASETS: Set[str] = {"cifar10", "cifar100"}
-SUPPORTED_DATASETS_LITERAL: Type[
-    Literal["cifar10", "cifar100"]
-] = Literal[  # type: ignore
-    "cifar10", "cifar100"
-]  # type: ignore
 
 DEFAULT_TRANSFORMS: transforms.Compose = transforms.Compose(
     [
@@ -44,6 +40,14 @@ DEFAULT_TRANSFORMS: transforms.Compose = transforms.Compose(
     ]
 )
 
+
+class SUPPORTED_DATASETS_TYPE(enum.Enum):
+    """Enum for supported datasets."""
+
+    CIFAR10 = "cifar10"
+    CIFAR100 = "cifar100"
+
+
 #################
 # End Constants #
 #################
@@ -52,15 +56,16 @@ DEFAULT_TRANSFORMS: transforms.Compose = transforms.Compose(
 class DatasetSplit(Dataset):
     """Implementation of PyTorch key-value based Dataset."""
 
-    def __init__(self, dataset: Dataset, idxs: Iterable[int]) -> None:
+    def __init__(self, dataset: Any, idxs: Iterable[int]) -> None:
         """Constructor
 
         Args:
             - dataset (Dataset): PyTorch Dataset.
-            - idxs (Iterable[int]): collection of indices.
+            - idxs (List[int]): collection of indices.
         """
+        super().__init__()
         self.dataset: Dataset = dataset
-        self.idxs: Iterable[int] = list(idxs)
+        self.idxs: List[int] = list(idxs)
         all_targets: np.ndarray = (
             np.array(dataset.targets)
             if isinstance(dataset.targets, list)
@@ -74,7 +79,7 @@ class DatasetSplit(Dataset):
         Returns:
             - int: length of the collection of indices.
         """
-        return len(self.idxs)  # type: ignore
+        return len(self.idxs)
 
     def __getitem__(self, index: int) -> Tuple[Any, Any]:
         """Overriding the get method.
@@ -85,7 +90,7 @@ class DatasetSplit(Dataset):
         Returns:
             - Tuple[Any, Any]: returns the key-value pair as a tuple.
         """
-        image, label = self.dataset[self.idxs[index]]  # type: ignore
+        image, label = self.dataset[self.idxs[index]]
         return image, label
 
 
@@ -95,7 +100,7 @@ class CIFARDataModule(pl.LightningDataModule):
     def __init__(
         self,
         data_dir: str = os.path.join(TORCHFL_DIR, "data"),
-        dataset_name: SUPPORTED_DATASETS_LITERAL = "cifar10",  # type: ignore
+        dataset_name: SUPPORTED_DATASETS_TYPE = SUPPORTED_DATASETS_TYPE.CIFAR10,
         validation_split: float = 0.1,
         train_batch_size: int = 32,
         validation_batch_size: int = 32,
@@ -105,12 +110,12 @@ class CIFARDataModule(pl.LightningDataModule):
         val_transforms: transforms.Compose = DEFAULT_TRANSFORMS,
         test_transforms: transforms.Compose = DEFAULT_TRANSFORMS,
         predict_transforms: transforms.Compose = DEFAULT_TRANSFORMS,
-    ):  # type: ignore
+    ):
         """Constructor
 
         Args:
             - data_dir (str, optional): Default directory to download the dataset to. Defaults to os.pardir.
-            - dataset_name (SUPPORTED_DATASETS_LITERAL, optional): Name of the dataset to be used. Defaults to "cifar10".
+            - dataset_name (str, optional): Name of the dataset to be used. Defaults to "cifar10".
             - validation_split (float, optional): Fraction of training images to be used as validation. Defaults to 0.1.
             - train_batch_size (int, optional): Default batch size of the training data. Defaults to 32.
             - validation_batch_size (int, optional): Default batch size of the validation data. Defaults to 32.
@@ -128,9 +133,9 @@ class CIFARDataModule(pl.LightningDataModule):
         if not os.path.exists(TORCHFL_DIR):
             os.mkdir(TORCHFL_DIR)
         self.data_dir: str = data_dir
-        if dataset_name not in SUPPORTED_DATASETS:
+        if dataset_name.value not in SUPPORTED_DATASETS:
             raise ValueError(f"{dataset_name}: Not a supported dataset.")
-        self.dataset_name: str = dataset_name
+        self.dataset_name: str = dataset_name.value
         self.train_transform: transforms.Compose = train_transforms
         self.val_transform: transforms.Compose = val_transforms
         self.test_transform: transforms.Compose = test_transforms
