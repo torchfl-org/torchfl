@@ -1,0 +1,125 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""An example script to demonstrate the usage of CIFAR-10/CIFAR-100 datasets."""
+
+import csv
+from collections import Counter
+
+from torchfl.datamodules.cifar import CIFARDataModule, SUPPORTED_DATASETS_TYPE
+from torchfl.compatibility import TORCHFL_DIR
+
+from torch.utils.data import DataLoader
+from typing import Dict
+
+
+def cifar10_iid_distribution(num_agents: int) -> Dict[int, DataLoader]:
+    """Return an iid distribution for the CIFAR10 dataset given the number of agents"""
+    datamodule: CIFARDataModule = CIFARDataModule(
+        dataset_name=SUPPORTED_DATASETS_TYPE.CIFAR10
+    )
+    datamodule.prepare_data()
+    datamodule.setup()
+    agent_shard_map: Dict[int, DataLoader] = datamodule.federated_iid_dataloader(
+        num_workers=num_agents
+    )
+    return agent_shard_map
+
+
+def cifar10_noniid_distribution(
+    num_agents: int, niid_factor: int
+) -> Dict[int, DataLoader]:
+    """Return a non-iid distribution for CIFAR10 dataset given the number of agents and niid_factor."""
+    datamodule: CIFARDataModule = CIFARDataModule(
+        dataset_name=SUPPORTED_DATASETS_TYPE.CIFAR10
+    )
+    datamodule.prepare_data()
+    datamodule.setup()
+    agent_shard_map: Dict[int, DataLoader] = datamodule.federated_non_iid_dataloader(
+        num_workers=num_agents, niid_factor=niid_factor
+    )
+    return agent_shard_map
+
+
+def dump_data_distribution_to_csv(
+    agent_shard_map: Dict[int, DataLoader], file_path: str
+):
+    """Dump the data distribution to a csv file"""
+    # for agent_id, agent_dataloader in agent_shard_map.items():
+    #     print("FOO")
+    #     print(agent_id)
+    #     print("BAR")
+    #     print(agent_dataloader.dataset.targets)
+    #     print(len(agent_dataloader.dataset.targets))
+    #     print(Counter(agent_dataloader.dataset.targets))
+    with open(file_path, "w") as csv_file:
+        writer = csv.writer(csv_file)
+        writer.writerow(
+            [
+                "agent_id",
+                "label_0",
+                "label_1",
+                "label_2",
+                "label_3",
+                "label_4",
+                "label_5",
+                "label_6",
+                "label_7",
+                "label_8",
+                "label_9",
+            ]
+        )
+        for agent_id, data_loader in agent_shard_map.items():
+            holdings = Counter(data_loader.dataset.targets)
+            writer.writerow(
+                [
+                    agent_id,
+                    holdings[0],
+                    holdings[1],
+                    holdings[2],
+                    holdings[3],
+                    holdings[4],
+                    holdings[5],
+                    holdings[6],
+                    holdings[7],
+                    holdings[8],
+                    holdings[9],
+                ]
+            )
+
+
+if __name__ == "__main__":
+    agent_shard_map_5_agents_iid: Dict[int, DataLoader] = cifar10_iid_distribution(
+        num_agents=5
+    )
+    agent_shard_map_10_agents_iid: Dict[int, DataLoader] = cifar10_iid_distribution(
+        num_agents=10
+    )
+    agent_shard_map_100_agents_iid: Dict[int, DataLoader] = cifar10_iid_distribution(
+        num_agents=100
+    )
+    agent_shard_map_5_agents_non_iid_1: Dict[
+        int, DataLoader
+    ] = cifar10_noniid_distribution(num_agents=5, niid_factor=1)
+    agent_shard_map_10_agents_non_iid_1: Dict[
+        int, DataLoader
+    ] = cifar10_noniid_distribution(num_agents=10, niid_factor=1)
+    agent_shard_map_100_agents_non_iid_1: Dict[
+        int, DataLoader
+    ] = cifar10_noniid_distribution(num_agents=100, niid_factor=1)
+    agent_shard_map_5_agents_non_iid_3: Dict[
+        int, DataLoader
+    ] = cifar10_noniid_distribution(num_agents=5, niid_factor=3)
+    agent_shard_map_10_agents_non_iid_3: Dict[
+        int, DataLoader
+    ] = cifar10_noniid_distribution(num_agents=10, niid_factor=3)
+    agent_shard_map_100_agents_non_iid_3: Dict[
+        int, DataLoader
+    ] = cifar10_noniid_distribution(num_agents=100, niid_factor=3)
+    dump_data_distribution_to_csv(
+        agent_shard_map_100_agents_non_iid_3, "data_distribution_100_agents_niid_3.csv"
+    )
+
+    # print(agent_shard_map_5_agents_non_iid_1)
+    # print(agent_shard_map_10_agents_non_iid_1)
+    # print(agent_shard_map_100_agents_non_iid_1)
