@@ -41,6 +41,34 @@ def cifar10_noniid_distribution(
     return agent_shard_map
 
 
+def cifar100_iid_distribution(num_agents: int) -> Dict[int, DataLoader]:
+    """Return an iid distribution for the CIFAR100 dataset given the number of agents"""
+    datamodule: CIFARDataModule = CIFARDataModule(
+        dataset_name=SUPPORTED_DATASETS_TYPE.CIFAR100
+    )
+    datamodule.prepare_data()
+    datamodule.setup()
+    agent_shard_map: Dict[int, DataLoader] = datamodule.federated_iid_dataloader(
+        num_workers=num_agents
+    )
+    return agent_shard_map
+
+
+def cifar100_noniid_distribution(
+    num_agents: int, niid_factor: int
+) -> Dict[int, DataLoader]:
+    """Return a non-iid distribution for CIFAR100 dataset given the number of agents and niid_factor."""
+    datamodule: CIFARDataModule = CIFARDataModule(
+        dataset_name=SUPPORTED_DATASETS_TYPE.CIFAR100
+    )
+    datamodule.prepare_data()
+    datamodule.setup()
+    agent_shard_map: Dict[int, DataLoader] = datamodule.federated_non_iid_dataloader(
+        num_workers=num_agents, niid_factor=niid_factor
+    )
+    return agent_shard_map
+
+
 def dump_data_distribution_to_csv(
     agent_shard_map: Dict[int, DataLoader], file_path: str
 ):
@@ -116,9 +144,47 @@ if __name__ == "__main__":
     agent_shard_map_100_agents_non_iid_3: Dict[
         int, DataLoader
     ] = cifar10_noniid_distribution(num_agents=100, niid_factor=3)
-    dump_data_distribution_to_csv(
-        agent_shard_map_100_agents_non_iid_3, "data_distribution_100_agents_niid_3.csv"
+    # dump_data_distribution_to_csv(
+    #     agent_shard_map_100_agents_non_iid_3, "data_distribution_100_agents_niid_3.csv"
+    # )
+
+    # cifar100 experiments
+    cifar100_agent_shard_map_100_agents_iid: Dict[
+        int, DataLoader
+    ] = cifar100_iid_distribution(num_agents=1000)
+    cifar100_agent_shard_map_100_agents_non_iid_1: Dict[
+        int, DataLoader
+    ] = cifar100_noniid_distribution(num_agents=1000, niid_factor=1)
+    cifar100_agent_shard_map_100_agents_non_iid_3: Dict[
+        int, DataLoader
+    ] = cifar100_noniid_distribution(num_agents=1000, niid_factor=3)
+
+    # get the number of unique labels held by each agent
+    ctr_iid = Counter(cifar100_agent_shard_map_100_agents_iid[5].dataset.targets)
+    ctr_niid_1 = Counter(
+        cifar100_agent_shard_map_100_agents_non_iid_1[5].dataset.targets
     )
+    ctr_niid_3 = Counter(
+        cifar100_agent_shard_map_100_agents_non_iid_3[5].dataset.targets
+    )
+    unique_labels_iid = 0
+    unique_labels_niid_1 = 0
+    unique_labels_niid_3 = 0
+
+    for k in ctr_iid.keys():
+        if (k in ctr_iid) and (ctr_iid[k] > 0):
+            unique_labels_iid += 1
+
+    for k in ctr_niid_1.keys():
+        if (k in ctr_niid_1) and (ctr_niid_1[k] > 0):
+            unique_labels_niid_1 += 1
+
+    for k in ctr_niid_3.keys():
+        if (k in ctr_niid_3) and (ctr_niid_3[k] > 0):
+            unique_labels_niid_3 += 1
+    print(unique_labels_iid)
+    print(unique_labels_niid_1)
+    print(unique_labels_niid_3)
 
     # print(agent_shard_map_5_agents_non_iid_1)
     # print(agent_shard_map_10_agents_non_iid_1)
