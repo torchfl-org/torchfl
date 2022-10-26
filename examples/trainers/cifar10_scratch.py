@@ -63,7 +63,7 @@ def train_model_from_scratch(
     # prepare the dataset
     datamodule: CIFARDataModule = CIFARDataModule(
         dataset_name=SUPPORTED_DATASETS_TYPE.CIFAR10,
-        train_batch_size=128,
+        train_batch_size=32,
     )
     datamodule.prepare_data()
     datamodule.setup()
@@ -322,5 +322,5 @@ def train_feature_extracted_model(
 
 
 if __name__ == "__main__":
-    model, result = train_pretrained_model("cifar10_resnet152_pretrained")
+    model, result = train_model_from_scratch("cifar10_resnet152_scratch")
     logging.info(result)

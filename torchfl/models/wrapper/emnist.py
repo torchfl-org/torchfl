@@ -895,6 +895,7 @@ class BalancedEMNIST(pl.LightningModule):
         optimizer_name: OPTIMIZERS_TYPE,
         optimizer_hparams: Dict[str, Any],
         model_hparams: Optional[Dict[str, Any]] = None,
+        fl_hparams: Optional[Dict[str, Any]] = None,
     ) -> None:
         """Default constructor.
 
@@ -903,6 +904,7 @@ class BalancedEMNIST(pl.LightningModule):
             - optimizer_name (str): Name of optimizer to be used. Only choose from the available models.
             - optimizer_hparams(Dict[str, Any]): Hyperparameters to initialize the optimizer.
             - model_hparams (Optional[Dict[str, Any]], optional): Optional override the default model hparams. Defaults to None.
+            - fl_hparams (Optional[Dict[str, Any]], optional): Optional override the default federated learning hparams. Defaults to None.
         """
         super().__init__()
         self.model = create_model(
@@ -917,6 +919,7 @@ class BalancedEMNIST(pl.LightningModule):
                 "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name.value],
                 "config": optimizer_hparams,
             },
+            "fl_hparams": vars(fl_hparams),
         }
         self.save_hyperparameters(combined_hparams)
         self.loss_module = nn.CrossEntropyLoss()
@@ -1008,6 +1011,7 @@ class ByClassEMNIST(pl.LightningModule):
         optimizer_name: OPTIMIZERS_TYPE,
         optimizer_hparams: Dict[str, Any],
         model_hparams: Optional[Dict[str, Any]] = None,
+        fl_hparams: Optional[Dict[str, Any]] = None,
     ) -> None:
         """Default constructor.
 
@@ -1016,6 +1020,7 @@ class ByClassEMNIST(pl.LightningModule):
             - optimizer_name (str): Name of optimizer to be used. Only choose from the available models.
             - optimizer_hparams(Dict[str, Any]): Hyperparameters to initialize the optimizer.
             - model_hparams (Optional[Dict[str, Any]], optional): Optional override the default model hparams. Defaults to None.
+            - fl_hparams (Optional[Dict[str, Any]], optional): Optional override the default federated learning hparams. Defaults to None.
         """
         super().__init__()
         self.model = create_model(
@@ -1030,6 +1035,7 @@ class ByClassEMNIST(pl.LightningModule):
                 "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name.value],
                 "config": optimizer_hparams,
             },
+            "fl_hparams": vars(fl_hparams),
         }
         self.save_hyperparameters(combined_hparams)
         self.loss_module = nn.CrossEntropyLoss()
@@ -1121,6 +1127,7 @@ class ByMergeEMNIST(pl.LightningModule):
         optimizer_name: OPTIMIZERS_TYPE,
         optimizer_hparams: Dict[str, Any],
         model_hparams: Optional[Dict[str, Any]] = None,
+        fl_hparams: Optional[Dict[str, Any]] = None,
     ) -> None:
         """Default constructor.
 
@@ -1129,6 +1136,7 @@ class ByMergeEMNIST(pl.LightningModule):
             - optimizer_name (str): Name of optimizer to be used. Only choose from the available models.
             - optimizer_hparams(Dict[str, Any]): Hyperparameters to initialize the optimizer.
             - model_hparams (Optional[Dict[str, Any]], optional): Optional override the default model hparams. Defaults to None.
+            - fl_hparams (Optional[Dict[str, Any]], optional): Optional override the default federated learning hparams. Defaults to None.
         """
         super().__init__()
         self.model = create_model(
@@ -1143,6 +1151,7 @@ class ByMergeEMNIST(pl.LightningModule):
                 "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name.value],
                 "config": optimizer_hparams,
             },
+            "fl_hparams": vars(fl_hparams),
         }
         self.save_hyperparameters(combined_hparams)
         self.loss_module = nn.CrossEntropyLoss()
@@ -1234,6 +1243,7 @@ class LettersEMNIST(pl.LightningModule):
         optimizer_name: OPTIMIZERS_TYPE,
         optimizer_hparams: Dict[str, Any],
         model_hparams: Optional[Dict[str, Any]] = None,
+        fl_hparams: Optional[Dict[str, Any]] = None,
     ) -> None:
         """Default constructor.
 
@@ -1242,6 +1252,7 @@ class LettersEMNIST(pl.LightningModule):
             - optimizer_name (str): Name of optimizer to be used. Only choose from the available models.
             - optimizer_hparams(Dict[str, Any]): Hyperparameters to initialize the optimizer.
             - model_hparams (Optional[Dict[str, Any]], optional): Optional override the default model hparams. Defaults to None.
+            - fl_hparams (Optional[Dict[str, Any]], optional): Optional override the default federated learning hparams. Defaults to None.
         """
         super().__init__()
         self.model = create_model(
@@ -1256,6 +1267,7 @@ class LettersEMNIST(pl.LightningModule):
                 "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name.value],
                 "config": optimizer_hparams,
             },
+            "fl_hparams": vars(fl_hparams),
         }
         self.save_hyperparameters(combined_hparams)
         self.loss_module = nn.CrossEntropyLoss()
@@ -1347,6 +1359,7 @@ class DigitsEMNIST(pl.LightningModule):
         optimizer_name: OPTIMIZERS_TYPE,
         optimizer_hparams: Dict[str, Any],
         model_hparams: Optional[Dict[str, Any]] = None,
+        fl_hparams: Optional[Dict[str, Any]] = None,
     ) -> None:
         """Default constructor.
 
@@ -1355,6 +1368,7 @@ class DigitsEMNIST(pl.LightningModule):
             - optimizer_name (str): Name of optimizer to be used. Only choose from the available models.
             - optimizer_hparams(Dict[str, Any]): Hyperparameters to initialize the optimizer.
             - model_hparams (Optional[Dict[str, Any]], optional): Optional override the default model hparams. Defaults to None.
+            - fl_hparams (Optional[Dict[str, Any]], optional): Optional override the default federated learning hparams. Defaults to None.
         """
         super().__init__()
         self.model = create_model(
@@ -1369,6 +1383,7 @@ class DigitsEMNIST(pl.LightningModule):
                 "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name.value],
                 "config": optimizer_hparams,
             },
+            "fl_hparams": vars(fl_hparams),
         }
         self.save_hyperparameters(combined_hparams)
         self.loss_module = nn.CrossEntropyLoss()
@@ -1460,6 +1475,7 @@ class MNISTEMNIST(pl.LightningModule):
         optimizer_name: OPTIMIZERS_TYPE,
         optimizer_hparams: Dict[str, Any],
         model_hparams: Optional[Dict[str, Any]] = None,
+        fl_hparams: Optional[Dict[str, Any]] = None,
     ) -> None:
         """Default constructor.
 
@@ -1468,6 +1484,7 @@ class MNISTEMNIST(pl.LightningModule):
             - optimizer_name (str): Name of optimizer to be used. Only choose from the available models.
             - optimizer_hparams(Dict[str, Any]): Hyperparameters to initialize the optimizer.
             - model_hparams (Optional[Dict[str, Any]], optional): Optional override the default model hparams. Defaults to None.
+            - fl_hparams (Optional[Dict[str, Any]], optional): Optional override the default federated learning hparams. Defaults to None.
         """
         super().__init__()
         self.model = create_model(
@@ -1482,6 +1499,7 @@ class MNISTEMNIST(pl.LightningModule):
                 "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name.value],
                 "config": optimizer_hparams,
             },
+            "fl_hparams": vars(fl_hparams),
         }
         self.save_hyperparameters(combined_hparams)
         self.loss_module = nn.CrossEntropyLoss()

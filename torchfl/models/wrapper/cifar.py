@@ -374,6 +374,7 @@ class CIFAR10(pl.LightningModule):
         optimizer_name: OPTIMIZERS_TYPE,
         optimizer_hparams: Dict[str, Any],
         model_hparams: Optional[Dict[str, Any]] = None,
+        fl_hparams: Optional[Dict[str, Any]] = None,
     ) -> None:
         """Default constructor.
 
@@ -382,6 +383,7 @@ class CIFAR10(pl.LightningModule):
             - optimizer_name (str): Name of optimizer to be used. Only choose from the available models.
             - optimizer_hparams(Dict[str, Any]): Hyperparameters to initialize the optimizer.
             - model_hparams (Optional[Dict[str, Any]], optional): Optional override the default model hparams. Defaults to None.
+            - fl_hparams (Optional[Dict[str, Any]], optional): Optional override the default FL hparams. Defaults to None.
         """
         super().__init__()
         self.model = create_model(
@@ -396,6 +398,7 @@ class CIFAR10(pl.LightningModule):
                 "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name.value],
                 "config": optimizer_hparams,
             },
+            "fl_hparams": vars(fl_hparams),
         }
         self.save_hyperparameters(combined_hparams)
         self.loss_module = nn.CrossEntropyLoss()
@@ -487,6 +490,7 @@ class CIFAR100(pl.LightningModule):
         optimizer_name: OPTIMIZERS_TYPE,
         optimizer_hparams: Dict[str, Any],
         model_hparams: Optional[Dict[str, Any]] = None,
+        fl_hparams: Optional[Dict[str, Any]] = None,
     ) -> None:
         """Default constructor.
 
@@ -495,6 +499,7 @@ class CIFAR100(pl.LightningModule):
             - optimizer_name (str): Name of optimizer to be used. Only choose from the available models.
             - optimizer_hparams(Dict[str, Any]): Hyperparameters to initialize the optimizer.
             - model_hparams (Optional[Dict[str, Any]], optional): Optional override the default model hparams. Defaults to None.
+            - fl_hparams (Optional[Dict[str, Any]], optional): Optional override the default FL hparams. Defaults to None.
         """
         super().__init__()
         self.model = create_model(
@@ -509,6 +514,7 @@ class CIFAR100(pl.LightningModule):
                 "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name.value],
                 "config": optimizer_hparams,
             },
+            "fl_hparams": vars(fl_hparams),
         }
         self.save_hyperparameters(combined_hparams)
         self.loss_module = nn.CrossEntropyLoss()
