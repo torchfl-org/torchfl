@@ -5,8 +5,7 @@
 
 import random
 from torchfl.federated.samplers.base import BaseSampler
-from torchfl.federated.types import AgentsType
-from typing import List
+from typing import Any, List
 
 random.seed(42)
 
@@ -14,11 +13,11 @@ random.seed(42)
 class RandomSampler(BaseSampler):
     """RandomSampler class used in FL."""
 
-    def __init__(self, all_agents: List[AgentsType]) -> None:
+    def __init__(self, all_agents: List[Any]) -> None:
         """Constructor."""
         super().__init__(all_agents=all_agents)
 
-    def sample(self, num: int) -> List[AgentsType]:
+    def sample(self, num: int) -> List[Any]:
         """
         Sample agents.
 

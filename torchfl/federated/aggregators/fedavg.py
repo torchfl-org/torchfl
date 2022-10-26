@@ -4,9 +4,6 @@
 """FedAvg Aggregator class used in FL."""
 
 from collections import OrderedDict
-import copy
-import torch
-from torchfl.federated.types import AgentsType
 from torchfl.federated.aggregators.base import BaseAggregator
 from typing import Any, Dict, List
 
@@ -14,7 +11,7 @@ from typing import Any, Dict, List
 class FedAvgAggregator(BaseAggregator):
     """FedAvgAggregator class used in FL."""
 
-    def __init__(self, all_agents: List[AgentsType]) -> None:
+    def __init__(self, all_agents: List[Any]) -> None:
         """Constructor."""
         super().__init__(all_agents)
 
@@ -32,7 +29,7 @@ class FedAvgAggregator(BaseAggregator):
         w_avg: Dict[Any, Any] = OrderedDict()
         for _, models in agent_models_map.items():
             local_agent_weight = models.state_dict()
-            for key in global_model.state_dict.keys():
+            for key in global_model.state_dict().keys():
                 if key not in w_avg.keys():
                     w_avg[key] = local_agent_weight[key].clone()
                 else:

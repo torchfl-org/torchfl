@@ -3,17 +3,16 @@
 
 """Base Aggregator class used in FL."""
 from abc import ABCMeta, abstractmethod
-from torchfl.federated.types import AgentsType
 from typing import Any, Dict, List
 
 
 class BaseAggregator(metaclass=ABCMeta):
     """BaseAggregator class used in FL."""
 
-    def __init__(self, all_agents: List[AgentsType]) -> None:
+    def __init__(self, all_agents: List[Any]) -> None:
         """Constructor."""
         super().__init__()
-        self.agents: List[AgentsType] = all_agents
+        self.agents: List[Any] = all_agents
 
     @abstractmethod
     def aggregate(self, global_model: Any, agent_models_map: Dict[int, Any]) -> Any:

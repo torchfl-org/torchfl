@@ -19,3 +19,4 @@ class V1Agent(BaseAgent):
 
     def train(self) -> None:
         """Train the agent."""
+        pass
