@@ -3,24 +3,15 @@
 
 """Entry point for the federated learning experiment."""
 
-
-# agent_data_shard_map: Dict[int, DataLoaders]
-# sampler object
-# aggregator object
-# global model object
-# for every sampled agent, create a trainer object and store it in a map
-# perform the training, extract the weights from the map after every round, send it to aggregator
-# all of this compatible with PyTorch Lightning loggers and stuff
-
 from torchfl.federated.types import (
-    AgentsType,
-    AggregatorsType,
-    SamplersType,
     AgentsEnum,
+    AgentsType,
     AggregatorsEnum,
+    AggregatorsType,
     SamplersEnum,
+    SamplersType,
 )
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 
 class Entrypoint:
@@ -28,8 +19,8 @@ class Entrypoint:
         self,
         global_model: Any,
         agents: List[AgentsEnum],
-        aggregator: AggregatorsEnum = AggregatorsEnum.BASE,
-        sampler: SamplersEnum = SamplersEnum.BASE,
+        aggregator: AggregatorsEnum = AggregatorsEnum.FEDAVG,
+        sampler: SamplersEnum = SamplersEnum.RANDOM,
         fl_hparams: Dict[str, Any] = dict(),
     ) -> None:
         """
@@ -42,17 +33,29 @@ class Entrypoint:
             - global_model (Any): Global model used in the FL experiment.
             - fl_hparams (Dict[str, Any]): Federated learning hyperparameters.
         """
-        self.agents: List[AgentsEnum] = [agent.value() for agent in agents]
-        self.aggregator: AggregatorsEnum = aggregator.value()
-        self.sampler: SamplersEnum = sampler.value()
+        self.agents: List[AgentsType] = [agent.value() for agent in agents]
+        self.aggregator: AggregatorsType = aggregator.value()
+        self.sampler: SamplersType = sampler.value(all_agents=self.agents)
         self.global_model: Any = global_model
         self.fl_params: Dict[str, Any] = fl_hparams
 
     def run(self) -> None:
         """Run the federated learning experiment."""
-        for ep in range(1, self.fl_params.get("num_epochs", 10) + 1):
-            sampled_agents = self.sampler.sample()  # type: ignore
+        # extract the fl params
+        global_epochs: int = self.fl_params.get("global_epochs", 10)
+        local_epochs: int = self.fl_params.get("local_epochs", 5)
+        sampling_ratio: float = self.fl_params.get("sampling_ratio", 0.1)
+        num_sampled: int = int(len(self.agents) * sampling_ratio)
+
+        for ep in range(1, global_epochs + 1):
+            # collecting agent weights
+            agent_models_map: Dict[int, Any] = dict()
+            sampled_agents: List[AgentsType] = self.sampler.sample(num=num_sampled)
             for agent in sampled_agents:
-                agent.train()
-            aggregated_weights = self.aggregator.aggregate()  # type: ignore
-            self.global_model.set_weights(aggregated_weights)
+                agent_models_map[agent.id] = agent.train()
+            self.global_model.set_weights(
+                self.aggregator.aggregate(self.global_model, agent_models_map)
+            )
+            # share the new global model with all the agents
+            for agent in self.agents:
+                agent.assign_model(self.global_model)

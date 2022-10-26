@@ -279,7 +279,7 @@ class FashionMNIST(pl.LightningModule):
                 "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name.value],
                 "config": optimizer_hparams,
             },
-            "fl_hparams": vars(fl_hparams),
+            "fl_hparams": vars(fl_hparams) if fl_hparams else {},
         }
         self.save_hyperparameters(combined_hparams)
         self.loss_module = nn.CrossEntropyLoss()

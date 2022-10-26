@@ -116,10 +116,10 @@ def train_model_from_scratch(
 
     # test best model based on the validation and test set
     val_result: List[Dict[str, float]] = trainer.test(
-        model, test_dataloaders=datamodule.val_dataloader(), verbose=True
+        model, dataloaders=datamodule.val_dataloader(), verbose=True
     )
     test_result: List[Dict[str, float]] = trainer.test(
-        model, test_dataloaders=datamodule.test_dataloader(), verbose=True
+        model, dataloaders=datamodule.test_dataloader(), verbose=True
     )
     result: Dict[str, float] = {
         "test": test_result[0]["test_acc"],
@@ -211,10 +211,10 @@ def train_pretrained_model(
 
     # test best model based on the validation and test set
     val_result: List[Dict[str, float]] = trainer.test(
-        model, test_dataloaders=datamodule.val_dataloader(), verbose=True
+        model, dataloaders=datamodule.val_dataloader(), verbose=True
     )
     test_result: List[Dict[str, float]] = trainer.test(
-        model, test_dataloaders=datamodule.test_dataloader(), verbose=True
+        model, dataloaders=datamodule.test_dataloader(), verbose=True
     )
     result: Dict[str, float] = {
         "test": test_result[0]["test_acc"],
@@ -306,10 +306,10 @@ def train_feature_extracted_model(
 
     # test best model based on the validation and test set
     val_result: List[Dict[str, float]] = trainer.test(
-        model, test_dataloaders=datamodule.val_dataloader(), verbose=True
+        model, dataloaders=datamodule.val_dataloader(), verbose=True
     )
     test_result: List[Dict[str, float]] = trainer.test(
-        model, test_dataloaders=datamodule.test_dataloader(), verbose=True
+        model, dataloaders=datamodule.test_dataloader(), verbose=True
     )
     result: Dict[str, float] = {
         "test": test_result[0]["test_acc"],

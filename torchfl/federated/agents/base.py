@@ -3,11 +3,12 @@
 
 """Base Agent class used in FL."""
 
+from abc import ABCMeta, abstractmethod
 from torch.utils.data import DataLoader
 from typing import Optional, Any
 
 
-class BaseAgent:
+class BaseAgent(metaclass=ABCMeta):
     """BaseAgent class used in FL."""
 
     def __init__(
@@ -26,6 +27,7 @@ class BaseAgent:
         """Assign a data shard to the agent."""
         self.data_shard = data_shard
 
+    @abstractmethod
     def train(self) -> None:
         """Train the agent."""
         raise NotImplementedError

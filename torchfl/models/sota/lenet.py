@@ -49,7 +49,7 @@ class LeNet(nn.Module):
             nn.Conv2d(16, 120, kernel_size=5, stride=1),
             self.hparams.act_fn(),
             nn.Flatten(start_dim=1),
-            LinearBlock(300000, 84, self.hparams.act_fn, False),
+            LinearBlock(120, 84, self.hparams.act_fn, False),
         )
         self.output_net = nn.Sequential(nn.Linear(84, self.hparams.num_classes))
 
