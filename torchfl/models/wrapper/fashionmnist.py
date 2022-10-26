@@ -323,7 +323,7 @@ class FashionMNIST(pl.LightningModule):
         # Logs the accuracy per epoch (weighted average over batches)
         self.log("batch_idx", batch_idx)
         self.log("train_acc", acc, on_step=False, on_epoch=True)
-        self.log("train_loss", loss)
+        self.log("train_loss", loss, on_step=False, on_epoch=True)
         return loss
 
     def validation_step(  # type: ignore
@@ -340,7 +340,7 @@ class FashionMNIST(pl.LightningModule):
         acc: Tensor = (labels == preds).float().mean()
         # By default logs it per epoch (weighted average over batches)
         self.log("batch_idx", batch_idx)
-        self.log("val_acc", acc)
+        self.log("val_acc", acc, on_step=False, on_epoch=True)
 
     def test_step(  # type: ignore
         self, batch: Tuple[Tensor, Tensor], batch_idx: int
@@ -356,4 +356,4 @@ class FashionMNIST(pl.LightningModule):
         acc: Tensor = (labels == preds).float().mean()
         # By default logs it per epoch (weighted average over batches), and returns it afterwards
         self.log("batch_idx", batch_idx)
-        self.log("test_acc", acc)
+        self.log("test_acc", acc, on_step=False, on_epoch=True)

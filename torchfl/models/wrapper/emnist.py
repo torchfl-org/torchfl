@@ -963,7 +963,7 @@ class BalancedEMNIST(pl.LightningModule):
         # Logs the accuracy per epoch (weighted average over batches)
         self.log("batch_idx", batch_idx)
         self.log("train_acc", acc, on_step=False, on_epoch=True)
-        self.log("train_loss", loss)
+        self.log("train_loss", loss, on_step=False, on_epoch=True)
         return loss
 
     def validation_step(  # type: ignore
@@ -980,7 +980,7 @@ class BalancedEMNIST(pl.LightningModule):
         acc: Tensor = (labels == preds).float().mean()
         # By default logs it per epoch (weighted average over batches)
         self.log("batch_idx", batch_idx)
-        self.log("val_acc", acc)
+        self.log("val_acc", acc, on_step=False, on_epoch=True)
 
     def test_step(  # type: ignore
         self, batch: Tuple[Tensor, Tensor], batch_idx: int
@@ -996,7 +996,7 @@ class BalancedEMNIST(pl.LightningModule):
         acc: Tensor = (labels == preds).float().mean()
         # By default logs it per epoch (weighted average over batches), and returns it afterwards
         self.log("batch_idx", batch_idx)
-        self.log("test_acc", acc)
+        self.log("test_acc", acc, on_step=False, on_epoch=True)
 
 
 class ByClassEMNIST(pl.LightningModule):
@@ -1076,7 +1076,7 @@ class ByClassEMNIST(pl.LightningModule):
         # Logs the accuracy per epoch (weighted average over batches)
         self.log("batch_idx", batch_idx)
         self.log("train_acc", acc, on_step=False, on_epoch=True)
-        self.log("train_loss", loss)
+        self.log("train_loss", loss, on_step=False, on_epoch=True)
         return loss
 
     def validation_step(  # type: ignore
@@ -1093,7 +1093,7 @@ class ByClassEMNIST(pl.LightningModule):
         acc: Tensor = (labels == preds).float().mean()
         # By default logs it per epoch (weighted average over batches)
         self.log("batch_idx", batch_idx)
-        self.log("val_acc", acc)
+        self.log("val_acc", acc, on_step=False, on_epoch=True)
 
     def test_step(  # type: ignore
         self, batch: Tuple[Tensor, Tensor], batch_idx: int
@@ -1109,7 +1109,7 @@ class ByClassEMNIST(pl.LightningModule):
         acc: Tensor = (labels == preds).float().mean()
         # By default logs it per epoch (weighted average over batches), and returns it afterwards
         self.log("batch_idx", batch_idx)
-        self.log("test_acc", acc)
+        self.log("test_acc", acc, on_step=False, on_epoch=True)
 
 
 class ByMergeEMNIST(pl.LightningModule):
@@ -1189,7 +1189,7 @@ class ByMergeEMNIST(pl.LightningModule):
         # Logs the accuracy per epoch (weighted average over batches)
         self.log("batch_idx", batch_idx)
         self.log("train_acc", acc, on_step=False, on_epoch=True)
-        self.log("train_loss", loss)
+        self.log("train_loss", loss, on_step=False, on_epoch=True)
         return loss
 
     def validation_step(  # type: ignore
@@ -1206,7 +1206,7 @@ class ByMergeEMNIST(pl.LightningModule):
         acc: Tensor = (labels == preds).float().mean()
         # By default logs it per epoch (weighted average over batches)
         self.log("batch_idx", batch_idx)
-        self.log("val_acc", acc)
+        self.log("val_acc", acc, on_step=False, on_epoch=True)
 
     def test_step(  # type: ignore
         self, batch: Tuple[Tensor, Tensor], batch_idx: int
@@ -1222,7 +1222,7 @@ class ByMergeEMNIST(pl.LightningModule):
         acc: Tensor = (labels == preds).float().mean()
         # By default logs it per epoch (weighted average over batches), and returns it afterwards
         self.log("batch_idx", batch_idx)
-        self.log("test_acc", acc)
+        self.log("test_acc", acc, on_step=False, on_epoch=True)
 
 
 class LettersEMNIST(pl.LightningModule):
@@ -1302,7 +1302,7 @@ class LettersEMNIST(pl.LightningModule):
         # Logs the accuracy per epoch (weighted average over batches)
         self.log("batch_idx", batch_idx)
         self.log("train_acc", acc, on_step=False, on_epoch=True)
-        self.log("train_loss", loss)
+        self.log("train_loss", loss, on_step=False, on_epoch=True)
         return loss
 
     def validation_step(  # type: ignore
@@ -1319,7 +1319,7 @@ class LettersEMNIST(pl.LightningModule):
         acc: Tensor = (labels == preds).float().mean()
         # By default logs it per epoch (weighted average over batches)
         self.log("batch_idx", batch_idx)
-        self.log("val_acc", acc)
+        self.log("val_acc", acc, on_step=False, on_epoch=True)
 
     def test_step(  # type: ignore
         self, batch: Tuple[Tensor, Tensor], batch_idx: int
@@ -1335,7 +1335,7 @@ class LettersEMNIST(pl.LightningModule):
         acc: Tensor = (labels == preds).float().mean()
         # By default logs it per epoch (weighted average over batches), and returns it afterwards
         self.log("batch_idx", batch_idx)
-        self.log("test_acc", acc)
+        self.log("test_acc", acc, on_step=False, on_epoch=True)
 
 
 class DigitsEMNIST(pl.LightningModule):
@@ -1415,7 +1415,7 @@ class DigitsEMNIST(pl.LightningModule):
         # Logs the accuracy per epoch (weighted average over batches)
         self.log("batch_idx", batch_idx)
         self.log("train_acc", acc, on_step=False, on_epoch=True)
-        self.log("train_loss", loss)
+        self.log("train_loss", loss, on_step=False, on_epoch=True)
         return loss
 
     def validation_step(  # type: ignore
@@ -1432,7 +1432,7 @@ class DigitsEMNIST(pl.LightningModule):
         acc: Tensor = (labels == preds).float().mean()
         # By default logs it per epoch (weighted average over batches)
         self.log("batch_idx", batch_idx)
-        self.log("val_acc", acc)
+        self.log("val_acc", acc, on_step=False, on_epoch=True)
 
     def test_step(  # type: ignore
         self, batch: Tuple[Tensor, Tensor], batch_idx: int
@@ -1448,7 +1448,7 @@ class DigitsEMNIST(pl.LightningModule):
         acc: Tensor = (labels == preds).float().mean()
         # By default logs it per epoch (weighted average over batches), and returns it afterwards
         self.log("batch_idx", batch_idx)
-        self.log("test_acc", acc)
+        self.log("test_acc", acc, on_step=False, on_epoch=True)
 
 
 class MNISTEMNIST(pl.LightningModule):
@@ -1528,7 +1528,7 @@ class MNISTEMNIST(pl.LightningModule):
         # Logs the accuracy per epoch (weighted average over batches)
         self.log("batch_idx", batch_idx)
         self.log("train_acc", acc, on_step=False, on_epoch=True)
-        self.log("train_loss", loss)
+        self.log("train_loss", loss, on_step=False, on_epoch=True)
         return loss
 
     def validation_step(  # type: ignore
@@ -1545,7 +1545,7 @@ class MNISTEMNIST(pl.LightningModule):
         acc: Tensor = (labels == preds).float().mean()
         # By default logs it per epoch (weighted average over batches)
         self.log("batch_idx", batch_idx)
-        self.log("val_acc", acc)
+        self.log("val_acc", acc, on_step=False, on_epoch=True)
 
     def test_step(  # type: ignore
         self, batch: Tuple[Tensor, Tensor], batch_idx: int
@@ -1561,4 +1561,4 @@ class MNISTEMNIST(pl.LightningModule):
         acc: Tensor = (labels == preds).float().mean()
         # By default logs it per epoch (weighted average over batches), and returns it afterwards
         self.log("batch_idx", batch_idx)
-        self.log("test_acc", acc)
+        self.log("test_acc", acc, on_step=False, on_epoch=True)

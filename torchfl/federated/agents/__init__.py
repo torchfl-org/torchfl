@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Sub-package for federated learning used by torchfl."""
+"""Sub-package for federated learning agents used by torchfl."""
 
 __author__ = """Vivek Khimani"""
 __email__ = "vivekkhimani07@gmail.com"
