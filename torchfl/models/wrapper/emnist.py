@@ -5,6 +5,7 @@
 
 import enum
 from typing import List, Optional, Type, Union, Dict, Any, Tuple
+from torchfl.federated.fl_params import FLParams
 from torchfl.models.core.emnist.balanced.alexnet import AlexNet as BalancedAlexNet
 from torchfl.models.core.emnist.balanced.densenet import (
     DenseNet121 as BalancedDenseNet121,
@@ -1243,7 +1244,7 @@ class LettersEMNIST(pl.LightningModule):
         optimizer_name: OPTIMIZERS_TYPE,
         optimizer_hparams: Dict[str, Any],
         model_hparams: Optional[Dict[str, Any]] = None,
-        fl_hparams: Optional[Dict[str, Any]] = None,
+        fl_hparams: Optional[FLParams] = None,
     ) -> None:
         """Default constructor.
 
@@ -1252,13 +1253,16 @@ class LettersEMNIST(pl.LightningModule):
             - optimizer_name (str): Name of optimizer to be used. Only choose from the available models.
             - optimizer_hparams(Dict[str, Any]): Hyperparameters to initialize the optimizer.
             - model_hparams (Optional[Dict[str, Any]], optional): Optional override the default model hparams. Defaults to None.
-            - fl_hparams (Optional[Dict[str, Any]], optional): Optional override the default federated learning hparams. Defaults to None.
+            - fl_hparams (Optional[FLParams], optional): Optional override the default federated learning hparams. Defaults to None.
         """
         super().__init__()
         self.model = create_model(
             dataset_name="letters",
             model_name=model_name.value,
             model_hparams=model_hparams,
+        )
+        self.fl_hparams: Optional[Dict[str, Any]] = (
+            fl_hparams.as_dict() if fl_hparams else None
         )
         combined_hparams: Dict[str, Any] = {
             "model_hparams": vars(self.model.hparams),
@@ -1267,7 +1271,7 @@ class LettersEMNIST(pl.LightningModule):
                 "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name.value],
                 "config": optimizer_hparams,
             },
-            "fl_hparams": vars(fl_hparams) if fl_hparams else {},
+            "fl_hparams": vars(fl_hparams.as_simple_namespace()) if fl_hparams else {},
         }
         self.save_hyperparameters(combined_hparams)
         self.loss_module = nn.CrossEntropyLoss()
@@ -1475,7 +1479,7 @@ class MNISTEMNIST(pl.LightningModule):
         optimizer_name: OPTIMIZERS_TYPE,
         optimizer_hparams: Dict[str, Any],
         model_hparams: Optional[Dict[str, Any]] = None,
-        fl_hparams: Optional[Dict[str, Any]] = None,
+        fl_hparams: Optional[FLParams] = None,
     ) -> None:
         """Default constructor.
 
@@ -1484,13 +1488,16 @@ class MNISTEMNIST(pl.LightningModule):
             - optimizer_name (str): Name of optimizer to be used. Only choose from the available models.
             - optimizer_hparams(Dict[str, Any]): Hyperparameters to initialize the optimizer.
             - model_hparams (Optional[Dict[str, Any]], optional): Optional override the default model hparams. Defaults to None.
-            - fl_hparams (Optional[Dict[str, Any]], optional): Optional override the default federated learning hparams. Defaults to None.
+            - fl_hparams (Optional[FLParams], optional): Optional override the default federated learning hparams. Defaults to None.
         """
         super().__init__()
         self.model = create_model(
             dataset_name="mnist",
             model_name=model_name.value,
             model_hparams=model_hparams,
+        )
+        self.fl_hparams: Optional[Dict[str, Any]] = (
+            fl_hparams.as_dict() if fl_hparams else None
         )
         combined_hparams: Dict[str, Any] = {
             "model_hparams": vars(self.model.hparams),
@@ -1499,7 +1506,7 @@ class MNISTEMNIST(pl.LightningModule):
                 "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name.value],
                 "config": optimizer_hparams,
             },
-            "fl_hparams": vars(fl_hparams) if fl_hparams else {},
+            "fl_hparams": vars(fl_hparams.as_simple_namespace()) if fl_hparams else {},
         }
         self.save_hyperparameters(combined_hparams)
         self.loss_module = nn.CrossEntropyLoss()
@@ -1543,10 +1550,25 @@ class MNISTEMNIST(pl.LightningModule):
         loss: Tensor = self.loss_module(preds, labels)
         acc: Tensor = (preds.argmax(dim=-1) == labels).float().mean()
 
-        # Logs the accuracy per epoch (weighted average over batches)
-        self.log("batch_idx", batch_idx)
-        self.log("train_acc", acc, on_step=False, on_epoch=True)
-        self.log("train_loss", loss, on_step=False, on_epoch=True)
+        # Logs the fl-related metrics if fl_hparams is not None
+        if self.fl_hparams is not None:
+            self.log(
+                f"{self.fl_hparams.get('experiment_name', 'default')}_train_loss",
+                loss,
+                on_step=False,
+                on_epoch=True,
+            )
+            self.log(
+                f"{self.fl_hparams.get('experiment_name', 'default')}_train_acc",
+                acc,
+                on_step=False,
+                on_epoch=True,
+            )
+        else:
+            # Logs the accuracy per epoch (weighted average over batches)
+            self.log("batch_idx", batch_idx)
+            self.log("train_acc", acc, on_step=False, on_epoch=True)
+            self.log("train_loss", loss, on_step=False, on_epoch=True)
         return loss
 
     def validation_step(  # type: ignore
@@ -1559,11 +1581,30 @@ class MNISTEMNIST(pl.LightningModule):
             - batch_idx (int): Index of the batch.
         """
         imgs, labels = batch
+        preds: Tensor = self.model(imgs)
+        loss: Tensor = self.loss_module(preds, labels)
         preds: Tensor = self.model(imgs).argmax(dim=-1)
         acc: Tensor = (labels == preds).float().mean()
-        # By default logs it per epoch (weighted average over batches)
-        self.log("batch_idx", batch_idx)
-        self.log("val_acc", acc, on_step=False, on_epoch=True)
+
+        # Logs the fl-related metrics if fl_hparams is not None
+        if self.fl_hparams is not None:
+            self.log(
+                f"{self.fl_hparams.get('experiment_name', 'default')}_test_loss",
+                loss,
+                on_step=False,
+                on_epoch=True,
+            )
+            self.log(
+                f"{self.fl_hparams.get('experiment_name', 'default')}_test_acc",
+                acc,
+                on_step=False,
+                on_epoch=True,
+            )
+        else:
+            # By default logs it per epoch (weighted average over batches), and returns it afterwards
+            self.log("batch_idx", batch_idx)
+            self.log("test_loss", loss, on_step=False, on_epoch=True)
+            self.log("test_acc", acc, on_step=False, on_epoch=True)
 
     def test_step(  # type: ignore
         self, batch: Tuple[Tensor, Tensor], batch_idx: int
@@ -1575,8 +1616,27 @@ class MNISTEMNIST(pl.LightningModule):
             - batch_idx (int): Index of the batch.
         """
         imgs, labels = batch
+        preds: Tensor = self.model(imgs)
+        loss: Tensor = self.loss_module(preds, labels)
         preds: Tensor = self.model(imgs).argmax(dim=-1)
         acc: Tensor = (labels == preds).float().mean()
-        # By default logs it per epoch (weighted average over batches), and returns it afterwards
-        self.log("batch_idx", batch_idx)
-        self.log("test_acc", acc, on_step=False, on_epoch=True)
+
+        # Logs the fl-related metrics if fl_hparams is not None
+        if self.fl_hparams is not None:
+            self.log(
+                f"{self.fl_hparams.get('experiment_name', 'default')}_test_loss",
+                loss,
+                on_step=False,
+                on_epoch=True,
+            )
+            self.log(
+                f"{self.fl_hparams.get('experiment_name', 'default')}_test_acc",
+                acc,
+                on_step=False,
+                on_epoch=True,
+            )
+        else:
+            # By default logs it per epoch (weighted average over batches), and returns it afterwards
+            self.log("batch_idx", batch_idx)
+            self.log("test_loss", loss, on_step=False, on_epoch=True)
+            self.log("test_acc", acc, on_step=False, on_epoch=True)
