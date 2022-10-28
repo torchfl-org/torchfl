@@ -152,9 +152,72 @@ For full non-federated learning example scripts, check [examples/trainers](https
 ### Federated Learning
 The following steps should be followed on a high-level to train a federated learning experiment.
 
-1. FIXME later
-2. FIXME later
-3. FIXME later
+1. Pick a dataset and use the ```datamodules``` to create federated data shards with iid or non-iid distribution.
+	```python
+	def get_datamodule() -> EMNISTDataModule:
+		datamodule: EMNISTDataModule = EMNISTDataModule(
+			dataset_name=SUPPORTED_DATASETS_TYPE.MNIST, train_batch_size=10
+		)
+		datamodule.prepare_data()
+		datamodule.setup()
+		return datamodule
+		
+    agent_data_shard_map = get_agent_data_shard_map().federated_iid_dataloader(
+        num_workers=fl_params.num_agents,
+        workers_batch_size=fl_params.local_train_batch_size,
+    )
+	```
+2. Use the TorchFL ```agents``` module and the  ```models``` module to initialize the global model, agents, and distribute their models.
+	```python
+	def initialize_agents(
+		fl_params: FLParams, agent_data_shard_map: Dict[int, DataLoader]
+	) -> List[V1Agent]:
+		"""Initialize agents."""
+		agents = []
+		for agent_id in range(fl_params.num_agents):
+			agent = V1Agent(
+				id=agent_id,
+				model=MNISTEMNIST(
+					model_name=EMNIST_MODELS_ENUM.MOBILENETV3SMALL,
+					optimizer_name=OPTIMIZERS_TYPE.ADAM,
+					optimizer_hparams={"lr": 0.001},
+					model_hparams={"pre_trained": True, "feature_extract": True},
+					fl_hparams=fl_params,
+				),
+				data_shard=agent_data_shard_map[agent_id],
+			)
+			agents.append(agent)
+		return agents
+    
+	global_model = MNISTEMNIST(
+        model_name=EMNIST_MODELS_ENUM.MOBILENETV3SMALL,
+        optimizer_name=OPTIMIZERS_TYPE.ADAM,
+        optimizer_hparams={"lr": 0.001},
+        model_hparams={"pre_trained": True, "feature_extract": True},
+        fl_hparams=fl_params,
+    )
+	
+	all_agents = initialize_agents(fl_params, agent_data_shard_map)
+	```
+3. Initiliaze an ```FLParam``` object with the desired FL hyperparameters and pass it on to the ````Entrypoint``` object which will abstract the training.
+	```python
+    fl_params = FLParams(
+        experiment_name="iid_mnist_fedavg_10_agents_5_sampled_50_epochs_mobilenetv3small_latest",
+        num_agents=10,
+        global_epochs=10,
+        local_epochs=2,
+        sampling_ratio=0.5,
+    )
+    entrypoint = Entrypoint(
+        global_model=global_model,
+        global_datamodule=get_agent_data_shard_map(),
+        fl_hparams=fl_params,
+        agents=all_agents,
+        aggregator=FedAvgAggregator(all_agents=all_agents),
+        sampler=RandomSampler(all_agents=all_agents),
+    )
+    entrypoint.run()
+	```
 
 For full federated learning example scripts, check [examples/federated](https://github.com/vivekkhimani/torchfl/tree/master/examples/federated).
 
