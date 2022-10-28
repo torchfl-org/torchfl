@@ -10,16 +10,18 @@ import torch.nn as nn
 import torch
 import pytorch_lightning as pl
 from pytorch_lightning.loggers import TensorBoardLogger, CSVLogger
+from pytorch_lightning.profiler import SimpleProfiler, AdvancedProfiler
 from pytorch_lightning.callbacks import (
-    ModelCheckpoint,
     LearningRateMonitor,
     DeviceStatsMonitor,
     ModelSummary,
-    ProgressBar,
+    RichProgressBar,
+    Timer,
 )
 from torchfl.datamodules.emnist import EMNISTDataModule, SUPPORTED_DATASETS_TYPE
 from torchfl.models.wrapper.emnist import MNISTEMNIST, EMNIST_MODELS_ENUM
 from torchfl.compatibility import OPTIMIZERS_TYPE, TORCHFL_DIR
+from torchvision import transforms
 
 import logging
 import sys
@@ -48,7 +50,7 @@ def train_model_from_scratch(
         accelerator="gpu",
         auto_lr_find=True,
         enable_progress_bar=True,
-        max_epochs=10,
+        max_epochs=2,
         devices=torch.cuda.device_count() if torch.cuda.is_available() else 1,
         num_nodes=torch.cuda.device_count() if torch.cuda.is_available() else 1,
         num_processes=1,
@@ -62,17 +64,45 @@ def train_model_from_scratch(
             CSVLogger(save_dir=ROOT_DIR_PATH),
         ],
         callbacks=[
-            ModelCheckpoint(save_weights_only=False, mode="max", monitor="val_acc"),
             LearningRateMonitor("epoch"),
             DeviceStatsMonitor(),
             ModelSummary(),
-            ProgressBar(),
+            RichProgressBar(leave=True),
+            Timer(),
         ],
-        progress_bar_refresh_rate=1,
+        profiler=SimpleProfiler(
+            dirpath=ROOT_DIR_PATH, filename="simple_profiler_report"
+        ),
+        enable_checkpointing=False,
     )
     # prepare the dataset
     datamodule: EMNISTDataModule = EMNISTDataModule(
-        dataset_name=SUPPORTED_DATASETS_TYPE.MNIST
+        dataset_name=SUPPORTED_DATASETS_TYPE.MNIST,
+        train_transforms=transforms.Compose(
+            [
+                transforms.ToTensor(),  # first, convert image to PyTorch tensor
+                transforms.Normalize((0.1307,), (0.3081,)),  # normalize inputs
+            ]
+        ),
+        val_transforms=transforms.Compose(
+            [
+                transforms.ToTensor(),  # first, convert image to PyTorch tensor
+                transforms.Normalize((0.1307,), (0.3081,)),  # normalize inputs
+            ]
+        ),
+        predict_transforms=transforms.Compose(
+            [
+                transforms.ToTensor(),  # first, convert image to PyTorch tensor
+                transforms.Normalize((0.1307,), (0.3081,)),  # normalize inputs
+            ]
+        ),
+        test_transforms=transforms.Compose(
+            [
+                transforms.ToTensor(),  # first, convert image to PyTorch tensor
+                transforms.Normalize((0.1307,), (0.3081,)),  # normalize inputs
+            ]
+        ),
+        train_batch_size=128,
     )
     datamodule.prepare_data()
     datamodule.setup()
@@ -81,27 +111,27 @@ def train_model_from_scratch(
     if checkpoint_load_path and os.path.isfile(checkpoint_load_path):
         logging.info("Loading model from the checkpoint at ", checkpoint_load_path)
         model = MNISTEMNIST(
-            EMNIST_MODELS_ENUM.MLP,
+            EMNIST_MODELS_ENUM.LENET,
             OPTIMIZERS_TYPE.ADAM,
             {"lr": 0.001},
-            {"img_w": 224, "img_h": 224},
+            {},
         ).load_from_checkpoint(checkpoint_load_path)
     else:
         pl.seed_everything(42)
         model = MNISTEMNIST(
-            EMNIST_MODELS_ENUM.MLP,
+            EMNIST_MODELS_ENUM.LENET,
             OPTIMIZERS_TYPE.ADAM,
             {"lr": 0.001},
-            {"img_w": 224, "img_h": 224},
+            {},
         )
-        trainer.fit(model, datamodule.train_dataloader(), datamodule.val_dataloader())
+    trainer.fit(model, datamodule.train_dataloader(), datamodule.val_dataloader())
 
     # test best model based on the validation and test set
     val_result: List[Dict[str, float]] = trainer.test(
-        model, test_dataloaders=datamodule.val_dataloader(), verbose=True
+        model, dataloaders=datamodule.val_dataloader(), verbose=True
     )
     test_result: List[Dict[str, float]] = trainer.test(
-        model, test_dataloaders=datamodule.test_dataloader(), verbose=True
+        model, dataloaders=datamodule.test_dataloader(), verbose=True
     )
     result: Dict[str, float] = {
         "test": test_result[0]["test_acc"],
@@ -110,7 +140,6 @@ def train_model_from_scratch(
     logging.info(
         f"Experiment {experiment_name} completed with results {result} and the log files and checkpoints are stored at {ROOT_DIR_PATH}"
     )
-    return model, result
     return model, result
 
 
@@ -152,13 +181,13 @@ def train_pretrained_model(
             CSVLogger(save_dir=ROOT_DIR_PATH),
         ],
         callbacks=[
-            ModelCheckpoint(save_weights_only=False, mode="max", monitor="val_acc"),
             LearningRateMonitor("epoch"),
             DeviceStatsMonitor(),
             ModelSummary(),
-            ProgressBar(),
+            RichProgressBar(leave=True),
+            Timer(),
         ],
-        progress_bar_refresh_rate=1,
+        enable_checkpointing=False,
     )
     # prepare the dataset
     datamodule: EMNISTDataModule = EMNISTDataModule(
@@ -188,10 +217,10 @@ def train_pretrained_model(
 
     # test best model based on the validation and test set
     val_result: List[Dict[str, float]] = trainer.test(
-        model, test_dataloaders=datamodule.val_dataloader(), verbose=True
+        model, dataloaders=datamodule.val_dataloader(), verbose=True
     )
     test_result: List[Dict[str, float]] = trainer.test(
-        model, test_dataloaders=datamodule.test_dataloader(), verbose=True
+        model, dataloaders=datamodule.test_dataloader(), verbose=True
     )
     result: Dict[str, float] = {
         "test": test_result[0]["test_acc"],
@@ -241,13 +270,12 @@ def train_feature_extraction_model(
             CSVLogger(save_dir=ROOT_DIR_PATH),
         ],
         callbacks=[
-            ModelCheckpoint(save_weights_only=False, mode="max", monitor="val_acc"),
             LearningRateMonitor("epoch"),
             DeviceStatsMonitor(),
-            ModelSummary(),
-            ProgressBar(),
+            RichProgressBar(leave=True),
+            Timer(),
         ],
-        progress_bar_refresh_rate=1,
+        enable_checkpointing=False,
     )
     # prepare the dataset
     datamodule: EMNISTDataModule = EMNISTDataModule(
@@ -277,10 +305,10 @@ def train_feature_extraction_model(
 
     # test best model based on the validation and test set
     val_result: List[Dict[str, float]] = trainer.test(
-        model, test_dataloaders=datamodule.val_dataloader(), verbose=True
+        model, dataloaders=datamodule.val_dataloader(), verbose=True
     )
     test_result: List[Dict[str, float]] = trainer.test(
-        model, test_dataloaders=datamodule.test_dataloader(), verbose=True
+        model, dataloaders=datamodule.test_dataloader(), verbose=True
     )
     result: Dict[str, float] = {
         "test": test_result[0]["test_acc"],
@@ -293,4 +321,4 @@ def train_feature_extraction_model(
 
 
 if __name__ == "__main__":
-    model, result = train_model_from_scratch("mnist_mlp_scratch_1")
+    model, result = train_model_from_scratch("mnist_lenet_scratch_profiler_run")
