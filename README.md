@@ -529,15 +529,3 @@ $ bump2version patch # possible: major / minor / patch
 $ git push
 $ git push --tags
 ```
-
-### Credits
-We truly appreciate everyone contributing to and helping us build this community! Thanks for all the love and support. A big shoutout to everyone who has contributed to this project.
-#### Core Developers
-1. <b>Vivek Khimani</b>
-	- <b>Email:</b> [vivekkhimani07@gmail.com](mailto:vivekkhimani07@gmail.com)
-	- <b>Website:</b> [https://vivekkhimani.github.io](https://vivekkhimani.github.io)
-	- <b>Github:</b> [https://github.com/vivekkhimani](https://github.com/vivekkhimani)
-	- <b>Buy Me a Coffee:</b> [https://www.buymeacoffee.com/vivekkhimani](https://www.buymeacoffee.com/vivekkhimani)
-
-#### Contributors
-None yet. Why not be the first?
