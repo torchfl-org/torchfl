@@ -138,6 +138,12 @@ if __name__ == "__main__":
     agent_shard_map_5_agents_non_iid_3: Dict[
         int, DataLoader
     ] = cifar10_noniid_distribution(num_agents=5, niid_factor=3)
+    agent_shard_map_5_agents_non_iid_5: Dict[
+        int, DataLoader
+    ] = cifar10_noniid_distribution(num_agents=5, niid_factor=5)
+    dump_data_distribution_to_csv(
+        agent_shard_map_5_agents_non_iid_5, "data_distribution_5_agents_non_iid_5.csv"
+    )
     agent_shard_map_10_agents_non_iid_3: Dict[
         int, DataLoader
     ] = cifar10_noniid_distribution(num_agents=10, niid_factor=3)

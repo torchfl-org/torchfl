@@ -3,6 +3,7 @@
 
 """Entry point for the federated learning experiment."""
 
+from copy import deepcopy
 import os
 import pytorch_lightning as pl
 from pytorch_lightning.loggers import TensorBoardLogger, CSVLogger
@@ -147,7 +148,7 @@ class Entrypoint:
                 agent_trained_model, agent_result = agent.train(
                     self.gen_agent_trainer(agent), self.fl_params
                 )
-                agent_models_map[agent.id] = agent_trained_model
+                agent_models_map[agent.id] = agent_trained_model.state_dict()
                 print(agent_result)
             self.global_model.load_state_dict(
                 self.aggregator.aggregate(self.global_model, agent_models_map)

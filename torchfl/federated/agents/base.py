@@ -24,7 +24,7 @@ class BaseAgent(metaclass=ABCMeta):
 
     def assign_model(self, model: Any) -> None:
         """Assign a model to the agent."""
-        self.model = model
+        self.model.load_state_dict(model.state_dict())
 
     def assign_data_shard(self, data_shard: DataLoader) -> None:
         """Assign a data shard to the agent."""

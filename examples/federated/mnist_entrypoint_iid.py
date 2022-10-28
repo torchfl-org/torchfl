@@ -10,7 +10,9 @@ from torchfl.federated.aggregators.fedavg import FedAvgAggregator
 from torchfl.federated.samplers.random import RandomSampler
 
 from torchfl.datamodules.emnist import EMNISTDataModule, SUPPORTED_DATASETS_TYPE
+from torchfl.datamodules.fashionmnist import FashionMNISTDataModule
 from torchfl.models.wrapper.emnist import MNISTEMNIST, EMNIST_MODELS_ENUM
+from torchfl.models.wrapper.fashionmnist import FashionMNIST, FASHIONMNIST_MODELS_ENUM
 from torchfl.compatibility import OPTIMIZERS_TYPE, TORCHFL_DIR
 
 from torch.utils.data import DataLoader
@@ -26,10 +28,17 @@ def initialize_agents(
     for agent_id in range(fl_params.num_agents):
         agent = V1Agent(
             id=agent_id,
+            # model=MNISTEMNIST(
+            #     model_name=EMNIST_MODELS_ENUM.LENET,
+            #     optimizer_name=OPTIMIZERS_TYPE.ADAM,
+            #     optimizer_hparams={"lr": 0.001},
+            #     fl_hparams=fl_params,
+            # ),
             model=MNISTEMNIST(
-                model_name=EMNIST_MODELS_ENUM.LENET,
+                model_name=EMNIST_MODELS_ENUM.MOBILENETV3SMALL,
                 optimizer_name=OPTIMIZERS_TYPE.ADAM,
                 optimizer_hparams={"lr": 0.001},
+                model_hparams={"pre_trained": True, "feature_extract": True},
                 fl_hparams=fl_params,
             ),
             data_shard=agent_data_shard_map[agent_id],
@@ -39,34 +48,8 @@ def initialize_agents(
 
 
 def get_agent_data_shard_map() -> EMNISTDataModule:
-    # prepare the dataset
     datamodule: EMNISTDataModule = EMNISTDataModule(
-        dataset_name=SUPPORTED_DATASETS_TYPE.MNIST,
-        train_transforms=transforms.Compose(
-            [
-                transforms.ToTensor(),  # first, convert image to PyTorch tensor
-                transforms.Normalize((0.1307,), (0.3081,)),  # normalize inputs
-            ]
-        ),
-        val_transforms=transforms.Compose(
-            [
-                transforms.ToTensor(),  # first, convert image to PyTorch tensor
-                transforms.Normalize((0.1307,), (0.3081,)),  # normalize inputs
-            ]
-        ),
-        predict_transforms=transforms.Compose(
-            [
-                transforms.ToTensor(),  # first, convert image to PyTorch tensor
-                transforms.Normalize((0.1307,), (0.3081,)),  # normalize inputs
-            ]
-        ),
-        test_transforms=transforms.Compose(
-            [
-                transforms.ToTensor(),  # first, convert image to PyTorch tensor
-                transforms.Normalize((0.1307,), (0.3081,)),  # normalize inputs
-            ]
-        ),
-        train_batch_size=10,
+        dataset_name=SUPPORTED_DATASETS_TYPE.MNIST, train_batch_size=10
     )
     datamodule.prepare_data()
     datamodule.setup()
@@ -76,18 +59,25 @@ def get_agent_data_shard_map() -> EMNISTDataModule:
 def main() -> None:
     """Main function."""
     fl_params = FLParams(
-        experiment_name="iid_mnist_fedavg_10_agents",
+        experiment_name="iid_mnist_fedavg_10_agents_5_sampled_50_epochs_mobilenetv3small_latest",
         num_agents=10,
         global_epochs=10,
-        local_epochs=5,
-        sampling_ratio=0.1,
+        local_epochs=2,
+        sampling_ratio=0.5,
     )
     global_model = MNISTEMNIST(
-        model_name=EMNIST_MODELS_ENUM.LENET,
+        model_name=EMNIST_MODELS_ENUM.MOBILENETV3SMALL,
         optimizer_name=OPTIMIZERS_TYPE.ADAM,
         optimizer_hparams={"lr": 0.001},
+        model_hparams={"pre_trained": True, "feature_extract": True},
         fl_hparams=fl_params,
     )
+    # global_model = MNISTEMNIST(
+    #     model_name=EMNIST_MODELS_ENUM.LENET,
+    #     optimizer_name=OPTIMIZERS_TYPE.ADAM,
+    #     optimizer_hparams={"lr": 0.001},
+    #     fl_hparams=fl_params,
+    # )
     agent_data_shard_map = get_agent_data_shard_map().federated_iid_dataloader(
         num_workers=fl_params.num_agents,
         workers_batch_size=fl_params.local_train_batch_size,

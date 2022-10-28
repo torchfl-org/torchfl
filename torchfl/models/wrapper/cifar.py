@@ -5,6 +5,7 @@
 
 import enum
 from typing import List, Optional, Type, Union, Dict, Any, Tuple
+from torchfl.federated.fl_params import FLParams
 from torchfl.models.core.cifar.cifar10.alexnet import AlexNet as CIFAR10AlexNet
 from torchfl.models.core.cifar.cifar10.densenet import (
     DenseNet121 as CIFAR10DenseNet121,
@@ -374,7 +375,7 @@ class CIFAR10(pl.LightningModule):
         optimizer_name: OPTIMIZERS_TYPE,
         optimizer_hparams: Dict[str, Any],
         model_hparams: Optional[Dict[str, Any]] = None,
-        fl_hparams: Optional[Dict[str, Any]] = None,
+        fl_hparams: Optional[FLParams] = None,
     ) -> None:
         """Default constructor.
 
@@ -383,13 +384,16 @@ class CIFAR10(pl.LightningModule):
             - optimizer_name (str): Name of optimizer to be used. Only choose from the available models.
             - optimizer_hparams(Dict[str, Any]): Hyperparameters to initialize the optimizer.
             - model_hparams (Optional[Dict[str, Any]], optional): Optional override the default model hparams. Defaults to None.
-            - fl_hparams (Optional[Dict[str, Any]], optional): Optional override the default FL hparams. Defaults to None.
+            - fl_hparams (Optional[FLParams], optional): Optional override the default federated learning hparams. Defaults to None.
         """
         super().__init__()
         self.model = create_model(
             dataset_name="cifar10",
             model_name=model_name.value,
             model_hparams=model_hparams,
+        )
+        self.fl_hparams: Optional[Dict[str, Any]] = (
+            fl_hparams.as_dict() if fl_hparams else None
         )
         combined_hparams: Dict[str, Any] = {
             "model_hparams": vars(self.model.hparams),
@@ -398,7 +402,7 @@ class CIFAR10(pl.LightningModule):
                 "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name.value],
                 "config": optimizer_hparams,
             },
-            "fl_hparams": vars(fl_hparams) if fl_hparams else {},
+            "fl_hparams": vars(fl_hparams.as_simple_namespace()) if fl_hparams else {},
         }
         self.save_hyperparameters(combined_hparams)
         self.loss_module = nn.CrossEntropyLoss()
@@ -442,10 +446,25 @@ class CIFAR10(pl.LightningModule):
         loss: Tensor = self.loss_module(preds, labels)
         acc: Tensor = (preds.argmax(dim=-1) == labels).float().mean()
 
-        # Logs the accuracy per epoch (weighted average over batches)
-        self.log("batch_idx", batch_idx)
-        self.log("train_acc", acc, on_step=False, on_epoch=True)
-        self.log("train_loss", loss, on_step=False, on_epoch=True)
+        # Logs the fl-related metrics if fl_hparams is not None
+        if self.fl_hparams is not None:
+            self.log(
+                f"{self.fl_hparams.get('experiment_name', 'default')}_train_loss",
+                loss,
+                on_step=False,
+                on_epoch=True,
+            )
+            self.log(
+                f"{self.fl_hparams.get('experiment_name', 'default')}_train_acc",
+                acc,
+                on_step=False,
+                on_epoch=True,
+            )
+        else:
+            # Logs the accuracy per epoch (weighted average over batches)
+            self.log("batch_idx", batch_idx)
+            self.log("train_acc", acc, on_step=False, on_epoch=True)
+            self.log("train_loss", loss, on_step=False, on_epoch=True)
         return loss
 
     def validation_step(  # type: ignore
@@ -458,11 +477,30 @@ class CIFAR10(pl.LightningModule):
             - batch_idx (int): Index of the batch.
         """
         imgs, labels = batch
-        preds: Tensor = self.model(imgs).argmax(dim=-1)
+        preds: Tensor = self.model(imgs)
+        loss: Tensor = self.loss_module(preds, labels)
+        preds = self.model(imgs).argmax(dim=-1)
         acc: Tensor = (labels == preds).float().mean()
-        # By default logs it per epoch (weighted average over batches)
-        self.log("batch_idx", batch_idx)
-        self.log("val_acc", acc, on_step=False, on_epoch=True)
+
+        # Logs the fl-related metrics if fl_hparams is not None
+        if self.fl_hparams is not None:
+            self.log(
+                f"{self.fl_hparams.get('experiment_name', 'default')}_test_loss",
+                loss,
+                on_step=False,
+                on_epoch=True,
+            )
+            self.log(
+                f"{self.fl_hparams.get('experiment_name', 'default')}_test_acc",
+                acc,
+                on_step=False,
+                on_epoch=True,
+            )
+        else:
+            # By default logs it per epoch (weighted average over batches), and returns it afterwards
+            self.log("batch_idx", batch_idx)
+            self.log("test_loss", loss, on_step=False, on_epoch=True)
+            self.log("test_acc", acc, on_step=False, on_epoch=True)
 
     def test_step(  # type: ignore
         self, batch: Tuple[Tensor, Tensor], batch_idx: int
@@ -474,11 +512,30 @@ class CIFAR10(pl.LightningModule):
             - batch_idx (int): Index of the batch.
         """
         imgs, labels = batch
-        preds: Tensor = self.model(imgs).argmax(dim=-1)
+        preds: Tensor = self.model(imgs)
+        loss: Tensor = self.loss_module(preds, labels)
+        preds = self.model(imgs).argmax(dim=-1)
         acc: Tensor = (labels == preds).float().mean()
-        # By default logs it per epoch (weighted average over batches), and returns it afterwards
-        self.log("batch_idx", batch_idx)
-        self.log("test_acc", acc, on_step=False, on_epoch=True)
+
+        # Logs the fl-related metrics if fl_hparams is not None
+        if self.fl_hparams is not None:
+            self.log(
+                f"{self.fl_hparams.get('experiment_name', 'default')}_test_loss",
+                loss,
+                on_step=False,
+                on_epoch=True,
+            )
+            self.log(
+                f"{self.fl_hparams.get('experiment_name', 'default')}_test_acc",
+                acc,
+                on_step=False,
+                on_epoch=True,
+            )
+        else:
+            # By default logs it per epoch (weighted average over batches), and returns it afterwards
+            self.log("batch_idx", batch_idx)
+            self.log("test_loss", loss, on_step=False, on_epoch=True)
+            self.log("test_acc", acc, on_step=False, on_epoch=True)
 
 
 class CIFAR100(pl.LightningModule):
@@ -490,7 +547,7 @@ class CIFAR100(pl.LightningModule):
         optimizer_name: OPTIMIZERS_TYPE,
         optimizer_hparams: Dict[str, Any],
         model_hparams: Optional[Dict[str, Any]] = None,
-        fl_hparams: Optional[Dict[str, Any]] = None,
+        fl_hparams: Optional[FLParams] = None,
     ) -> None:
         """Default constructor.
 
@@ -499,13 +556,16 @@ class CIFAR100(pl.LightningModule):
             - optimizer_name (str): Name of optimizer to be used. Only choose from the available models.
             - optimizer_hparams(Dict[str, Any]): Hyperparameters to initialize the optimizer.
             - model_hparams (Optional[Dict[str, Any]], optional): Optional override the default model hparams. Defaults to None.
-            - fl_hparams (Optional[Dict[str, Any]], optional): Optional override the default FL hparams. Defaults to None.
+            - fl_hparams (Optional[FLParams], optional): Optional override the default federated learning hparams. Defaults to None.
         """
         super().__init__()
         self.model = create_model(
             dataset_name="cifar100",
             model_name=model_name.value,
             model_hparams=model_hparams,
+        )
+        self.fl_hparams: Optional[Dict[str, Any]] = (
+            fl_hparams.as_dict() if fl_hparams else None
         )
         combined_hparams: Dict[str, Any] = {
             "model_hparams": vars(self.model.hparams),
@@ -514,7 +574,7 @@ class CIFAR100(pl.LightningModule):
                 "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name.value],
                 "config": optimizer_hparams,
             },
-            "fl_hparams": vars(fl_hparams) if fl_hparams else {},
+            "fl_hparams": vars(fl_hparams.as_simple_namespace()) if fl_hparams else {},
         }
         self.save_hyperparameters(combined_hparams)
         self.loss_module = nn.CrossEntropyLoss()
@@ -558,10 +618,25 @@ class CIFAR100(pl.LightningModule):
         loss: Tensor = self.loss_module(preds, labels)
         acc: Tensor = (preds.argmax(dim=-1) == labels).float().mean()
 
-        # Logs the accuracy per epoch (weighted average over batches)
-        self.log("batch_idx", batch_idx)
-        self.log("train_acc", acc, on_step=False, on_epoch=True)
-        self.log("train_loss", loss, on_step=False, on_epoch=True)
+        # Logs the fl-related metrics if fl_hparams is not None
+        if self.fl_hparams is not None:
+            self.log(
+                f"{self.fl_hparams.get('experiment_name', 'default')}_train_loss",
+                loss,
+                on_step=False,
+                on_epoch=True,
+            )
+            self.log(
+                f"{self.fl_hparams.get('experiment_name', 'default')}_train_acc",
+                acc,
+                on_step=False,
+                on_epoch=True,
+            )
+        else:
+            # Logs the accuracy per epoch (weighted average over batches)
+            self.log("batch_idx", batch_idx)
+            self.log("train_acc", acc, on_step=False, on_epoch=True)
+            self.log("train_loss", loss, on_step=False, on_epoch=True)
         return loss
 
     def validation_step(  # type: ignore
@@ -571,14 +646,33 @@ class CIFAR100(pl.LightningModule):
 
         Args:
             - batch (Tuple[Tensor, Tensor]): Batch of the validation data.
-            - batch_idx (int): Index of the given batch.
+            - batch_idx (int): Index of the batch.
         """
         imgs, labels = batch
-        preds: Tensor = self.model(imgs).argmax(dim=-1)
+        preds: Tensor = self.model(imgs)
+        loss: Tensor = self.loss_module(preds, labels)
+        preds = self.model(imgs).argmax(dim=-1)
         acc: Tensor = (labels == preds).float().mean()
-        # By default logs it per epoch (weighted average over batches)
-        self.log("batch_idx", batch_idx)
-        self.log("val_acc", acc, on_step=False, on_epoch=True)
+
+        # Logs the fl-related metrics if fl_hparams is not None
+        if self.fl_hparams is not None:
+            self.log(
+                f"{self.fl_hparams.get('experiment_name', 'default')}_test_loss",
+                loss,
+                on_step=False,
+                on_epoch=True,
+            )
+            self.log(
+                f"{self.fl_hparams.get('experiment_name', 'default')}_test_acc",
+                acc,
+                on_step=False,
+                on_epoch=True,
+            )
+        else:
+            # By default logs it per epoch (weighted average over batches), and returns it afterwards
+            self.log("batch_idx", batch_idx)
+            self.log("test_loss", loss, on_step=False, on_epoch=True)
+            self.log("test_acc", acc, on_step=False, on_epoch=True)
 
     def test_step(  # type: ignore
         self, batch: Tuple[Tensor, Tensor], batch_idx: int
@@ -587,11 +681,30 @@ class CIFAR100(pl.LightningModule):
 
         Args:
             - batch (Tuple[Tensor, Tensor]): Batch of the testing data.
-            - batch_idx (int): Index of the given batch.
+            - batch_idx (int): Index of the batch.
         """
         imgs, labels = batch
-        preds: Tensor = self.model(imgs).argmax(dim=-1)
+        preds: Tensor = self.model(imgs)
+        loss: Tensor = self.loss_module(preds, labels)
+        preds = self.model(imgs).argmax(dim=-1)
         acc: Tensor = (labels == preds).float().mean()
-        # By default logs it per epoch (weighted average over batches), and returns it afterwards
-        self.log("batch_idx", batch_idx)
-        self.log("test_acc", acc, on_step=False, on_epoch=True)
+
+        # Logs the fl-related metrics if fl_hparams is not None
+        if self.fl_hparams is not None:
+            self.log(
+                f"{self.fl_hparams.get('experiment_name', 'default')}_test_loss",
+                loss,
+                on_step=False,
+                on_epoch=True,
+            )
+            self.log(
+                f"{self.fl_hparams.get('experiment_name', 'default')}_test_acc",
+                acc,
+                on_step=False,
+                on_epoch=True,
+            )
+        else:
+            # By default logs it per epoch (weighted average over batches), and returns it afterwards
+            self.log("batch_idx", batch_idx)
+            self.log("test_loss", loss, on_step=False, on_epoch=True)
+            self.log("test_acc", acc, on_step=False, on_epoch=True)

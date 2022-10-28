@@ -3,6 +3,7 @@
 
 """FedAvg Aggregator class used in FL."""
 
+import torch
 from collections import OrderedDict
 from torchfl.federated.aggregators.base import BaseAggregator
 from typing import Any, Dict, List
@@ -28,12 +29,11 @@ class FedAvgAggregator(BaseAggregator):
         """
         w_avg: Dict[Any, Any] = OrderedDict()
         for _, models in agent_models_map.items():
-            local_agent_weight = models.state_dict()
             for key in global_model.state_dict().keys():
                 if key not in w_avg.keys():
-                    w_avg[key] = local_agent_weight[key].clone()
+                    w_avg[key] = models[key].clone()
                 else:
-                    w_avg[key] += local_agent_weight[key].clone()
+                    w_avg[key] += models[key].clone()
         for key in w_avg.keys():
-            w_avg[key] /= len(agent_models_map)
+            w_avg[key] = torch.divide(w_avg[key], len(agent_models_map))
         return w_avg
