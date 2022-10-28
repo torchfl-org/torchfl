@@ -10,6 +10,7 @@ import torch.nn as nn
 import torch
 import pytorch_lightning as pl
 from pytorch_lightning.loggers import TensorBoardLogger, CSVLogger
+from pytorch_lightning.profiler import SimpleProfiler, AdvancedProfiler
 from pytorch_lightning.callbacks import (
     LearningRateMonitor,
     DeviceStatsMonitor,
@@ -49,7 +50,7 @@ def train_model_from_scratch(
         accelerator="gpu",
         auto_lr_find=True,
         enable_progress_bar=True,
-        max_epochs=50,
+        max_epochs=2,
         devices=torch.cuda.device_count() if torch.cuda.is_available() else 1,
         num_nodes=torch.cuda.device_count() if torch.cuda.is_available() else 1,
         num_processes=1,
@@ -69,6 +70,9 @@ def train_model_from_scratch(
             RichProgressBar(leave=True),
             Timer(),
         ],
+        profiler=SimpleProfiler(
+            dirpath=ROOT_DIR_PATH, filename="simple_profiler_report"
+        ),
         enable_checkpointing=False,
     )
     # prepare the dataset
@@ -317,4 +321,4 @@ def train_feature_extraction_model(
 
 
 if __name__ == "__main__":
-    model, result = train_model_from_scratch("mnist_lenet_scratch")
+    model, result = train_model_from_scratch("mnist_lenet_scratch_profiler_run")
