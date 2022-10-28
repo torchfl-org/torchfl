@@ -199,7 +199,7 @@ The following steps should be followed on a high-level to train a federated lear
 	
 	all_agents = initialize_agents(fl_params, agent_data_shard_map)
 	```
-3. Initiliaze an ```FLParam``` object with the desired FL hyperparameters and pass it on to the ````Entrypoint``` object which will abstract the training.
+3. Initiliaze an ```FLParam``` object with the desired FL hyperparameters and pass it on to the ```Entrypoint``` object which will abstract the training.
 	```python
     fl_params = FLParams(
         experiment_name="iid_mnist_fedavg_10_agents_5_sampled_50_epochs_mobilenetv3small_latest",

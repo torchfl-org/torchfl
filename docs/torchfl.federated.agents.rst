@@ -1,30 +1,30 @@
-torchfl.federated.aggregators package
+torchfl.federated.agents package
 =====================================
 
 Submodules
 ----------
 
-torchfl.federated.aggregators.base module
+torchfl.federated.agents.base module
 -----------------------------------------------
 
-.. automodule:: torchfl.federated.aggregators.base
+.. automodule:: torchfl.federated.agents.base
    :members:
    :undoc-members:
    :show-inheritance:
 
-torchfl.federated.aggregators.fedavg module
+torchfl.federated.agents.v1 module
 -----------------------------------------------
 
-.. automodule:: torchfl.federated.aggregators.fedavg
+.. automodule:: torchfl.federated.agents.v1
    :members:
    :undoc-members:
    :show-inheritance:
-   
+
 
 Module contents
 ---------------
 
-.. automodule:: torchfl.federated.aggregators
+.. automodule:: torchfl.federated.agents
    :members:
    :undoc-members:
    :show-inheritance:
