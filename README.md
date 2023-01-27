@@ -28,7 +28,7 @@
 - [Available Models](#available-models)
 - [Available Datasets](#available-datasets)
 - [Contributing](#contributing)
-- [Credits](#credits)
+- [Citation](#citation)
 
 ## Features
 
@@ -593,7 +593,7 @@ $ git push
 $ git push --tags
 ```
 
-### Citations
+## Citation
 Please cite the following article if you end up using this software:
 ```
 @misc{https://doi.org/10.48550/arxiv.2211.00735,
