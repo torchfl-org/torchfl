@@ -15,12 +15,12 @@ url: "https://github.com/vivekkhimani/torchfl"
 preferred-citation:
   type: article
   authors:
-	- family-names: "Khimani"
-	  given-names: "Vivek"
-	  orcid: "https://orcid.org/0000-0002-7395-9875"
-	- family-names: "Jabbari"
-	  given-names: "Shahin"
-	  orcid: "https://orcid.org/0000-0000-0000-0000"
+  - family-names: "Khimani"
+    given-names: "Vivek"
+    orcid: "https://orcid.org/0000-0002-7395-9875"
+  - family-names: "Jabbari"
+    given-names: "Shahin"
+	orcid: "https://orcid.org/0000-0000-0000-0000"
   doi: "10.48550/ARXIV.2211.00735"
   start: 1 # First page number
   end: 20 # Last page number
