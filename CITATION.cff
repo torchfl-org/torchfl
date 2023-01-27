@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Khimani"
+  given-names: "Vivek"
+  orcid: "https://orcid.org/0000-0002-7395-9875"
+- family-names: "Jabbari"
+  given-names: "Shahin"
+  orcid: "https://orcid.org/0000-0000-0000-0000"
+title: "TorchFL: A Performant Library for Bootstrapping Federated Learning Experiments"
+version: 1.0.0
+doi: 10.48550/ARXIV.2211.00735
+date-released: 2023-01-27
+url: "https://arxiv.org/abs/2211.00735"
