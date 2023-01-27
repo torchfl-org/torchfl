@@ -10,14 +10,11 @@ from torchfl.federated.aggregators.fedavg import FedAvgAggregator
 from torchfl.federated.samplers.random import RandomSampler
 
 from torchfl.datamodules.emnist import EMNISTDataModule, SUPPORTED_DATASETS_TYPE
-from torchfl.datamodules.fashionmnist import FashionMNISTDataModule
 from torchfl.models.wrapper.emnist import MNISTEMNIST, EMNIST_MODELS_ENUM
-from torchfl.models.wrapper.fashionmnist import FashionMNIST, FASHIONMNIST_MODELS_ENUM
-from torchfl.compatibility import OPTIMIZERS_TYPE, TORCHFL_DIR
+from torchfl.compatibility import OPTIMIZERS_TYPE
 
 from torch.utils.data import DataLoader
-from torchvision import transforms
-from typing import Dict, List
+from typing import Any, Dict, List
 
 
 def initialize_agents(
@@ -28,12 +25,6 @@ def initialize_agents(
     for agent_id in range(fl_params.num_agents):
         agent = V1Agent(
             id=agent_id,
-            # model=MNISTEMNIST(
-            #     model_name=EMNIST_MODELS_ENUM.LENET,
-            #     optimizer_name=OPTIMIZERS_TYPE.ADAM,
-            #     optimizer_hparams={"lr": 0.001},
-            #     fl_hparams=fl_params,
-            # ),
             model=MNISTEMNIST(
                 model_name=EMNIST_MODELS_ENUM.MOBILENETV3SMALL,
                 optimizer_name=OPTIMIZERS_TYPE.ADAM,
@@ -72,17 +63,11 @@ def main() -> None:
         model_hparams={"pre_trained": True, "feature_extract": True},
         fl_hparams=fl_params,
     )
-    # global_model = MNISTEMNIST(
-    #     model_name=EMNIST_MODELS_ENUM.LENET,
-    #     optimizer_name=OPTIMIZERS_TYPE.ADAM,
-    #     optimizer_hparams={"lr": 0.001},
-    #     fl_hparams=fl_params,
-    # )
     agent_data_shard_map = get_agent_data_shard_map().federated_iid_dataloader(
         num_workers=fl_params.num_agents,
         workers_batch_size=fl_params.local_train_batch_size,
     )
-    all_agents = initialize_agents(fl_params, agent_data_shard_map)
+    all_agents: Any = initialize_agents(fl_params, agent_data_shard_map)
     entrypoint = Entrypoint(
         global_model=global_model,
         global_datamodule=get_agent_data_shard_map(),

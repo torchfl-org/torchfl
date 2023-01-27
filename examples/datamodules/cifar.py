@@ -7,10 +7,9 @@ import csv
 from collections import Counter
 
 from torchfl.datamodules.cifar import CIFARDataModule, SUPPORTED_DATASETS_TYPE
-from torchfl.compatibility import TORCHFL_DIR
 
 from torch.utils.data import DataLoader
-from typing import Dict
+from typing import Any, Dict, Mapping
 
 
 def cifar10_iid_distribution(num_agents: int) -> Dict[int, DataLoader]:
@@ -98,7 +97,7 @@ def dump_data_distribution_to_csv(
             ]
         )
         for agent_id, data_loader in agent_shard_map.items():
-            holdings = Counter(data_loader.dataset.targets)
+            holdings: Mapping[int, Any] = Counter(data_loader.dataset.targets)  # type: ignore
             writer.writerow(
                 [
                     agent_id,
@@ -166,12 +165,12 @@ if __name__ == "__main__":
     ] = cifar100_noniid_distribution(num_agents=1000, niid_factor=3)
 
     # get the number of unique labels held by each agent
-    ctr_iid = Counter(cifar100_agent_shard_map_100_agents_iid[5].dataset.targets)
-    ctr_niid_1 = Counter(
-        cifar100_agent_shard_map_100_agents_non_iid_1[5].dataset.targets
+    ctr_iid: Mapping[int, Any] = Counter(cifar100_agent_shard_map_100_agents_iid[5].dataset.targets)  # type: ignore
+    ctr_niid_1: Mapping[int, Any] = Counter(
+        cifar100_agent_shard_map_100_agents_non_iid_1[5].dataset.targets  # type: ignore
     )
-    ctr_niid_3 = Counter(
-        cifar100_agent_shard_map_100_agents_non_iid_3[5].dataset.targets
+    ctr_niid_3: Mapping[int, Any] = Counter(
+        cifar100_agent_shard_map_100_agents_non_iid_3[5].dataset.targets  # type: ignore
     )
     unique_labels_iid = 0
     unique_labels_niid_1 = 0

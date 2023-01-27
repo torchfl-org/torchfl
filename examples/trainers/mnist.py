@@ -10,7 +10,6 @@ import torch.nn as nn
 import torch
 import pytorch_lightning as pl
 from pytorch_lightning.loggers import TensorBoardLogger, CSVLogger
-from pytorch_lightning.profiler import SimpleProfiler, AdvancedProfiler
 from pytorch_lightning.callbacks import (
     LearningRateMonitor,
     DeviceStatsMonitor,
@@ -70,9 +69,6 @@ def train_model_from_scratch(
             RichProgressBar(leave=True),
             Timer(),
         ],
-        profiler=SimpleProfiler(
-            dirpath=ROOT_DIR_PATH, filename="simple_profiler_report"
-        ),
         enable_checkpointing=False,
     )
     # prepare the dataset

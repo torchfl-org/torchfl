@@ -138,7 +138,7 @@ federated learning experiment.
             datamodule.prepare_data()
             datamodule.setup()
             return datamodule
-            
+
         agent_data_shard_map = get_agent_data_shard_map().federated_iid_dataloader(
             num_workers=fl_params.num_agents,
             workers_batch_size=fl_params.local_train_batch_size,

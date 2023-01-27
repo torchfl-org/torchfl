@@ -43,4 +43,3 @@ History
 * Officially launched the federated learning modules built on the existing offerings.
 * Added extensive examples for federated and non-federated settings.
 * Updated the documentation to include the new modules and fderated learning examples.
-

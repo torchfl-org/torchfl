@@ -9,9 +9,7 @@ import torch.nn as nn
 import torch
 import pytorch_lightning as pl
 from pytorch_lightning.loggers import TensorBoardLogger, CSVLogger
-from pytorch_lightning.profilers import PyTorchProfiler
 from pytorch_lightning.callbacks import (
-    ModelCheckpoint,
     LearningRateMonitor,
     DeviceStatsMonitor,
     ModelSummary,
@@ -54,12 +52,6 @@ def train_model_from_scratch(
         name=experiment_name, save_dir=ROOT_DIR_PATH
     )
     csv_logger: CSVLogger = CSVLogger(save_dir=ROOT_DIR_PATH)
-    pt_profiler: PyTorchProfiler = PyTorchProfiler(
-        dirpath=ROOT_DIR_PATH,
-        group_by_input_shapes=True,
-        record_module_names=True,
-        export_to_chrome=True,
-    )
     # prepare the dataset
     datamodule: CIFARDataModule = CIFARDataModule(
         dataset_name=SUPPORTED_DATASETS_TYPE.CIFAR10,
@@ -149,12 +141,6 @@ def train_pretrained_model(
         name=experiment_name, save_dir=ROOT_DIR_PATH
     )
     csv_logger: CSVLogger = CSVLogger(save_dir=ROOT_DIR_PATH)
-    pt_profiler: PyTorchProfiler = PyTorchProfiler(
-        dirpath=ROOT_DIR_PATH,
-        group_by_input_shapes=True,
-        record_module_names=True,
-        export_to_chrome=True,
-    )
     # prepare the dataset
     datamodule: CIFARDataModule = CIFARDataModule(
         dataset_name=SUPPORTED_DATASETS_TYPE.CIFAR10,
@@ -244,12 +230,6 @@ def train_feature_extracted_model(
         name=experiment_name, save_dir=ROOT_DIR_PATH
     )
     csv_logger: CSVLogger = CSVLogger(save_dir=ROOT_DIR_PATH)
-    pt_profiler: PyTorchProfiler = PyTorchProfiler(
-        dirpath=ROOT_DIR_PATH,
-        group_by_input_shapes=True,
-        record_module_names=True,
-        export_to_chrome=True,
-    )
     # prepare the dataset
     datamodule: CIFARDataModule = CIFARDataModule(
         dataset_name=SUPPORTED_DATASETS_TYPE.CIFAR10,
