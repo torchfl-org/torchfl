@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         os: ["ubuntu-latest"]
-        python-version: ["3.8", "3.9", "3.10"]  # skip bandit step on python <3.8 because of platform-specific dependency.
+        python-version: ["3.8.16", "3.9.16", "3.10.10"]  # skip bandit step on python <3.8 because of platform-specific dependency.
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v1

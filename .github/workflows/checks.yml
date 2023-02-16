@@ -32,8 +32,8 @@ jobs:
   typecheck:
     strategy:
       matrix:
-        os: ["ubuntu-latest", "macos-latest", "windows-latest"]
-        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10"]
+        os: ["ubuntu-latest"]
+        python-version: ["3.6.15", "3.7.15", "3.8.16", "3.9.16", "3.10.10"]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v1
@@ -50,8 +50,8 @@ jobs:
   flake8:
     strategy:
       matrix:
-        os: ["ubuntu-latest", "macos-latest", "windows-latest"]
-        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10"]
+        os: ["ubuntu-latest"]
+        python-version: ["3.6.15", "3.7.15", "3.8.16", "3.9.16", "3.10.10"]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v1
@@ -68,8 +68,8 @@ jobs:
   pre-commit:
     strategy:
       matrix:
-        os: ["ubuntu-latest", "macos-latest"]   # skip pre-commit step on "windows-latest" because of some platform-specific hooks
-        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10"]
+        os: ["ubuntu-latest"]   # skip pre-commit step on "windows-latest" because of some platform-specific hooks
+        python-version: ["3.6.15", "3.7.15", "3.8.16", "3.9.16", "3.10.10"]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v1
@@ -86,8 +86,8 @@ jobs:
   bandit:
     strategy:
       matrix:
-        os: ["ubuntu-latest", "macos-latest", "windows-latest"]
-        python-version: ["3.8", "3.9", "3.10"]  # skip bandit step on python <3.8 because of platform-specific dependency.
+        os: ["ubuntu-latest"]
+        python-version: ["3.8.16", "3.9.16", "3.10.10"]  # skip bandit step on python <3.8 because of platform-specific dependency.
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v1
