@@ -28,7 +28,7 @@
 - [Available Models](#available-models)
 - [Available Datasets](#available-datasets)
 - [Contributing](#contributing)
-- [Credits](#credits)
+- [Citation](#citation)
 
 ## Features
 
@@ -591,4 +591,19 @@ A reminder for the maintainers on how to deploy. Make sure all your changes are 
 $ bump2version patch # possible: major / minor / patch
 $ git push
 $ git push --tags
+```
+
+## Citation
+Please cite the following article if you end up using this software:
+```
+@misc{https://doi.org/10.48550/arxiv.2211.00735,
+  doi = {10.48550/ARXIV.2211.00735},
+  url = {https://arxiv.org/abs/2211.00735},
+  author = {Khimani, Vivek and Jabbari, Shahin},
+  keywords = {Machine Learning (cs.LG), Distributed, Parallel, and Cluster Computing (cs.DC), Systems and Control (eess.SY), FOS: Computer and information sciences, FOS: Computer and information sciences, FOS: Electrical engineering, electronic engineering, information engineering, FOS: Electrical engineering, electronic engineering, information engineering, I.2.11},
+  title = {TorchFL: A Performant Library for Bootstrapping Federated Learning Experiments},
+  publisher = {arXiv},
+  year = {2022},
+  copyright = {Creative Commons Attribution Non Commercial Share Alike 4.0 International}
+}
 ```
