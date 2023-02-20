@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # type: ignore
 
 """Implementation of the pre-trained MobileNet architectures using PyTorch and torchvision.
@@ -43,7 +42,7 @@ class MobileNetV2(models.mobilenet.MobileNetV2):
             - num_channels (int, optional): Number of incoming channels. Defaults to 3.
             - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
-        super(MobileNetV2, self).__init__()
+        super().__init__()
         self.hparams = SimpleNamespace(
             model_name="mobilenet_v2",
             pre_trained=pre_trained,
@@ -103,7 +102,7 @@ class MobileNetV3Small(models.mobilenet.MobileNetV3):
         inverted_residual_setting, last_channel = _mobilenet_v3_conf(
             "mobilenet_v3_small"
         )
-        super(MobileNetV3Small, self).__init__(
+        super().__init__(
             inverted_residual_setting=inverted_residual_setting,
             last_channel=last_channel,
         )
@@ -165,7 +164,7 @@ class MobileNetV3Large(models.mobilenet.MobileNetV3):
         inverted_residual_setting, last_channel = _mobilenet_v3_conf(
             "mobilenet_v3_large"
         )
-        super(MobileNetV3Large, self).__init__(
+        super().__init__(
             inverted_residual_setting=inverted_residual_setting,
             last_channel=last_channel,
         )

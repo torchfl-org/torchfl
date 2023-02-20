@@ -11,9 +11,7 @@ repos:
     -   id: check-case-conflict
     -   id: check-symlinks
     -   id: debug-statements
-    -   id: fix-encoding-pragma
     -   id: detect-private-key
-    -   id: check-executables-have-shebangs
 -   repo: https://github.com/psf/black
     rev: 23.1.0
     hooks:
@@ -24,19 +22,12 @@ repos:
     hooks:
     -   id: pycln
         args: [--config=pyproject.toml]
--   repo: https://github.com/pycqa/isort
+-   repo: https://github.com/PyCQA/isort
     rev: 5.12.0
     hooks:
     -   id: isort
         files: "\\.(py)$"
         args: [--settings-path=pyproject.toml]
--   repo: https://github.com/PyCQA/docformatter
-    rev: v1.5.1
-    hooks:
-    -   id: docformatter
-        files: "^torchfl/.+"
-        exclude: ^torchfl/(__pycache__/.+|data/.+|tests/.+|docs/.+)$
-        args: [--config pyproject.toml]
 -   repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.0.0
     hooks:
@@ -61,10 +52,10 @@ repos:
           files: "\\.(rst)$"
           require_serial: true
           args: [--config=pyproject.toml]
-# -   repo: https://github.com/charliermarsh/ruff-pre-commit
-#     rev: "v0.0.246"
-#     hooks:
-#       - id: ruff
-#         language_version: python3.10
-#         args: [--fix, --exit-non-zero-on-fix]
-#         exclude: ^torchfl/(__pycache__/.+|data/.+|tests/.+|docs/.+)$
+-   repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: "v0.0.246"
+    hooks:
+      - id: ruff
+        language_version: python3.10
+        args: [--fix, --exit-non-zero-on-fix]
+        exclude: ^torchfl/(__pycache__/.+|data/.+|tests/.+|docs/.+)$

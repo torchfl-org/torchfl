@@ -1,16 +1,14 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Tests for CIFAR PyTorch LightningDataModule module in `torchfl` package."""
 from collections import Counter
 
 import pytest
 
-from torchfl.datamodules.cifar import SUPPORTED_DATASETS_TYPE
-from torchfl.datamodules.cifar import CIFARDataModule
+from torchfl.datamodules.cifar import SUPPORTED_DATASETS_TYPE, CIFARDataModule
 
 
-@pytest.fixture
+@pytest.fixture()
 def cifar10_data_module():
     """Fixture for CIFAR10 PyTorch LightningDataModule
 
@@ -20,7 +18,7 @@ def cifar10_data_module():
     return CIFARDataModule(dataset_name=SUPPORTED_DATASETS_TYPE.CIFAR10)
 
 
-@pytest.fixture
+@pytest.fixture()
 def cifar100_data_module():
     """Fixture for CIFAR100 PyTorch LightningDataModule
 

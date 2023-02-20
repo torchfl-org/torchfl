@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # torchfl documentation build configuration file, created by
 # sphinx-quickstart on Fri Jun  9 13:47:02 2017.
@@ -23,7 +22,6 @@ import sys
 
 sys.path.insert(0, os.path.abspath(".."))
 
-from typing import Dict
 
 import torchfl
 
@@ -108,7 +106,7 @@ htmlhelp_basename = "torchfldoc"
 
 
 # -- Options for LaTeX output ------------------------------------------
-latex_elements: Dict[str, str] = {
+latex_elements: dict[str, str] = {
     "papersize": "letterpaper",
     "pointsize": "12pt",
     "figure_align": "htbp",

@@ -1,12 +1,9 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """FedAvg Aggregator class used in FL."""
 
 from collections import OrderedDict
 from typing import Any
-from typing import Dict
-from typing import List
 
 import torch
 
@@ -16,12 +13,12 @@ from torchfl.federated.aggregators.base import BaseAggregator
 class FedAvgAggregator(BaseAggregator):
     """FedAvgAggregator class used in FL."""
 
-    def __init__(self, all_agents: List[Any]) -> None:
+    def __init__(self, all_agents: list[Any]) -> None:
         """Constructor."""
         super().__init__(all_agents)
 
     def aggregate(
-        self, global_model: Any, agent_models_map: Dict[int, Any]
+        self, global_model: Any, agent_models_map: dict[int, Any]
     ) -> Any:
         """
         Aggregate the weights of the agents. Compute the new global model using agent_models_map and update the models of all the agents.
@@ -33,7 +30,7 @@ class FedAvgAggregator(BaseAggregator):
         Returns:
             new global model
         """
-        w_avg: Dict[Any, Any] = OrderedDict()
+        w_avg: dict[Any, Any] = OrderedDict()
         for _, models in agent_models_map.items():
             for key in global_model.state_dict().keys():
                 if key not in w_avg.keys():

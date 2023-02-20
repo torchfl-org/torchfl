@@ -1,13 +1,11 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Tests for AlexNet for EMNIST in `torchfl` package."""
 import os
 
 import pytest
 import torch
-from torchvision import datasets
-from torchvision import transforms
+from torchvision import datasets, transforms
 
 from torchfl.compatibility import TORCHFL_DIR
 from torchfl.models.core.emnist.digits.alexnet import AlexNet
@@ -33,7 +31,7 @@ data_transforms = {
 }
 
 
-@pytest.fixture
+@pytest.fixture()
 def emnist_single_channel_loader():
     """Fixture for EMNIST, single-channel dataset.
 
@@ -50,7 +48,7 @@ def emnist_single_channel_loader():
     )
 
 
-@pytest.fixture
+@pytest.fixture()
 def emnist_3_channel_loader():
     """Fixture for EMNIST, multi-channel dataset.
 

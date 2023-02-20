@@ -1,19 +1,19 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Tests for ResNet in `torchfl` package."""
 import os
 
 import pytest
 import torch
-from torchvision import datasets
-from torchvision import transforms
+from torchvision import datasets, transforms
 
 from torchfl.compatibility import TORCHFL_DIR
-from torchfl.models.core.cifar.cifar10.shufflenetv2 import ShuffleNetv2_x0_5
-from torchfl.models.core.cifar.cifar10.shufflenetv2 import ShuffleNetv2_x1_0
-from torchfl.models.core.cifar.cifar10.shufflenetv2 import ShuffleNetv2_x1_5
-from torchfl.models.core.cifar.cifar10.shufflenetv2 import ShuffleNetv2_x2_0
+from torchfl.models.core.cifar.cifar10.shufflenetv2 import (
+    ShuffleNetv2_x0_5,
+    ShuffleNetv2_x1_0,
+    ShuffleNetv2_x1_5,
+    ShuffleNetv2_x2_0,
+)
 
 data_transforms = {
     "train": transforms.Compose(
@@ -27,7 +27,7 @@ data_transforms = {
 }
 
 
-@pytest.fixture
+@pytest.fixture()
 def three_channel_loader():
     """Fixture for multi-channel dataset.
 

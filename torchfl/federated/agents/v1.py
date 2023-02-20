@@ -1,16 +1,11 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """V1 Agent class used in FL."""
 
 from typing import Any
-from typing import Dict
-from typing import List
-from typing import Optional
 
 import pytorch_lightning as pl
-from torch.utils.data import DataLoader
-from torch.utils.data import random_split
+from torch.utils.data import DataLoader, random_split
 
 from torchfl.federated.agents.base import BaseAgent
 from torchfl.federated.fl_params import FLParams
@@ -22,7 +17,7 @@ class V1Agent(BaseAgent):
     """V1Agent class used in FL."""
 
     def __init__(
-        self, id: int, data_shard: DataLoader, model: Optional[Any] = None
+        self, id: int, data_shard: DataLoader, model: Any | None = None
     ) -> None:
         """Constructor."""
         super().__init__(id, data_shard, model)
@@ -68,13 +63,13 @@ class V1Agent(BaseAgent):
 
         trainer.fit(self.model, train_dataloader, val_dataloader)
         # test best model based on the validation and test set
-        val_result: List[Dict[str, float]] = trainer.test(
+        val_result: list[dict[str, float]] = trainer.test(
             self.model, dataloaders=val_dataloader, verbose=True
         )
-        test_result: List[Dict[str, float]] = trainer.test(
+        test_result: list[dict[str, float]] = trainer.test(
             self.model, dataloaders=val_dataloader, verbose=True
         )
-        result: Dict[str, float] = {  # type:ignore
+        result: dict[str, float] = {  # type:ignore
             "test_acc": test_result[0][
                 f"{fl_params.experiment_name}_test_acc"
             ],

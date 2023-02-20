@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # type: ignore
 
 """Implementation of the pre-trained AlexNet using PyTorch and torchvision."""
@@ -33,7 +32,7 @@ class AlexNet(models.AlexNet):
             - num_channels (int, optional): Number of incoming channels. Defaults to 3.
             - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
-        super(AlexNet, self).__init__()
+        super().__init__()
         self.hparams = SimpleNamespace(
             model_name="alexnet",
             pre_trained=pre_trained,

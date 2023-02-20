@@ -1,24 +1,24 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Tests for MobileNet for EMNIST balanced in `torchfl` package."""
 import os
 
 import pytest
 import torch
-from torchvision import datasets
-from torchvision import transforms
+from torchvision import datasets, transforms
 
 from torchfl.compatibility import TORCHFL_DIR
-from torchfl.models.core.emnist.mnist.resnet import ResNet18
-from torchfl.models.core.emnist.mnist.resnet import ResNet34
-from torchfl.models.core.emnist.mnist.resnet import ResNet50
-from torchfl.models.core.emnist.mnist.resnet import ResNet101
-from torchfl.models.core.emnist.mnist.resnet import ResNet152
-from torchfl.models.core.emnist.mnist.resnet import ResNext50_32X4D
-from torchfl.models.core.emnist.mnist.resnet import ResNext101_32X8D
-from torchfl.models.core.emnist.mnist.resnet import WideResNet50_2
-from torchfl.models.core.emnist.mnist.resnet import WideResNet101_2
+from torchfl.models.core.emnist.mnist.resnet import (
+    ResNet18,
+    ResNet34,
+    ResNet50,
+    ResNet101,
+    ResNet152,
+    ResNext50_32X4D,
+    ResNext101_32X8D,
+    WideResNet50_2,
+    WideResNet101_2,
+)
 
 data_transforms = {
     "train_single_channel": transforms.Compose(
@@ -41,7 +41,7 @@ data_transforms = {
 }
 
 
-@pytest.fixture
+@pytest.fixture()
 def single_channel_loader():
     """Fixture for single-channel dataset.
 
@@ -58,7 +58,7 @@ def single_channel_loader():
     )
 
 
-@pytest.fixture
+@pytest.fixture()
 def three_channel_loader():
     """Fixture for multi-channel dataset.
 

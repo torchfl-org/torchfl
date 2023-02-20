@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # type: ignore
 
 """Implementation of the pre-trained DenseNet architectures using PyTorch and torchvision.
@@ -40,7 +39,7 @@ class DenseNet121(models.DenseNet):
             - num_channels (int, optional): Number of incoming channels. Defaults to 3.
             - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
-        super(DenseNet121, self).__init__(
+        super().__init__(
             growth_rate=32, block_config=(6, 12, 24, 16), num_init_features=64
         )
         self.hparams = SimpleNamespace(
@@ -100,7 +99,7 @@ class DenseNet161(models.DenseNet):
             - num_channels (int, optional): Number of incoming channels. Defaults to 3.
             - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
-        super(DenseNet161, self).__init__(
+        super().__init__(
             growth_rate=48, block_config=(6, 12, 36, 24), num_init_features=96
         )
         self.hparams = SimpleNamespace(
@@ -160,7 +159,7 @@ class DenseNet169(models.DenseNet):
             - num_channels (int, optional): Number of incoming channels. Defaults to 3.
             - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
-        super(DenseNet169, self).__init__(
+        super().__init__(
             growth_rate=32, block_config=(6, 12, 32, 32), num_init_features=64
         )
         self.hparams = SimpleNamespace(
@@ -220,7 +219,7 @@ class DenseNet201(models.DenseNet):
             - num_channels (int, optional): Number of incoming channels. Defaults to 3.
             - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
-        super(DenseNet201, self).__init__(
+        super().__init__(
             growth_rate=32, block_config=(6, 12, 48, 32), num_init_features=64
         )
         self.hparams = SimpleNamespace(

@@ -1,28 +1,24 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Entry point for the federated learning experiment."""
 
 import os
 from typing import Any
-from typing import Dict
-from typing import List
 
 import pytorch_lightning as pl
 import torch
-from pytorch_lightning.callbacks import DeviceStatsMonitor
-from pytorch_lightning.callbacks import LearningRateMonitor
-from pytorch_lightning.callbacks import ModelSummary
-from pytorch_lightning.callbacks import RichProgressBar
-from pytorch_lightning.callbacks import Timer
-from pytorch_lightning.loggers import CSVLogger
-from pytorch_lightning.loggers import TensorBoardLogger
+from pytorch_lightning.callbacks import (
+    DeviceStatsMonitor,
+    LearningRateMonitor,
+    ModelSummary,
+    RichProgressBar,
+    Timer,
+)
+from pytorch_lightning.loggers import CSVLogger, TensorBoardLogger
 
 from torchfl.compatibility import TORCHFL_DIR
 from torchfl.federated.fl_params import FLParams
-from torchfl.federated.types import AgentsType
-from torchfl.federated.types import AggregatorsType
-from torchfl.federated.types import SamplersType
+from torchfl.federated.types import AgentsType, AggregatorsType, SamplersType
 
 
 class Entrypoint:
@@ -31,7 +27,7 @@ class Entrypoint:
         global_model: Any,
         global_datamodule: Any,
         fl_hparams: FLParams,
-        agents: List[AgentsType],
+        agents: list[AgentsType],
         aggregator: AggregatorsType,
         sampler: SamplersType,
     ) -> None:
@@ -46,7 +42,7 @@ class Entrypoint:
             - global_datamodule (Any): Global datamodule used in the FL experiment.
             - fl_hparams (FLParams): Federated learning hyperparameters.
         """
-        self.agents: List[AgentsType] = [agent for agent in agents]
+        self.agents: list[AgentsType] = list(agents)
         self.aggregator: AggregatorsType = aggregator
         self.sampler: SamplersType = sampler
         self.global_model: Any = global_model
@@ -142,8 +138,8 @@ class Entrypoint:
         for ep in range(1, self.fl_params.global_epochs + 1):
             print("Current global epoch: ", ep)
             # collecting agent weights
-            agent_models_map: Dict[int, Any] = dict()
-            sampled_agents: List[AgentsType] = self.sampler.sample(
+            agent_models_map: dict[int, Any] = {}
+            sampled_agents: list[AgentsType] = self.sampler.sample(
                 num=num_sampled
             )
             for i, agent in enumerate(sampled_agents):

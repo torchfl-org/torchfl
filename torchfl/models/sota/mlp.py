@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # type: ignore
 
 """Implementation of the general MLP architecture using PyTorch.
@@ -102,7 +101,7 @@ class MLP(nn.Module):
         )
 
         # hidden layers
-        layers = list()
+        layers = []
         for i in range(len(self.hparams.hidden_dims) - 1):
             layers.append(
                 LinearBlock(

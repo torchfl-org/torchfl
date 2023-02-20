@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Sub-package for federated learning used by torchfl."""
 
 __author__ = """Vivek Khimani"""

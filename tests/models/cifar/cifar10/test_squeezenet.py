@@ -1,17 +1,17 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Tests for SqueezeNet in `torchfl` package."""
 import os
 
 import pytest
 import torch
-from torchvision import datasets
-from torchvision import transforms
+from torchvision import datasets, transforms
 
 from torchfl.compatibility import TORCHFL_DIR
-from torchfl.models.core.cifar.cifar10.squeezenet import SqueezeNet1_0
-from torchfl.models.core.cifar.cifar10.squeezenet import SqueezeNet1_1
+from torchfl.models.core.cifar.cifar10.squeezenet import (
+    SqueezeNet1_0,
+    SqueezeNet1_1,
+)
 
 data_transforms = {
     "train": transforms.Compose(
@@ -25,7 +25,7 @@ data_transforms = {
 }
 
 
-@pytest.fixture
+@pytest.fixture()
 def three_channel_loader():
     """Fixture for multi-channel dataset.
 

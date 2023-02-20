@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Contains the MLP model implementations for EMNIST (by class) dataset."""
 
@@ -15,7 +14,7 @@ class MLP(BaseMLP):
             - img_w (int, optional): Width of the input image. Defaults to 28.
             - img_h (int, optional): Height of the input image. Defaults to 28.
         """
-        super(MLP, self).__init__(
+        super().__init__(
             num_classes=62,
             num_channels=num_channels,
             img_w=img_w,

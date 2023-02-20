@@ -1,24 +1,24 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Tests for ResNet in `torchfl` package."""
 import os
 
 import pytest
 import torch
-from torchvision import datasets
-from torchvision import transforms
+from torchvision import datasets, transforms
 
 from torchfl.compatibility import TORCHFL_DIR
-from torchfl.models.core.cifar.cifar10.resnet import ResNet18
-from torchfl.models.core.cifar.cifar10.resnet import ResNet34
-from torchfl.models.core.cifar.cifar10.resnet import ResNet50
-from torchfl.models.core.cifar.cifar10.resnet import ResNet101
-from torchfl.models.core.cifar.cifar10.resnet import ResNet152
-from torchfl.models.core.cifar.cifar10.resnet import ResNext50_32X4D
-from torchfl.models.core.cifar.cifar10.resnet import ResNext101_32X8D
-from torchfl.models.core.cifar.cifar10.resnet import WideResNet50_2
-from torchfl.models.core.cifar.cifar10.resnet import WideResNet101_2
+from torchfl.models.core.cifar.cifar10.resnet import (
+    ResNet18,
+    ResNet34,
+    ResNet50,
+    ResNet101,
+    ResNet152,
+    ResNext50_32X4D,
+    ResNext101_32X8D,
+    WideResNet50_2,
+    WideResNet101_2,
+)
 
 data_transforms = {
     "train": transforms.Compose(
@@ -32,7 +32,7 @@ data_transforms = {
 }
 
 
-@pytest.fixture
+@pytest.fixture()
 def three_channel_loader():
     """Fixture for multi-channel dataset.
 

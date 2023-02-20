@@ -1,17 +1,17 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Tests for SqueezeNet for EMNIST in `torchfl` package."""
 import os
 
 import pytest
 import torch
-from torchvision import datasets
-from torchvision import transforms
+from torchvision import datasets, transforms
 
 from torchfl.compatibility import TORCHFL_DIR
-from torchfl.models.core.emnist.bymerge.squeezenet import SqueezeNet1_0
-from torchfl.models.core.emnist.bymerge.squeezenet import SqueezeNet1_1
+from torchfl.models.core.emnist.bymerge.squeezenet import (
+    SqueezeNet1_0,
+    SqueezeNet1_1,
+)
 
 data_transforms = {
     "train_single_channel": transforms.Compose(
@@ -34,7 +34,7 @@ data_transforms = {
 }
 
 
-@pytest.fixture
+@pytest.fixture()
 def single_channel_loader():
     """Fixture for single-channel dataset.
 
@@ -51,7 +51,7 @@ def single_channel_loader():
     )
 
 
-@pytest.fixture
+@pytest.fixture()
 def three_channel_loader():
     """Fixture for multi-channel dataset.
 

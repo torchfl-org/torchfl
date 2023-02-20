@@ -1,23 +1,14 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Contains the PyTorch Lightning wrapper module for FashionMNIST dataset."""
 import enum
 from typing import Any
-from typing import Dict
-from typing import List
-from typing import Optional
-from typing import Tuple
-from typing import Type
-from typing import Union
 
 import pytorch_lightning as pl
 import torch.nn as nn
-from torch import Tensor
-from torch import optim
+from torch import Tensor, optim
 
-from torchfl.compatibility import OPTIMIZERS_BY_NAME
-from torchfl.compatibility import OPTIMIZERS_TYPE
+from torchfl.compatibility import OPTIMIZERS_BY_NAME, OPTIMIZERS_TYPE
 from torchfl.federated.fl_params import FLParams
 from torchfl.models.core.fashionmnist.alexnet import (
     AlexNet as FashionMNISTAlexNet,
@@ -113,7 +104,7 @@ pl.seed_everything(42)
 # Begin Utils #
 ###############
 
-FASHIONMNIST_MODELS: List[str] = [
+FASHIONMNIST_MODELS: list[str] = [
     "alexnet",
     "densenet121",
     "densenet161",
@@ -188,43 +179,43 @@ class FASHIONMNIST_MODELS_ENUM(enum.Enum):
     VGG19_BN = "vgg19_bn"
 
 
-FASHIONMNIST_MODEL_TYPE = Union[
-    Type[FashionMNISTAlexNet],
-    Type[FashionMNISTDenseNet121],
-    Type[FashionMNISTDenseNet161],
-    Type[FashionMNISTDenseNet169],
-    Type[FashionMNISTDenseNet201],
-    Type[FashionMNISTLeNet],
-    Type[FashionMNISTMLP],
-    Type[FashionMNISTMobileNetV2],
-    Type[FashionMNISTMobileNetV3Large],
-    Type[FashionMNISTMobileNetV3Small],
-    Type[FashionMNISTResNet18],
-    Type[FashionMNISTResNet34],
-    Type[FashionMNISTResNet50],
-    Type[FashionMNISTResNet101],
-    Type[FashionMNISTResNet152],
-    Type[FashionMNISTResNext50_32X4D],
-    Type[FashionMNISTResNext101_32X8D],
-    Type[FashionMNISTWideResNet50_2],
-    Type[FashionMNISTWideResNet101_2],
-    Type[FashionMNISTShuffleNetv2_x0_5],
-    Type[FashionMNISTShuffleNetv2_x1_0],
-    Type[FashionMNISTShuffleNetv2_x1_5],
-    Type[FashionMNISTShuffleNetv2_x2_0],
-    Type[FashionMNISTSqueezeNet1_0],
-    Type[FashionMNISTSqueezeNet1_1],
-    Type[FashionMNISTVGG11],
-    Type[FashionMNISTVGG11_BN],
-    Type[FashionMNISTVGG13],
-    Type[FashionMNISTVGG13_BN],
-    Type[FashionMNISTVGG16],
-    Type[FashionMNISTVGG16_BN],
-    Type[FashionMNISTVGG19],
-    Type[FashionMNISTVGG19_BN],
-]
+FASHIONMNIST_MODEL_TYPE = (
+    type[FashionMNISTAlexNet]
+    | type[FashionMNISTDenseNet121]
+    | type[FashionMNISTDenseNet161]
+    | type[FashionMNISTDenseNet169]
+    | type[FashionMNISTDenseNet201]
+    | type[FashionMNISTLeNet]
+    | type[FashionMNISTMLP]
+    | type[FashionMNISTMobileNetV2]
+    | type[FashionMNISTMobileNetV3Large]
+    | type[FashionMNISTMobileNetV3Small]
+    | type[FashionMNISTResNet18]
+    | type[FashionMNISTResNet34]
+    | type[FashionMNISTResNet50]
+    | type[FashionMNISTResNet101]
+    | type[FashionMNISTResNet152]
+    | type[FashionMNISTResNext50_32X4D]
+    | type[FashionMNISTResNext101_32X8D]
+    | type[FashionMNISTWideResNet50_2]
+    | type[FashionMNISTWideResNet101_2]
+    | type[FashionMNISTShuffleNetv2_x0_5]
+    | type[FashionMNISTShuffleNetv2_x1_0]
+    | type[FashionMNISTShuffleNetv2_x1_5]
+    | type[FashionMNISTShuffleNetv2_x2_0]
+    | type[FashionMNISTSqueezeNet1_0]
+    | type[FashionMNISTSqueezeNet1_1]
+    | type[FashionMNISTVGG11]
+    | type[FashionMNISTVGG11_BN]
+    | type[FashionMNISTVGG13]
+    | type[FashionMNISTVGG13_BN]
+    | type[FashionMNISTVGG16]
+    | type[FashionMNISTVGG16_BN]
+    | type[FashionMNISTVGG19]
+    | type[FashionMNISTVGG19_BN]
+)
 
-FASHIONMNIST_MODELS_MAPPING: Dict[str, FASHIONMNIST_MODEL_TYPE] = {
+FASHIONMNIST_MODELS_MAPPING: dict[str, FASHIONMNIST_MODEL_TYPE] = {
     "alexnet": FashionMNISTAlexNet,
     "densenet121": FashionMNISTDenseNet121,
     "densenet161": FashionMNISTDenseNet161,
@@ -264,7 +255,7 @@ FASHIONMNIST_MODELS_MAPPING: Dict[str, FASHIONMNIST_MODEL_TYPE] = {
 def create_model(
     dataset_name: str,
     model_name: str,
-    model_hparams: Optional[Dict[str, Any]] = None,
+    model_hparams: dict[str, Any] | None = None,
 ) -> FASHIONMNIST_MODEL_TYPE:
     """Helper function to create a model from the available options.
 
@@ -307,9 +298,9 @@ class FashionMNIST(pl.LightningModule):
         self,
         model_name: FASHIONMNIST_MODELS_ENUM,
         optimizer_name: OPTIMIZERS_TYPE,
-        optimizer_hparams: Dict[str, Any],
-        model_hparams: Optional[Dict[str, Any]] = None,
-        fl_hparams: Optional[FLParams] = None,
+        optimizer_hparams: dict[str, Any],
+        model_hparams: dict[str, Any] | None = None,
+        fl_hparams: FLParams | None = None,
     ) -> None:
         """Default constructor.
 
@@ -326,10 +317,10 @@ class FashionMNIST(pl.LightningModule):
             model_name=model_name.value,
             model_hparams=model_hparams,
         )
-        self.fl_hparams: Optional[Dict[str, Any]] = (
+        self.fl_hparams: dict[str, Any] | None = (
             fl_hparams.as_dict() if fl_hparams else None
         )
-        combined_hparams: Dict[str, Any] = {
+        combined_hparams: dict[str, Any] = {
             "model_hparams": vars(self.model.hparams),
             "optimizer_hparams": {
                 "optimizer_name": optimizer_name,
@@ -366,7 +357,7 @@ class FashionMNIST(pl.LightningModule):
         return [optimizer], [scheduler]
 
     def training_step(  # type: ignore
-        self, batch: Tuple[Tensor, Tensor], batch_idx: int
+        self, batch: tuple[Tensor, Tensor], batch_idx: int
     ) -> Tensor:  # type: ignore
         """Training step
 
@@ -404,7 +395,7 @@ class FashionMNIST(pl.LightningModule):
         return loss
 
     def validation_step(  # type: ignore
-        self, batch: Tuple[Tensor, Tensor], batch_idx: int
+        self, batch: tuple[Tensor, Tensor], batch_idx: int
     ) -> None:  # type: ignore
         """Validation step
 
@@ -439,7 +430,7 @@ class FashionMNIST(pl.LightningModule):
             self.log("test_acc", acc, on_step=False, on_epoch=True)
 
     def test_step(  # type: ignore
-        self, batch: Tuple[Tensor, Tensor], batch_idx: int
+        self, batch: tuple[Tensor, Tensor], batch_idx: int
     ) -> None:  # type: ignore
         """Test step
 

@@ -1,19 +1,19 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Tests for ShuffleNetV2 for EMNIST in `torchfl` package."""
 import os
 
 import pytest
 import torch
-from torchvision import datasets
-from torchvision import transforms
+from torchvision import datasets, transforms
 
 from torchfl.compatibility import TORCHFL_DIR
-from torchfl.models.core.emnist.byclass.shufflenetv2 import ShuffleNetv2_x0_5
-from torchfl.models.core.emnist.byclass.shufflenetv2 import ShuffleNetv2_x1_0
-from torchfl.models.core.emnist.byclass.shufflenetv2 import ShuffleNetv2_x1_5
-from torchfl.models.core.emnist.byclass.shufflenetv2 import ShuffleNetv2_x2_0
+from torchfl.models.core.emnist.byclass.shufflenetv2 import (
+    ShuffleNetv2_x0_5,
+    ShuffleNetv2_x1_0,
+    ShuffleNetv2_x1_5,
+    ShuffleNetv2_x2_0,
+)
 
 data_transforms = {
     "train_single_channel": transforms.Compose(
@@ -36,7 +36,7 @@ data_transforms = {
 }
 
 
-@pytest.fixture
+@pytest.fixture()
 def single_channel_loader():
     """Fixture for single-channel dataset.
 
@@ -53,7 +53,7 @@ def single_channel_loader():
     )
 
 
-@pytest.fixture
+@pytest.fixture()
 def three_channel_loader():
     """Fixture for multi-channel dataset.
 

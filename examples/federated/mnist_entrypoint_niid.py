@@ -1,29 +1,27 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """An example script for using FL entrypoint to setup a FL experiment on MNIST."""
 
 from typing import Any
-from typing import Dict
-from typing import List
 
 from torch.utils.data import DataLoader
 
 from torchfl.compatibility import OPTIMIZERS_TYPE
-from torchfl.datamodules.emnist import SUPPORTED_DATASETS_TYPE
-from torchfl.datamodules.emnist import EMNISTDataModule
+from torchfl.datamodules.emnist import (
+    SUPPORTED_DATASETS_TYPE,
+    EMNISTDataModule,
+)
 from torchfl.federated.agents.v1 import V1Agent
 from torchfl.federated.aggregators.fedavg import FedAvgAggregator
 from torchfl.federated.entrypoint import Entrypoint
 from torchfl.federated.fl_params import FLParams
 from torchfl.federated.samplers.random import RandomSampler
-from torchfl.models.wrapper.emnist import EMNIST_MODELS_ENUM
-from torchfl.models.wrapper.emnist import MNISTEMNIST
+from torchfl.models.wrapper.emnist import EMNIST_MODELS_ENUM, MNISTEMNIST
 
 
 def initialize_agents(
-    fl_params: FLParams, agent_data_shard_map: Dict[int, DataLoader]
-) -> List[V1Agent]:
+    fl_params: FLParams, agent_data_shard_map: dict[int, DataLoader]
+) -> list[V1Agent]:
     """Initialize agents."""
     agents = []
     for agent_id in range(fl_params.num_agents):

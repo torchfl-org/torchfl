@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Contains the LeNet model implementations for CIFAR100 dataset."""
 
@@ -13,6 +12,6 @@ class LeNet(BaseLeNet):
         Args:
             - num_channels (int, optional): Number of incoming channels. Defaults to 3.
         """
-        super(LeNet, self).__init__(
+        super().__init__(
             num_classes=100, num_channels=num_channels, act_fn_name="tanh"
         )

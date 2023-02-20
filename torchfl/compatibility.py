@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # mypy: ignore-errors
 
 """Defines the constants to ensure the consistency and compatibility between the files."""
@@ -7,25 +6,23 @@ import enum
 import os
 from pathlib import Path
 from typing import Any
-from typing import Dict
 
-from torch.nn import GELU
-from torch.nn import LeakyReLU
-from torch.nn import ReLU
-from torch.nn import Tanh
-from torch.optim import ASGD
-from torch.optim import LBFGS
-from torch.optim import SGD
-from torch.optim import Adadelta
-from torch.optim import Adagrad
-from torch.optim import Adam
-from torch.optim import Adamax
-from torch.optim import AdamW
-from torch.optim import NAdam
-from torch.optim import RAdam
-from torch.optim import RMSprop
-from torch.optim import Rprop
-from torch.optim import SparseAdam
+from torch.nn import GELU, LeakyReLU, ReLU, Tanh
+from torch.optim import (
+    ASGD,
+    LBFGS,
+    SGD,
+    Adadelta,
+    Adagrad,
+    Adam,
+    Adamax,
+    AdamW,
+    NAdam,
+    RAdam,
+    RMSprop,
+    Rprop,
+    SparseAdam,
+)
 
 TORCHFL_DIR: str = os.path.join(Path.home(), ".torchfl")
 DATASETS = ["mnist", "emnist_digits", "cifar10"]
@@ -81,7 +78,7 @@ class ACTIVATION_FUNCTIONS_TYPE(enum.Enum):
 
 
 # mappings
-OPTIMIZERS_BY_NAME: Dict[str, Any] = {
+OPTIMIZERS_BY_NAME: dict[str, Any] = {
     "adadelta": Adadelta,
     "adagrad": Adagrad,
     "adam": Adam,
@@ -96,7 +93,7 @@ OPTIMIZERS_BY_NAME: Dict[str, Any] = {
     "rprop": Rprop,
     "sgd": SGD,
 }
-ACTIVATION_FUNCTIONS_BY_NAME: Dict[str, Any] = {
+ACTIVATION_FUNCTIONS_BY_NAME: dict[str, Any] = {
     "tanh": Tanh,
     "relu": ReLU,
     "leakyrelu": LeakyReLU,

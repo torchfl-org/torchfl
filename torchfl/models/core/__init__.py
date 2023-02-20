@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Sub-package for core model implementations used by torchfl."""
 
 __author__ = """Vivek Khimani"""

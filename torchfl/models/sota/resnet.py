@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # type: ignore
 
 """Implementation of the pre-trained ResNet architectures using PyTorch and torchvision.
@@ -20,8 +19,7 @@ from types import SimpleNamespace
 
 import torch.nn as nn
 from torchvision import models
-from torchvision.models.resnet import BasicBlock
-from torchvision.models.resnet import Bottleneck
+from torchvision.models.resnet import BasicBlock, Bottleneck
 
 from torchfl.compatibility import ACTIVATION_FUNCTIONS_BY_NAME
 
@@ -47,7 +45,7 @@ class ResNet18(models.ResNet):
             - num_channels (int, optional): Number of incoming channels. Defaults to 3.
             - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
-        super(ResNet18, self).__init__(BasicBlock, [2, 2, 2, 2])
+        super().__init__(BasicBlock, [2, 2, 2, 2])
         self.hparams = SimpleNamespace(
             model_name="resnet18",
             pre_trained=pre_trained,
@@ -102,7 +100,7 @@ class ResNet34(models.ResNet):
             - num_channels (int, optional): Number of incoming channels. Defaults to 3.
             - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
-        super(ResNet34, self).__init__(BasicBlock, [3, 4, 6, 3])
+        super().__init__(BasicBlock, [3, 4, 6, 3])
         self.hparams = SimpleNamespace(
             model_name="resnet34",
             pre_trained=pre_trained,
@@ -156,7 +154,7 @@ class ResNet50(models.ResNet):
             - num_channels (int, optional): Number of incoming channels. Defaults to 3.
             - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
-        super(ResNet50, self).__init__(Bottleneck, [3, 4, 6, 3])
+        super().__init__(Bottleneck, [3, 4, 6, 3])
         self.hparams = SimpleNamespace(
             model_name="resnet50",
             pre_trained=pre_trained,
@@ -210,7 +208,7 @@ class ResNet101(models.ResNet):
             - num_channels (int, optional): Number of incoming channels. Defaults to 3.
             - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
-        super(ResNet101, self).__init__(Bottleneck, [3, 4, 23, 3])
+        super().__init__(Bottleneck, [3, 4, 23, 3])
         self.hparams = SimpleNamespace(
             model_name="resnet101",
             pre_trained=pre_trained,
@@ -264,7 +262,7 @@ class ResNet152(models.ResNet):
             - num_channels (int, optional): Number of incoming channels. Defaults to 3.
             - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
-        super(ResNet152, self).__init__(Bottleneck, [3, 8, 36, 3])
+        super().__init__(Bottleneck, [3, 8, 36, 3])
         self.hparams = SimpleNamespace(
             model_name="resnet152",
             pre_trained=pre_trained,
@@ -318,7 +316,7 @@ class ResNext50_32X4D(models.ResNet):
             - num_channels (int, optional): Number of incoming channels. Defaults to 3.
             - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
-        super(ResNext50_32X4D, self).__init__(
+        super().__init__(
             block=Bottleneck, layers=[3, 4, 6, 3], groups=32, width_per_group=4
         )
         self.hparams = SimpleNamespace(
@@ -376,7 +374,7 @@ class ResNext101_32X8D(models.ResNet):
             - num_channels (int, optional): Number of incoming channels. Defaults to 3.
             - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
-        super(ResNext101_32X8D, self).__init__(
+        super().__init__(
             block=Bottleneck,
             layers=[3, 4, 23, 3],
             groups=32,
@@ -437,7 +435,7 @@ class WideResNet50_2(models.ResNet):
             - num_channels (int, optional): Number of incoming channels. Defaults to 3.
             - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
-        super(WideResNet50_2, self).__init__(
+        super().__init__(
             block=Bottleneck, layers=[3, 4, 6, 3], width_per_group=128
         )
         self.hparams = SimpleNamespace(
@@ -495,7 +493,7 @@ class WideResNet101_2(models.ResNet):
             - num_channels (int, optional): Number of incoming channels. Defaults to 3.
             - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
-        super(WideResNet101_2, self).__init__(
+        super().__init__(
             block=Bottleneck, layers=[3, 4, 23, 3], width_per_group=128
         )
         self.hparams = SimpleNamespace(

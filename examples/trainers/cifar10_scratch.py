@@ -1,42 +1,35 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """An example script to demonstrate the training of non-federated CIFAR-10 dataset using torchfl."""
 
 import logging
 import os
 import sys
-from typing import Dict
-from typing import List
-from typing import Optional
-from typing import Tuple
 
 import pytorch_lightning as pl
 import torch
 import torch.nn as nn
-from pytorch_lightning.callbacks import DeviceStatsMonitor
-from pytorch_lightning.callbacks import LearningRateMonitor
-from pytorch_lightning.callbacks import ModelSummary
-from pytorch_lightning.callbacks import RichProgressBar
-from pytorch_lightning.callbacks import Timer
-from pytorch_lightning.loggers import CSVLogger
-from pytorch_lightning.loggers import TensorBoardLogger
+from pytorch_lightning.callbacks import (
+    DeviceStatsMonitor,
+    LearningRateMonitor,
+    ModelSummary,
+    RichProgressBar,
+    Timer,
+)
+from pytorch_lightning.loggers import CSVLogger, TensorBoardLogger
 
-from torchfl.compatibility import OPTIMIZERS_TYPE
-from torchfl.compatibility import TORCHFL_DIR
-from torchfl.datamodules.cifar import SUPPORTED_DATASETS_TYPE
-from torchfl.datamodules.cifar import CIFARDataModule
-from torchfl.models.wrapper.cifar import CIFAR10
-from torchfl.models.wrapper.cifar import CIFAR_MODELS_ENUM
+from torchfl.compatibility import OPTIMIZERS_TYPE, TORCHFL_DIR
+from torchfl.datamodules.cifar import SUPPORTED_DATASETS_TYPE, CIFARDataModule
+from torchfl.models.wrapper.cifar import CIFAR10, CIFAR_MODELS_ENUM
 
 logging.basicConfig(stream=sys.stdout, level=logging.ERROR)
 
 
 def train_model_from_scratch(
     experiment_name: str,
-    checkpoint_load_path: Optional[str] = None,
+    checkpoint_load_path: str | None = None,
     checkpoint_save_path: str = os.path.join(TORCHFL_DIR, "runs"),
-) -> Tuple[nn.Module, Dict[str, float]]:
+) -> tuple[nn.Module, dict[str, float]]:
     """An example wrapper function for training CIFAR10 dataset using PyTorch Lightning trainer and torchfl model and dataloader utilities.
     Args:
         experiment_name (str): Name of the experiment as to be stored in the logs.
@@ -119,13 +112,13 @@ def train_model_from_scratch(
     )
 
     # test best model based on the validation and test set
-    val_result: List[Dict[str, float]] = trainer.test(
+    val_result: list[dict[str, float]] = trainer.test(
         model, dataloaders=datamodule.val_dataloader(), verbose=True
     )
-    test_result: List[Dict[str, float]] = trainer.test(
+    test_result: list[dict[str, float]] = trainer.test(
         model, dataloaders=datamodule.test_dataloader(), verbose=True
     )
-    result: Dict[str, float] = {
+    result: dict[str, float] = {
         "test": test_result[0]["test_acc"],
         "val": val_result[0]["test_acc"],
     }
@@ -137,9 +130,9 @@ def train_model_from_scratch(
 
 def train_pretrained_model(
     experiment_name: str,
-    checkpoint_load_path: Optional[str] = None,
+    checkpoint_load_path: str | None = None,
     checkpoint_save_path: str = os.path.join(TORCHFL_DIR, "runs"),
-) -> Tuple[nn.Module, Dict[str, float]]:
+) -> tuple[nn.Module, dict[str, float]]:
     """An example wrapper function for training CIFAR10 dataset using PyTorch Lightning trainer and torchfl model and dataloader utilities.
     Args:
         experiment_name (str): Name of the experiment as to be stored in the logs.
@@ -214,13 +207,13 @@ def train_pretrained_model(
     )
 
     # test best model based on the validation and test set
-    val_result: List[Dict[str, float]] = trainer.test(
+    val_result: list[dict[str, float]] = trainer.test(
         model, dataloaders=datamodule.val_dataloader(), verbose=True
     )
-    test_result: List[Dict[str, float]] = trainer.test(
+    test_result: list[dict[str, float]] = trainer.test(
         model, dataloaders=datamodule.test_dataloader(), verbose=True
     )
-    result: Dict[str, float] = {
+    result: dict[str, float] = {
         "test": test_result[0]["test_acc"],
         "val": val_result[0]["test_acc"],
     }
@@ -232,9 +225,9 @@ def train_pretrained_model(
 
 def train_feature_extracted_model(
     experiment_name: str,
-    checkpoint_load_path: Optional[str] = None,
+    checkpoint_load_path: str | None = None,
     checkpoint_save_path: str = os.path.join(TORCHFL_DIR, "runs"),
-) -> Tuple[nn.Module, Dict[str, float]]:
+) -> tuple[nn.Module, dict[str, float]]:
     """An example wrapper function for training CIFAR10 dataset using PyTorch Lightning trainer and torchfl model and dataloader utilities.
     Args:
         experiment_name (str): Name of the experiment as to be stored in the logs.
@@ -309,13 +302,13 @@ def train_feature_extracted_model(
     )
 
     # test best model based on the validation and test set
-    val_result: List[Dict[str, float]] = trainer.test(
+    val_result: list[dict[str, float]] = trainer.test(
         model, dataloaders=datamodule.val_dataloader(), verbose=True
     )
-    test_result: List[Dict[str, float]] = trainer.test(
+    test_result: list[dict[str, float]] = trainer.test(
         model, dataloaders=datamodule.test_dataloader(), verbose=True
     )
-    result: Dict[str, float] = {
+    result: dict[str, float] = {
         "test": test_result[0]["test_acc"],
         "val": val_result[0]["test_acc"],
     }

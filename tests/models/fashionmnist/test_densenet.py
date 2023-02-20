@@ -1,19 +1,19 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Tests for DenseNet for FashionMNIST in `torchfl` package."""
 import os
 
 import pytest
 import torch
-from torchvision import datasets
-from torchvision import transforms
+from torchvision import datasets, transforms
 
 from torchfl.compatibility import TORCHFL_DIR
-from torchfl.models.core.fashionmnist.densenet import DenseNet121
-from torchfl.models.core.fashionmnist.densenet import DenseNet161
-from torchfl.models.core.fashionmnist.densenet import DenseNet169
-from torchfl.models.core.fashionmnist.densenet import DenseNet201
+from torchfl.models.core.fashionmnist.densenet import (
+    DenseNet121,
+    DenseNet161,
+    DenseNet169,
+    DenseNet201,
+)
 
 data_transforms = {
     "train_single_channel": transforms.Compose(
@@ -36,7 +36,7 @@ data_transforms = {
 }
 
 
-@pytest.fixture
+@pytest.fixture()
 def fashionmnist_single_channel_loader():
     """Fixture for FashionMNIST, single-channel dataset.
 
@@ -52,7 +52,7 @@ def fashionmnist_single_channel_loader():
     )
 
 
-@pytest.fixture
+@pytest.fixture()
 def fashionmnist_3_channel_loader():
     """Fixture for FashionMNIST, multi-channel dataset.
 

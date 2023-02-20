@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # type: ignore
 
 """Implementation of the pre-trained SqueezeNet architectures using PyTorch and torchvision.
@@ -39,7 +38,7 @@ class SqueezeNet1_0(models.SqueezeNet):
             - num_channels (int, optional): Number of incoming channels. Defaults to 3.
             - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
-        super(SqueezeNet1_0, self).__init__(version="1_0")
+        super().__init__(version="1_0")
         self.hparams = SimpleNamespace(
             model_name="squeezenet1_0",
             pre_trained=pre_trained,
@@ -105,7 +104,7 @@ class SqueezeNet1_1(models.SqueezeNet):
             - num_channels (int, optional): Number of incoming channels. Defaults to 3.
             - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
-        super(SqueezeNet1_1, self).__init__(version="1_1")
+        super().__init__(version="1_1")
         self.hparams = SimpleNamespace(
             model_name="squeezenet1_1",
             pre_trained=pre_trained,

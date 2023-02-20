@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # type: ignore
 
 """Implementation of the general LeNet architecture using PyTorch."""
@@ -25,7 +24,7 @@ class LeNet(nn.Module):
             - num_channels (int, optional): Number of channels for the images in the dataset. Defaults to 3.
             - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
-        super(LeNet, self).__init__()
+        super().__init__()
         self.hparams = SimpleNamespace(
             model_name="lenet",
             num_classes=num_classes,

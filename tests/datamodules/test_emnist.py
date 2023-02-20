@@ -1,16 +1,17 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Tests for EMNIST PyTorch LightningDataModule module in `torchfl` package."""
 from collections import Counter
 
 import pytest
 
-from torchfl.datamodules.emnist import SUPPORTED_DATASETS_TYPE
-from torchfl.datamodules.emnist import EMNISTDataModule
+from torchfl.datamodules.emnist import (
+    SUPPORTED_DATASETS_TYPE,
+    EMNISTDataModule,
+)
 
 
-@pytest.fixture
+@pytest.fixture()
 def emnist_balanced_data_module():
     """Fixture for EMNIST PyTorch LightningDataModule
 
@@ -20,7 +21,7 @@ def emnist_balanced_data_module():
     return EMNISTDataModule(dataset_name=SUPPORTED_DATASETS_TYPE.BALANCED)
 
 
-@pytest.fixture
+@pytest.fixture()
 def emnist_byclass_data_module():
     """Fixture for EMNIST PyTorch LightningDataModule
 
@@ -30,7 +31,7 @@ def emnist_byclass_data_module():
     return EMNISTDataModule(dataset_name=SUPPORTED_DATASETS_TYPE.BYCLASS)
 
 
-@pytest.fixture
+@pytest.fixture()
 def emnist_bymerge_data_module():
     """Fixture for EMNIST PyTorch LightningDataModule
 
@@ -40,7 +41,7 @@ def emnist_bymerge_data_module():
     return EMNISTDataModule(dataset_name=SUPPORTED_DATASETS_TYPE.BYMERGE)
 
 
-@pytest.fixture
+@pytest.fixture()
 def emnist_digits_data_module():
     """Fixture for EMNIST PyTorch LightningDataModule
 
@@ -50,7 +51,7 @@ def emnist_digits_data_module():
     return EMNISTDataModule(dataset_name=SUPPORTED_DATASETS_TYPE.DIGITS)
 
 
-@pytest.fixture
+@pytest.fixture()
 def emnist_letters_data_module():
     """Fixture for EMNIST PyTorch LightningDataModule
 
@@ -60,7 +61,7 @@ def emnist_letters_data_module():
     return EMNISTDataModule(dataset_name=SUPPORTED_DATASETS_TYPE.LETTERS)
 
 
-@pytest.fixture
+@pytest.fixture()
 def emnist_mnist_data_module():
     """Fixture for EMNIST PyTorch LightningDataModule
 
@@ -138,7 +139,7 @@ def test_emnist_balanced_federated_non_iid_split(emnist_balanced_data_module):
     emnist_balanced_data_module.setup(stage="fit")
     dataloader = emnist_balanced_data_module.federated_non_iid_dataloader()
     assert len(dataloader.keys()) == 10
-    all_freq = list()
+    all_freq = []
     for i in range(10):
         assert len(dataloader[i].dataset) == 11280
         frequency = Counter(list(dataloader[i].dataset.targets))
@@ -214,7 +215,7 @@ def test_emnist_byclass_federated_non_iid_split(emnist_byclass_data_module):
     emnist_byclass_data_module.setup(stage="fit")
     dataloader = emnist_byclass_data_module.federated_non_iid_dataloader()
     assert len(dataloader.keys()) == 10
-    all_freq = list()
+    all_freq = []
     for i in range(10):
         assert len(dataloader[i].dataset) == 69792
         frequency = Counter(list(dataloader[i].dataset.targets))
@@ -290,7 +291,7 @@ def test_emnist_bymerge_federated_non_iid_split(emnist_bymerge_data_module):
     emnist_bymerge_data_module.setup(stage="fit")
     dataloader = emnist_bymerge_data_module.federated_non_iid_dataloader()
     assert len(dataloader.keys()) == 10
-    all_freq = list()
+    all_freq = []
     for i in range(10):
         assert len(dataloader[i].dataset) == 69792
         frequency = Counter(list(dataloader[i].dataset.targets))
@@ -366,7 +367,7 @@ def test_emnist_digits_federated_non_iid_split(emnist_digits_data_module):
     emnist_digits_data_module.setup(stage="fit")
     dataloader = emnist_digits_data_module.federated_non_iid_dataloader()
     assert len(dataloader.keys()) == 10
-    all_freq = list()
+    all_freq = []
     for i in range(10):
         assert len(dataloader[i].dataset) == 24000
         frequency = Counter(list(dataloader[i].dataset.targets))
@@ -442,7 +443,7 @@ def test_emnist_letters_federated_non_iid_split(emnist_letters_data_module):
     emnist_letters_data_module.setup(stage="fit")
     dataloader = emnist_letters_data_module.federated_non_iid_dataloader()
     assert len(dataloader.keys()) == 10
-    all_freq = list()
+    all_freq = []
     for i in range(10):
         assert len(dataloader[i].dataset) == 12480
         frequency = Counter(list(dataloader[i].dataset.targets))
@@ -518,7 +519,7 @@ def test_emnist_mnist_federated_non_iid_split(emnist_mnist_data_module):
     emnist_mnist_data_module.setup(stage="fit")
     dataloader = emnist_mnist_data_module.federated_non_iid_dataloader()
     assert len(dataloader.keys()) == 10
-    all_freq = list()
+    all_freq = []
     for i in range(10):
         assert len(dataloader[i].dataset) == 6000
         frequency = Counter(list(dataloader[i].dataset.targets))

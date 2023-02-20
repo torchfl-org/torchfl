@@ -1,13 +1,11 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Tests for AlexNet for FashionMNIST in `torchfl` package."""
 import os
 
 import pytest
 import torch
-from torchvision import datasets
-from torchvision import transforms
+from torchvision import datasets, transforms
 
 from torchfl.compatibility import TORCHFL_DIR
 from torchfl.models.core.fashionmnist.alexnet import AlexNet
@@ -33,7 +31,7 @@ data_transforms = {
 }
 
 
-@pytest.fixture
+@pytest.fixture()
 def fashionmnist_single_channel_loader():
     """Fixture for FashionMNIST, single-channel dataset.
 
@@ -49,7 +47,7 @@ def fashionmnist_single_channel_loader():
     )
 
 
-@pytest.fixture
+@pytest.fixture()
 def fashionmnist_3_channel_loader():
     """Fixture for FashionMNIST, multi-channel dataset.
 
