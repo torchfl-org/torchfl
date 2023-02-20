@@ -4,8 +4,10 @@
 """Random Sampler class used in FL."""
 
 import random
+from typing import Any
+from typing import List
+
 from torchfl.federated.samplers.base import BaseSampler
-from typing import Any, List
 
 random.seed(42)
 

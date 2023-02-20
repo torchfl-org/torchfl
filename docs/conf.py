@@ -23,8 +23,9 @@ import sys
 
 sys.path.insert(0, os.path.abspath(".."))
 
-import torchfl
 from typing import Dict
+
+import torchfl
 
 # -- General configuration ---------------------------------------------
 
@@ -118,7 +119,13 @@ latex_elements: Dict[str, str] = {
 # (source start file, target name, title, author, documentclass
 # [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, "torchfl.tex", "torchfl Documentation", "Vivek Khimani", "manual")
+    (
+        master_doc,
+        "torchfl.tex",
+        "torchfl Documentation",
+        "Vivek Khimani",
+        "manual",
+    )
 ]
 
 

@@ -3,13 +3,13 @@
 
 """Contains the AlexNet model implementations for CIFAR100 dataset."""
 
-from torchfl.models.sota.alexnet import (  # type: ignore[attr-defined]
-    AlexNet as BaseAlexNet,
-)  # type: ignore[attr-defined]
+from torchfl.models.sota.alexnet import AlexNet as BaseAlexNet
 
 
 class AlexNet(BaseAlexNet):
-    def __init__(self, pre_trained=True, feature_extract=False, num_channels=3) -> None:
+    def __init__(
+        self, pre_trained=True, feature_extract=False, num_channels=3
+    ) -> None:
         """Constructor
 
         Args:

@@ -4,9 +4,11 @@
 
 """Implementation of the pre-trained AlexNet using PyTorch and torchvision."""
 
-from torchvision import models
 from types import SimpleNamespace
+
 import torch.nn as nn
+from torchvision import models
+
 from torchfl.compatibility import ACTIVATION_FUNCTIONS_BY_NAME
 
 

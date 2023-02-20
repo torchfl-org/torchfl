@@ -4,10 +4,12 @@
 
 """Implementation of the general LeNet architecture using PyTorch."""
 
-import torch.nn as nn
-from torchfl.models.sota.mlp import LinearBlock
 from types import SimpleNamespace
+
+import torch.nn as nn
+
 from torchfl.compatibility import ACTIVATION_FUNCTIONS_BY_NAME
+from torchfl.models.sota.mlp import LinearBlock
 
 
 class LeNet(nn.Module):
@@ -39,7 +41,13 @@ class LeNet(nn.Module):
 
     def _create_network(self):
         self.input_net = nn.Sequential(
-            nn.Conv2d(self.hparams.num_channels, 6, kernel_size=5, stride=1, padding=2),
+            nn.Conv2d(
+                self.hparams.num_channels,
+                6,
+                kernel_size=5,
+                stride=1,
+                padding=2,
+            ),
             self.hparams.act_fn(),
             nn.AvgPool2d(kernel_size=2, stride=2),
         )
@@ -51,7 +59,9 @@ class LeNet(nn.Module):
             nn.Flatten(start_dim=1),
             LinearBlock(120, 84, self.hparams.act_fn, False),
         )
-        self.output_net = nn.Sequential(nn.Linear(84, self.hparams.num_classes))
+        self.output_net = nn.Sequential(
+            nn.Linear(84, self.hparams.num_classes)
+        )
 
     def forward(self, x):
         """Forward propagation

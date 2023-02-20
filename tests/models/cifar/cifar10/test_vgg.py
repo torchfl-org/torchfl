@@ -2,21 +2,22 @@
 # -*- coding: utf-8 -*-
 
 """Tests for VGG in `torchfl` package."""
-import pytest
-from torchvision import datasets, transforms
 import os
-from torchfl.compatibility import TORCHFL_DIR
-from torchfl.models.core.cifar.cifar10.vgg import (
-    VGG11,
-    VGG11_BN,
-    VGG13,
-    VGG13_BN,
-    VGG16,
-    VGG16_BN,
-    VGG19,
-    VGG19_BN,
-)
+
+import pytest
 import torch
+from torchvision import datasets
+from torchvision import transforms
+
+from torchfl.compatibility import TORCHFL_DIR
+from torchfl.models.core.cifar.cifar10.vgg import VGG11
+from torchfl.models.core.cifar.cifar10.vgg import VGG11_BN
+from torchfl.models.core.cifar.cifar10.vgg import VGG13
+from torchfl.models.core.cifar.cifar10.vgg import VGG13_BN
+from torchfl.models.core.cifar.cifar10.vgg import VGG16
+from torchfl.models.core.cifar.cifar10.vgg import VGG16_BN
+from torchfl.models.core.cifar.cifar10.vgg import VGG19
+from torchfl.models.core.cifar.cifar10.vgg import VGG19_BN
 
 data_transforms = {
     "train": transforms.Compose(

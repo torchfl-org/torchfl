@@ -11,9 +11,11 @@ Contains:
     - DenseNet201
 """
 
-from torchvision import models
 from types import SimpleNamespace
+
 import torch.nn as nn
+from torchvision import models
+
 from torchfl.compatibility import ACTIVATION_FUNCTIONS_BY_NAME
 
 
@@ -53,7 +55,9 @@ class DenseNet121(models.DenseNet):
             act_fn=ACTIVATION_FUNCTIONS_BY_NAME[act_fn_name],
         )
         if pre_trained:
-            pretrained_model = models.densenet121(pretrained=True, progress=True)
+            pretrained_model = models.densenet121(
+                pretrained=True, progress=True
+            )
             self.load_state_dict(pretrained_model.state_dict())
 
             if feature_extract:
@@ -111,7 +115,9 @@ class DenseNet161(models.DenseNet):
             act_fn=ACTIVATION_FUNCTIONS_BY_NAME[act_fn_name],
         )
         if pre_trained:
-            pretrained_model = models.densenet161(pretrained=True, progress=True)
+            pretrained_model = models.densenet161(
+                pretrained=True, progress=True
+            )
             self.load_state_dict(pretrained_model.state_dict())
 
             if feature_extract:
@@ -169,7 +175,9 @@ class DenseNet169(models.DenseNet):
             act_fn=ACTIVATION_FUNCTIONS_BY_NAME[act_fn_name],
         )
         if pre_trained:
-            pretrained_model = models.densenet169(pretrained=True, progress=True)
+            pretrained_model = models.densenet169(
+                pretrained=True, progress=True
+            )
             self.load_state_dict(pretrained_model.state_dict())
 
             if feature_extract:
@@ -227,7 +235,9 @@ class DenseNet201(models.DenseNet):
             act_fn=ACTIVATION_FUNCTIONS_BY_NAME[act_fn_name],
         )
         if pre_trained:
-            pretrained_model = models.densenet201(pretrained=True, progress=True)
+            pretrained_model = models.densenet201(
+                pretrained=True, progress=True
+            )
             self.load_state_dict(pretrained_model.state_dict())
 
             if feature_extract:

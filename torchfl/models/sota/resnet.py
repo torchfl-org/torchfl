@@ -16,11 +16,14 @@ Contains:
     - WideResNet101_2
 """
 
-from torchvision import models
 from types import SimpleNamespace
+
 import torch.nn as nn
+from torchvision import models
+from torchvision.models.resnet import BasicBlock
+from torchvision.models.resnet import Bottleneck
+
 from torchfl.compatibility import ACTIVATION_FUNCTIONS_BY_NAME
-from torchvision.models.resnet import BasicBlock, Bottleneck
 
 
 class ResNet18(models.ResNet):
@@ -66,7 +69,12 @@ class ResNet18(models.ResNet):
 
         if num_channels != 3:
             self.conv1 = nn.Conv2d(
-                num_channels, 64, kernel_size=7, stride=2, padding=3, bias=False
+                num_channels,
+                64,
+                kernel_size=7,
+                stride=2,
+                padding=3,
+                bias=False,
             )
 
         in_features = self.fc.in_features
@@ -115,7 +123,12 @@ class ResNet34(models.ResNet):
                     param.requires_grad = False
         if num_channels != 3:
             self.conv1 = nn.Conv2d(
-                num_channels, 64, kernel_size=7, stride=2, padding=3, bias=False
+                num_channels,
+                64,
+                kernel_size=7,
+                stride=2,
+                padding=3,
+                bias=False,
             )
 
         in_features = self.fc.in_features
@@ -164,7 +177,12 @@ class ResNet50(models.ResNet):
                     param.requires_grad = False
         if num_channels != 3:
             self.conv1 = nn.Conv2d(
-                num_channels, 64, kernel_size=7, stride=2, padding=3, bias=False
+                num_channels,
+                64,
+                kernel_size=7,
+                stride=2,
+                padding=3,
+                bias=False,
             )
 
         in_features = self.fc.in_features
@@ -213,7 +231,12 @@ class ResNet101(models.ResNet):
                     param.requires_grad = False
         if num_channels != 3:
             self.conv1 = nn.Conv2d(
-                num_channels, 64, kernel_size=7, stride=2, padding=3, bias=False
+                num_channels,
+                64,
+                kernel_size=7,
+                stride=2,
+                padding=3,
+                bias=False,
             )
 
         in_features = self.fc.in_features
@@ -262,7 +285,12 @@ class ResNet152(models.ResNet):
                     param.requires_grad = False
         if num_channels != 3:
             self.conv1 = nn.Conv2d(
-                num_channels, 64, kernel_size=7, stride=2, padding=3, bias=False
+                num_channels,
+                64,
+                kernel_size=7,
+                stride=2,
+                padding=3,
+                bias=False,
             )
 
         in_features = self.fc.in_features
@@ -306,14 +334,21 @@ class ResNext50_32X4D(models.ResNet):
         )
 
         if pre_trained:
-            pretrained_model = models.resnext50_32x4d(pretrained=True, progress=True)
+            pretrained_model = models.resnext50_32x4d(
+                pretrained=True, progress=True
+            )
             self.load_state_dict(pretrained_model.state_dict())
             if feature_extract:
                 for param in self.parameters():
                     param.requires_grad = False
         if num_channels != 3:
             self.conv1 = nn.Conv2d(
-                num_channels, 64, kernel_size=7, stride=2, padding=3, bias=False
+                num_channels,
+                64,
+                kernel_size=7,
+                stride=2,
+                padding=3,
+                bias=False,
             )
 
         in_features = self.fc.in_features
@@ -342,7 +377,10 @@ class ResNext101_32X8D(models.ResNet):
             - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
         super(ResNext101_32X8D, self).__init__(
-            block=Bottleneck, layers=[3, 4, 23, 3], groups=32, width_per_group=8
+            block=Bottleneck,
+            layers=[3, 4, 23, 3],
+            groups=32,
+            width_per_group=8,
         )
         self.hparams = SimpleNamespace(
             model_name="resnext101_32x8d",
@@ -357,14 +395,21 @@ class ResNext101_32X8D(models.ResNet):
         )
 
         if pre_trained:
-            pretrained_model = models.resnext101_32x8d(pretrained=True, progress=True)
+            pretrained_model = models.resnext101_32x8d(
+                pretrained=True, progress=True
+            )
             self.load_state_dict(pretrained_model.state_dict())
             if feature_extract:
                 for param in self.parameters():
                     param.requires_grad = False
         if num_channels != 3:
             self.conv1 = nn.Conv2d(
-                num_channels, 64, kernel_size=7, stride=2, padding=3, bias=False
+                num_channels,
+                64,
+                kernel_size=7,
+                stride=2,
+                padding=3,
+                bias=False,
             )
 
         in_features = self.fc.in_features
@@ -408,14 +453,21 @@ class WideResNet50_2(models.ResNet):
         )
 
         if pre_trained:
-            pretrained_model = models.wide_resnet50_2(pretrained=True, progress=True)
+            pretrained_model = models.wide_resnet50_2(
+                pretrained=True, progress=True
+            )
             self.load_state_dict(pretrained_model.state_dict())
             if feature_extract:
                 for param in self.parameters():
                     param.requires_grad = False
         if num_channels != 3:
             self.conv1 = nn.Conv2d(
-                num_channels, 64, kernel_size=7, stride=2, padding=3, bias=False
+                num_channels,
+                64,
+                kernel_size=7,
+                stride=2,
+                padding=3,
+                bias=False,
             )
 
         in_features = self.fc.in_features
@@ -459,14 +511,21 @@ class WideResNet101_2(models.ResNet):
         )
 
         if pre_trained:
-            pretrained_model = models.wide_resnet101_2(pretrained=True, progress=True)
+            pretrained_model = models.wide_resnet101_2(
+                pretrained=True, progress=True
+            )
             self.load_state_dict(pretrained_model.state_dict())
             if feature_extract:
                 for param in self.parameters():
                     param.requires_grad = False
         if num_channels != 3:
             self.conv1 = nn.Conv2d(
-                num_channels, 64, kernel_size=7, stride=2, padding=3, bias=False
+                num_channels,
+                64,
+                kernel_size=7,
+                stride=2,
+                padding=3,
+                bias=False,
             )
 
         in_features = self.fc.in_features

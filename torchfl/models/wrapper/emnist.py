@@ -4,282 +4,484 @@
 """Contains the PyTorch Lightning wrapper modules for all EMNIST datasets."""
 
 import enum
-from typing import List, Optional, Type, Union, Dict, Any, Tuple
+from typing import Any
+from typing import Dict
+from typing import List
+from typing import Optional
+from typing import Tuple
+from typing import Type
+from typing import Union
+
+import pytorch_lightning as pl
+import torch.nn as nn
+from torch import Tensor
+from torch import optim
+
+from torchfl.compatibility import OPTIMIZERS_BY_NAME
+from torchfl.compatibility import OPTIMIZERS_TYPE
 from torchfl.federated.fl_params import FLParams
-from torchfl.models.core.emnist.balanced.alexnet import AlexNet as BalancedAlexNet
+from torchfl.models.core.emnist.balanced.alexnet import (
+    AlexNet as BalancedAlexNet,
+)
 from torchfl.models.core.emnist.balanced.densenet import (
     DenseNet121 as BalancedDenseNet121,
+)
+from torchfl.models.core.emnist.balanced.densenet import (
     DenseNet161 as BalancedDenseNet161,
+)
+from torchfl.models.core.emnist.balanced.densenet import (
     DenseNet169 as BalancedDenseNet169,
+)
+from torchfl.models.core.emnist.balanced.densenet import (
     DenseNet201 as BalancedDenseNet201,
 )
 from torchfl.models.core.emnist.balanced.lenet import LeNet as BalancedLeNet
 from torchfl.models.core.emnist.balanced.mlp import MLP as BalancedMLP
 from torchfl.models.core.emnist.balanced.mobilenet import (
     MobileNetV2 as BalancedMobileNetV2,
-    MobileNetV3Small as BalancedMobileNetV3Small,
+)
+from torchfl.models.core.emnist.balanced.mobilenet import (
     MobileNetV3Large as BalancedMobileNetV3Large,
+)
+from torchfl.models.core.emnist.balanced.mobilenet import (
+    MobileNetV3Small as BalancedMobileNetV3Small,
 )
 from torchfl.models.core.emnist.balanced.resnet import (
     ResNet18 as BalancedResNet18,
+)
+from torchfl.models.core.emnist.balanced.resnet import (
     ResNet34 as BalancedResNet34,
+)
+from torchfl.models.core.emnist.balanced.resnet import (
     ResNet50 as BalancedResNet50,
+)
+from torchfl.models.core.emnist.balanced.resnet import (
     ResNet101 as BalancedResNet101,
+)
+from torchfl.models.core.emnist.balanced.resnet import (
     ResNet152 as BalancedResNet152,
+)
+from torchfl.models.core.emnist.balanced.resnet import (
     ResNext50_32X4D as BalancedResNext50_32X4D,
+)
+from torchfl.models.core.emnist.balanced.resnet import (
     ResNext101_32X8D as BalancedResNext101_32X8D,
+)
+from torchfl.models.core.emnist.balanced.resnet import (
     WideResNet50_2 as BalancedWideResNet50_2,
+)
+from torchfl.models.core.emnist.balanced.resnet import (
     WideResNet101_2 as BalancedWideResNet101_2,
 )
 from torchfl.models.core.emnist.balanced.shufflenetv2 import (
     ShuffleNetv2_x0_5 as BalancedShuffleNetv2_x0_5,
+)
+from torchfl.models.core.emnist.balanced.shufflenetv2 import (
     ShuffleNetv2_x1_0 as BalancedShuffleNetv2_x1_0,
+)
+from torchfl.models.core.emnist.balanced.shufflenetv2 import (
     ShuffleNetv2_x1_5 as BalancedShuffleNetv2_x1_5,
+)
+from torchfl.models.core.emnist.balanced.shufflenetv2 import (
     ShuffleNetv2_x2_0 as BalancedShuffleNetv2_x2_0,
 )
 from torchfl.models.core.emnist.balanced.squeezenet import (
     SqueezeNet1_0 as BalancedSqueezeNet1_0,
+)
+from torchfl.models.core.emnist.balanced.squeezenet import (
     SqueezeNet1_1 as BalancedSqueezeNet1_1,
 )
+from torchfl.models.core.emnist.balanced.vgg import VGG11 as BalancedVGG11
 from torchfl.models.core.emnist.balanced.vgg import (
-    VGG11 as BalancedVGG11,
     VGG11_BN as BalancedVGG11_BN,
-    VGG13 as BalancedVGG13,
+)
+from torchfl.models.core.emnist.balanced.vgg import VGG13 as BalancedVGG13
+from torchfl.models.core.emnist.balanced.vgg import (
     VGG13_BN as BalancedVGG13_BN,
-    VGG16 as BalancedVGG16,
+)
+from torchfl.models.core.emnist.balanced.vgg import VGG16 as BalancedVGG16
+from torchfl.models.core.emnist.balanced.vgg import (
     VGG16_BN as BalancedVGG16_BN,
-    VGG19 as BalancedVGG19,
+)
+from torchfl.models.core.emnist.balanced.vgg import VGG19 as BalancedVGG19
+from torchfl.models.core.emnist.balanced.vgg import (
     VGG19_BN as BalancedVGG19_BN,
 )
-from torchfl.models.core.emnist.byclass.alexnet import AlexNet as ByClassAlexNet
+from torchfl.models.core.emnist.byclass.alexnet import (
+    AlexNet as ByClassAlexNet,
+)
 from torchfl.models.core.emnist.byclass.densenet import (
     DenseNet121 as ByClassDenseNet121,
+)
+from torchfl.models.core.emnist.byclass.densenet import (
     DenseNet161 as ByClassDenseNet161,
+)
+from torchfl.models.core.emnist.byclass.densenet import (
     DenseNet169 as ByClassDenseNet169,
+)
+from torchfl.models.core.emnist.byclass.densenet import (
     DenseNet201 as ByClassDenseNet201,
 )
 from torchfl.models.core.emnist.byclass.lenet import LeNet as ByClassLeNet
 from torchfl.models.core.emnist.byclass.mlp import MLP as ByClassMLP
 from torchfl.models.core.emnist.byclass.mobilenet import (
     MobileNetV2 as ByClassMobileNetV2,
-    MobileNetV3Small as ByClassMobileNetV3Small,
+)
+from torchfl.models.core.emnist.byclass.mobilenet import (
     MobileNetV3Large as ByClassMobileNetV3Large,
+)
+from torchfl.models.core.emnist.byclass.mobilenet import (
+    MobileNetV3Small as ByClassMobileNetV3Small,
 )
 from torchfl.models.core.emnist.byclass.resnet import (
     ResNet18 as ByClassResNet18,
+)
+from torchfl.models.core.emnist.byclass.resnet import (
     ResNet34 as ByClassResNet34,
+)
+from torchfl.models.core.emnist.byclass.resnet import (
     ResNet50 as ByClassResNet50,
+)
+from torchfl.models.core.emnist.byclass.resnet import (
     ResNet101 as ByClassResNet101,
+)
+from torchfl.models.core.emnist.byclass.resnet import (
     ResNet152 as ByClassResNet152,
+)
+from torchfl.models.core.emnist.byclass.resnet import (
     ResNext50_32X4D as ByClassResNext50_32X4D,
+)
+from torchfl.models.core.emnist.byclass.resnet import (
     ResNext101_32X8D as ByClassResNext101_32X8D,
+)
+from torchfl.models.core.emnist.byclass.resnet import (
     WideResNet50_2 as ByClassWideResNet50_2,
+)
+from torchfl.models.core.emnist.byclass.resnet import (
     WideResNet101_2 as ByClassWideResNet101_2,
 )
 from torchfl.models.core.emnist.byclass.shufflenetv2 import (
     ShuffleNetv2_x0_5 as ByClassShuffleNetv2_x0_5,
+)
+from torchfl.models.core.emnist.byclass.shufflenetv2 import (
     ShuffleNetv2_x1_0 as ByClassShuffleNetv2_x1_0,
+)
+from torchfl.models.core.emnist.byclass.shufflenetv2 import (
     ShuffleNetv2_x1_5 as ByClassShuffleNetv2_x1_5,
+)
+from torchfl.models.core.emnist.byclass.shufflenetv2 import (
     ShuffleNetv2_x2_0 as ByClassShuffleNetv2_x2_0,
 )
 from torchfl.models.core.emnist.byclass.squeezenet import (
     SqueezeNet1_0 as ByClassSqueezeNet1_0,
+)
+from torchfl.models.core.emnist.byclass.squeezenet import (
     SqueezeNet1_1 as ByClassSqueezeNet1_1,
 )
-from torchfl.models.core.emnist.byclass.vgg import (
-    VGG11 as ByClassVGG11,
-    VGG11_BN as ByClassVGG11_BN,
-    VGG13 as ByClassVGG13,
-    VGG13_BN as ByClassVGG13_BN,
-    VGG16 as ByClassVGG16,
-    VGG16_BN as ByClassVGG16_BN,
-    VGG19 as ByClassVGG19,
-    VGG19_BN as ByClassVGG19_BN,
+from torchfl.models.core.emnist.byclass.vgg import VGG11 as ByClassVGG11
+from torchfl.models.core.emnist.byclass.vgg import VGG11_BN as ByClassVGG11_BN
+from torchfl.models.core.emnist.byclass.vgg import VGG13 as ByClassVGG13
+from torchfl.models.core.emnist.byclass.vgg import VGG13_BN as ByClassVGG13_BN
+from torchfl.models.core.emnist.byclass.vgg import VGG16 as ByClassVGG16
+from torchfl.models.core.emnist.byclass.vgg import VGG16_BN as ByClassVGG16_BN
+from torchfl.models.core.emnist.byclass.vgg import VGG19 as ByClassVGG19
+from torchfl.models.core.emnist.byclass.vgg import VGG19_BN as ByClassVGG19_BN
+from torchfl.models.core.emnist.bymerge.alexnet import (
+    AlexNet as ByMergeAlexNet,
 )
-from torchfl.models.core.emnist.bymerge.alexnet import AlexNet as ByMergeAlexNet
 from torchfl.models.core.emnist.bymerge.densenet import (
     DenseNet121 as ByMergeDenseNet121,
+)
+from torchfl.models.core.emnist.bymerge.densenet import (
     DenseNet161 as ByMergeDenseNet161,
+)
+from torchfl.models.core.emnist.bymerge.densenet import (
     DenseNet169 as ByMergeDenseNet169,
+)
+from torchfl.models.core.emnist.bymerge.densenet import (
     DenseNet201 as ByMergeDenseNet201,
 )
 from torchfl.models.core.emnist.bymerge.lenet import LeNet as ByMergeLeNet
 from torchfl.models.core.emnist.bymerge.mlp import MLP as ByMergeMLP
 from torchfl.models.core.emnist.bymerge.mobilenet import (
     MobileNetV2 as ByMergeMobileNetV2,
-    MobileNetV3Small as ByMergeMobileNetV3Small,
+)
+from torchfl.models.core.emnist.bymerge.mobilenet import (
     MobileNetV3Large as ByMergeMobileNetV3Large,
+)
+from torchfl.models.core.emnist.bymerge.mobilenet import (
+    MobileNetV3Small as ByMergeMobileNetV3Small,
 )
 from torchfl.models.core.emnist.bymerge.resnet import (
     ResNet18 as ByMergeResNet18,
+)
+from torchfl.models.core.emnist.bymerge.resnet import (
     ResNet34 as ByMergeResNet34,
+)
+from torchfl.models.core.emnist.bymerge.resnet import (
     ResNet50 as ByMergeResNet50,
+)
+from torchfl.models.core.emnist.bymerge.resnet import (
     ResNet101 as ByMergeResNet101,
+)
+from torchfl.models.core.emnist.bymerge.resnet import (
     ResNet152 as ByMergeResNet152,
+)
+from torchfl.models.core.emnist.bymerge.resnet import (
     ResNext50_32X4D as ByMergeResNext50_32X4D,
+)
+from torchfl.models.core.emnist.bymerge.resnet import (
     ResNext101_32X8D as ByMergeResNext101_32X8D,
+)
+from torchfl.models.core.emnist.bymerge.resnet import (
     WideResNet50_2 as ByMergeWideResNet50_2,
+)
+from torchfl.models.core.emnist.bymerge.resnet import (
     WideResNet101_2 as ByMergeWideResNet101_2,
 )
 from torchfl.models.core.emnist.bymerge.shufflenetv2 import (
     ShuffleNetv2_x0_5 as ByMergeShuffleNetv2_x0_5,
+)
+from torchfl.models.core.emnist.bymerge.shufflenetv2 import (
     ShuffleNetv2_x1_0 as ByMergeShuffleNetv2_x1_0,
+)
+from torchfl.models.core.emnist.bymerge.shufflenetv2 import (
     ShuffleNetv2_x1_5 as ByMergeShuffleNetv2_x1_5,
+)
+from torchfl.models.core.emnist.bymerge.shufflenetv2 import (
     ShuffleNetv2_x2_0 as ByMergeShuffleNetv2_x2_0,
 )
 from torchfl.models.core.emnist.bymerge.squeezenet import (
     SqueezeNet1_0 as ByMergeSqueezeNet1_0,
+)
+from torchfl.models.core.emnist.bymerge.squeezenet import (
     SqueezeNet1_1 as ByMergeSqueezeNet1_1,
 )
-from torchfl.models.core.emnist.bymerge.vgg import (
-    VGG11 as ByMergeVGG11,
-    VGG11_BN as ByMergeVGG11_BN,
-    VGG13 as ByMergeVGG13,
-    VGG13_BN as ByMergeVGG13_BN,
-    VGG16 as ByMergeVGG16,
-    VGG16_BN as ByMergeVGG16_BN,
-    VGG19 as ByMergeVGG19,
-    VGG19_BN as ByMergeVGG19_BN,
-)
+from torchfl.models.core.emnist.bymerge.vgg import VGG11 as ByMergeVGG11
+from torchfl.models.core.emnist.bymerge.vgg import VGG11_BN as ByMergeVGG11_BN
+from torchfl.models.core.emnist.bymerge.vgg import VGG13 as ByMergeVGG13
+from torchfl.models.core.emnist.bymerge.vgg import VGG13_BN as ByMergeVGG13_BN
+from torchfl.models.core.emnist.bymerge.vgg import VGG16 as ByMergeVGG16
+from torchfl.models.core.emnist.bymerge.vgg import VGG16_BN as ByMergeVGG16_BN
+from torchfl.models.core.emnist.bymerge.vgg import VGG19 as ByMergeVGG19
+from torchfl.models.core.emnist.bymerge.vgg import VGG19_BN as ByMergeVGG19_BN
 from torchfl.models.core.emnist.digits.alexnet import AlexNet as DigitsAlexNet
 from torchfl.models.core.emnist.digits.densenet import (
     DenseNet121 as DigitsDenseNet121,
+)
+from torchfl.models.core.emnist.digits.densenet import (
     DenseNet161 as DigitsDenseNet161,
+)
+from torchfl.models.core.emnist.digits.densenet import (
     DenseNet169 as DigitsDenseNet169,
+)
+from torchfl.models.core.emnist.digits.densenet import (
     DenseNet201 as DigitsDenseNet201,
 )
 from torchfl.models.core.emnist.digits.lenet import LeNet as DigitsLeNet
 from torchfl.models.core.emnist.digits.mlp import MLP as DigitsMLP
 from torchfl.models.core.emnist.digits.mobilenet import (
     MobileNetV2 as DigitsMobileNetV2,
-    MobileNetV3Small as DigitsMobileNetV3Small,
+)
+from torchfl.models.core.emnist.digits.mobilenet import (
     MobileNetV3Large as DigitsMobileNetV3Large,
 )
+from torchfl.models.core.emnist.digits.mobilenet import (
+    MobileNetV3Small as DigitsMobileNetV3Small,
+)
+from torchfl.models.core.emnist.digits.resnet import ResNet18 as DigitsResNet18
+from torchfl.models.core.emnist.digits.resnet import ResNet34 as DigitsResNet34
+from torchfl.models.core.emnist.digits.resnet import ResNet50 as DigitsResNet50
 from torchfl.models.core.emnist.digits.resnet import (
-    ResNet18 as DigitsResNet18,
-    ResNet34 as DigitsResNet34,
-    ResNet50 as DigitsResNet50,
     ResNet101 as DigitsResNet101,
+)
+from torchfl.models.core.emnist.digits.resnet import (
     ResNet152 as DigitsResNet152,
+)
+from torchfl.models.core.emnist.digits.resnet import (
     ResNext50_32X4D as DigitsResNext50_32X4D,
+)
+from torchfl.models.core.emnist.digits.resnet import (
     ResNext101_32X8D as DigitsResNext101_32X8D,
+)
+from torchfl.models.core.emnist.digits.resnet import (
     WideResNet50_2 as DigitsWideResNet50_2,
+)
+from torchfl.models.core.emnist.digits.resnet import (
     WideResNet101_2 as DigitsWideResNet101_2,
 )
 from torchfl.models.core.emnist.digits.shufflenetv2 import (
     ShuffleNetv2_x0_5 as DigitsShuffleNetv2_x0_5,
+)
+from torchfl.models.core.emnist.digits.shufflenetv2 import (
     ShuffleNetv2_x1_0 as DigitsShuffleNetv2_x1_0,
+)
+from torchfl.models.core.emnist.digits.shufflenetv2 import (
     ShuffleNetv2_x1_5 as DigitsShuffleNetv2_x1_5,
+)
+from torchfl.models.core.emnist.digits.shufflenetv2 import (
     ShuffleNetv2_x2_0 as DigitsShuffleNetv2_x2_0,
 )
 from torchfl.models.core.emnist.digits.squeezenet import (
     SqueezeNet1_0 as DigitsSqueezeNet1_0,
+)
+from torchfl.models.core.emnist.digits.squeezenet import (
     SqueezeNet1_1 as DigitsSqueezeNet1_1,
 )
-from torchfl.models.core.emnist.digits.vgg import (
-    VGG11 as DigitsVGG11,
-    VGG11_BN as DigitsVGG11_BN,
-    VGG13 as DigitsVGG13,
-    VGG13_BN as DigitsVGG13_BN,
-    VGG16 as DigitsVGG16,
-    VGG16_BN as DigitsVGG16_BN,
-    VGG19 as DigitsVGG19,
-    VGG19_BN as DigitsVGG19_BN,
+from torchfl.models.core.emnist.digits.vgg import VGG11 as DigitsVGG11
+from torchfl.models.core.emnist.digits.vgg import VGG11_BN as DigitsVGG11_BN
+from torchfl.models.core.emnist.digits.vgg import VGG13 as DigitsVGG13
+from torchfl.models.core.emnist.digits.vgg import VGG13_BN as DigitsVGG13_BN
+from torchfl.models.core.emnist.digits.vgg import VGG16 as DigitsVGG16
+from torchfl.models.core.emnist.digits.vgg import VGG16_BN as DigitsVGG16_BN
+from torchfl.models.core.emnist.digits.vgg import VGG19 as DigitsVGG19
+from torchfl.models.core.emnist.digits.vgg import VGG19_BN as DigitsVGG19_BN
+from torchfl.models.core.emnist.letters.alexnet import (
+    AlexNet as LettersAlexNet,
 )
-from torchfl.models.core.emnist.letters.alexnet import AlexNet as LettersAlexNet
 from torchfl.models.core.emnist.letters.densenet import (
     DenseNet121 as LettersDenseNet121,
+)
+from torchfl.models.core.emnist.letters.densenet import (
     DenseNet161 as LettersDenseNet161,
+)
+from torchfl.models.core.emnist.letters.densenet import (
     DenseNet169 as LettersDenseNet169,
+)
+from torchfl.models.core.emnist.letters.densenet import (
     DenseNet201 as LettersDenseNet201,
 )
 from torchfl.models.core.emnist.letters.lenet import LeNet as LettersLeNet
 from torchfl.models.core.emnist.letters.mlp import MLP as LettersMLP
 from torchfl.models.core.emnist.letters.mobilenet import (
     MobileNetV2 as LettersMobileNetV2,
-    MobileNetV3Small as LettersMobileNetV3Small,
+)
+from torchfl.models.core.emnist.letters.mobilenet import (
     MobileNetV3Large as LettersMobileNetV3Large,
+)
+from torchfl.models.core.emnist.letters.mobilenet import (
+    MobileNetV3Small as LettersMobileNetV3Small,
 )
 from torchfl.models.core.emnist.letters.resnet import (
     ResNet18 as LettersResNet18,
+)
+from torchfl.models.core.emnist.letters.resnet import (
     ResNet34 as LettersResNet34,
+)
+from torchfl.models.core.emnist.letters.resnet import (
     ResNet50 as LettersResNet50,
+)
+from torchfl.models.core.emnist.letters.resnet import (
     ResNet101 as LettersResNet101,
+)
+from torchfl.models.core.emnist.letters.resnet import (
     ResNet152 as LettersResNet152,
+)
+from torchfl.models.core.emnist.letters.resnet import (
     ResNext50_32X4D as LettersResNext50_32X4D,
+)
+from torchfl.models.core.emnist.letters.resnet import (
     ResNext101_32X8D as LettersResNext101_32X8D,
+)
+from torchfl.models.core.emnist.letters.resnet import (
     WideResNet50_2 as LettersWideResNet50_2,
+)
+from torchfl.models.core.emnist.letters.resnet import (
     WideResNet101_2 as LettersWideResNet101_2,
 )
 from torchfl.models.core.emnist.letters.shufflenetv2 import (
     ShuffleNetv2_x0_5 as LettersShuffleNetv2_x0_5,
+)
+from torchfl.models.core.emnist.letters.shufflenetv2 import (
     ShuffleNetv2_x1_0 as LettersShuffleNetv2_x1_0,
+)
+from torchfl.models.core.emnist.letters.shufflenetv2 import (
     ShuffleNetv2_x1_5 as LettersShuffleNetv2_x1_5,
+)
+from torchfl.models.core.emnist.letters.shufflenetv2 import (
     ShuffleNetv2_x2_0 as LettersShuffleNetv2_x2_0,
 )
 from torchfl.models.core.emnist.letters.squeezenet import (
     SqueezeNet1_0 as LettersSqueezeNet1_0,
+)
+from torchfl.models.core.emnist.letters.squeezenet import (
     SqueezeNet1_1 as LettersSqueezeNet1_1,
 )
-from torchfl.models.core.emnist.letters.vgg import (
-    VGG11 as LettersVGG11,
-    VGG11_BN as LettersVGG11_BN,
-    VGG13 as LettersVGG13,
-    VGG13_BN as LettersVGG13_BN,
-    VGG16 as LettersVGG16,
-    VGG16_BN as LettersVGG16_BN,
-    VGG19 as LettersVGG19,
-    VGG19_BN as LettersVGG19_BN,
-)
+from torchfl.models.core.emnist.letters.vgg import VGG11 as LettersVGG11
+from torchfl.models.core.emnist.letters.vgg import VGG11_BN as LettersVGG11_BN
+from torchfl.models.core.emnist.letters.vgg import VGG13 as LettersVGG13
+from torchfl.models.core.emnist.letters.vgg import VGG13_BN as LettersVGG13_BN
+from torchfl.models.core.emnist.letters.vgg import VGG16 as LettersVGG16
+from torchfl.models.core.emnist.letters.vgg import VGG16_BN as LettersVGG16_BN
+from torchfl.models.core.emnist.letters.vgg import VGG19 as LettersVGG19
+from torchfl.models.core.emnist.letters.vgg import VGG19_BN as LettersVGG19_BN
 from torchfl.models.core.emnist.mnist.alexnet import AlexNet as MNISTAlexNet
 from torchfl.models.core.emnist.mnist.densenet import (
     DenseNet121 as MNISTDenseNet121,
+)
+from torchfl.models.core.emnist.mnist.densenet import (
     DenseNet161 as MNISTDenseNet161,
+)
+from torchfl.models.core.emnist.mnist.densenet import (
     DenseNet169 as MNISTDenseNet169,
+)
+from torchfl.models.core.emnist.mnist.densenet import (
     DenseNet201 as MNISTDenseNet201,
 )
 from torchfl.models.core.emnist.mnist.lenet import LeNet as MNISTLeNet
 from torchfl.models.core.emnist.mnist.mlp import MLP as MNISTMLP
 from torchfl.models.core.emnist.mnist.mobilenet import (
     MobileNetV2 as MNISTMobileNetV2,
-    MobileNetV3Small as MNISTMobileNetV3Small,
+)
+from torchfl.models.core.emnist.mnist.mobilenet import (
     MobileNetV3Large as MNISTMobileNetV3Large,
 )
+from torchfl.models.core.emnist.mnist.mobilenet import (
+    MobileNetV3Small as MNISTMobileNetV3Small,
+)
+from torchfl.models.core.emnist.mnist.resnet import ResNet18 as MNISTResNet18
+from torchfl.models.core.emnist.mnist.resnet import ResNet34 as MNISTResNet34
+from torchfl.models.core.emnist.mnist.resnet import ResNet50 as MNISTResNet50
+from torchfl.models.core.emnist.mnist.resnet import ResNet101 as MNISTResNet101
+from torchfl.models.core.emnist.mnist.resnet import ResNet152 as MNISTResNet152
 from torchfl.models.core.emnist.mnist.resnet import (
-    ResNet18 as MNISTResNet18,
-    ResNet34 as MNISTResNet34,
-    ResNet50 as MNISTResNet50,
-    ResNet101 as MNISTResNet101,
-    ResNet152 as MNISTResNet152,
     ResNext50_32X4D as MNISTResNext50_32X4D,
+)
+from torchfl.models.core.emnist.mnist.resnet import (
     ResNext101_32X8D as MNISTResNext101_32X8D,
+)
+from torchfl.models.core.emnist.mnist.resnet import (
     WideResNet50_2 as MNISTWideResNet50_2,
+)
+from torchfl.models.core.emnist.mnist.resnet import (
     WideResNet101_2 as MNISTWideResNet101_2,
 )
 from torchfl.models.core.emnist.mnist.shufflenetv2 import (
     ShuffleNetv2_x0_5 as MNISTShuffleNetv2_x0_5,
+)
+from torchfl.models.core.emnist.mnist.shufflenetv2 import (
     ShuffleNetv2_x1_0 as MNISTShuffleNetv2_x1_0,
+)
+from torchfl.models.core.emnist.mnist.shufflenetv2 import (
     ShuffleNetv2_x1_5 as MNISTShuffleNetv2_x1_5,
+)
+from torchfl.models.core.emnist.mnist.shufflenetv2 import (
     ShuffleNetv2_x2_0 as MNISTShuffleNetv2_x2_0,
 )
 from torchfl.models.core.emnist.mnist.squeezenet import (
     SqueezeNet1_0 as MNISTSqueezeNet1_0,
+)
+from torchfl.models.core.emnist.mnist.squeezenet import (
     SqueezeNet1_1 as MNISTSqueezeNet1_1,
 )
-from torchfl.models.core.emnist.mnist.vgg import (
-    VGG11 as MNISTVGG11,
-    VGG11_BN as MNISTVGG11_BN,
-    VGG13 as MNISTVGG13,
-    VGG13_BN as MNISTVGG13_BN,
-    VGG16 as MNISTVGG16,
-    VGG16_BN as MNISTVGG16_BN,
-    VGG19 as MNISTVGG19,
-    VGG19_BN as MNISTVGG19_BN,
-)
-import pytorch_lightning as pl
-import torch.nn as nn
-from torchfl.compatibility import OPTIMIZERS_TYPE, OPTIMIZERS_BY_NAME
-from torch import Tensor, optim
+from torchfl.models.core.emnist.mnist.vgg import VGG11 as MNISTVGG11
+from torchfl.models.core.emnist.mnist.vgg import VGG11_BN as MNISTVGG11_BN
+from torchfl.models.core.emnist.mnist.vgg import VGG13 as MNISTVGG13
+from torchfl.models.core.emnist.mnist.vgg import VGG13_BN as MNISTVGG13_BN
+from torchfl.models.core.emnist.mnist.vgg import VGG16 as MNISTVGG16
+from torchfl.models.core.emnist.mnist.vgg import VGG16_BN as MNISTVGG16_BN
+from torchfl.models.core.emnist.mnist.vgg import VGG19 as MNISTVGG19
+from torchfl.models.core.emnist.mnist.vgg import VGG19_BN as MNISTVGG19_BN
 
 pl.seed_everything(42)
 
@@ -794,7 +996,9 @@ EMNIST_MNIST_MODELS_MAPPING: Dict[str, EMNIST_MNIST_MODEL_TYPE] = {
 
 
 def create_model(
-    dataset_name: str, model_name: str, model_hparams: Optional[Dict[str, Any]] = None
+    dataset_name: str,
+    model_name: str,
+    model_hparams: Optional[Dict[str, Any]] = None,
 ) -> Union[
     EMNIST_BALANCED_MODEL_TYPE,
     EMNIST_BYCLASS_MODEL_TYPE,
@@ -825,7 +1029,9 @@ def create_model(
             if not model_hparams:
                 return EMNIST_BALANCED_MODELS_MAPPING[model_name]()
             else:
-                return EMNIST_BALANCED_MODELS_MAPPING[model_name](**model_hparams)
+                return EMNIST_BALANCED_MODELS_MAPPING[model_name](
+                    **model_hparams
+                )
     elif dataset_name == "byclass":
         if model_name not in EMNIST_BYCLASS_MODELS_MAPPING:
             raise ValueError(
@@ -835,7 +1041,9 @@ def create_model(
             if not model_hparams:
                 return EMNIST_BYCLASS_MODELS_MAPPING[model_name]()
             else:
-                return EMNIST_BYCLASS_MODELS_MAPPING[model_name](**model_hparams)
+                return EMNIST_BYCLASS_MODELS_MAPPING[model_name](
+                    **model_hparams
+                )
     elif dataset_name == "bymerge":
         if model_name not in EMNIST_BYMERGE_MODELS_MAPPING:
             raise ValueError(
@@ -845,7 +1053,9 @@ def create_model(
             if not model_hparams:
                 return EMNIST_BYMERGE_MODELS_MAPPING[model_name]()
             else:
-                return EMNIST_BYMERGE_MODELS_MAPPING[model_name](**model_hparams)
+                return EMNIST_BYMERGE_MODELS_MAPPING[model_name](
+                    **model_hparams
+                )
     elif dataset_name == "letters":
         if model_name not in EMNIST_LETTERS_MODELS_MAPPING:
             raise ValueError(
@@ -855,7 +1065,9 @@ def create_model(
             if not model_hparams:
                 return EMNIST_LETTERS_MODELS_MAPPING[model_name]()
             else:
-                return EMNIST_LETTERS_MODELS_MAPPING[model_name](**model_hparams)
+                return EMNIST_LETTERS_MODELS_MAPPING[model_name](
+                    **model_hparams
+                )
     elif dataset_name == "digits":
         if model_name not in EMNIST_DIGITS_MODELS_MAPPING:
             raise ValueError(
@@ -865,7 +1077,9 @@ def create_model(
             if not model_hparams:
                 return EMNIST_DIGITS_MODELS_MAPPING[model_name]()
             else:
-                return EMNIST_DIGITS_MODELS_MAPPING[model_name](**model_hparams)
+                return EMNIST_DIGITS_MODELS_MAPPING[model_name](
+                    **model_hparams
+                )
     elif dataset_name == "mnist":
         if model_name not in EMNIST_MNIST_MODELS_MAPPING:
             raise ValueError(
@@ -923,7 +1137,9 @@ class BalancedEMNIST(pl.LightningModule):
                 "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name.value],
                 "config": optimizer_hparams,
             },
-            "fl_hparams": vars(fl_hparams.as_simple_namespace()) if fl_hparams else {},
+            "fl_hparams": vars(fl_hparams.as_simple_namespace())
+            if fl_hparams
+            else {},
         }
         self.save_hyperparameters(combined_hparams)
         self.loss_module = nn.CrossEntropyLoss()
@@ -1095,7 +1311,9 @@ class ByClassEMNIST(pl.LightningModule):
                 "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name.value],
                 "config": optimizer_hparams,
             },
-            "fl_hparams": vars(fl_hparams.as_simple_namespace()) if fl_hparams else {},
+            "fl_hparams": vars(fl_hparams.as_simple_namespace())
+            if fl_hparams
+            else {},
         }
         self.save_hyperparameters(combined_hparams)
         self.loss_module = nn.CrossEntropyLoss()
@@ -1267,7 +1485,9 @@ class ByMergeEMNIST(pl.LightningModule):
                 "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name.value],
                 "config": optimizer_hparams,
             },
-            "fl_hparams": vars(fl_hparams.as_simple_namespace()) if fl_hparams else {},
+            "fl_hparams": vars(fl_hparams.as_simple_namespace())
+            if fl_hparams
+            else {},
         }
         self.save_hyperparameters(combined_hparams)
         self.loss_module = nn.CrossEntropyLoss()
@@ -1439,7 +1659,9 @@ class LettersEMNIST(pl.LightningModule):
                 "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name.value],
                 "config": optimizer_hparams,
             },
-            "fl_hparams": vars(fl_hparams.as_simple_namespace()) if fl_hparams else {},
+            "fl_hparams": vars(fl_hparams.as_simple_namespace())
+            if fl_hparams
+            else {},
         }
         self.save_hyperparameters(combined_hparams)
         self.loss_module = nn.CrossEntropyLoss()
@@ -1611,7 +1833,9 @@ class DigitsEMNIST(pl.LightningModule):
                 "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name.value],
                 "config": optimizer_hparams,
             },
-            "fl_hparams": vars(fl_hparams.as_simple_namespace()) if fl_hparams else {},
+            "fl_hparams": vars(fl_hparams.as_simple_namespace())
+            if fl_hparams
+            else {},
         }
         self.save_hyperparameters(combined_hparams)
         self.loss_module = nn.CrossEntropyLoss()
@@ -1783,7 +2007,9 @@ class MNISTEMNIST(pl.LightningModule):
                 "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name.value],
                 "config": optimizer_hparams,
             },
-            "fl_hparams": vars(fl_hparams.as_simple_namespace()) if fl_hparams else {},
+            "fl_hparams": vars(fl_hparams.as_simple_namespace())
+            if fl_hparams
+            else {},
         }
         self.save_hyperparameters(combined_hparams)
         self.loss_module = nn.CrossEntropyLoss()

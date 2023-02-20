@@ -3,7 +3,7 @@
 
 """Contains the MLP model implementations for MNIST dataset."""
 
-from torchfl.models.sota.mlp import MLP as BaseMLP  # type: ignore[attr-defined]
+from torchfl.models.sota.mlp import MLP as BaseMLP
 
 
 class MLP(BaseMLP):

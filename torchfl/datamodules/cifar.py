@@ -11,15 +11,25 @@ Returns:
     - CIFARDataModule: PyTorch LightningDataModule for CIFAR datasets. Supports iid and non-iid splits.
 """
 import enum
-import torch
-import numpy as np
-from pathlib import Path
-import pytorch_lightning as pl
-from typing import Set, Iterable, Tuple, Any, Optional, Dict, List
 import os
-from torch.utils.data import random_split, DataLoader, Dataset
-from torchvision.datasets import CIFAR10, CIFAR100
+from pathlib import Path
+from typing import Any
+from typing import Dict
+from typing import Iterable
+from typing import List
+from typing import Optional
+from typing import Set
+from typing import Tuple
+
+import numpy as np
+import pytorch_lightning as pl
+import torch
+from torch.utils.data import DataLoader
+from torch.utils.data import Dataset
+from torch.utils.data import random_split
 from torchvision import transforms
+from torchvision.datasets import CIFAR10
+from torchvision.datasets import CIFAR100
 
 torch.manual_seed(42)
 np.random.seed(42)
@@ -36,7 +46,9 @@ DEFAULT_TRANSFORMS: transforms.Compose = transforms.Compose(
         transforms.RandomResizedCrop(224),
         transforms.RandomHorizontalFlip(),
         transforms.ToTensor(),
-        transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
+        transforms.Normalize(
+            (0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)
+        ),
     ]
 )
 
@@ -166,7 +178,9 @@ class CIFARDataModule(pl.LightningDataModule):
         num_validation_images: Optional[int] = None
         num_training_images: Optional[int] = None
         if self.dataset_name == "cifar10":
-            total_images = len(CIFAR10(self.data_dir, train=True, download=True))
+            total_images = len(
+                CIFAR10(self.data_dir, train=True, download=True)
+            )
             num_validation_images = int(total_images * self.validation_split)
             num_training_images = total_images - num_validation_images
             if (stage == "fit") or (not stage):
@@ -177,7 +191,8 @@ class CIFARDataModule(pl.LightningDataModule):
                     transform=self.train_transform,
                 )
                 self.cifar_train, self.cifar_val = random_split(
-                    self.cifar_train_full, [num_training_images, num_validation_images]
+                    self.cifar_train_full,
+                    [num_training_images, num_validation_images],
                 )
             if (stage == "test") or (not stage):
                 self.cifar_test = CIFAR10(
@@ -194,7 +209,9 @@ class CIFARDataModule(pl.LightningDataModule):
                     transform=self.predict_transform,
                 )
         elif self.dataset_name == "cifar100":
-            total_images = len(CIFAR100(self.data_dir, train=True, download=True))
+            total_images = len(
+                CIFAR100(self.data_dir, train=True, download=True)
+            )
             num_validation_images = int(total_images * self.validation_split)
             num_training_images = total_images - num_validation_images
             if (stage == "fit") or (not stage):
@@ -205,7 +222,8 @@ class CIFARDataModule(pl.LightningDataModule):
                     transform=self.train_transform,
                 )
                 self.cifar_train, self.cifar_val = random_split(
-                    self.cifar_train_full, [num_training_images, num_validation_images]
+                    self.cifar_train_full,
+                    [num_training_images, num_validation_images],
                 )
             if (stage == "test") or (not stage):
                 self.cifar_test = CIFAR100(
@@ -213,7 +231,9 @@ class CIFARDataModule(pl.LightningDataModule):
                 )
             if (stage == "predict") or (not stage):
                 self.cifar_predict = CIFAR100(
-                    self.data_dir, train=False, transform=self.predict_transform
+                    self.data_dir,
+                    train=False,
+                    transform=self.predict_transform,
                 )
 
     def train_dataloader(self) -> DataLoader:
@@ -291,7 +311,10 @@ class CIFARDataModule(pl.LightningDataModule):
         return federated
 
     def federated_non_iid_dataloader(
-        self, num_workers: int = 10, workers_batch_size: int = 10, niid_factor: int = 2
+        self,
+        num_workers: int = 10,
+        workers_batch_size: int = 10,
+        niid_factor: int = 2,
     ) -> Dict[int, DataLoader]:
         """Loads the training dataset as non-iid split among the workers.
 
@@ -329,7 +352,10 @@ class CIFARDataModule(pl.LightningDataModule):
                 idx_shard = list(set(idx_shard) - rand_set)
                 for rand in rand_set:
                     distribution[i] = np.concatenate(
-                        (distribution[i], idxs[rand * items : (rand + 1) * items]),
+                        (
+                            distribution[i],
+                            idxs[rand * items : (rand + 1) * items],
+                        ),
                         axis=0,
                     )
         federated: Dict[int, DataLoader] = dict()

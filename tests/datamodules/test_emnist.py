@@ -2,10 +2,12 @@
 # -*- coding: utf-8 -*-
 
 """Tests for EMNIST PyTorch LightningDataModule module in `torchfl` package."""
-import pytest
-from torchfl.datamodules.emnist import EMNISTDataModule
-from torchfl.datamodules.emnist import SUPPORTED_DATASETS_TYPE
 from collections import Counter
+
+import pytest
+
+from torchfl.datamodules.emnist import SUPPORTED_DATASETS_TYPE
+from torchfl.datamodules.emnist import EMNISTDataModule
 
 
 @pytest.fixture

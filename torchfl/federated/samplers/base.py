@@ -2,8 +2,10 @@
 # -*- coding: utf-8 -*-
 
 """Base Sampler class used in FL."""
-from abc import ABCMeta, abstractmethod
-from typing import Any, List
+from abc import ABCMeta
+from abc import abstractmethod
+from typing import Any
+from typing import List
 
 
 class BaseSampler(metaclass=ABCMeta):

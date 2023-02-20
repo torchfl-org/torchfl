@@ -11,9 +11,11 @@ Contains:
     - ShuffleNetv2_x2_0
 """
 
-from torchvision import models
 from types import SimpleNamespace
+
 import torch.nn as nn
+from torchvision import models
+
 from torchfl.compatibility import ACTIVATION_FUNCTIONS_BY_NAME
 
 
@@ -39,7 +41,8 @@ class ShuffleNetv2_x0_5(models.ShuffleNetV2):
             - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
         super(ShuffleNetv2_x0_5, self).__init__(
-            stages_repeats=[4, 8, 4], stages_out_channels=[24, 48, 96, 192, 1024]
+            stages_repeats=[4, 8, 4],
+            stages_out_channels=[24, 48, 96, 192, 1024],
         )
         self.hparams = SimpleNamespace(
             model_name="shufflenet_v2_x0_5",
@@ -54,7 +57,9 @@ class ShuffleNetv2_x0_5(models.ShuffleNetV2):
         )
 
         if pre_trained:
-            pretrained_model = models.shufflenet_v2_x0_5(pretrained=True, progress=True)
+            pretrained_model = models.shufflenet_v2_x0_5(
+                pretrained=True, progress=True
+            )
             self.load_state_dict(pretrained_model.state_dict())
             if feature_extract:
                 for param in self.parameters():
@@ -93,7 +98,8 @@ class ShuffleNetv2_x1_0(models.ShuffleNetV2):
             - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
         super(ShuffleNetv2_x1_0, self).__init__(
-            stages_repeats=[4, 8, 4], stages_out_channels=[24, 116, 232, 464, 1024]
+            stages_repeats=[4, 8, 4],
+            stages_out_channels=[24, 116, 232, 464, 1024],
         )
         self.hparams = SimpleNamespace(
             model_name="shufflenet_v2_x1_0",
@@ -108,7 +114,9 @@ class ShuffleNetv2_x1_0(models.ShuffleNetV2):
         )
 
         if pre_trained:
-            pretrained_model = models.shufflenet_v2_x1_0(pretrained=True, progress=True)
+            pretrained_model = models.shufflenet_v2_x1_0(
+                pretrained=True, progress=True
+            )
             self.load_state_dict(pretrained_model.state_dict())
             if feature_extract:
                 for param in self.parameters():
@@ -150,7 +158,8 @@ class ShuffleNetv2_x1_5(models.ShuffleNetV2):
             - NotImplementedError: pretrained models not implemented.
         """
         super(ShuffleNetv2_x1_5, self).__init__(
-            stages_repeats=[4, 8, 4], stages_out_channels=[24, 176, 352, 704, 1024]
+            stages_repeats=[4, 8, 4],
+            stages_out_channels=[24, 176, 352, 704, 1024],
         )
         self.hparams = SimpleNamespace(
             model_name="shufflenet_v2_x1_5",
@@ -205,7 +214,8 @@ class ShuffleNetv2_x2_0(models.ShuffleNetV2):
             - NotImplementedError: pretrained models not implemented.
         """
         super(ShuffleNetv2_x2_0, self).__init__(
-            stages_repeats=[4, 8, 4], stages_out_channels=[24, 244, 488, 976, 2048]
+            stages_repeats=[4, 8, 4],
+            stages_out_channels=[24, 244, 488, 976, 2048],
         )
         self.hparams = SimpleNamespace(
             model_name="shufflenet_v2_x2_0",

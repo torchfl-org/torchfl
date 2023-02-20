@@ -3,18 +3,22 @@
 
 """An example script for using FL entrypoint to setup a FL experiment on MNIST."""
 
-from torchfl.federated.entrypoint import Entrypoint
-from torchfl.federated.fl_params import FLParams
-from torchfl.federated.agents.v1 import V1Agent
-from torchfl.federated.aggregators.fedavg import FedAvgAggregator
-from torchfl.federated.samplers.random import RandomSampler
-
-from torchfl.datamodules.emnist import EMNISTDataModule, SUPPORTED_DATASETS_TYPE
-from torchfl.models.wrapper.emnist import MNISTEMNIST, EMNIST_MODELS_ENUM
-from torchfl.compatibility import OPTIMIZERS_TYPE
+from typing import Any
+from typing import Dict
+from typing import List
 
 from torch.utils.data import DataLoader
-from typing import Any, Dict, List
+
+from torchfl.compatibility import OPTIMIZERS_TYPE
+from torchfl.datamodules.emnist import SUPPORTED_DATASETS_TYPE
+from torchfl.datamodules.emnist import EMNISTDataModule
+from torchfl.federated.agents.v1 import V1Agent
+from torchfl.federated.aggregators.fedavg import FedAvgAggregator
+from torchfl.federated.entrypoint import Entrypoint
+from torchfl.federated.fl_params import FLParams
+from torchfl.federated.samplers.random import RandomSampler
+from torchfl.models.wrapper.emnist import EMNIST_MODELS_ENUM
+from torchfl.models.wrapper.emnist import MNISTEMNIST
 
 
 def initialize_agents(
@@ -64,10 +68,12 @@ def main() -> None:
         model_hparams={"pre_trained": True, "feature_extract": True},
         fl_hparams=fl_params,
     )
-    agent_data_shard_map = get_agent_data_shard_map().federated_non_iid_dataloader(
-        num_workers=fl_params.num_agents,
-        workers_batch_size=fl_params.local_train_batch_size,
-        niid_factor=1,
+    agent_data_shard_map = (
+        get_agent_data_shard_map().federated_non_iid_dataloader(
+            num_workers=fl_params.num_agents,
+            workers_batch_size=fl_params.local_train_batch_size,
+            niid_factor=1,
+        )
     )
     all_agents: Any = initialize_agents(fl_params, agent_data_shard_map)
     entrypoint = Entrypoint(

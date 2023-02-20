@@ -3,58 +3,109 @@
 
 """Contains the PyTorch Lightning wrapper module for FashionMNIST dataset."""
 import enum
-from typing import List, Optional, Union, Dict, Any, Tuple, Type
+from typing import Any
+from typing import Dict
+from typing import List
+from typing import Optional
+from typing import Tuple
+from typing import Type
+from typing import Union
+
+import pytorch_lightning as pl
+import torch.nn as nn
+from torch import Tensor
+from torch import optim
+
+from torchfl.compatibility import OPTIMIZERS_BY_NAME
+from torchfl.compatibility import OPTIMIZERS_TYPE
 from torchfl.federated.fl_params import FLParams
-from torchfl.models.core.fashionmnist.alexnet import AlexNet as FashionMNISTAlexNet
+from torchfl.models.core.fashionmnist.alexnet import (
+    AlexNet as FashionMNISTAlexNet,
+)
 from torchfl.models.core.fashionmnist.densenet import (
     DenseNet121 as FashionMNISTDenseNet121,
+)
+from torchfl.models.core.fashionmnist.densenet import (
     DenseNet161 as FashionMNISTDenseNet161,
+)
+from torchfl.models.core.fashionmnist.densenet import (
     DenseNet169 as FashionMNISTDenseNet169,
+)
+from torchfl.models.core.fashionmnist.densenet import (
     DenseNet201 as FashionMNISTDenseNet201,
 )
 from torchfl.models.core.fashionmnist.lenet import LeNet as FashionMNISTLeNet
 from torchfl.models.core.fashionmnist.mlp import MLP as FashionMNISTMLP
 from torchfl.models.core.fashionmnist.mobilenet import (
     MobileNetV2 as FashionMNISTMobileNetV2,
-    MobileNetV3Small as FashionMNISTMobileNetV3Small,
+)
+from torchfl.models.core.fashionmnist.mobilenet import (
     MobileNetV3Large as FashionMNISTMobileNetV3Large,
+)
+from torchfl.models.core.fashionmnist.mobilenet import (
+    MobileNetV3Small as FashionMNISTMobileNetV3Small,
 )
 from torchfl.models.core.fashionmnist.resnet import (
     ResNet18 as FashionMNISTResNet18,
+)
+from torchfl.models.core.fashionmnist.resnet import (
     ResNet34 as FashionMNISTResNet34,
+)
+from torchfl.models.core.fashionmnist.resnet import (
     ResNet50 as FashionMNISTResNet50,
+)
+from torchfl.models.core.fashionmnist.resnet import (
     ResNet101 as FashionMNISTResNet101,
+)
+from torchfl.models.core.fashionmnist.resnet import (
     ResNet152 as FashionMNISTResNet152,
+)
+from torchfl.models.core.fashionmnist.resnet import (
     ResNext50_32X4D as FashionMNISTResNext50_32X4D,
+)
+from torchfl.models.core.fashionmnist.resnet import (
     ResNext101_32X8D as FashionMNISTResNext101_32X8D,
+)
+from torchfl.models.core.fashionmnist.resnet import (
     WideResNet50_2 as FashionMNISTWideResNet50_2,
+)
+from torchfl.models.core.fashionmnist.resnet import (
     WideResNet101_2 as FashionMNISTWideResNet101_2,
 )
 from torchfl.models.core.fashionmnist.shufflenetv2 import (
     ShuffleNetv2_x0_5 as FashionMNISTShuffleNetv2_x0_5,
+)
+from torchfl.models.core.fashionmnist.shufflenetv2 import (
     ShuffleNetv2_x1_0 as FashionMNISTShuffleNetv2_x1_0,
+)
+from torchfl.models.core.fashionmnist.shufflenetv2 import (
     ShuffleNetv2_x1_5 as FashionMNISTShuffleNetv2_x1_5,
+)
+from torchfl.models.core.fashionmnist.shufflenetv2 import (
     ShuffleNetv2_x2_0 as FashionMNISTShuffleNetv2_x2_0,
 )
 from torchfl.models.core.fashionmnist.squeezenet import (
     SqueezeNet1_0 as FashionMNISTSqueezeNet1_0,
+)
+from torchfl.models.core.fashionmnist.squeezenet import (
     SqueezeNet1_1 as FashionMNISTSqueezeNet1_1,
 )
+from torchfl.models.core.fashionmnist.vgg import VGG11 as FashionMNISTVGG11
 from torchfl.models.core.fashionmnist.vgg import (
-    VGG11 as FashionMNISTVGG11,
     VGG11_BN as FashionMNISTVGG11_BN,
-    VGG13 as FashionMNISTVGG13,
+)
+from torchfl.models.core.fashionmnist.vgg import VGG13 as FashionMNISTVGG13
+from torchfl.models.core.fashionmnist.vgg import (
     VGG13_BN as FashionMNISTVGG13_BN,
-    VGG16 as FashionMNISTVGG16,
+)
+from torchfl.models.core.fashionmnist.vgg import VGG16 as FashionMNISTVGG16
+from torchfl.models.core.fashionmnist.vgg import (
     VGG16_BN as FashionMNISTVGG16_BN,
-    VGG19 as FashionMNISTVGG19,
+)
+from torchfl.models.core.fashionmnist.vgg import VGG19 as FashionMNISTVGG19
+from torchfl.models.core.fashionmnist.vgg import (
     VGG19_BN as FashionMNISTVGG19_BN,
 )
-
-import pytorch_lightning as pl
-import torch.nn as nn
-from torchfl.compatibility import OPTIMIZERS_TYPE, OPTIMIZERS_BY_NAME
-from torch import Tensor, optim
 
 pl.seed_everything(42)
 
@@ -211,7 +262,9 @@ FASHIONMNIST_MODELS_MAPPING: Dict[str, FASHIONMNIST_MODEL_TYPE] = {
 
 
 def create_model(
-    dataset_name: str, model_name: str, model_hparams: Optional[Dict[str, Any]] = None
+    dataset_name: str,
+    model_name: str,
+    model_hparams: Optional[Dict[str, Any]] = None,
 ) -> FASHIONMNIST_MODEL_TYPE:
     """Helper function to create a model from the available options.
 
@@ -283,7 +336,9 @@ class FashionMNIST(pl.LightningModule):
                 "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name.value],
                 "config": optimizer_hparams,
             },
-            "fl_hparams": vars(fl_hparams.as_simple_namespace()) if fl_hparams else {},
+            "fl_hparams": vars(fl_hparams.as_simple_namespace())
+            if fl_hparams
+            else {},
         }
         self.save_hyperparameters(combined_hparams)
         self.loss_module = nn.CrossEntropyLoss()

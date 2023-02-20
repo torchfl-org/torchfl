@@ -3,10 +3,14 @@
 
 """FedAvg Aggregator class used in FL."""
 
-import torch
 from collections import OrderedDict
+from typing import Any
+from typing import Dict
+from typing import List
+
+import torch
+
 from torchfl.federated.aggregators.base import BaseAggregator
-from typing import Any, Dict, List
 
 
 class FedAvgAggregator(BaseAggregator):
@@ -16,7 +20,9 @@ class FedAvgAggregator(BaseAggregator):
         """Constructor."""
         super().__init__(all_agents)
 
-    def aggregate(self, global_model: Any, agent_models_map: Dict[int, Any]) -> Any:
+    def aggregate(
+        self, global_model: Any, agent_models_map: Dict[int, Any]
+    ) -> Any:
         """
         Aggregate the weights of the agents. Compute the new global model using agent_models_map and update the models of all the agents.
 

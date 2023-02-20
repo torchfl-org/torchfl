@@ -6,23 +6,26 @@
 import enum
 import os
 from pathlib import Path
-from typing import Dict, Any
-from torch.optim import (
-    Adadelta,
-    Adagrad,
-    Adam,
-    AdamW,
-    SparseAdam,
-    Adamax,
-    ASGD,
-    LBFGS,
-    NAdam,
-    RAdam,
-    RMSprop,
-    Rprop,
-    SGD,
-)
-from torch.nn import Tanh, ReLU, LeakyReLU, GELU
+from typing import Any
+from typing import Dict
+
+from torch.nn import GELU
+from torch.nn import LeakyReLU
+from torch.nn import ReLU
+from torch.nn import Tanh
+from torch.optim import ASGD
+from torch.optim import LBFGS
+from torch.optim import SGD
+from torch.optim import Adadelta
+from torch.optim import Adagrad
+from torch.optim import Adam
+from torch.optim import Adamax
+from torch.optim import AdamW
+from torch.optim import NAdam
+from torch.optim import RAdam
+from torch.optim import RMSprop
+from torch.optim import Rprop
+from torch.optim import SparseAdam
 
 TORCHFL_DIR: str = os.path.join(Path.home(), ".torchfl")
 DATASETS = ["mnist", "emnist_digits", "cifar10"]

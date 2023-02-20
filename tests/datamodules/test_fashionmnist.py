@@ -2,9 +2,11 @@
 # -*- coding: utf-8 -*-
 
 """Tests for FashionMNIST PyTorch LightningDataModule module in `torchfl` package."""
-import pytest
-from torchfl.datamodules.fashionmnist import FashionMNISTDataModule
 from collections import Counter
+
+import pytest
+
+from torchfl.datamodules.fashionmnist import FashionMNISTDataModule
 
 
 @pytest.fixture

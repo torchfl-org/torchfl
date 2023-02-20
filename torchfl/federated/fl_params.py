@@ -4,8 +4,11 @@
 """Standardized definition of the FL parameters to be passed around in the federated learning experiment."""
 
 import os
-from typing import Any, Dict, Optional
 from types import SimpleNamespace
+from typing import Any
+from typing import Dict
+from typing import Optional
+
 from torchfl.compatibility import TORCHFL_DIR
 
 

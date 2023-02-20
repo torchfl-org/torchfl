@@ -3,25 +3,31 @@
 
 """An example script to demonstrate the training of non-federated CIFAR-10 dataset using torchfl."""
 
-from typing import Optional, Tuple, List, Dict
-import os
-import torch.nn as nn
-import torch
-import pytorch_lightning as pl
-from pytorch_lightning.loggers import TensorBoardLogger, CSVLogger
-from pytorch_lightning.callbacks import (
-    LearningRateMonitor,
-    DeviceStatsMonitor,
-    ModelSummary,
-    RichProgressBar,
-    Timer,
-)
-from torchfl.datamodules.cifar import CIFARDataModule, SUPPORTED_DATASETS_TYPE
-from torchfl.models.wrapper.cifar import CIFAR10, CIFAR_MODELS_ENUM
-from torchfl.compatibility import OPTIMIZERS_TYPE, TORCHFL_DIR
-
 import logging
+import os
 import sys
+from typing import Dict
+from typing import List
+from typing import Optional
+from typing import Tuple
+
+import pytorch_lightning as pl
+import torch
+import torch.nn as nn
+from pytorch_lightning.callbacks import DeviceStatsMonitor
+from pytorch_lightning.callbacks import LearningRateMonitor
+from pytorch_lightning.callbacks import ModelSummary
+from pytorch_lightning.callbacks import RichProgressBar
+from pytorch_lightning.callbacks import Timer
+from pytorch_lightning.loggers import CSVLogger
+from pytorch_lightning.loggers import TensorBoardLogger
+
+from torchfl.compatibility import OPTIMIZERS_TYPE
+from torchfl.compatibility import TORCHFL_DIR
+from torchfl.datamodules.cifar import SUPPORTED_DATASETS_TYPE
+from torchfl.datamodules.cifar import CIFARDataModule
+from torchfl.models.wrapper.cifar import CIFAR10
+from torchfl.models.wrapper.cifar import CIFAR_MODELS_ENUM
 
 logging.basicConfig(stream=sys.stdout, level=logging.ERROR)
 
@@ -62,7 +68,9 @@ def train_model_from_scratch(
 
     # check if the model can be loaded from a given checkpoint
     if checkpoint_load_path and os.path.isfile(checkpoint_load_path):
-        logging.info("Loading model from the checkpoint at ", checkpoint_load_path)
+        logging.info(
+            "Loading model from the checkpoint at ", checkpoint_load_path
+        )
         model = CIFAR10(
             CIFAR_MODELS_ENUM.RESNET152,
             OPTIMIZERS_TYPE.ADAM,
@@ -86,7 +94,9 @@ def train_model_from_scratch(
         enable_progress_bar=True,
         max_epochs=10,
         devices=torch.cuda.device_count() if torch.cuda.is_available() else 1,
-        num_nodes=torch.cuda.device_count() if torch.cuda.is_available() else 1,
+        num_nodes=torch.cuda.device_count()
+        if torch.cuda.is_available()
+        else 1,
         num_processes=1,
         resume_from_checkpoint=checkpoint_load_path,
         detect_anomaly=True,
@@ -104,7 +114,9 @@ def train_model_from_scratch(
         ],
         enable_checkpointing=False,  # temp fix for MemoryError on GPU because of limited cache
     )
-    trainer.fit(model, datamodule.train_dataloader(), datamodule.val_dataloader())
+    trainer.fit(
+        model, datamodule.train_dataloader(), datamodule.val_dataloader()
+    )
 
     # test best model based on the validation and test set
     val_result: List[Dict[str, float]] = trainer.test(
@@ -151,7 +163,9 @@ def train_pretrained_model(
 
     # check if the model can be loaded from a given checkpoint
     if checkpoint_load_path and os.path.isfile(checkpoint_load_path):
-        logging.info("Loading model from the checkpoint at ", checkpoint_load_path)
+        logging.info(
+            "Loading model from the checkpoint at ", checkpoint_load_path
+        )
         model = CIFAR10(
             CIFAR_MODELS_ENUM.RESNET152,
             OPTIMIZERS_TYPE.ADAM,
@@ -175,7 +189,9 @@ def train_pretrained_model(
         enable_progress_bar=True,
         max_epochs=10,
         devices=torch.cuda.device_count() if torch.cuda.is_available() else 1,
-        num_nodes=torch.cuda.device_count() if torch.cuda.is_available() else 1,
+        num_nodes=torch.cuda.device_count()
+        if torch.cuda.is_available()
+        else 1,
         num_processes=1,
         resume_from_checkpoint=checkpoint_load_path,
         detect_anomaly=True,
@@ -193,7 +209,9 @@ def train_pretrained_model(
         ],
         enable_checkpointing=False,  # temp fix for MemoryError on GPU because of limited cache
     )
-    trainer.fit(model, datamodule.train_dataloader(), datamodule.val_dataloader())
+    trainer.fit(
+        model, datamodule.train_dataloader(), datamodule.val_dataloader()
+    )
 
     # test best model based on the validation and test set
     val_result: List[Dict[str, float]] = trainer.test(
@@ -240,7 +258,9 @@ def train_feature_extracted_model(
 
     # check if the model can be loaded from a given checkpoint
     if checkpoint_load_path and os.path.isfile(checkpoint_load_path):
-        logging.info("Loading model from the checkpoint at ", checkpoint_load_path)
+        logging.info(
+            "Loading model from the checkpoint at ", checkpoint_load_path
+        )
         model = CIFAR10(
             CIFAR_MODELS_ENUM.RESNET152,
             OPTIMIZERS_TYPE.ADAM,
@@ -264,7 +284,9 @@ def train_feature_extracted_model(
         enable_progress_bar=True,
         max_epochs=10,
         devices=torch.cuda.device_count() if torch.cuda.is_available() else 1,
-        num_nodes=torch.cuda.device_count() if torch.cuda.is_available() else 1,
+        num_nodes=torch.cuda.device_count()
+        if torch.cuda.is_available()
+        else 1,
         num_processes=1,
         resume_from_checkpoint=checkpoint_load_path,
         detect_anomaly=True,
@@ -282,7 +304,9 @@ def train_feature_extracted_model(
         ],
         enable_checkpointing=False,  # temp fix for MemoryError on GPU because of limited cache
     )
-    trainer.fit(model, datamodule.train_dataloader(), datamodule.val_dataloader())
+    trainer.fit(
+        model, datamodule.train_dataloader(), datamodule.val_dataloader()
+    )
 
     # test best model based on the validation and test set
     val_result: List[Dict[str, float]] = trainer.test(

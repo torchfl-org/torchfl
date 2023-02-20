@@ -11,15 +11,24 @@ Returns:
     - EMNISTDataModule: PyTorch LightningDataModule for EMNIST datasets. Supports iid and non-iid splits.
 """
 import enum
-import torch
-import numpy as np
-from pathlib import Path
-import pytorch_lightning as pl
-from typing import Set, Iterable, Tuple, Any, Optional, Dict, List
 import os
-from torch.utils.data import random_split, DataLoader, Dataset
-from torchvision.datasets import EMNIST
+from pathlib import Path
+from typing import Any
+from typing import Dict
+from typing import Iterable
+from typing import List
+from typing import Optional
+from typing import Set
+from typing import Tuple
+
+import numpy as np
+import pytorch_lightning as pl
+import torch
+from torch.utils.data import DataLoader
+from torch.utils.data import Dataset
+from torch.utils.data import random_split
 from torchvision import transforms
+from torchvision.datasets import EMNIST
 
 torch.manual_seed(42)
 np.random.seed(42)
@@ -157,8 +166,12 @@ class EMNISTDataModule(pl.LightningDataModule):
 
     def prepare_data(self) -> None:
         """Downloading the data if not already available."""
-        EMNIST(self.data_dir, train=True, split=self.dataset_name, download=True)
-        EMNIST(self.data_dir, train=False, split=self.dataset_name, download=True)
+        EMNIST(
+            self.data_dir, train=True, split=self.dataset_name, download=True
+        )
+        EMNIST(
+            self.data_dir, train=False, split=self.dataset_name, download=True
+        )
 
     def setup(self, stage: Optional[str] = None) -> None:
         """Setup before training/testing/validation/prediction using the dataset.
@@ -167,7 +180,12 @@ class EMNISTDataModule(pl.LightningDataModule):
             - stage (Optional[str], optional): Current stage of the PyTorch training process used for setup. Defaults to None.
         """
         total_images: int = len(
-            EMNIST(self.data_dir, train=True, split=self.dataset_name, download=True)
+            EMNIST(
+                self.data_dir,
+                train=True,
+                split=self.dataset_name,
+                download=True,
+            )
         )
         num_validation_images: int = int(total_images * self.validation_split)
         num_training_images: int = total_images - num_validation_images
@@ -184,7 +202,8 @@ class EMNISTDataModule(pl.LightningDataModule):
                     lambda x: (x - 1)
                 )  # patch to eliminate the N/A label in the original letters dataset
             self.emnist_train, self.emnist_val = random_split(
-                self.emnist_train_full, [num_training_images, num_validation_images]
+                self.emnist_train_full,
+                [num_training_images, num_validation_images],
             )
 
         if (stage == "test") or (not stage):
@@ -287,7 +306,10 @@ class EMNISTDataModule(pl.LightningDataModule):
         return federated
 
     def federated_non_iid_dataloader(
-        self, num_workers: int = 10, workers_batch_size: int = 10, niid_factor: int = 2
+        self,
+        num_workers: int = 10,
+        workers_batch_size: int = 10,
+        niid_factor: int = 2,
     ) -> Dict[int, DataLoader]:
         """Loads the training dataset as non-iid split among the workers.
 
@@ -325,7 +347,10 @@ class EMNISTDataModule(pl.LightningDataModule):
                 idx_shard = list(set(idx_shard) - rand_set)
                 for rand in rand_set:
                     distribution[i] = np.concatenate(
-                        (distribution[i], idxs[rand * items : (rand + 1) * items]),
+                        (
+                            distribution[i],
+                            idxs[rand * items : (rand + 1) * items],
+                        ),
                         axis=0,
                     )
         federated: Dict[int, DataLoader] = dict()

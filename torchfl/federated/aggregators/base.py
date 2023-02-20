@@ -2,8 +2,11 @@
 # -*- coding: utf-8 -*-
 
 """Base Aggregator class used in FL."""
-from abc import ABCMeta, abstractmethod
-from typing import Any, Dict, List
+from abc import ABCMeta
+from abc import abstractmethod
+from typing import Any
+from typing import Dict
+from typing import List
 
 
 class BaseAggregator(metaclass=ABCMeta):
@@ -15,7 +18,9 @@ class BaseAggregator(metaclass=ABCMeta):
         self.agents: List[Any] = all_agents
 
     @abstractmethod
-    def aggregate(self, global_model: Any, agent_models_map: Dict[int, Any]) -> Any:
+    def aggregate(
+        self, global_model: Any, agent_models_map: Dict[int, Any]
+    ) -> Any:
         """
         Aggregate the weights of the agents. Compute the new global model using agent_models_map and update the models of all the agents.
 

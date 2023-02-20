@@ -2,12 +2,15 @@
 # -*- coding: utf-8 -*-
 
 """Tests for LeNet in `torchfl` package."""
-import pytest
-from torchvision import datasets, transforms
 import os
+
+import pytest
+import torch
+from torchvision import datasets
+from torchvision import transforms
+
 from torchfl.compatibility import TORCHFL_DIR
 from torchfl.models.core.emnist.bymerge.mlp import MLP
-import torch
 
 data_transforms = {
     "train_single_channel": transforms.Compose(

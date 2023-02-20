@@ -2,12 +2,16 @@
 # -*- coding: utf-8 -*-
 
 """Tests for SqueezeNet for EMNIST in `torchfl` package."""
-import pytest
-from torchvision import datasets, transforms
 import os
-from torchfl.compatibility import TORCHFL_DIR
-from torchfl.models.core.emnist.bymerge.squeezenet import SqueezeNet1_0, SqueezeNet1_1
+
+import pytest
 import torch
+from torchvision import datasets
+from torchvision import transforms
+
+from torchfl.compatibility import TORCHFL_DIR
+from torchfl.models.core.emnist.bymerge.squeezenet import SqueezeNet1_0
+from torchfl.models.core.emnist.bymerge.squeezenet import SqueezeNet1_1
 
 data_transforms = {
     "train_single_channel": transforms.Compose(
@@ -70,7 +74,9 @@ def test_squeezenet10_single_channel_ouput_shape(single_channel_loader):
     Args:
         EMNIST_loader (Dataset): PyTorch Dataset object for MNIST.
     """
-    model = SqueezeNet1_0(pre_trained=True, feature_extract=True, num_channels=1)
+    model = SqueezeNet1_0(
+        pre_trained=True, feature_extract=True, num_channels=1
+    )
     model.zero_grad()
     out = model(torch.reshape(single_channel_loader[0][0], (1, 1, 224, 224)))
     assert out.size() == torch.Size([1, 47])
@@ -82,7 +88,9 @@ def test_squeezenet10_3_channel_ouput_shape(three_channel_loader):
     Args:
         EMNIST_loader (Dataset): PyTorch Dataset object for MNIST.
     """
-    model = SqueezeNet1_0(pre_trained=True, feature_extract=True, num_channels=3)
+    model = SqueezeNet1_0(
+        pre_trained=True, feature_extract=True, num_channels=3
+    )
     model.zero_grad()
     out = model(torch.reshape(three_channel_loader[0][0], (1, 3, 224, 224)))
     assert out.size() == torch.Size([1, 47])
@@ -94,7 +102,9 @@ def test_squeezenet11_single_channel_ouput_shape(single_channel_loader):
     Args:
         EMNIST_loader (Dataset): PyTorch Dataset object for MNIST.
     """
-    model = SqueezeNet1_1(pre_trained=True, feature_extract=True, num_channels=1)
+    model = SqueezeNet1_1(
+        pre_trained=True, feature_extract=True, num_channels=1
+    )
     model.zero_grad()
     out = model(torch.reshape(single_channel_loader[0][0], (1, 1, 224, 224)))
     assert out.size() == torch.Size([1, 47])
@@ -106,7 +116,9 @@ def test_squeezenet11_3_channels_output_shape(three_channel_loader):
     Args:
         EMNIST_loader (Dataset): PyTorch Dataset object for MNIST.
     """
-    model = SqueezeNet1_1(pre_trained=True, feature_extract=True, num_channels=3)
+    model = SqueezeNet1_1(
+        pre_trained=True, feature_extract=True, num_channels=3
+    )
     model.zero_grad()
     out = model(torch.reshape(three_channel_loader[0][0], (1, 3, 224, 224)))
     assert out.size() == torch.Size([1, 47])

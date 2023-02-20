@@ -9,8 +9,10 @@ Contains:
     - MLP
 """
 
-import torch.nn as nn
 from types import SimpleNamespace
+
+import torch.nn as nn
+
 from torchfl.compatibility import ACTIVATION_FUNCTIONS_BY_NAME
 
 
@@ -91,7 +93,9 @@ class MLP(nn.Module):
         self.input_net = nn.Sequential(
             nn.Flatten(),
             nn.Linear(
-                self.hparams.num_channels * self.hparams.img_w * self.hparams.img_h,
+                self.hparams.num_channels
+                * self.hparams.img_w
+                * self.hparams.img_h,
                 self.hparams.hidden_dims[0],
             ),
             self.hparams.act_fn(),

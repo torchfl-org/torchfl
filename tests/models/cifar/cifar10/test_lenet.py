@@ -2,12 +2,15 @@
 # -*- coding: utf-8 -*-
 
 """Tests for DenseNet in `torchfl` package."""
-import pytest
-from torchvision import datasets, transforms
 import os
+
+import pytest
+import torch
+from torchvision import datasets
+from torchvision import transforms
+
 from torchfl.compatibility import TORCHFL_DIR
 from torchfl.models.core.cifar.cifar10.lenet import LeNet
-import torch
 
 data_transforms = {
     "train": transforms.Compose(

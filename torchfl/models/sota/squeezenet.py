@@ -9,11 +9,13 @@ Contains:
     - SqueezeNet1_1
 """
 
-from torchvision import models
 from types import SimpleNamespace
+
 import torch.nn as nn
-from torchfl.compatibility import ACTIVATION_FUNCTIONS_BY_NAME
+from torchvision import models
 from torchvision.models.squeezenet import Fire
+
+from torchfl.compatibility import ACTIVATION_FUNCTIONS_BY_NAME
 
 
 class SqueezeNet1_0(models.SqueezeNet):
@@ -51,7 +53,9 @@ class SqueezeNet1_0(models.SqueezeNet):
         )
 
         if pre_trained:
-            pretrained_model = models.squeezenet1_0(pretrained=True, progress=True)
+            pretrained_model = models.squeezenet1_0(
+                pretrained=True, progress=True
+            )
             self.load_state_dict(pretrained_model.state_dict())
             if feature_extract:
                 for param in self.parameters():
@@ -115,7 +119,9 @@ class SqueezeNet1_1(models.SqueezeNet):
         )
 
         if pre_trained:
-            pretrained_model = models.squeezenet1_1(pretrained=True, progress=True)
+            pretrained_model = models.squeezenet1_1(
+                pretrained=True, progress=True
+            )
             self.load_state_dict(pretrained_model.state_dict())
             if feature_extract:
                 for param in self.parameters():

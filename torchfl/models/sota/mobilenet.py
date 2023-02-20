@@ -10,14 +10,16 @@ Contains:
     - MobileNetV3Large
 """
 
-from torchvision import models
+from functools import partial
 from types import SimpleNamespace
+
 import torch.nn as nn
-from torchfl.compatibility import ACTIVATION_FUNCTIONS_BY_NAME
-from torchvision.ops.misc import ConvNormActivation
+from torchvision import models
 from torchvision.models._utils import _make_divisible
 from torchvision.models.mobilenetv3 import _mobilenet_v3_conf
-from functools import partial
+from torchvision.ops.misc import ConvNormActivation
+
+from torchfl.compatibility import ACTIVATION_FUNCTIONS_BY_NAME
 
 
 class MobileNetV2(models.mobilenet.MobileNetV2):
@@ -72,7 +74,9 @@ class MobileNetV2(models.mobilenet.MobileNetV2):
                 activation_layer=nn.ReLU6,
             )
 
-        self.classifier[-1] = nn.Linear(self.last_channel, self.hparams.num_classes)
+        self.classifier[-1] = nn.Linear(
+            self.last_channel, self.hparams.num_classes
+        )
 
 
 class MobileNetV3Small(models.mobilenet.MobileNetV3):

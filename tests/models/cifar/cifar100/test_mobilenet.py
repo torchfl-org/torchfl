@@ -2,16 +2,17 @@
 # -*- coding: utf-8 -*-
 
 """Tests for MobileNet in `torchfl` package."""
-import pytest
-from torchvision import datasets, transforms
 import os
-from torchfl.compatibility import TORCHFL_DIR
-from torchfl.models.core.cifar.cifar100.mobilenet import (
-    MobileNetV2,
-    MobileNetV3Small,
-    MobileNetV3Large,
-)
+
+import pytest
 import torch
+from torchvision import datasets
+from torchvision import transforms
+
+from torchfl.compatibility import TORCHFL_DIR
+from torchfl.models.core.cifar.cifar100.mobilenet import MobileNetV2
+from torchfl.models.core.cifar.cifar100.mobilenet import MobileNetV3Large
+from torchfl.models.core.cifar.cifar100.mobilenet import MobileNetV3Small
 
 data_transforms = {
     "train": transforms.Compose(
@@ -59,7 +60,9 @@ def test_mobilenetv3small_3_channels_output_shape(three_channel_loader):
     Args:
         loader (Dataset): PyTorch Dataset object.
     """
-    model = MobileNetV3Small(pre_trained=True, feature_extract=True, num_channels=3)
+    model = MobileNetV3Small(
+        pre_trained=True, feature_extract=True, num_channels=3
+    )
     model.zero_grad()
     out = model(torch.reshape(three_channel_loader[0][0], (1, 3, 224, 224)))
     assert out.size() == torch.Size([1, 100])
@@ -71,7 +74,9 @@ def test_mobilenetv3large_3_channels_output_shape(three_channel_loader):
     Args:
         loader (Dataset): PyTorch Dataset object.
     """
-    model = MobileNetV3Large(pre_trained=True, feature_extract=True, num_channels=3)
+    model = MobileNetV3Large(
+        pre_trained=True, feature_extract=True, num_channels=3
+    )
     model.zero_grad()
     out = model(torch.reshape(three_channel_loader[0][0], (1, 3, 224, 224)))
     assert out.size() == torch.Size([1, 100])

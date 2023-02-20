@@ -3,12 +3,17 @@
 
 """V1 Agent class used in FL."""
 
-import os
+from typing import Any
+from typing import Dict
+from typing import List
+from typing import Optional
+
 import pytorch_lightning as pl
-from torch.utils.data import DataLoader, random_split
+from torch.utils.data import DataLoader
+from torch.utils.data import random_split
+
 from torchfl.federated.agents.base import BaseAgent
 from torchfl.federated.fl_params import FLParams
-from typing import Any, Dict, List, Optional
 
 pl.seed_everything(42)
 
@@ -35,20 +40,30 @@ class V1Agent(BaseAgent):
             fl_params (FLParams): FLParams object containing the FL parameters.
         """
         if self.model is None:
-            raise ValueError(f"Model is not assigned to the agent with id={self.id}.")
+            raise ValueError(
+                f"Model is not assigned to the agent with id={self.id}."
+            )
 
         train_data_shard_len = int(
-            len(self.data_shard.dataset) * fl_params.local_train_split
+            len(self.data_shard.dataset)  # type:ignore
+            * fl_params.local_train_split
         )
-        test_data_shard_len = len(self.data_shard.dataset) - train_data_shard_len
+        test_data_shard_len = (
+            len(self.data_shard.dataset) - train_data_shard_len  # type:ignore
+        )
         train_data_shard, val_data_shard = random_split(
-            self.data_shard.dataset, [train_data_shard_len, test_data_shard_len]
+            self.data_shard.dataset,
+            [train_data_shard_len, test_data_shard_len],
         )
         train_dataloader = DataLoader(
-            train_data_shard, batch_size=fl_params.local_train_batch_size, shuffle=True
+            train_data_shard,
+            batch_size=fl_params.local_train_batch_size,
+            shuffle=True,
         )
         val_dataloader = DataLoader(
-            val_data_shard, batch_size=fl_params.local_test_batch_size, shuffle=False
+            val_data_shard,
+            batch_size=fl_params.local_test_batch_size,
+            shuffle=False,
         )
 
         trainer.fit(self.model, train_dataloader, val_dataloader)
@@ -59,8 +74,10 @@ class V1Agent(BaseAgent):
         test_result: List[Dict[str, float]] = trainer.test(
             self.model, dataloaders=val_dataloader, verbose=True
         )
-        result: Dict[str, float] = {
-            "test_acc": test_result[0][f"{fl_params.experiment_name}_test_acc"],
+        result: Dict[str, float] = {  # type:ignore
+            "test_acc": test_result[0][
+                f"{fl_params.experiment_name}_test_acc"
+            ],
             "val_acc": val_result[0][f"{fl_params.experiment_name}_test_acc"],
         }
         return self.model, result

@@ -2,9 +2,10 @@
 # -*- coding: utf-8 -*-
 
 """An example script to test the FedAvg aggregation."""
-from torchfl.federated.aggregators.fedavg import FedAvgAggregator
-from torchfl.models.wrapper.emnist import MNISTEMNIST, EMNIST_MODELS_ENUM
 from torchfl.compatibility import OPTIMIZERS_TYPE
+from torchfl.federated.aggregators.fedavg import FedAvgAggregator
+from torchfl.models.wrapper.emnist import EMNIST_MODELS_ENUM
+from torchfl.models.wrapper.emnist import MNISTEMNIST
 
 if __name__ == "__main__":
     model = MNISTEMNIST(

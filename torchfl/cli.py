@@ -2,7 +2,9 @@
 # -*- coding: utf-8 -*-
 
 """Console script for torchfl."""
-from argparse import ArgumentParser, Namespace, _ArgumentGroup
+from argparse import ArgumentParser
+from argparse import Namespace
+from argparse import _ArgumentGroup
 from sys import exit
 
 from torchfl.compatibility import DATASETS

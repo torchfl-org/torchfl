@@ -3,7 +3,7 @@
 
 """Contains the LeNet model implementations for FashionMNIST dataset."""
 
-from torchfl.models.sota.lenet import LeNet as BaseLeNet  # type: ignore[attr-defined]
+from torchfl.models.sota.lenet import LeNet as BaseLeNet
 
 
 class LeNet(BaseLeNet):

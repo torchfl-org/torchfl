@@ -2,10 +2,12 @@
 # -*- coding: utf-8 -*-
 
 """Tests for CIFAR PyTorch LightningDataModule module in `torchfl` package."""
-import pytest
-from torchfl.datamodules.cifar import CIFARDataModule
-from torchfl.datamodules.cifar import SUPPORTED_DATASETS_TYPE
 from collections import Counter
+
+import pytest
+
+from torchfl.datamodules.cifar import SUPPORTED_DATASETS_TYPE
+from torchfl.datamodules.cifar import CIFARDataModule
 
 
 @pytest.fixture

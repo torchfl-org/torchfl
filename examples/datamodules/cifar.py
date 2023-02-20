@@ -5,11 +5,14 @@
 
 import csv
 from collections import Counter
-
-from torchfl.datamodules.cifar import CIFARDataModule, SUPPORTED_DATASETS_TYPE
+from typing import Any
+from typing import Dict
+from typing import Mapping
 
 from torch.utils.data import DataLoader
-from typing import Any, Dict, Mapping
+
+from torchfl.datamodules.cifar import SUPPORTED_DATASETS_TYPE
+from torchfl.datamodules.cifar import CIFARDataModule
 
 
 def cifar10_iid_distribution(num_agents: int) -> Dict[int, DataLoader]:
@@ -19,9 +22,9 @@ def cifar10_iid_distribution(num_agents: int) -> Dict[int, DataLoader]:
     )
     datamodule.prepare_data()
     datamodule.setup()
-    agent_shard_map: Dict[int, DataLoader] = datamodule.federated_iid_dataloader(
-        num_workers=num_agents
-    )
+    agent_shard_map: Dict[
+        int, DataLoader
+    ] = datamodule.federated_iid_dataloader(num_workers=num_agents)
     return agent_shard_map
 
 
@@ -34,7 +37,9 @@ def cifar10_noniid_distribution(
     )
     datamodule.prepare_data()
     datamodule.setup()
-    agent_shard_map: Dict[int, DataLoader] = datamodule.federated_non_iid_dataloader(
+    agent_shard_map: Dict[
+        int, DataLoader
+    ] = datamodule.federated_non_iid_dataloader(
         num_workers=num_agents, niid_factor=niid_factor
     )
     return agent_shard_map
@@ -47,9 +52,9 @@ def cifar100_iid_distribution(num_agents: int) -> Dict[int, DataLoader]:
     )
     datamodule.prepare_data()
     datamodule.setup()
-    agent_shard_map: Dict[int, DataLoader] = datamodule.federated_iid_dataloader(
-        num_workers=num_agents
-    )
+    agent_shard_map: Dict[
+        int, DataLoader
+    ] = datamodule.federated_iid_dataloader(num_workers=num_agents)
     return agent_shard_map
 
 
@@ -62,7 +67,9 @@ def cifar100_noniid_distribution(
     )
     datamodule.prepare_data()
     datamodule.setup()
-    agent_shard_map: Dict[int, DataLoader] = datamodule.federated_non_iid_dataloader(
+    agent_shard_map: Dict[
+        int, DataLoader
+    ] = datamodule.federated_non_iid_dataloader(
         num_workers=num_agents, niid_factor=niid_factor
     )
     return agent_shard_map
@@ -116,15 +123,15 @@ def dump_data_distribution_to_csv(
 
 
 if __name__ == "__main__":
-    agent_shard_map_5_agents_iid: Dict[int, DataLoader] = cifar10_iid_distribution(
-        num_agents=5
-    )
-    agent_shard_map_10_agents_iid: Dict[int, DataLoader] = cifar10_iid_distribution(
-        num_agents=10
-    )
-    agent_shard_map_100_agents_iid: Dict[int, DataLoader] = cifar10_iid_distribution(
-        num_agents=100
-    )
+    agent_shard_map_5_agents_iid: Dict[
+        int, DataLoader
+    ] = cifar10_iid_distribution(num_agents=5)
+    agent_shard_map_10_agents_iid: Dict[
+        int, DataLoader
+    ] = cifar10_iid_distribution(num_agents=10)
+    agent_shard_map_100_agents_iid: Dict[
+        int, DataLoader
+    ] = cifar10_iid_distribution(num_agents=100)
     agent_shard_map_5_agents_non_iid_1: Dict[
         int, DataLoader
     ] = cifar10_noniid_distribution(num_agents=5, niid_factor=1)
@@ -141,7 +148,8 @@ if __name__ == "__main__":
         int, DataLoader
     ] = cifar10_noniid_distribution(num_agents=5, niid_factor=5)
     dump_data_distribution_to_csv(
-        agent_shard_map_5_agents_non_iid_5, "data_distribution_5_agents_non_iid_5.csv"
+        agent_shard_map_5_agents_non_iid_5,
+        "data_distribution_5_agents_non_iid_5.csv",
     )
     agent_shard_map_10_agents_non_iid_3: Dict[
         int, DataLoader

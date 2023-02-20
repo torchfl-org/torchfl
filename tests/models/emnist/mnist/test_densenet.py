@@ -2,17 +2,18 @@
 # -*- coding: utf-8 -*-
 
 """Tests for DenseNet in `torchfl` package."""
-import pytest
-from torchvision import datasets, transforms
 import os
-from torchfl.compatibility import TORCHFL_DIR
-from torchfl.models.core.emnist.mnist.densenet import (
-    DenseNet121,
-    DenseNet161,
-    DenseNet169,
-    DenseNet201,
-)
+
+import pytest
 import torch
+from torchvision import datasets
+from torchvision import transforms
+
+from torchfl.compatibility import TORCHFL_DIR
+from torchfl.models.core.emnist.mnist.densenet import DenseNet121
+from torchfl.models.core.emnist.mnist.densenet import DenseNet161
+from torchfl.models.core.emnist.mnist.densenet import DenseNet169
+from torchfl.models.core.emnist.mnist.densenet import DenseNet201
 
 data_transforms = {
     "train_single_channel": transforms.Compose(
