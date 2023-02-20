@@ -50,18 +50,6 @@ repos:
           - "pytorch_lightning"
           - "torch"
           - "torchvision"
--   repo: https://github.com/dzhu/rstfmt
-    rev: v0.0.12
-    hooks:
-      - id: rstfmt
-        name: rstfmt
-        description: 'rstfmt: a formatter for reStructuredText'
-        entry: rstfmt
-        language: python
-        files: "\\.(rst)$"
-        language_version: python3.10
-        types: [rst]
-        args: [--width=79, --check]
 -   repo: https://github.com/PyCQA/doc8
     rev:  v1.1.1
     hooks:

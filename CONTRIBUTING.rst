@@ -32,8 +32,9 @@ wanted" is open to whoever wants to implement it.
 Implement Features
 ~~~~~~~~~~~~~~~~~~
 
-Look through the GitHub issues for features. Anything tagged with "enhancement",
-"help wanted", and "feature" is open to whoever wants to implement it.
+Look through the GitHub issues for features.
+Anything tagged with "enhancement", "help wanted",
+and "feature" is open to whoever wants to implement it.
 
 Write Documentation
 ~~~~~~~~~~~~~~~~~~~
@@ -83,8 +84,9 @@ Ready to contribute? Here's how to set up `torchfl` for local development.
 
    Run ``tox --help`` to explore more about tox.
 
-6. Your changes need to pass the existing test cases and add the new ones if required
-   under the ``tests`` directory. Following approaches can be used to run tests.
+6. Your changes need to pass the existing test cases and
+   add the new ones if required under the ``tests`` directory.
+   Following approaches can be used to run tests.
 
        * To run all the test cases::
 
@@ -101,21 +103,21 @@ Ready to contribute? Here's how to set up `torchfl` for local development.
     $ git push origin <name-of-your-bugfix-or-feature>
 
 8. Submit a pull request through the GitHub website.
-
-9. Once the pull request has been submitted, the continuous integration (CI) pipelines
-   will be triggered on GitHub Actions. All of them must pass before one of the maintainers
+9. Once the pull request has been submitted,
+   the CI pipelines will be triggered on GitHub Actions,
+   All of them must pass before one of the maintainers
    can review the request and perform the merge.
 
 Pull Request Guidelines
------------------------
-
-Before you submit a pull request, check that it meets these guidelines:
+----------------------------
 
 1. The pull request should include tests.
+
 2. If the pull request adds functionality, the docs should be updated. Put
    your new functionality into a function with a docstring, and add the
    feature to the list in README.rst.
-3. The pull request should work for Python 3.5, 3.6, 3.7 and 3.8, and for PyPy. Check
+
+3. The pull request should work for Python3, and for PyPy. Check
    https://travis-ci.com/vivekkhimani/torchfl/pull_requests
    and make sure that the tests pass for all supported Python versions.
 

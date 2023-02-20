@@ -36,6 +36,7 @@ force-wrap = true
 
 [tool.doc8]
 max-line-length = 79
+sphinx = true
 
 [tool.ruff]
 # Enable Pyflakes `E` and `F` codes by default.

@@ -32,14 +32,14 @@ History
 ------------------
 
 * Major changes.
-* Added more workflows to build the torchfl package on different os and python versions before merging it to master.
-* Updated the existing workflows to include the checks for all python versions to ensure backward compatibility.
+* Added workflows to build the torchfl package before merging it to master.
+* Updated the existing workflows to include the checks for all python versions.
 * Removed the usage of Literal type to enable py36, and py37 support.
-* Defined a common cache in home dir for torchfl which will be used to store the files instead of the parent dir.
+* Defined a common cache in home dir for torchfl.
 
 0.1.6 (2022-10-28)
 ------------------
 
-* Officially launched the federated learning modules built on the existing offerings.
+* Officially launched the federated learning modules.
 * Added extensive examples for federated and non-federated settings.
-* Updated the documentation to include the new modules and fderated learning examples.
+* Updated the documentation.
