@@ -49,3 +49,8 @@ History
 
 * Code cleanup using pre-commit hooks.
 * Bug fixes.
+
+0.1.8 (2023-02-01)
+------------------
+
+* Documentation fix.
