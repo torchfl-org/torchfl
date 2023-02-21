@@ -45,6 +45,7 @@ History
 * Updated the documentation.
 
 0.1.7 (2023-02-01)
+------------------
 
 * Code cleanup using pre-commit hooks.
 * Bug fixes.
