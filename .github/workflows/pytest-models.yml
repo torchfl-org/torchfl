@@ -137,6 +137,6 @@ jobs:
         run: |
           poetry run pytest tests/models/emnist/mnist
       - name: PyTest for FashionMNIST models
-        if: ${{ (needs.changedfiles.outputs.fashionmnist-cache-hitt != 'true') || (needs.changedfiles.outputs.sota-cache-hit != 'true') }}
+        if: ${{ (needs.changedfiles.outputs.fashionmnist-cache-hit != 'true') || (needs.changedfiles.outputs.sota-cache-hit != 'true') }}
         run: |
           poetry run pytest tests/models/fashionmnist
