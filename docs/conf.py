@@ -105,26 +105,26 @@ html_static_path = ["_static"]
 htmlhelp_basename = "torchfldoc"
 
 
-# -- Options for LaTeX output ------------------------------------------
-latex_elements: dict[str, str] = {
-    "papersize": "letterpaper",
-    "pointsize": "12pt",
-    "figure_align": "htbp",
-    "preamble": "",
-}
+# # -- Options for LaTeX output ------------------------------------------
+# latex_elements: dict[str, str] = {
+#     "papersize": "letterpaper",
+#     "pointsize": "12pt",
+#     "figure_align": "htbp",
+#     "preamble": "",
+# }
 
-# Grouping the document tree into LaTeX files. List of tuples
-# (source start file, target name, title, author, documentclass
-# [howto, manual, or own class]).
-latex_documents = [
-    (
-        master_doc,
-        "torchfl.tex",
-        "torchfl Documentation",
-        "Vivek Khimani",
-        "manual",
-    )
-]
+# # Grouping the document tree into LaTeX files. List of tuples
+# # (source start file, target name, title, author, documentclass
+# # [howto, manual, or own class]).
+# latex_documents = [
+#     (
+#         master_doc,
+#         "torchfl.tex",
+#         "torchfl Documentation",
+#         "Vivek Khimani",
+#         "manual",
+#     )
+# ]
 
 
 # -- Options for manual page output ------------------------------------
