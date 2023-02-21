@@ -78,13 +78,13 @@ jobs:
       sota-cache-hit: ${{ steps.changed-sota.outputs.cache-hit }}
       cifar10-cache-hit: ${{ steps.changed-cifar10.outputs.cache-hit }}
       cifar100-cache-hit: ${{ steps.changed-cifar100.outputs.cache-hit }}
-      emnist-balanced-cache-hit: ${{ steps.changed-emnist-balanced.cache-hit }}
-      emnist-byclass-cache-hit: ${{ steps.changed-emnist-byclass.cache-hit }}
-      emnist-bymerge-cache-hit: ${{ steps.changed-emnist-bymerge.cache-hit }}
-      emnist-digits-cache-hit: ${{ steps.changed-emnist-digits.cache-hit }}
-      emnist-letters-cache-hit: ${{ steps.changed-emnist-letters.cache-hit }}
-      emnist-mnist-cache-hit: ${{ steps.changed-emnist-mnist.cache-hit }}
-      fashionmnist-cache-hit: ${{ steps.changed-fashionmnist.cache-hit }}
+      emnist-balanced-cache-hit: ${{ steps.changed-emnist-balanced.outputs.cache-hit }}
+      emnist-byclass-cache-hit: ${{ steps.changed-emnist-byclass.outputs.cache-hit }}
+      emnist-bymerge-cache-hit: ${{ steps.changed-emnist-bymerge.outputs.cache-hit }}
+      emnist-digits-cache-hit: ${{ steps.changed-emnist-digits.outputs.cache-hit }}
+      emnist-letters-cache-hit: ${{ steps.changed-emnist-letters.outputs.cache-hit }}
+      emnist-mnist-cache-hit: ${{ steps.changed-emnist-mnist.outputs.cache-hit }}
+      fashionmnist-cache-hit: ${{ steps.changed-fashionmnist.outputs.cache-hit }}
   test-models:
     name: "Test changed model files."
     runs-on: ubuntu-latest
