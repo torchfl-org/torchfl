@@ -18,7 +18,7 @@ jobs:
         uses: actions/cache@v3
         id: changed-sota
         with:
-          path: tests/models/sota
+          path: tests/models
           key: hashFiles('torchfl/models/sota/*')
       - name: Changed CIFAR-10 models
         uses: actions/cache@v3
