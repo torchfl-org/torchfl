@@ -1,8 +1,0 @@
-wheel~=0.37.0
-numpy~=1.23.0
-torch~=1.12.0
-torchvision~=0.12.0
-pytorch-lightning~=1.7.0
-setuptools==59.5.0
-coverage==4.5.4
-rich>=10.2.2

@@ -47,13 +47,6 @@ clean-test: ## remove test and coverage artifacts
 	rm -fr htmlcov/
 	rm -fr .pytest_cache
 
-lint/flake8: ## check style with flake8
-	flake8 torchfl tests
-lint/black: ## check style with black
-	black --check torchfl tests
-
-lint: lint/flake8 lint/black ## check style
-
 test: ## run tests quickly with the default Python
 	pytest
 
@@ -65,17 +58,6 @@ coverage: ## check code coverage quickly with the default Python
 	coverage report -m
 	coverage html
 	$(BROWSER) htmlcov/index.html
-
-docs: ## generate Sphinx HTML documentation, including API docs
-	rm -f docs/torchfl.rst
-	rm -f docs/modules.rst
-	sphinx-apidoc -o docs/ torchfl
-	$(MAKE) -C docs clean
-	$(MAKE) -C docs html
-	$(BROWSER) docs/_build/html/index.html
-
-servedocs: docs ## compile the docs watching for changes
-	watchmedo shell-command -p '*.rst' -c '$(MAKE) -C docs html' -R -D .
 
 release: dist ## package and upload a release
 	twine upload dist/*

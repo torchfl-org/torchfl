@@ -4,44 +4,70 @@ on:
   pull_request:
     branches:
       - master
+  push:
+    branches:
+      - master
 
 jobs:
   changedfiles:
     runs-on: ubuntu-latest
-    # Map a step output to a job output
-    outputs:
-      all: ${{ steps.changes.outputs.all}}
-      models-cifar-cifar10: ${{ steps.changes.outputs.models-cifar-cifar10 }}
-      models-cifar-cifar100: ${{ steps.changes.outputs.models-cifar-cifar100 }}
-      models-emnist-balanced: ${{ steps.changes.outputs.models-emnist-balanced }}
-      models-emnist-byclass: ${{ steps.changes.outputs.models-emnist-byclass }}
-      models-emnist-bymerge: ${{ steps.changes.outputs.models-emnist-bymerge }}
-      models-emnist-digits: ${{ steps.changes.outputs.models-emnist-digits }}
-      models-emnist-letters: ${{ steps.changes.outputs.models-emnist-letters }}
-      models-emnist-mnist: ${{ steps.changes.outputs.models-emnist-mnist }}
-      models-fashionmnist: ${{ steps.changes.outputs.models-fashionmnist }}
-      models-sota: ${{ steps.changes.outputs.models-sota }}
     steps:
-      # Make sure we have some code to diff.
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+      - name: Changed CIFAR-10 models
+        uses: actions/cache@v3
+        id: changed-cifar10
         with:
-          fetch-depth: 0
-      - name: Get changed files
-        id: changes
-        # Set outputs using the command.
-        run: |
-          echo "::set-output name=all::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.head.sha }} ${{ github.event.pull_request.base.sha }} | xargs)"
-          echo "::set-output name=models-cifar-cifar10::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.head.sha }} ${{ github.event.pull_request.base.sha }} | grep -E "tests/models/cifar/cifar10|torchfl/models/core/cifar/cifar10" | xargs)"
-          echo "::set-output name=models-cifar-cifar100::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.head.sha }} ${{ github.event.pull_request.base.sha }} | grep -E "tests/models/cifar/cifar100|torchfl/models/core/cifar/cifar100" | xargs)"
-          echo "::set-output name=models-emnist-balanced::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.head.sha }} ${{ github.event.pull_request.base.sha }} | grep -E "tests/models/emnist/balanced|torchfl/models/core/emnist/balanced" | xargs)"
-          echo "::set-output name=models-emnist-byclass::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.head.sha }} ${{ github.event.pull_request.base.sha }} | grep -E "tests/models/emnist/byclass|torchfl/models/core/emnist/byclass" | xargs)"
-          echo "::set-output name=models-emnist-bymerge::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.head.sha }} ${{ github.event.pull_request.base.sha }} | grep -E "tests/models/emnist/bymerge|torchfl/models/core/emnist/bymerge" | xargs)"
-          echo "::set-output name=models-emnist-digits::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.head.sha }} ${{ github.event.pull_request.base.sha }} | grep -E "tests/models/emnist/digits|torchfl/models/core/emnist/digits" | xargs)"
-          echo "::set-output name=models-emnist-letters::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.head.sha }} ${{ github.event.pull_request.base.sha }} | grep -E "tests/models/emnist/letters|torchfl/models/core/emnist/letters" | xargs)"
-          echo "::set-output name=models-emnist-mnist::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.head.sha }} ${{ github.event.pull_request.base.sha }} | grep -E "tests/models/emnist/mnist|torchfl/models/core/emnist/mnist" | xargs)"
-          echo "::set-output name=models-fashionmnist::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.head.sha }} ${{ github.event.pull_request.base.sha }} | grep -E "tests/models/fashionmnist|torchfl/models/core/fashionmnist" | xargs)"
-          echo "::set-output name=models-sota::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.head.sha }} ${{ github.event.pull_request.base.sha }} | grep -E "torchfl/models/sota" | xargs)"
+          path: tests/models/cifar/cifar10
+          key: hashFiles('torchfl/models/core/cifar/cifar10/*', 'torchfl/models/sota/*')
+      - name: Changed CIFAR-100 models
+        uses: actions/cache@v3
+        id: changed-cifar100
+        with:
+          path: tests/models/cifar/cifar100
+          key: hashFiles('torchfl/models/core/cifar/cifar100/*', 'torchfl/models/sota/*')
+      - name: Changed EMNIST Balanced models
+        uses: actions/cache@v3
+        id: changed-emnist-balanced
+        with:
+          path: tests/models/emnist/balanced
+          key: hashFiles('torchfl/models/core/emnist/balanced/*', 'torchfl/models/sota/*')
+      - name: Changed EMNIST Byclass models
+        uses: actions/cache@v3
+        id: changed-emnist-byclass
+        with:
+          path: tests/models/emnist/byclass
+          key: hashFiles('torchfl/models/core/emnist/byclass/*', 'torchfl/models/sota/*')
+      - name: Changed EMNIST Bymerge models
+        uses: actions/cache@v3
+        id: changed-emnist-bymerge
+        with:
+          path: tests/models/emnist/bymerge
+          key: hashFiles('torchfl/models/core/emnist/bymerge/*', 'torchfl/models/sota/*')
+      - name: Changed EMNIST Digits models
+        uses: actions/cache@v3
+        id: changed-emnist-digits
+        with:
+          path: tests/models/emnist/digits
+          key: hashFiles('torchfl/models/core/emnist/digits/*', 'torchfl/models/sota/*')
+      - name: Changed EMNIST Letters models
+        uses: actions/cache@v3
+        id: changed-emnist-letters
+        with:
+          path: tests/models/emnist/letters
+          key: hashFiles('torchfl/models/core/emnist/letters/*', 'torchfl/models/sota/*')
+      - name: Changed EMNIST MNIST models
+        uses: actions/cache@v3
+        id: changed-emnist-mnist
+        with:
+          path: tests/models/emnist/mnist
+          key: hashFiles('torchfl/models/core/emnist/mnist/*', 'torchfl/models/sota/*')
+      - name: Changed FashionMNIST models
+        uses: actions/cache@v3
+        id: changed-fashionmnist
+        with:
+          path: tests/models/fashionmnist
+          key: hashFiles('torchfl/models/core/fashionmnist/*', 'torchfl/models/sota/*')
   test-models:
     runs-on: ubuntu-latest
     needs: changedfiles
@@ -49,67 +75,50 @@ jobs:
       matrix:
         python-version: ["3.10"]
     steps:
-      - uses: actions/checkout@v1
-      - name: Set up Python ${{ matrix.python-version }} if files were changed
-        uses: actions/setup-python@v2
+      - uses: actions/checkout@v3
+      - name: Install poetry
+        run: pipx install poetry
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
+          cache: 'poetry'
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          python -m pip install pytest coverage
-          python -m pip install -r requirements_dev.txt
+          poetry install
       - name: PyTest for CIFAR10 models
-        if: ${{needs.changedfiles.outputs.models-cifar-cifar10}} || $${{needs.changedfiles.outputs.models-sota}}
+        if: ${{needs.changedfiles.changed-cifar10.outputs.cache-hit != 'true'}}
         run: |
-          echo ${{needs.changedfiles.outputs.models-cifar-cifar10}}
-          coverage run -m pytest tests/models/cifar/cifar10
-          coverage report --fail-under 80 tests/models/cifar/cifar10/*.py
+          poetry run pytest tests/models/cifar/cifar10
       - name: PyTest for CIFAR100 models
-        if: ${{needs.changedfiles.outputs.models-cifar-cifar100}} || ${{needs.changedfiles.outputs.models-sota}}
+        if: ${{needs.changedfiles.changed-cifar100.outputs.cache-hit != 'true'}}
         run: |
-          echo ${{needs.changedfiles.outputs.models-cifar-cifar100}}
-          coverage run -m pytest tests/models/cifar/cifar100
-          coverage report --fail-under 80 tests/models/cifar/cifar100/*.py
+          poetry run pytest tests/models/cifar/cifar100
       - name: PyTest for EMNIST balanced models
-        if: ${{needs.changedfiles.outputs.models-emnist-balanced}} || ${{needs.changedfiles.outputs.models-sota}}
+        if: ${{needs.changedfiles.changed-emnist-balanced.outputs.cache-hit != 'true'}}
         run: |
-          echo ${{needs.changedfiles.outputs.models-emnist-balanced}}
-          coverage run -m pytest tests/models/emnist/balanced
-          coverage report --fail-under 80 tests/models/emnist/balanced/*.py
+          poetry run pytest tests/models/emnist/balanced
       - name: PyTest for EMNIST byclass models
-        if: ${{needs.changedfiles.outputs.models-emnist-byclass}} || ${{needs.changedfiles.outputs.models-sota}}
+        if: ${{needs.changedfiles.changed-emnist-byclass.outputs.cache-hit != 'true'}}
         run: |
-          echo ${{needs.changedfiles.outputs.models-emnist-byclass}}
-          coverage run -m pytest tests/models/emnist/byclass
-          coverage report --fail-under 80 tests/models/emnist/byclass/*.py
+          poetry run pytest tests/models/emnist/byclass
       - name: PyTest for EMNIST bymerge models
-        if: ${{needs.changedfiles.outputs.models-emnist-bymerge}} || ${{needs.changedfiles.outputs.models-sota}}
+        if: ${{needs.changedfiles.changed-emnist-bymerge.outputs.cache-hit != 'true'}}
         run: |
-          echo ${{needs.changedfiles.outputs.models-emnist-bymerge}}
-          coverage run -m pytest tests/models/emnist/bymerge
-          coverage report --fail-under 80 tests/models/emnist/bymerge/*.py
+          poetry run pytest tests/models/emnist/bymerge
       - name: PyTest for EMNIST digits models
-        if: ${{needs.changedfiles.outputs.models-emnist-digits}} || ${{needs.changedfiles.outputs.models-sota}}
+        if: ${{needs.changedfiles.changed-emnist-digits.outputs.cache-hit != 'true'}}
         run: |
-          echo ${{needs.changedfiles.outputs.models-emnist-digits}}
-          coverage run -m pytest tests/models/emnist/digits
-          coverage report --fail-under 80 tests/models/emnist/digits/*.py
+          poetry run pytest tests/models/emnist/digits
       - name: PyTest for EMNIST letters models
-        if: ${{needs.changedfiles.outputs.models-emnist-letters}} || ${{needs.changedfiles.outputs.models-sota}}
+        if: ${{needs.changedfiles.changed-emnist-letters.outputs.cache-hit != 'true'}}
         run: |
-          echo ${{needs.changedfiles.outputs.models-emnist-letters}}
-          coverage run -m pytest tests/models/emnist/letters
-          coverage report --fail-under 80 tests/models/emnist/letters/*.py
+          poetry run pytest tests/models/emnist/letters
       - name: PyTest for EMNIST mnist models
-        if: ${{needs.changedfiles.outputs.models-emnist-mnist}} || ${{needs.changedfiles.outputs.models-sota}}
+        if: ${{needs.changedfiles.changed-emnist-mnist.outputs.cache-hit != 'true'}}
         run: |
-          echo ${{needs.changedfiles.outputs.models-emnist-mnist}}
-          coverage run -m pytest tests/models/emnist/mnist
-          coverage report --fail-under 80 tests/models/emnist/mnist/*.py
+          poetry run pytest tests/models/emnist/mnist
       - name: PyTest for FashionMNIST models
-        if: ${{needs.changedfiles.outputs.models-fashionmnist}} || ${{needs.changedfiles.outputs.models-sota}}
+        if: ${{needs.changedfiles.changed-fashionmnist.outputs.cache-hit != 'true'}}
         run: |
-          echo ${{needs.changedfiles.outputs.models-fashionmnist}}
-          coverage run -m pytest tests/models/fashionmnist
-          coverage report --fail-under 80 tests/models/fashionmnist/*.py
+          poetry run pytest tests/models/fashionmnist

@@ -86,3 +86,45 @@ target-version = "py310"
 [tool.ruff.mccabe]
 # Unlike Flake8, default to a complexity level of 10.
 max-complexity = 10
+
+[tool.poetry]
+name = "torchfl"
+version = "0.1.7"
+description = "A Python library for rapid prototyping, experimenting, and logging of federated learning using state-of-the-art models and datasets. Built using PyTorch and PyTorch Lightning."
+authors = ["vivekkhimani <vivekkhimani07@gmail.com>"]
+license = "GNU General Public License v3"
+readme = "README.md"
+homepage = "https://torchfl.readthedocs.io/en/latest/"
+repository = "https://github.com/vivekkhimani/torchfl"
+documentation = "https://torchfl.readthedocs.io/en/latest/"
+keywords = ["federated-learning", "pytorch", "pytorch-lightning", "torchfl"]
+classifiers=[
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3.10",
+]
+include=[
+    "LICENSE",
+    "README.md",
+    "AUTHORS.rst",
+    "CONTRIBUTING.rst",
+    "HISTORY.rst",
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+numpy = "^1.24.2"
+rich = "^13.3.1"
+torch = "~1.13"
+torchvision = "~0.14"
+pytorch-lightning = "~1.9"
+wheel = "^0.38.4"
+setuptools = "^67.3.3"
+pytest = "^7.2.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

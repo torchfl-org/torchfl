@@ -3,7 +3,7 @@ include CONTRIBUTING.rst
 include HISTORY.rst
 include LICENSE
 include README.md
-include requirements_dev.txt
+include requirements.txt
 recursive-include requirements* *
 
 prune **/__pycache__
