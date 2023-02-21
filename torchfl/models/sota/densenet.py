@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # type: ignore
 
 """Implementation of the pre-trained DenseNet architectures using PyTorch and torchvision.
@@ -11,9 +10,11 @@ Contains:
     - DenseNet201
 """
 
-from torchvision import models
 from types import SimpleNamespace
+
 import torch.nn as nn
+from torchvision import models
+
 from torchfl.compatibility import ACTIVATION_FUNCTIONS_BY_NAME
 
 
@@ -38,7 +39,7 @@ class DenseNet121(models.DenseNet):
             - num_channels (int, optional): Number of incoming channels. Defaults to 3.
             - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
-        super(DenseNet121, self).__init__(
+        super().__init__(
             growth_rate=32, block_config=(6, 12, 24, 16), num_init_features=64
         )
         self.hparams = SimpleNamespace(
@@ -53,7 +54,9 @@ class DenseNet121(models.DenseNet):
             act_fn=ACTIVATION_FUNCTIONS_BY_NAME[act_fn_name],
         )
         if pre_trained:
-            pretrained_model = models.densenet121(pretrained=True, progress=True)
+            pretrained_model = models.densenet121(
+                pretrained=True, progress=True
+            )
             self.load_state_dict(pretrained_model.state_dict())
 
             if feature_extract:
@@ -96,7 +99,7 @@ class DenseNet161(models.DenseNet):
             - num_channels (int, optional): Number of incoming channels. Defaults to 3.
             - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
-        super(DenseNet161, self).__init__(
+        super().__init__(
             growth_rate=48, block_config=(6, 12, 36, 24), num_init_features=96
         )
         self.hparams = SimpleNamespace(
@@ -111,7 +114,9 @@ class DenseNet161(models.DenseNet):
             act_fn=ACTIVATION_FUNCTIONS_BY_NAME[act_fn_name],
         )
         if pre_trained:
-            pretrained_model = models.densenet161(pretrained=True, progress=True)
+            pretrained_model = models.densenet161(
+                pretrained=True, progress=True
+            )
             self.load_state_dict(pretrained_model.state_dict())
 
             if feature_extract:
@@ -154,7 +159,7 @@ class DenseNet169(models.DenseNet):
             - num_channels (int, optional): Number of incoming channels. Defaults to 3.
             - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
-        super(DenseNet169, self).__init__(
+        super().__init__(
             growth_rate=32, block_config=(6, 12, 32, 32), num_init_features=64
         )
         self.hparams = SimpleNamespace(
@@ -169,7 +174,9 @@ class DenseNet169(models.DenseNet):
             act_fn=ACTIVATION_FUNCTIONS_BY_NAME[act_fn_name],
         )
         if pre_trained:
-            pretrained_model = models.densenet169(pretrained=True, progress=True)
+            pretrained_model = models.densenet169(
+                pretrained=True, progress=True
+            )
             self.load_state_dict(pretrained_model.state_dict())
 
             if feature_extract:
@@ -212,7 +219,7 @@ class DenseNet201(models.DenseNet):
             - num_channels (int, optional): Number of incoming channels. Defaults to 3.
             - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
-        super(DenseNet201, self).__init__(
+        super().__init__(
             growth_rate=32, block_config=(6, 12, 48, 32), num_init_features=64
         )
         self.hparams = SimpleNamespace(
@@ -227,7 +234,9 @@ class DenseNet201(models.DenseNet):
             act_fn=ACTIVATION_FUNCTIONS_BY_NAME[act_fn_name],
         )
         if pre_trained:
-            pretrained_model = models.densenet201(pretrained=True, progress=True)
+            pretrained_model = models.densenet201(
+                pretrained=True, progress=True
+            )
             self.load_state_dict(pretrained_model.state_dict())
 
             if feature_extract:

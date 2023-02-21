@@ -1,38 +1,35 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """An example script to demonstrate the training of non-federated CIFAR-10 dataset using torchfl."""
 
-from typing import Optional, Tuple, List, Dict
+import logging
 import os
-import torch.nn as nn
-import torch
+import sys
+
 import pytorch_lightning as pl
-from pytorch_lightning.loggers import TensorBoardLogger, CSVLogger
-from pytorch_lightning.profilers import PyTorchProfiler
+import torch
+import torch.nn as nn
 from pytorch_lightning.callbacks import (
-    ModelCheckpoint,
-    LearningRateMonitor,
     DeviceStatsMonitor,
+    LearningRateMonitor,
     ModelSummary,
     RichProgressBar,
     Timer,
 )
-from torchfl.datamodules.cifar import CIFARDataModule, SUPPORTED_DATASETS_TYPE
-from torchfl.models.wrapper.cifar import CIFAR10, CIFAR_MODELS_ENUM
-from torchfl.compatibility import OPTIMIZERS_TYPE, TORCHFL_DIR
+from pytorch_lightning.loggers import CSVLogger, TensorBoardLogger
 
-import logging
-import sys
+from torchfl.compatibility import OPTIMIZERS_TYPE, TORCHFL_DIR
+from torchfl.datamodules.cifar import SUPPORTED_DATASETS_TYPE, CIFARDataModule
+from torchfl.models.wrapper.cifar import CIFAR10, CIFAR_MODELS_ENUM
 
 logging.basicConfig(stream=sys.stdout, level=logging.ERROR)
 
 
 def train_model_from_scratch(
     experiment_name: str,
-    checkpoint_load_path: Optional[str] = None,
+    checkpoint_load_path: str | None = None,
     checkpoint_save_path: str = os.path.join(TORCHFL_DIR, "runs"),
-) -> Tuple[nn.Module, Dict[str, float]]:
+) -> tuple[nn.Module, dict[str, float]]:
     """An example wrapper function for training CIFAR10 dataset using PyTorch Lightning trainer and torchfl model and dataloader utilities.
     Args:
         experiment_name (str): Name of the experiment as to be stored in the logs.
@@ -54,12 +51,6 @@ def train_model_from_scratch(
         name=experiment_name, save_dir=ROOT_DIR_PATH
     )
     csv_logger: CSVLogger = CSVLogger(save_dir=ROOT_DIR_PATH)
-    pt_profiler: PyTorchProfiler = PyTorchProfiler(
-        dirpath=ROOT_DIR_PATH,
-        group_by_input_shapes=True,
-        record_module_names=True,
-        export_to_chrome=True,
-    )
     # prepare the dataset
     datamodule: CIFARDataModule = CIFARDataModule(
         dataset_name=SUPPORTED_DATASETS_TYPE.CIFAR10,
@@ -70,7 +61,9 @@ def train_model_from_scratch(
 
     # check if the model can be loaded from a given checkpoint
     if checkpoint_load_path and os.path.isfile(checkpoint_load_path):
-        logging.info("Loading model from the checkpoint at ", checkpoint_load_path)
+        logging.info(
+            "Loading model from the checkpoint at ", checkpoint_load_path
+        )
         model = CIFAR10(
             CIFAR_MODELS_ENUM.RESNET152,
             OPTIMIZERS_TYPE.ADAM,
@@ -94,7 +87,9 @@ def train_model_from_scratch(
         enable_progress_bar=True,
         max_epochs=10,
         devices=torch.cuda.device_count() if torch.cuda.is_available() else 1,
-        num_nodes=torch.cuda.device_count() if torch.cuda.is_available() else 1,
+        num_nodes=torch.cuda.device_count()
+        if torch.cuda.is_available()
+        else 1,
         num_processes=1,
         resume_from_checkpoint=checkpoint_load_path,
         detect_anomaly=True,
@@ -112,16 +107,18 @@ def train_model_from_scratch(
         ],
         enable_checkpointing=False,  # temp fix for MemoryError on GPU because of limited cache
     )
-    trainer.fit(model, datamodule.train_dataloader(), datamodule.val_dataloader())
+    trainer.fit(
+        model, datamodule.train_dataloader(), datamodule.val_dataloader()
+    )
 
     # test best model based on the validation and test set
-    val_result: List[Dict[str, float]] = trainer.test(
+    val_result: list[dict[str, float]] = trainer.test(
         model, dataloaders=datamodule.val_dataloader(), verbose=True
     )
-    test_result: List[Dict[str, float]] = trainer.test(
+    test_result: list[dict[str, float]] = trainer.test(
         model, dataloaders=datamodule.test_dataloader(), verbose=True
     )
-    result: Dict[str, float] = {
+    result: dict[str, float] = {
         "test": test_result[0]["test_acc"],
         "val": val_result[0]["test_acc"],
     }
@@ -133,9 +130,9 @@ def train_model_from_scratch(
 
 def train_pretrained_model(
     experiment_name: str,
-    checkpoint_load_path: Optional[str] = None,
+    checkpoint_load_path: str | None = None,
     checkpoint_save_path: str = os.path.join(TORCHFL_DIR, "runs"),
-) -> Tuple[nn.Module, Dict[str, float]]:
+) -> tuple[nn.Module, dict[str, float]]:
     """An example wrapper function for training CIFAR10 dataset using PyTorch Lightning trainer and torchfl model and dataloader utilities.
     Args:
         experiment_name (str): Name of the experiment as to be stored in the logs.
@@ -149,12 +146,6 @@ def train_pretrained_model(
         name=experiment_name, save_dir=ROOT_DIR_PATH
     )
     csv_logger: CSVLogger = CSVLogger(save_dir=ROOT_DIR_PATH)
-    pt_profiler: PyTorchProfiler = PyTorchProfiler(
-        dirpath=ROOT_DIR_PATH,
-        group_by_input_shapes=True,
-        record_module_names=True,
-        export_to_chrome=True,
-    )
     # prepare the dataset
     datamodule: CIFARDataModule = CIFARDataModule(
         dataset_name=SUPPORTED_DATASETS_TYPE.CIFAR10,
@@ -165,7 +156,9 @@ def train_pretrained_model(
 
     # check if the model can be loaded from a given checkpoint
     if checkpoint_load_path and os.path.isfile(checkpoint_load_path):
-        logging.info("Loading model from the checkpoint at ", checkpoint_load_path)
+        logging.info(
+            "Loading model from the checkpoint at ", checkpoint_load_path
+        )
         model = CIFAR10(
             CIFAR_MODELS_ENUM.RESNET152,
             OPTIMIZERS_TYPE.ADAM,
@@ -189,7 +182,9 @@ def train_pretrained_model(
         enable_progress_bar=True,
         max_epochs=10,
         devices=torch.cuda.device_count() if torch.cuda.is_available() else 1,
-        num_nodes=torch.cuda.device_count() if torch.cuda.is_available() else 1,
+        num_nodes=torch.cuda.device_count()
+        if torch.cuda.is_available()
+        else 1,
         num_processes=1,
         resume_from_checkpoint=checkpoint_load_path,
         detect_anomaly=True,
@@ -207,16 +202,18 @@ def train_pretrained_model(
         ],
         enable_checkpointing=False,  # temp fix for MemoryError on GPU because of limited cache
     )
-    trainer.fit(model, datamodule.train_dataloader(), datamodule.val_dataloader())
+    trainer.fit(
+        model, datamodule.train_dataloader(), datamodule.val_dataloader()
+    )
 
     # test best model based on the validation and test set
-    val_result: List[Dict[str, float]] = trainer.test(
+    val_result: list[dict[str, float]] = trainer.test(
         model, dataloaders=datamodule.val_dataloader(), verbose=True
     )
-    test_result: List[Dict[str, float]] = trainer.test(
+    test_result: list[dict[str, float]] = trainer.test(
         model, dataloaders=datamodule.test_dataloader(), verbose=True
     )
-    result: Dict[str, float] = {
+    result: dict[str, float] = {
         "test": test_result[0]["test_acc"],
         "val": val_result[0]["test_acc"],
     }
@@ -228,9 +225,9 @@ def train_pretrained_model(
 
 def train_feature_extracted_model(
     experiment_name: str,
-    checkpoint_load_path: Optional[str] = None,
+    checkpoint_load_path: str | None = None,
     checkpoint_save_path: str = os.path.join(TORCHFL_DIR, "runs"),
-) -> Tuple[nn.Module, Dict[str, float]]:
+) -> tuple[nn.Module, dict[str, float]]:
     """An example wrapper function for training CIFAR10 dataset using PyTorch Lightning trainer and torchfl model and dataloader utilities.
     Args:
         experiment_name (str): Name of the experiment as to be stored in the logs.
@@ -244,12 +241,6 @@ def train_feature_extracted_model(
         name=experiment_name, save_dir=ROOT_DIR_PATH
     )
     csv_logger: CSVLogger = CSVLogger(save_dir=ROOT_DIR_PATH)
-    pt_profiler: PyTorchProfiler = PyTorchProfiler(
-        dirpath=ROOT_DIR_PATH,
-        group_by_input_shapes=True,
-        record_module_names=True,
-        export_to_chrome=True,
-    )
     # prepare the dataset
     datamodule: CIFARDataModule = CIFARDataModule(
         dataset_name=SUPPORTED_DATASETS_TYPE.CIFAR10,
@@ -260,7 +251,9 @@ def train_feature_extracted_model(
 
     # check if the model can be loaded from a given checkpoint
     if checkpoint_load_path and os.path.isfile(checkpoint_load_path):
-        logging.info("Loading model from the checkpoint at ", checkpoint_load_path)
+        logging.info(
+            "Loading model from the checkpoint at ", checkpoint_load_path
+        )
         model = CIFAR10(
             CIFAR_MODELS_ENUM.RESNET152,
             OPTIMIZERS_TYPE.ADAM,
@@ -284,7 +277,9 @@ def train_feature_extracted_model(
         enable_progress_bar=True,
         max_epochs=10,
         devices=torch.cuda.device_count() if torch.cuda.is_available() else 1,
-        num_nodes=torch.cuda.device_count() if torch.cuda.is_available() else 1,
+        num_nodes=torch.cuda.device_count()
+        if torch.cuda.is_available()
+        else 1,
         num_processes=1,
         resume_from_checkpoint=checkpoint_load_path,
         detect_anomaly=True,
@@ -302,16 +297,18 @@ def train_feature_extracted_model(
         ],
         enable_checkpointing=False,  # temp fix for MemoryError on GPU because of limited cache
     )
-    trainer.fit(model, datamodule.train_dataloader(), datamodule.val_dataloader())
+    trainer.fit(
+        model, datamodule.train_dataloader(), datamodule.val_dataloader()
+    )
 
     # test best model based on the validation and test set
-    val_result: List[Dict[str, float]] = trainer.test(
+    val_result: list[dict[str, float]] = trainer.test(
         model, dataloaders=datamodule.val_dataloader(), verbose=True
     )
-    test_result: List[Dict[str, float]] = trainer.test(
+    test_result: list[dict[str, float]] = trainer.test(
         model, dataloaders=datamodule.test_dataloader(), verbose=True
     )
-    result: Dict[str, float] = {
+    result: dict[str, float] = {
         "test": test_result[0]["test_acc"],
         "val": val_result[0]["test_acc"],
     }

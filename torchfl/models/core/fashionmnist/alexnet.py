@@ -1,15 +1,14 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Contains the AlexNet model implementations for FashionMNIST dataset."""
 
-from torchfl.models.sota.alexnet import (  # type: ignore[attr-defined]
-    AlexNet as BaseAlexNet,
-)  # type: ignore[attr-defined]
+from torchfl.models.sota.alexnet import AlexNet as BaseAlexNet
 
 
 class AlexNet(BaseAlexNet):
-    def __init__(self, pre_trained=True, feature_extract=False, num_channels=1) -> None:
+    def __init__(
+        self, pre_trained=True, feature_extract=False, num_channels=1
+    ) -> None:
         """Constructor
 
         Args:
@@ -17,7 +16,7 @@ class AlexNet(BaseAlexNet):
             - feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
             - num_channels (int, optional): Number of incoming channels. Defaults to 1.
         """
-        super(AlexNet, self).__init__(
+        super().__init__(
             pre_trained=pre_trained,
             feature_extract=feature_extract,
             num_channels=num_channels,

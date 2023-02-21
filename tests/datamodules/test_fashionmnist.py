@@ -1,13 +1,14 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Tests for FashionMNIST PyTorch LightningDataModule module in `torchfl` package."""
-import pytest
-from torchfl.datamodules.fashionmnist import FashionMNISTDataModule
 from collections import Counter
 
+import pytest
 
-@pytest.fixture
+from torchfl.datamodules.fashionmnist import FashionMNISTDataModule
+
+
+@pytest.fixture()
 def fashionmnist_data_module():
     """Fixture for FashionMNIST PyTorch LightningDataModule
 
@@ -80,7 +81,7 @@ def test_fashionmnist_federated_non_iid_split(fashionmnist_data_module):
     fashionmnist_data_module.setup(stage="fit")
     dataloader = fashionmnist_data_module.federated_non_iid_dataloader()
     assert len(dataloader.keys()) == 10
-    all_freq = list()
+    all_freq = []
     for i in range(10):
         assert len(dataloader[i].dataset) == 6000
         frequency = Counter(list(dataloader[i].dataset.targets))

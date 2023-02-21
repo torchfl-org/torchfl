@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Sub-package for state-of-the-art model implementations pre-trained by torchvision and used by the core models provided by torchfl.
 
 Available modules:

@@ -1,103 +1,170 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Contains the PyTorch Lightning wrapper modules for CIFAR10 and CIFAR100 dataset."""
 
 import enum
-from typing import List, Optional, Type, Union, Dict, Any, Tuple
+from typing import Any
+
+import pytorch_lightning as pl
+import torch.nn as nn
+from torch import Tensor, optim
+
+from torchfl.compatibility import OPTIMIZERS_BY_NAME, OPTIMIZERS_TYPE
 from torchfl.federated.fl_params import FLParams
 from torchfl.models.core.cifar.cifar10.alexnet import AlexNet as CIFAR10AlexNet
 from torchfl.models.core.cifar.cifar10.densenet import (
     DenseNet121 as CIFAR10DenseNet121,
+)
+from torchfl.models.core.cifar.cifar10.densenet import (
     DenseNet161 as CIFAR10DenseNet161,
+)
+from torchfl.models.core.cifar.cifar10.densenet import (
     DenseNet169 as CIFAR10DenseNet169,
+)
+from torchfl.models.core.cifar.cifar10.densenet import (
     DenseNet201 as CIFAR10DenseNet201,
 )
 from torchfl.models.core.cifar.cifar10.lenet import LeNet as CIFAR10LeNet
 from torchfl.models.core.cifar.cifar10.mobilenet import (
     MobileNetV2 as CIFAR10MobileNetV2,
-    MobileNetV3Small as CIFAR10MobileNetV3Small,
+)
+from torchfl.models.core.cifar.cifar10.mobilenet import (
     MobileNetV3Large as CIFAR10MobileNetV3Large,
+)
+from torchfl.models.core.cifar.cifar10.mobilenet import (
+    MobileNetV3Small as CIFAR10MobileNetV3Small,
 )
 from torchfl.models.core.cifar.cifar10.resnet import (
     ResNet18 as CIFAR10ResNet18,
+)
+from torchfl.models.core.cifar.cifar10.resnet import (
     ResNet34 as CIFAR10ResNet34,
+)
+from torchfl.models.core.cifar.cifar10.resnet import (
     ResNet50 as CIFAR10ResNet50,
+)
+from torchfl.models.core.cifar.cifar10.resnet import (
     ResNet101 as CIFAR10ResNet101,
+)
+from torchfl.models.core.cifar.cifar10.resnet import (
     ResNet152 as CIFAR10ResNet152,
+)
+from torchfl.models.core.cifar.cifar10.resnet import (
     ResNext50_32X4D as CIFAR10ResNext50_32X4D,
+)
+from torchfl.models.core.cifar.cifar10.resnet import (
     ResNext101_32X8D as CIFAR10ResNext101_32X8D,
+)
+from torchfl.models.core.cifar.cifar10.resnet import (
     WideResNet50_2 as CIFAR10WideResNet50_2,
+)
+from torchfl.models.core.cifar.cifar10.resnet import (
     WideResNet101_2 as CIFAR10WideResNet101_2,
 )
 from torchfl.models.core.cifar.cifar10.shufflenetv2 import (
     ShuffleNetv2_x0_5 as CIFAR10ShuffleNetv2_x0_5,
+)
+from torchfl.models.core.cifar.cifar10.shufflenetv2 import (
     ShuffleNetv2_x1_0 as CIFAR10ShuffleNetv2_x1_0,
+)
+from torchfl.models.core.cifar.cifar10.shufflenetv2 import (
     ShuffleNetv2_x1_5 as CIFAR10ShuffleNetv2_x1_5,
+)
+from torchfl.models.core.cifar.cifar10.shufflenetv2 import (
     ShuffleNetv2_x2_0 as CIFAR10ShuffleNetv2_x2_0,
 )
 from torchfl.models.core.cifar.cifar10.squeezenet import (
     SqueezeNet1_0 as CIFAR10SqueezeNet1_0,
+)
+from torchfl.models.core.cifar.cifar10.squeezenet import (
     SqueezeNet1_1 as CIFAR10SqueezeNet1_1,
 )
-from torchfl.models.core.cifar.cifar10.vgg import (
-    VGG11 as CIFAR10VGG11,
-    VGG11_BN as CIFAR10VGG11_BN,
-    VGG13 as CIFAR10VGG13,
-    VGG13_BN as CIFAR10VGG13_BN,
-    VGG16 as CIFAR10VGG16,
-    VGG16_BN as CIFAR10VGG16_BN,
-    VGG19 as CIFAR10VGG19,
-    VGG19_BN as CIFAR10VGG19_BN,
+from torchfl.models.core.cifar.cifar10.vgg import VGG11 as CIFAR10VGG11
+from torchfl.models.core.cifar.cifar10.vgg import VGG11_BN as CIFAR10VGG11_BN
+from torchfl.models.core.cifar.cifar10.vgg import VGG13 as CIFAR10VGG13
+from torchfl.models.core.cifar.cifar10.vgg import VGG13_BN as CIFAR10VGG13_BN
+from torchfl.models.core.cifar.cifar10.vgg import VGG16 as CIFAR10VGG16
+from torchfl.models.core.cifar.cifar10.vgg import VGG16_BN as CIFAR10VGG16_BN
+from torchfl.models.core.cifar.cifar10.vgg import VGG19 as CIFAR10VGG19
+from torchfl.models.core.cifar.cifar10.vgg import VGG19_BN as CIFAR10VGG19_BN
+from torchfl.models.core.cifar.cifar100.alexnet import (
+    AlexNet as CIFAR100AlexNet,
 )
-from torchfl.models.core.cifar.cifar100.alexnet import AlexNet as CIFAR100AlexNet
 from torchfl.models.core.cifar.cifar100.densenet import (
     DenseNet121 as CIFAR100DenseNet121,
+)
+from torchfl.models.core.cifar.cifar100.densenet import (
     DenseNet161 as CIFAR100DenseNet161,
+)
+from torchfl.models.core.cifar.cifar100.densenet import (
     DenseNet169 as CIFAR100DenseNet169,
+)
+from torchfl.models.core.cifar.cifar100.densenet import (
     DenseNet201 as CIFAR100DenseNet201,
 )
 from torchfl.models.core.cifar.cifar100.lenet import LeNet as CIFAR100LeNet
 from torchfl.models.core.cifar.cifar100.mobilenet import (
     MobileNetV2 as CIFAR100MobileNetV2,
-    MobileNetV3Small as CIFAR100MobileNetV3Small,
+)
+from torchfl.models.core.cifar.cifar100.mobilenet import (
     MobileNetV3Large as CIFAR100MobileNetV3Large,
+)
+from torchfl.models.core.cifar.cifar100.mobilenet import (
+    MobileNetV3Small as CIFAR100MobileNetV3Small,
 )
 from torchfl.models.core.cifar.cifar100.resnet import (
     ResNet18 as CIFAR100ResNet18,
+)
+from torchfl.models.core.cifar.cifar100.resnet import (
     ResNet34 as CIFAR100ResNet34,
+)
+from torchfl.models.core.cifar.cifar100.resnet import (
     ResNet50 as CIFAR100ResNet50,
+)
+from torchfl.models.core.cifar.cifar100.resnet import (
     ResNet101 as CIFAR100ResNet101,
+)
+from torchfl.models.core.cifar.cifar100.resnet import (
     ResNet152 as CIFAR100ResNet152,
+)
+from torchfl.models.core.cifar.cifar100.resnet import (
     ResNext50_32X4D as CIFAR100ResNext50_32X4D,
+)
+from torchfl.models.core.cifar.cifar100.resnet import (
     ResNext101_32X8D as CIFAR100ResNext101_32X8D,
+)
+from torchfl.models.core.cifar.cifar100.resnet import (
     WideResNet50_2 as CIFAR100WideResNet50_2,
+)
+from torchfl.models.core.cifar.cifar100.resnet import (
     WideResNet101_2 as CIFAR100WideResNet101_2,
 )
 from torchfl.models.core.cifar.cifar100.shufflenetv2 import (
     ShuffleNetv2_x0_5 as CIFAR100ShuffleNetv2_x0_5,
+)
+from torchfl.models.core.cifar.cifar100.shufflenetv2 import (
     ShuffleNetv2_x1_0 as CIFAR100ShuffleNetv2_x1_0,
+)
+from torchfl.models.core.cifar.cifar100.shufflenetv2 import (
     ShuffleNetv2_x1_5 as CIFAR100ShuffleNetv2_x1_5,
+)
+from torchfl.models.core.cifar.cifar100.shufflenetv2 import (
     ShuffleNetv2_x2_0 as CIFAR100ShuffleNetv2_x2_0,
 )
 from torchfl.models.core.cifar.cifar100.squeezenet import (
     SqueezeNet1_0 as CIFAR100SqueezeNet1_0,
+)
+from torchfl.models.core.cifar.cifar100.squeezenet import (
     SqueezeNet1_1 as CIFAR100SqueezeNet1_1,
 )
-from torchfl.models.core.cifar.cifar100.vgg import (
-    VGG11 as CIFAR100VGG11,
-    VGG11_BN as CIFAR100VGG11_BN,
-    VGG13 as CIFAR100VGG13,
-    VGG13_BN as CIFAR100VGG13_BN,
-    VGG16 as CIFAR100VGG16,
-    VGG16_BN as CIFAR100VGG16_BN,
-    VGG19 as CIFAR100VGG19,
-    VGG19_BN as CIFAR100VGG19_BN,
-)
-import pytorch_lightning as pl
-import torch.nn as nn
-from torchfl.compatibility import OPTIMIZERS_TYPE, OPTIMIZERS_BY_NAME
-from torch import Tensor, optim
+from torchfl.models.core.cifar.cifar100.vgg import VGG11 as CIFAR100VGG11
+from torchfl.models.core.cifar.cifar100.vgg import VGG11_BN as CIFAR100VGG11_BN
+from torchfl.models.core.cifar.cifar100.vgg import VGG13 as CIFAR100VGG13
+from torchfl.models.core.cifar.cifar100.vgg import VGG13_BN as CIFAR100VGG13_BN
+from torchfl.models.core.cifar.cifar100.vgg import VGG16 as CIFAR100VGG16
+from torchfl.models.core.cifar.cifar100.vgg import VGG16_BN as CIFAR100VGG16_BN
+from torchfl.models.core.cifar.cifar100.vgg import VGG19 as CIFAR100VGG19
+from torchfl.models.core.cifar.cifar100.vgg import VGG19_BN as CIFAR100VGG19_BN
 
 pl.seed_everything(42)
 
@@ -105,7 +172,7 @@ pl.seed_everything(42)
 # Begin Utils #
 ###############
 
-CIFAR_MODELS: List[str] = [
+CIFAR_MODELS: list[str] = [
     "alexnet",
     "densenet121",
     "densenet161",
@@ -178,73 +245,73 @@ class CIFAR_MODELS_ENUM(enum.Enum):
     VGG19_BN = "vgg19_bn"
 
 
-CIFAR10_MODEL_TYPE = Union[
-    Type[CIFAR10AlexNet],
-    Type[CIFAR10DenseNet121],
-    Type[CIFAR10DenseNet161],
-    Type[CIFAR10DenseNet169],
-    Type[CIFAR10DenseNet201],
-    Type[CIFAR10LeNet],
-    Type[CIFAR10MobileNetV2],
-    Type[CIFAR10MobileNetV3Large],
-    Type[CIFAR10MobileNetV3Small],
-    Type[CIFAR10ResNet18],
-    Type[CIFAR10ResNet34],
-    Type[CIFAR10ResNet50],
-    Type[CIFAR10ResNet101],
-    Type[CIFAR10ResNet152],
-    Type[CIFAR10ResNext50_32X4D],
-    Type[CIFAR10ResNext101_32X8D],
-    Type[CIFAR10ShuffleNetv2_x0_5],
-    Type[CIFAR10ShuffleNetv2_x1_0],
-    Type[CIFAR10ShuffleNetv2_x1_5],
-    Type[CIFAR10ShuffleNetv2_x2_0],
-    Type[CIFAR10SqueezeNet1_0],
-    Type[CIFAR10SqueezeNet1_1],
-    Type[CIFAR10VGG11],
-    Type[CIFAR10VGG11_BN],
-    Type[CIFAR10VGG13],
-    Type[CIFAR10VGG13_BN],
-    Type[CIFAR10VGG16],
-    Type[CIFAR10VGG16_BN],
-    Type[CIFAR10VGG19],
-    Type[CIFAR10VGG19_BN],
-]
+CIFAR10_MODEL_TYPE = (
+    type[CIFAR10AlexNet]
+    | type[CIFAR10DenseNet121]
+    | type[CIFAR10DenseNet161]
+    | type[CIFAR10DenseNet169]
+    | type[CIFAR10DenseNet201]
+    | type[CIFAR10LeNet]
+    | type[CIFAR10MobileNetV2]
+    | type[CIFAR10MobileNetV3Large]
+    | type[CIFAR10MobileNetV3Small]
+    | type[CIFAR10ResNet18]
+    | type[CIFAR10ResNet34]
+    | type[CIFAR10ResNet50]
+    | type[CIFAR10ResNet101]
+    | type[CIFAR10ResNet152]
+    | type[CIFAR10ResNext50_32X4D]
+    | type[CIFAR10ResNext101_32X8D]
+    | type[CIFAR10ShuffleNetv2_x0_5]
+    | type[CIFAR10ShuffleNetv2_x1_0]
+    | type[CIFAR10ShuffleNetv2_x1_5]
+    | type[CIFAR10ShuffleNetv2_x2_0]
+    | type[CIFAR10SqueezeNet1_0]
+    | type[CIFAR10SqueezeNet1_1]
+    | type[CIFAR10VGG11]
+    | type[CIFAR10VGG11_BN]
+    | type[CIFAR10VGG13]
+    | type[CIFAR10VGG13_BN]
+    | type[CIFAR10VGG16]
+    | type[CIFAR10VGG16_BN]
+    | type[CIFAR10VGG19]
+    | type[CIFAR10VGG19_BN]
+)
 
-CIFAR100_MODEL_TYPE = Union[
-    Type[CIFAR100AlexNet],
-    Type[CIFAR100DenseNet121],
-    Type[CIFAR100DenseNet161],
-    Type[CIFAR100DenseNet169],
-    Type[CIFAR100DenseNet201],
-    Type[CIFAR100LeNet],
-    Type[CIFAR100MobileNetV2],
-    Type[CIFAR100MobileNetV3Large],
-    Type[CIFAR100MobileNetV3Small],
-    Type[CIFAR100ResNet18],
-    Type[CIFAR100ResNet34],
-    Type[CIFAR100ResNet50],
-    Type[CIFAR100ResNet101],
-    Type[CIFAR100ResNet152],
-    Type[CIFAR100ResNext50_32X4D],
-    Type[CIFAR100ResNext101_32X8D],
-    Type[CIFAR100ShuffleNetv2_x0_5],
-    Type[CIFAR100ShuffleNetv2_x1_0],
-    Type[CIFAR100ShuffleNetv2_x1_5],
-    Type[CIFAR100ShuffleNetv2_x2_0],
-    Type[CIFAR100SqueezeNet1_0],
-    Type[CIFAR100SqueezeNet1_1],
-    Type[CIFAR100VGG11],
-    Type[CIFAR100VGG11_BN],
-    Type[CIFAR100VGG13],
-    Type[CIFAR100VGG13_BN],
-    Type[CIFAR100VGG16],
-    Type[CIFAR100VGG16_BN],
-    Type[CIFAR100VGG19],
-    Type[CIFAR100VGG19_BN],
-]
+CIFAR100_MODEL_TYPE = (
+    type[CIFAR100AlexNet]
+    | type[CIFAR100DenseNet121]
+    | type[CIFAR100DenseNet161]
+    | type[CIFAR100DenseNet169]
+    | type[CIFAR100DenseNet201]
+    | type[CIFAR100LeNet]
+    | type[CIFAR100MobileNetV2]
+    | type[CIFAR100MobileNetV3Large]
+    | type[CIFAR100MobileNetV3Small]
+    | type[CIFAR100ResNet18]
+    | type[CIFAR100ResNet34]
+    | type[CIFAR100ResNet50]
+    | type[CIFAR100ResNet101]
+    | type[CIFAR100ResNet152]
+    | type[CIFAR100ResNext50_32X4D]
+    | type[CIFAR100ResNext101_32X8D]
+    | type[CIFAR100ShuffleNetv2_x0_5]
+    | type[CIFAR100ShuffleNetv2_x1_0]
+    | type[CIFAR100ShuffleNetv2_x1_5]
+    | type[CIFAR100ShuffleNetv2_x2_0]
+    | type[CIFAR100SqueezeNet1_0]
+    | type[CIFAR100SqueezeNet1_1]
+    | type[CIFAR100VGG11]
+    | type[CIFAR100VGG11_BN]
+    | type[CIFAR100VGG13]
+    | type[CIFAR100VGG13_BN]
+    | type[CIFAR100VGG16]
+    | type[CIFAR100VGG16_BN]
+    | type[CIFAR100VGG19]
+    | type[CIFAR100VGG19_BN]
+)
 
-CIFAR10_MODELS_MAPPING: Dict[str, CIFAR10_MODEL_TYPE] = {
+CIFAR10_MODELS_MAPPING: dict[str, CIFAR10_MODEL_TYPE] = {
     "alexnet": CIFAR10AlexNet,
     "densenet121": CIFAR10DenseNet121,
     "densenet161": CIFAR10DenseNet161,
@@ -279,7 +346,7 @@ CIFAR10_MODELS_MAPPING: Dict[str, CIFAR10_MODEL_TYPE] = {
     "vgg19_bn": CIFAR10VGG19_BN,
 }
 
-CIFAR100_MODELS_MAPPING: Dict[str, CIFAR100_MODEL_TYPE] = {
+CIFAR100_MODELS_MAPPING: dict[str, CIFAR100_MODEL_TYPE] = {
     "alexnet": CIFAR100AlexNet,
     "densenet121": CIFAR100DenseNet121,
     "densenet161": CIFAR100DenseNet161,
@@ -318,9 +385,8 @@ CIFAR100_MODELS_MAPPING: Dict[str, CIFAR100_MODEL_TYPE] = {
 def create_model(
     dataset_name: str,
     model_name: str,
-    model_hparams: Optional[
-        Dict[str, Union[CIFAR10_MODEL_TYPE, CIFAR100_MODEL_TYPE]]
-    ] = None,
+    model_hparams: dict[str, CIFAR10_MODEL_TYPE | CIFAR100_MODEL_TYPE]
+    | None = None,
 ) -> nn.Module:
     """Helper function to create a model from the available options.
 
@@ -373,9 +439,9 @@ class CIFAR10(pl.LightningModule):
         self,
         model_name: CIFAR_MODELS_ENUM,
         optimizer_name: OPTIMIZERS_TYPE,
-        optimizer_hparams: Dict[str, Any],
-        model_hparams: Optional[Dict[str, Any]] = None,
-        fl_hparams: Optional[FLParams] = None,
+        optimizer_hparams: dict[str, Any],
+        model_hparams: dict[str, Any] | None = None,
+        fl_hparams: FLParams | None = None,
     ) -> None:
         """Default constructor.
 
@@ -392,17 +458,19 @@ class CIFAR10(pl.LightningModule):
             model_name=model_name.value,
             model_hparams=model_hparams,
         )
-        self.fl_hparams: Optional[Dict[str, Any]] = (
+        self.fl_hparams: dict[str, Any] | None = (
             fl_hparams.as_dict() if fl_hparams else None
         )
-        combined_hparams: Dict[str, Any] = {
+        combined_hparams: dict[str, Any] = {
             "model_hparams": vars(self.model.hparams),
             "optimizer_hparams": {
                 "optimizer_name": optimizer_name,
                 "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name.value],
                 "config": optimizer_hparams,
             },
-            "fl_hparams": vars(fl_hparams.as_simple_namespace()) if fl_hparams else {},
+            "fl_hparams": vars(fl_hparams.as_simple_namespace())
+            if fl_hparams
+            else {},
         }
         self.save_hyperparameters(combined_hparams)
         self.loss_module = nn.CrossEntropyLoss()
@@ -430,7 +498,7 @@ class CIFAR10(pl.LightningModule):
         return [optimizer], [scheduler]
 
     def training_step(  # type: ignore
-        self, batch: Tuple[Tensor, Tensor], batch_idx: int
+        self, batch: tuple[Tensor, Tensor], batch_idx: int
     ) -> Tensor:  # type: ignore
         """Training step
 
@@ -468,7 +536,7 @@ class CIFAR10(pl.LightningModule):
         return loss
 
     def validation_step(  # type: ignore
-        self, batch: Tuple[Tensor, Tensor], batch_idx: int
+        self, batch: tuple[Tensor, Tensor], batch_idx: int
     ) -> None:  # type: ignore
         """Validation step
 
@@ -503,7 +571,7 @@ class CIFAR10(pl.LightningModule):
             self.log("test_acc", acc, on_step=False, on_epoch=True)
 
     def test_step(  # type: ignore
-        self, batch: Tuple[Tensor, Tensor], batch_idx: int
+        self, batch: tuple[Tensor, Tensor], batch_idx: int
     ) -> None:  # type: ignore
         """Test step
 
@@ -545,9 +613,9 @@ class CIFAR100(pl.LightningModule):
         self,
         model_name: CIFAR_MODELS_ENUM,
         optimizer_name: OPTIMIZERS_TYPE,
-        optimizer_hparams: Dict[str, Any],
-        model_hparams: Optional[Dict[str, Any]] = None,
-        fl_hparams: Optional[FLParams] = None,
+        optimizer_hparams: dict[str, Any],
+        model_hparams: dict[str, Any] | None = None,
+        fl_hparams: FLParams | None = None,
     ) -> None:
         """Default constructor.
 
@@ -564,17 +632,19 @@ class CIFAR100(pl.LightningModule):
             model_name=model_name.value,
             model_hparams=model_hparams,
         )
-        self.fl_hparams: Optional[Dict[str, Any]] = (
+        self.fl_hparams: dict[str, Any] | None = (
             fl_hparams.as_dict() if fl_hparams else None
         )
-        combined_hparams: Dict[str, Any] = {
+        combined_hparams: dict[str, Any] = {
             "model_hparams": vars(self.model.hparams),
             "optimizer_hparams": {
                 "optimizer_name": optimizer_name,
                 "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name.value],
                 "config": optimizer_hparams,
             },
-            "fl_hparams": vars(fl_hparams.as_simple_namespace()) if fl_hparams else {},
+            "fl_hparams": vars(fl_hparams.as_simple_namespace())
+            if fl_hparams
+            else {},
         }
         self.save_hyperparameters(combined_hparams)
         self.loss_module = nn.CrossEntropyLoss()
@@ -602,7 +672,7 @@ class CIFAR100(pl.LightningModule):
         return [optimizer], [scheduler]
 
     def training_step(  # type: ignore
-        self, batch: Tuple[Tensor, Tensor], batch_idx: int
+        self, batch: tuple[Tensor, Tensor], batch_idx: int
     ) -> Tensor:  # type: ignore
         """Training step
 
@@ -640,7 +710,7 @@ class CIFAR100(pl.LightningModule):
         return loss
 
     def validation_step(  # type: ignore
-        self, batch: Tuple[Tensor, Tensor], batch_idx: int
+        self, batch: tuple[Tensor, Tensor], batch_idx: int
     ) -> None:  # type: ignore
         """Validation step
 
@@ -675,7 +745,7 @@ class CIFAR100(pl.LightningModule):
             self.log("test_acc", acc, on_step=False, on_epoch=True)
 
     def test_step(  # type: ignore
-        self, batch: Tuple[Tensor, Tensor], batch_idx: int
+        self, batch: tuple[Tensor, Tensor], batch_idx: int
     ) -> None:  # type: ignore
         """Test step
 

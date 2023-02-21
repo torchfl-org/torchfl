@@ -1,9 +1,8 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Contains the MLP model implementations for MNIST dataset."""
 
-from torchfl.models.sota.mlp import MLP as BaseMLP  # type: ignore[attr-defined]
+from torchfl.models.sota.mlp import MLP as BaseMLP
 
 
 class MLP(BaseMLP):
@@ -15,7 +14,7 @@ class MLP(BaseMLP):
             - img_w (int, optional): Width of the input image. Defaults to 28.
             - img_h (int, optional): Height of the input image. Defaults to 28.
         """
-        super(MLP, self).__init__(
+        super().__init__(
             num_classes=10,
             num_channels=num_channels,
             img_w=img_w,

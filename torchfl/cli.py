@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Console script for torchfl."""
 from argparse import ArgumentParser, Namespace, _ArgumentGroup

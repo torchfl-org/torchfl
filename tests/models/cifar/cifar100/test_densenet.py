@@ -1,10 +1,12 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Tests for DenseNet in `torchfl` package."""
-import pytest
-from torchvision import datasets, transforms
 import os
+
+import pytest
+import torch
+from torchvision import datasets, transforms
+
 from torchfl.compatibility import TORCHFL_DIR
 from torchfl.models.core.cifar.cifar100.densenet import (
     DenseNet121,
@@ -12,7 +14,6 @@ from torchfl.models.core.cifar.cifar100.densenet import (
     DenseNet169,
     DenseNet201,
 )
-import torch
 
 data_transforms = {
     "train": transforms.Compose(
@@ -26,7 +27,7 @@ data_transforms = {
 }
 
 
-@pytest.fixture
+@pytest.fixture()
 def three_channel_loader():
     """Fixture for multi-channel dataset.
 

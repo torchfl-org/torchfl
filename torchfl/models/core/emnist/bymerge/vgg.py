@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Contains the VGG model implementations for EMNIST (bymerge) dataset.
 
@@ -14,20 +13,20 @@ Contains:
     - VGG19_BN
 """
 
-from torchfl.models.sota.vgg import (  # type: ignore[attr-defined]
-    VGG11 as BaseVGG11,
-    VGG11_BN as BaseVGG11_BN,
-    VGG13 as BaseVGG13,
-    VGG13_BN as BaseVGG13_BN,
-    VGG16 as BaseVGG16,
-    VGG16_BN as BaseVGG16_BN,
-    VGG19 as BaseVGG19,
-    VGG19_BN as BaseVGG19_BN,
-)
+from torchfl.models.sota.vgg import VGG11 as BaseVGG11
+from torchfl.models.sota.vgg import VGG11_BN as BaseVGG11_BN
+from torchfl.models.sota.vgg import VGG13 as BaseVGG13
+from torchfl.models.sota.vgg import VGG13_BN as BaseVGG13_BN
+from torchfl.models.sota.vgg import VGG16 as BaseVGG16
+from torchfl.models.sota.vgg import VGG16_BN as BaseVGG16_BN
+from torchfl.models.sota.vgg import VGG19 as BaseVGG19
+from torchfl.models.sota.vgg import VGG19_BN as BaseVGG19_BN
 
 
 class VGG11(BaseVGG11):
-    def __init__(self, pre_trained=True, feature_extract=False, num_channels=1) -> None:
+    def __init__(
+        self, pre_trained=True, feature_extract=False, num_channels=1
+    ) -> None:
         """Constructor
 
         Args:
@@ -35,7 +34,7 @@ class VGG11(BaseVGG11):
             - feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
             - num_channels (int, optional): Number of incoming channels. Defaults to 1.
         """
-        super(VGG11, self).__init__(
+        super().__init__(
             pre_trained=pre_trained,
             feature_extract=feature_extract,
             num_classes=47,
@@ -45,7 +44,9 @@ class VGG11(BaseVGG11):
 
 
 class VGG11_BN(BaseVGG11_BN):
-    def __init__(self, pre_trained=True, feature_extract=False, num_channels=1) -> None:
+    def __init__(
+        self, pre_trained=True, feature_extract=False, num_channels=1
+    ) -> None:
         """Constructor
 
         Args:
@@ -53,7 +54,7 @@ class VGG11_BN(BaseVGG11_BN):
             - feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
             - num_channels (int, optional): Number of incoming channels. Defaults to 1.
         """
-        super(VGG11_BN, self).__init__(
+        super().__init__(
             pre_trained=pre_trained,
             feature_extract=feature_extract,
             num_classes=47,
@@ -63,7 +64,9 @@ class VGG11_BN(BaseVGG11_BN):
 
 
 class VGG13(BaseVGG13):
-    def __init__(self, pre_trained=True, feature_extract=False, num_channels=1) -> None:
+    def __init__(
+        self, pre_trained=True, feature_extract=False, num_channels=1
+    ) -> None:
         """Constructor
 
         Args:
@@ -71,7 +74,7 @@ class VGG13(BaseVGG13):
             - feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
             - num_channels (int, optional): Number of incoming channels. Defaults to 1.
         """
-        super(VGG13, self).__init__(
+        super().__init__(
             pre_trained=pre_trained,
             feature_extract=feature_extract,
             num_classes=47,
@@ -81,7 +84,9 @@ class VGG13(BaseVGG13):
 
 
 class VGG13_BN(BaseVGG13_BN):
-    def __init__(self, pre_trained=True, feature_extract=False, num_channels=1) -> None:
+    def __init__(
+        self, pre_trained=True, feature_extract=False, num_channels=1
+    ) -> None:
         """Constructor
 
         Args:
@@ -89,7 +94,7 @@ class VGG13_BN(BaseVGG13_BN):
             - feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
             - num_channels (int, optional): Number of incoming channels. Defaults to 1.
         """
-        super(VGG13_BN, self).__init__(
+        super().__init__(
             pre_trained=pre_trained,
             feature_extract=feature_extract,
             num_classes=47,
@@ -99,7 +104,9 @@ class VGG13_BN(BaseVGG13_BN):
 
 
 class VGG16(BaseVGG16):
-    def __init__(self, pre_trained=True, feature_extract=False, num_channels=1) -> None:
+    def __init__(
+        self, pre_trained=True, feature_extract=False, num_channels=1
+    ) -> None:
         """Constructor
 
         Args:
@@ -107,7 +114,7 @@ class VGG16(BaseVGG16):
             - feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
             - num_channels (int, optional): Number of incoming channels. Defaults to 1.
         """
-        super(VGG16, self).__init__(
+        super().__init__(
             pre_trained=pre_trained,
             feature_extract=feature_extract,
             num_classes=47,
@@ -117,7 +124,9 @@ class VGG16(BaseVGG16):
 
 
 class VGG16_BN(BaseVGG16_BN):
-    def __init__(self, pre_trained=True, feature_extract=False, num_channels=1) -> None:
+    def __init__(
+        self, pre_trained=True, feature_extract=False, num_channels=1
+    ) -> None:
         """Constructor
 
         Args:
@@ -125,7 +134,7 @@ class VGG16_BN(BaseVGG16_BN):
             - feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
             - num_channels (int, optional): Number of incoming channels. Defaults to 1.
         """
-        super(VGG16_BN, self).__init__(
+        super().__init__(
             pre_trained=pre_trained,
             feature_extract=feature_extract,
             num_classes=47,
@@ -135,7 +144,9 @@ class VGG16_BN(BaseVGG16_BN):
 
 
 class VGG19(BaseVGG19):
-    def __init__(self, pre_trained=True, feature_extract=False, num_channels=1) -> None:
+    def __init__(
+        self, pre_trained=True, feature_extract=False, num_channels=1
+    ) -> None:
         """Constructor
 
         Args:
@@ -143,7 +154,7 @@ class VGG19(BaseVGG19):
             - feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
             - num_channels (int, optional): Number of incoming channels. Defaults to 1.
         """
-        super(VGG19, self).__init__(
+        super().__init__(
             pre_trained=pre_trained,
             feature_extract=feature_extract,
             num_classes=47,
@@ -153,7 +164,9 @@ class VGG19(BaseVGG19):
 
 
 class VGG19_BN(BaseVGG19_BN):
-    def __init__(self, pre_trained=True, feature_extract=False, num_channels=1) -> None:
+    def __init__(
+        self, pre_trained=True, feature_extract=False, num_channels=1
+    ) -> None:
         """Constructor
 
         Args:
@@ -161,7 +174,7 @@ class VGG19_BN(BaseVGG19_BN):
             - feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
             - num_channels (int, optional): Number of incoming channels. Defaults to 1.
         """
-        super(VGG19_BN, self).__init__(
+        super().__init__(
             pre_trained=pre_trained,
             feature_extract=feature_extract,
             num_classes=47,

@@ -1,21 +1,20 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Base Sampler class used in FL."""
 from abc import ABCMeta, abstractmethod
-from typing import Any, List
+from typing import Any
 
 
 class BaseSampler(metaclass=ABCMeta):
     """BaseSampler class used in FL."""
 
-    def __init__(self, all_agents: List[Any]) -> None:
+    def __init__(self, all_agents: list[Any]) -> None:
         """Constructor."""
         super().__init__()
-        self.agents: List[Any] = all_agents
+        self.agents: list[Any] = all_agents
 
     @abstractmethod
-    def sample(self, num: int) -> List[Any]:
+    def sample(self, num: int) -> list[Any]:
         """
         Sample agents.
 

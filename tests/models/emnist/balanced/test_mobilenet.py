@@ -1,17 +1,18 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Tests for MobileNet for EMNIST balanced in `torchfl` package."""
-import pytest
-from torchvision import datasets, transforms
 import os
+
+import pytest
+import torch
+from torchvision import datasets, transforms
+
 from torchfl.compatibility import TORCHFL_DIR
 from torchfl.models.core.emnist.balanced.mobilenet import (
     MobileNetV2,
-    MobileNetV3Small,
     MobileNetV3Large,
+    MobileNetV3Small,
 )
-import torch
 
 data_transforms = {
     "train_single_channel": transforms.Compose(
@@ -34,7 +35,7 @@ data_transforms = {
 }
 
 
-@pytest.fixture
+@pytest.fixture()
 def single_channel_loader():
     """Fixture for single-channel dataset.
 
@@ -51,7 +52,7 @@ def single_channel_loader():
     )
 
 
-@pytest.fixture
+@pytest.fixture()
 def three_channel_loader():
     """Fixture for multi-channel dataset.
 
@@ -98,7 +99,9 @@ def test_mobilenetv3small_single_channel_ouput_shape(single_channel_loader):
     Args:
         emnist_loader (Dataset): PyTorch Dataset object for MNIST.
     """
-    model = MobileNetV3Small(pre_trained=True, feature_extract=True, num_channels=1)
+    model = MobileNetV3Small(
+        pre_trained=True, feature_extract=True, num_channels=1
+    )
     model.zero_grad()
     out = model(torch.reshape(single_channel_loader[0][0], (1, 1, 224, 224)))
     assert out.size() == torch.Size([1, 47])
@@ -110,7 +113,9 @@ def test_mobilenetv3small_3_channels_output_shape(three_channel_loader):
     Args:
         emnist_loader (Dataset): PyTorch Dataset object for MNIST.
     """
-    model = MobileNetV3Small(pre_trained=True, feature_extract=True, num_channels=3)
+    model = MobileNetV3Small(
+        pre_trained=True, feature_extract=True, num_channels=3
+    )
     model.zero_grad()
     out = model(torch.reshape(three_channel_loader[0][0], (1, 3, 224, 224)))
     assert out.size() == torch.Size([1, 47])
@@ -122,7 +127,9 @@ def test_mobilenetv3large_single_channel_ouput_shape(single_channel_loader):
     Args:
         emnist_loader (Dataset): PyTorch Dataset object for MNIST.
     """
-    model = MobileNetV3Large(pre_trained=True, feature_extract=True, num_channels=1)
+    model = MobileNetV3Large(
+        pre_trained=True, feature_extract=True, num_channels=1
+    )
     model.zero_grad()
     out = model(torch.reshape(single_channel_loader[0][0], (1, 1, 224, 224)))
     assert out.size() == torch.Size([1, 47])
@@ -134,7 +141,9 @@ def test_mobilenetv3large_3_channels_output_shape(three_channel_loader):
     Args:
         emnist_loader (Dataset): PyTorch Dataset object for MNIST.
     """
-    model = MobileNetV3Large(pre_trained=True, feature_extract=True, num_channels=3)
+    model = MobileNetV3Large(
+        pre_trained=True, feature_extract=True, num_channels=3
+    )
     model.zero_grad()
     out = model(torch.reshape(three_channel_loader[0][0], (1, 3, 224, 224)))
     assert out.size() == torch.Size([1, 47])

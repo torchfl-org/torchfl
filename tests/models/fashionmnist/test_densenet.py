@@ -1,10 +1,12 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Tests for DenseNet for FashionMNIST in `torchfl` package."""
-import pytest
-from torchvision import datasets, transforms
 import os
+
+import pytest
+import torch
+from torchvision import datasets, transforms
+
 from torchfl.compatibility import TORCHFL_DIR
 from torchfl.models.core.fashionmnist.densenet import (
     DenseNet121,
@@ -12,7 +14,6 @@ from torchfl.models.core.fashionmnist.densenet import (
     DenseNet169,
     DenseNet201,
 )
-import torch
 
 data_transforms = {
     "train_single_channel": transforms.Compose(
@@ -35,7 +36,7 @@ data_transforms = {
 }
 
 
-@pytest.fixture
+@pytest.fixture()
 def fashionmnist_single_channel_loader():
     """Fixture for FashionMNIST, single-channel dataset.
 
@@ -51,7 +52,7 @@ def fashionmnist_single_channel_loader():
     )
 
 
-@pytest.fixture
+@pytest.fixture()
 def fashionmnist_3_channel_loader():
     """Fixture for FashionMNIST, multi-channel dataset.
 
@@ -67,7 +68,9 @@ def fashionmnist_3_channel_loader():
     )
 
 
-def test_densenet121_single_channel_ouput_shape(fashionmnist_single_channel_loader):
+def test_densenet121_single_channel_ouput_shape(
+    fashionmnist_single_channel_loader,
+):
     """Testing the AlexNet output for a single-channel FashionMNIST image.
 
     Args:
@@ -76,7 +79,9 @@ def test_densenet121_single_channel_ouput_shape(fashionmnist_single_channel_load
     model = DenseNet121(pre_trained=True, feature_extract=True, num_channels=1)
     model.zero_grad()
     out = model(
-        torch.reshape(fashionmnist_single_channel_loader[0][0], (1, 1, 224, 224))
+        torch.reshape(
+            fashionmnist_single_channel_loader[0][0], (1, 1, 224, 224)
+        )
     )
     assert out.size() == torch.Size([1, 10])
 
@@ -89,11 +94,15 @@ def test_densenet121_3_channels_output_shape(fashionmnist_3_channel_loader):
     """
     model = DenseNet121(pre_trained=True, feature_extract=True, num_channels=3)
     model.zero_grad()
-    out = model(torch.reshape(fashionmnist_3_channel_loader[0][0], (1, 3, 224, 224)))
+    out = model(
+        torch.reshape(fashionmnist_3_channel_loader[0][0], (1, 3, 224, 224))
+    )
     assert out.size() == torch.Size([1, 10])
 
 
-def test_densenet161_single_channel_ouput_shape(fashionmnist_single_channel_loader):
+def test_densenet161_single_channel_ouput_shape(
+    fashionmnist_single_channel_loader,
+):
     """Testing the AlexNet output for a single-channel FashionMNIST image.
 
     Args:
@@ -102,7 +111,9 @@ def test_densenet161_single_channel_ouput_shape(fashionmnist_single_channel_load
     model = DenseNet161(pre_trained=True, feature_extract=True, num_channels=1)
     model.zero_grad()
     out = model(
-        torch.reshape(fashionmnist_single_channel_loader[0][0], (1, 1, 224, 224))
+        torch.reshape(
+            fashionmnist_single_channel_loader[0][0], (1, 1, 224, 224)
+        )
     )
     assert out.size() == torch.Size([1, 10])
 
@@ -115,11 +126,15 @@ def test_densenet161_3_channels_output_shape(fashionmnist_3_channel_loader):
     """
     model = DenseNet161(pre_trained=True, feature_extract=True, num_channels=3)
     model.zero_grad()
-    out = model(torch.reshape(fashionmnist_3_channel_loader[0][0], (1, 3, 224, 224)))
+    out = model(
+        torch.reshape(fashionmnist_3_channel_loader[0][0], (1, 3, 224, 224))
+    )
     assert out.size() == torch.Size([1, 10])
 
 
-def test_densenet169_single_channel_ouput_shape(fashionmnist_single_channel_loader):
+def test_densenet169_single_channel_ouput_shape(
+    fashionmnist_single_channel_loader,
+):
     """Testing the AlexNet output for a single-channel FashionMNIST image.
 
     Args:
@@ -128,7 +143,9 @@ def test_densenet169_single_channel_ouput_shape(fashionmnist_single_channel_load
     model = DenseNet169(pre_trained=True, feature_extract=True, num_channels=1)
     model.zero_grad()
     out = model(
-        torch.reshape(fashionmnist_single_channel_loader[0][0], (1, 1, 224, 224))
+        torch.reshape(
+            fashionmnist_single_channel_loader[0][0], (1, 1, 224, 224)
+        )
     )
     assert out.size() == torch.Size([1, 10])
 
@@ -141,11 +158,15 @@ def test_densenet169_3_channels_output_shape(fashionmnist_3_channel_loader):
     """
     model = DenseNet169(pre_trained=True, feature_extract=True, num_channels=3)
     model.zero_grad()
-    out = model(torch.reshape(fashionmnist_3_channel_loader[0][0], (1, 3, 224, 224)))
+    out = model(
+        torch.reshape(fashionmnist_3_channel_loader[0][0], (1, 3, 224, 224))
+    )
     assert out.size() == torch.Size([1, 10])
 
 
-def test_densenet201_single_channel_ouput_shape(fashionmnist_single_channel_loader):
+def test_densenet201_single_channel_ouput_shape(
+    fashionmnist_single_channel_loader,
+):
     """Testing the AlexNet output for a single-channel FashionMNIST image.
 
     Args:
@@ -154,7 +175,9 @@ def test_densenet201_single_channel_ouput_shape(fashionmnist_single_channel_load
     model = DenseNet201(pre_trained=True, feature_extract=True, num_channels=1)
     model.zero_grad()
     out = model(
-        torch.reshape(fashionmnist_single_channel_loader[0][0], (1, 1, 224, 224))
+        torch.reshape(
+            fashionmnist_single_channel_loader[0][0], (1, 1, 224, 224)
+        )
     )
     assert out.size() == torch.Size([1, 10])
 
@@ -167,5 +190,7 @@ def test_densenet201_3_channels_output_shape(fashionmnist_3_channel_loader):
     """
     model = DenseNet201(pre_trained=True, feature_extract=True, num_channels=3)
     model.zero_grad()
-    out = model(torch.reshape(fashionmnist_3_channel_loader[0][0], (1, 3, 224, 224)))
+    out = model(
+        torch.reshape(fashionmnist_3_channel_loader[0][0], (1, 3, 224, 224))
+    )
     assert out.size() == torch.Size([1, 10])

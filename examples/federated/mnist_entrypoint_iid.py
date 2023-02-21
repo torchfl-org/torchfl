@@ -1,39 +1,32 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """An example script for using FL entrypoint to setup a FL experiment on MNIST."""
 
-from torchfl.federated.entrypoint import Entrypoint
-from torchfl.federated.fl_params import FLParams
-from torchfl.federated.agents.v1 import V1Agent
-from torchfl.federated.aggregators.fedavg import FedAvgAggregator
-from torchfl.federated.samplers.random import RandomSampler
-
-from torchfl.datamodules.emnist import EMNISTDataModule, SUPPORTED_DATASETS_TYPE
-from torchfl.datamodules.fashionmnist import FashionMNISTDataModule
-from torchfl.models.wrapper.emnist import MNISTEMNIST, EMNIST_MODELS_ENUM
-from torchfl.models.wrapper.fashionmnist import FashionMNIST, FASHIONMNIST_MODELS_ENUM
-from torchfl.compatibility import OPTIMIZERS_TYPE, TORCHFL_DIR
+from typing import Any
 
 from torch.utils.data import DataLoader
-from torchvision import transforms
-from typing import Dict, List
+
+from torchfl.compatibility import OPTIMIZERS_TYPE
+from torchfl.datamodules.emnist import (
+    SUPPORTED_DATASETS_TYPE,
+    EMNISTDataModule,
+)
+from torchfl.federated.agents.v1 import V1Agent
+from torchfl.federated.aggregators.fedavg import FedAvgAggregator
+from torchfl.federated.entrypoint import Entrypoint
+from torchfl.federated.fl_params import FLParams
+from torchfl.federated.samplers.random import RandomSampler
+from torchfl.models.wrapper.emnist import EMNIST_MODELS_ENUM, MNISTEMNIST
 
 
 def initialize_agents(
-    fl_params: FLParams, agent_data_shard_map: Dict[int, DataLoader]
-) -> List[V1Agent]:
+    fl_params: FLParams, agent_data_shard_map: dict[int, DataLoader]
+) -> list[V1Agent]:
     """Initialize agents."""
     agents = []
     for agent_id in range(fl_params.num_agents):
         agent = V1Agent(
             id=agent_id,
-            # model=MNISTEMNIST(
-            #     model_name=EMNIST_MODELS_ENUM.LENET,
-            #     optimizer_name=OPTIMIZERS_TYPE.ADAM,
-            #     optimizer_hparams={"lr": 0.001},
-            #     fl_hparams=fl_params,
-            # ),
             model=MNISTEMNIST(
                 model_name=EMNIST_MODELS_ENUM.MOBILENETV3SMALL,
                 optimizer_name=OPTIMIZERS_TYPE.ADAM,
@@ -72,17 +65,11 @@ def main() -> None:
         model_hparams={"pre_trained": True, "feature_extract": True},
         fl_hparams=fl_params,
     )
-    # global_model = MNISTEMNIST(
-    #     model_name=EMNIST_MODELS_ENUM.LENET,
-    #     optimizer_name=OPTIMIZERS_TYPE.ADAM,
-    #     optimizer_hparams={"lr": 0.001},
-    #     fl_hparams=fl_params,
-    # )
     agent_data_shard_map = get_agent_data_shard_map().federated_iid_dataloader(
         num_workers=fl_params.num_agents,
         workers_batch_size=fl_params.local_train_batch_size,
     )
-    all_agents = initialize_agents(fl_params, agent_data_shard_map)
+    all_agents: Any = initialize_agents(fl_params, agent_data_shard_map)
     entrypoint = Entrypoint(
         global_model=global_model,
         global_datamodule=get_agent_data_shard_map(),

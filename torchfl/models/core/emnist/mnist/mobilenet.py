@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Contains the MobileNet model implementations for EMNIST (balanced) dataset.
 
@@ -9,15 +8,19 @@ Contains:
     - MobileNetV3Large
 """
 
-from torchfl.models.sota.mobilenet import (  # type: ignore[attr-defined]
-    MobileNetV2 as BaseMobileNetV2,
+from torchfl.models.sota.mobilenet import MobileNetV2 as BaseMobileNetV2
+from torchfl.models.sota.mobilenet import (
     MobileNetV3Large as BaseMobileNetV3Large,
+)
+from torchfl.models.sota.mobilenet import (
     MobileNetV3Small as BaseMobileNetV3Small,
 )
 
 
 class MobileNetV2(BaseMobileNetV2):
-    def __init__(self, pre_trained=True, feature_extract=False, num_channels=1) -> None:
+    def __init__(
+        self, pre_trained=True, feature_extract=False, num_channels=1
+    ) -> None:
         """Constructor
 
         Args:
@@ -25,7 +28,7 @@ class MobileNetV2(BaseMobileNetV2):
             - feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
             - num_channels (int, optional): Number of incoming channels. Defaults to 1.
         """
-        super(MobileNetV2, self).__init__(
+        super().__init__(
             pre_trained=pre_trained,
             feature_extract=feature_extract,
             num_classes=10,
@@ -35,7 +38,9 @@ class MobileNetV2(BaseMobileNetV2):
 
 
 class MobileNetV3Small(BaseMobileNetV3Small):
-    def __init__(self, pre_trained=True, feature_extract=False, num_channels=1) -> None:
+    def __init__(
+        self, pre_trained=True, feature_extract=False, num_channels=1
+    ) -> None:
         """Constructor
 
         Args:
@@ -43,7 +48,7 @@ class MobileNetV3Small(BaseMobileNetV3Small):
             - feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
             - num_channels (int, optional): Number of incoming channels. Defaults to 1.
         """
-        super(MobileNetV3Small, self).__init__(
+        super().__init__(
             pre_trained=pre_trained,
             feature_extract=feature_extract,
             num_classes=10,
@@ -53,7 +58,9 @@ class MobileNetV3Small(BaseMobileNetV3Small):
 
 
 class MobileNetV3Large(BaseMobileNetV3Large):
-    def __init__(self, pre_trained=True, feature_extract=False, num_channels=1) -> None:
+    def __init__(
+        self, pre_trained=True, feature_extract=False, num_channels=1
+    ) -> None:
         """Constructor
 
         Args:
@@ -61,7 +68,7 @@ class MobileNetV3Large(BaseMobileNetV3Large):
             - feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
             - num_channels (int, optional): Number of incoming channels. Defaults to 1.
         """
-        super(MobileNetV3Large, self).__init__(
+        super().__init__(
             pre_trained=pre_trained,
             feature_extract=feature_extract,
             num_classes=10,

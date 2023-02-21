@@ -1,10 +1,12 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Tests for ResNet in `torchfl` package."""
-import pytest
-from torchvision import datasets, transforms
 import os
+
+import pytest
+import torch
+from torchvision import datasets, transforms
+
 from torchfl.compatibility import TORCHFL_DIR
 from torchfl.models.core.cifar.cifar100.resnet import (
     ResNet18,
@@ -17,7 +19,6 @@ from torchfl.models.core.cifar.cifar100.resnet import (
     WideResNet50_2,
     WideResNet101_2,
 )
-import torch
 
 data_transforms = {
     "train": transforms.Compose(
@@ -31,7 +32,7 @@ data_transforms = {
 }
 
 
-@pytest.fixture
+@pytest.fixture()
 def three_channel_loader():
     """Fixture for multi-channel dataset.
 
@@ -113,7 +114,9 @@ def test_resnext50_32x4d_3_channels_output_shape(three_channel_loader):
     Args:
         loader (Dataset): PyTorch Dataset object.
     """
-    model = ResNext50_32X4D(pre_trained=True, feature_extract=True, num_channels=3)
+    model = ResNext50_32X4D(
+        pre_trained=True, feature_extract=True, num_channels=3
+    )
     model.zero_grad()
     out = model(torch.reshape(three_channel_loader[0][0], (1, 3, 224, 224)))
     assert out.size() == torch.Size([1, 100])
@@ -125,7 +128,9 @@ def test_resnext101_32x8d_3_channels_output_shape(three_channel_loader):
     Args:
         loader (Dataset): PyTorch Dataset object.
     """
-    model = ResNext101_32X8D(pre_trained=True, feature_extract=True, num_channels=3)
+    model = ResNext101_32X8D(
+        pre_trained=True, feature_extract=True, num_channels=3
+    )
     model.zero_grad()
     out = model(torch.reshape(three_channel_loader[0][0], (1, 3, 224, 224)))
     assert out.size() == torch.Size([1, 100])
@@ -137,7 +142,9 @@ def test_wideresnet50_2_3_channels_output_shape(three_channel_loader):
     Args:
         loader (Dataset): PyTorch Dataset object.
     """
-    model = WideResNet50_2(pre_trained=True, feature_extract=True, num_channels=3)
+    model = WideResNet50_2(
+        pre_trained=True, feature_extract=True, num_channels=3
+    )
     model.zero_grad()
     out = model(torch.reshape(three_channel_loader[0][0], (1, 3, 224, 224)))
     assert out.size() == torch.Size([1, 100])
@@ -149,7 +156,9 @@ def test_wideresnet101_2_3_channels_output_shape(three_channel_loader):
     Args:
         loader (Dataset): PyTorch Dataset object.
     """
-    model = WideResNet101_2(pre_trained=True, feature_extract=True, num_channels=3)
+    model = WideResNet101_2(
+        pre_trained=True, feature_extract=True, num_channels=3
+    )
     model.zero_grad()
     out = model(torch.reshape(three_channel_loader[0][0], (1, 3, 224, 224)))
     assert out.size() == torch.Size([1, 100])

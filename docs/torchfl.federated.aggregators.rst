@@ -19,7 +19,7 @@ torchfl.federated.aggregators.fedavg module
    :members:
    :undoc-members:
    :show-inheritance:
-   
+
 
 Module contents
 ---------------

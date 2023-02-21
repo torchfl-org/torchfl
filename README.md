@@ -161,7 +161,7 @@ The following steps should be followed on a high-level to train a federated lear
 		datamodule.prepare_data()
 		datamodule.setup()
 		return datamodule
-		
+
     agent_data_shard_map = get_agent_data_shard_map().federated_iid_dataloader(
         num_workers=fl_params.num_agents,
         workers_batch_size=fl_params.local_train_batch_size,
@@ -188,7 +188,7 @@ The following steps should be followed on a high-level to train a federated lear
 			)
 			agents.append(agent)
 		return agents
-    
+
 	global_model = MNISTEMNIST(
         model_name=EMNIST_MODELS_ENUM.MOBILENETV3SMALL,
         optimizer_name=OPTIMIZERS_TYPE.ADAM,
@@ -196,7 +196,7 @@ The following steps should be followed on a high-level to train a federated lear
         model_hparams={"pre_trained": True, "feature_extract": True},
         fl_hparams=fl_params,
     )
-	
+
 	all_agents = initialize_agents(fl_params, agent_data_shard_map)
 	```
 3. Initiliaze an ```FLParam``` object with the desired FL hyperparameters and pass it on to the ```Entrypoint``` object which will abstract the training.

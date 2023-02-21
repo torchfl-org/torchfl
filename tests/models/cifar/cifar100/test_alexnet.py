@@ -1,13 +1,14 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Tests for AlexNet for CIFAR in `torchfl` package."""
-import pytest
-from torchvision import datasets, transforms
 import os
+
+import pytest
+import torch
+from torchvision import datasets, transforms
+
 from torchfl.compatibility import TORCHFL_DIR
 from torchfl.models.core.cifar.cifar100.alexnet import AlexNet
-import torch
 
 data_transforms = {
     "train": transforms.Compose(
@@ -21,7 +22,7 @@ data_transforms = {
 }
 
 
-@pytest.fixture
+@pytest.fixture()
 def cifar100_loader():
     """Fixture for CIFAR100, single-channel dataset.
 

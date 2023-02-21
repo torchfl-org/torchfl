@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Contains the SqueezeNet model implementations for EMNIST (digits) dataset.
 
@@ -8,14 +7,14 @@ Contains:
     - SqueezeNet1_1
 """
 
-from torchfl.models.sota.squeezenet import (  # type: ignore[attr-defined]
-    SqueezeNet1_0 as BaseSqueezeNet1_0,
-    SqueezeNet1_1 as BaseSqueezeNet1_1,
-)
+from torchfl.models.sota.squeezenet import SqueezeNet1_0 as BaseSqueezeNet1_0
+from torchfl.models.sota.squeezenet import SqueezeNet1_1 as BaseSqueezeNet1_1
 
 
 class SqueezeNet1_0(BaseSqueezeNet1_0):
-    def __init__(self, pre_trained=True, feature_extract=False, num_channels=1) -> None:
+    def __init__(
+        self, pre_trained=True, feature_extract=False, num_channels=1
+    ) -> None:
         """Constructor
 
         Args:
@@ -23,7 +22,7 @@ class SqueezeNet1_0(BaseSqueezeNet1_0):
             - feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
             - num_channels (int, optional): Number of incoming channels. Defaults to 1.
         """
-        super(SqueezeNet1_0, self).__init__(
+        super().__init__(
             pre_trained=pre_trained,
             feature_extract=feature_extract,
             num_classes=10,
@@ -33,7 +32,9 @@ class SqueezeNet1_0(BaseSqueezeNet1_0):
 
 
 class SqueezeNet1_1(BaseSqueezeNet1_1):
-    def __init__(self, pre_trained=True, feature_extract=False, num_channels=1) -> None:
+    def __init__(
+        self, pre_trained=True, feature_extract=False, num_channels=1
+    ) -> None:
         """Constructor
 
         Args:
@@ -41,7 +42,7 @@ class SqueezeNet1_1(BaseSqueezeNet1_1):
             - feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
             - num_channels (int, optional): Number of incoming channels. Defaults to 1.
         """
-        super(SqueezeNet1_1, self).__init__(
+        super().__init__(
             pre_trained=pre_trained,
             feature_extract=feature_extract,
             num_classes=10,

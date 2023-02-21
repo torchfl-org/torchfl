@@ -1,10 +1,12 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Tests for MobileNet for EMNIST balanced in `torchfl` package."""
-import pytest
-from torchvision import datasets, transforms
 import os
+
+import pytest
+import torch
+from torchvision import datasets, transforms
+
 from torchfl.compatibility import TORCHFL_DIR
 from torchfl.models.core.emnist.letters.resnet import (
     ResNet18,
@@ -17,7 +19,6 @@ from torchfl.models.core.emnist.letters.resnet import (
     WideResNet50_2,
     WideResNet101_2,
 )
-import torch
 
 data_transforms = {
     "train_single_channel": transforms.Compose(
@@ -40,7 +41,7 @@ data_transforms = {
 }
 
 
-@pytest.fixture
+@pytest.fixture()
 def single_channel_loader():
     """Fixture for single-channel dataset.
 
@@ -57,7 +58,7 @@ def single_channel_loader():
     )
 
 
-@pytest.fixture
+@pytest.fixture()
 def three_channel_loader():
     """Fixture for multi-channel dataset.
 
@@ -200,7 +201,9 @@ def test_resnet5032x4d_single_channel_ouput_shape(single_channel_loader):
     Args:
         EMNIST_loader (Dataset): PyTorch Dataset object for MNIST.
     """
-    model = ResNext50_32X4D(pre_trained=True, feature_extract=True, num_channels=1)
+    model = ResNext50_32X4D(
+        pre_trained=True, feature_extract=True, num_channels=1
+    )
     model.zero_grad()
     out = model(torch.reshape(single_channel_loader[0][0], (1, 1, 224, 224)))
     assert out.size() == torch.Size([1, 26])
@@ -212,7 +215,9 @@ def test_resnet5032x4d_3_channels_output_shape(three_channel_loader):
     Args:
         EMNIST_loader (Dataset): PyTorch Dataset object for MNIST.
     """
-    model = ResNext50_32X4D(pre_trained=True, feature_extract=True, num_channels=3)
+    model = ResNext50_32X4D(
+        pre_trained=True, feature_extract=True, num_channels=3
+    )
     model.zero_grad()
     out = model(torch.reshape(three_channel_loader[0][0], (1, 3, 224, 224)))
     assert out.size() == torch.Size([1, 26])
@@ -224,7 +229,9 @@ def test_resnet10132x8d_single_channel_ouput_shape(single_channel_loader):
     Args:
         EMNIST_loader (Dataset): PyTorch Dataset object for MNIST.
     """
-    model = ResNext101_32X8D(pre_trained=True, feature_extract=True, num_channels=1)
+    model = ResNext101_32X8D(
+        pre_trained=True, feature_extract=True, num_channels=1
+    )
     model.zero_grad()
     out = model(torch.reshape(single_channel_loader[0][0], (1, 1, 224, 224)))
     assert out.size() == torch.Size([1, 26])
@@ -236,7 +243,9 @@ def test_resnet10132x8d_3_channels_output_shape(three_channel_loader):
     Args:
         EMNIST_loader (Dataset): PyTorch Dataset object for MNIST.
     """
-    model = ResNext101_32X8D(pre_trained=True, feature_extract=True, num_channels=3)
+    model = ResNext101_32X8D(
+        pre_trained=True, feature_extract=True, num_channels=3
+    )
     model.zero_grad()
     out = model(torch.reshape(three_channel_loader[0][0], (1, 3, 224, 224)))
     assert out.size() == torch.Size([1, 26])
@@ -248,7 +257,9 @@ def test_wideresnet50_2_single_channel_ouput_shape(single_channel_loader):
     Args:
         EMNIST_loader (Dataset): PyTorch Dataset object for MNIST.
     """
-    model = WideResNet50_2(pre_trained=True, feature_extract=True, num_channels=1)
+    model = WideResNet50_2(
+        pre_trained=True, feature_extract=True, num_channels=1
+    )
     model.zero_grad()
     out = model(torch.reshape(single_channel_loader[0][0], (1, 1, 224, 224)))
     assert out.size() == torch.Size([1, 26])
@@ -260,7 +271,9 @@ def test_wideresnet50_2_3_channels_output_shape(three_channel_loader):
     Args:
         EMNIST_loader (Dataset): PyTorch Dataset object for MNIST.
     """
-    model = WideResNet50_2(pre_trained=True, feature_extract=True, num_channels=3)
+    model = WideResNet50_2(
+        pre_trained=True, feature_extract=True, num_channels=3
+    )
     model.zero_grad()
     out = model(torch.reshape(three_channel_loader[0][0], (1, 3, 224, 224)))
     assert out.size() == torch.Size([1, 26])
@@ -272,7 +285,9 @@ def test_wideresnet101_2_single_channel_ouput_shape(single_channel_loader):
     Args:
         EMNIST_loader (Dataset): PyTorch Dataset object for MNIST.
     """
-    model = WideResNet101_2(pre_trained=True, feature_extract=True, num_channels=1)
+    model = WideResNet101_2(
+        pre_trained=True, feature_extract=True, num_channels=1
+    )
     model.zero_grad()
     out = model(torch.reshape(single_channel_loader[0][0], (1, 1, 224, 224)))
     assert out.size() == torch.Size([1, 26])
@@ -284,7 +299,9 @@ def test_wideresnet101_2_3_channels_output_shape(three_channel_loader):
     Args:
         EMNIST_loader (Dataset): PyTorch Dataset object for MNIST.
     """
-    model = WideResNet101_2(pre_trained=True, feature_extract=True, num_channels=3)
+    model = WideResNet101_2(
+        pre_trained=True, feature_extract=True, num_channels=3
+    )
     model.zero_grad()
     out = model(torch.reshape(three_channel_loader[0][0], (1, 3, 224, 224)))
     assert out.size() == torch.Size([1, 26])

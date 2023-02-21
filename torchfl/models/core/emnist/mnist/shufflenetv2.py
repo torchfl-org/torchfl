@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Contains the ShuffleNetv2 model implementations for MNIST dataset.
 
@@ -10,16 +9,24 @@ Contains:
     - ShuffleNetv2_x2_0
 """
 
-from torchfl.models.sota.shufflenetv2 import (  # type: ignore[attr-defined]
+from torchfl.models.sota.shufflenetv2 import (
     ShuffleNetv2_x0_5 as BaseShuffleNetv2_x0_5,
+)
+from torchfl.models.sota.shufflenetv2 import (
     ShuffleNetv2_x1_0 as BaseShuffleNetv2_x1_0,
+)
+from torchfl.models.sota.shufflenetv2 import (
     ShuffleNetv2_x1_5 as BaseShuffleNetv2_x1_5,
+)
+from torchfl.models.sota.shufflenetv2 import (
     ShuffleNetv2_x2_0 as BaseShuffleNetv2_x2_0,
 )
 
 
 class ShuffleNetv2_x0_5(BaseShuffleNetv2_x0_5):
-    def __init__(self, pre_trained=True, feature_extract=False, num_channels=1) -> None:
+    def __init__(
+        self, pre_trained=True, feature_extract=False, num_channels=1
+    ) -> None:
         """Constructor
 
         Args:
@@ -27,7 +34,7 @@ class ShuffleNetv2_x0_5(BaseShuffleNetv2_x0_5):
             - feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
             - num_channels (int, optional): Number of incoming channels. Defaults to 1.
         """
-        super(ShuffleNetv2_x0_5, self).__init__(
+        super().__init__(
             pre_trained=pre_trained,
             feature_extract=feature_extract,
             num_classes=10,
@@ -37,7 +44,9 @@ class ShuffleNetv2_x0_5(BaseShuffleNetv2_x0_5):
 
 
 class ShuffleNetv2_x1_0(BaseShuffleNetv2_x1_0):
-    def __init__(self, pre_trained=True, feature_extract=False, num_channels=1) -> None:
+    def __init__(
+        self, pre_trained=True, feature_extract=False, num_channels=1
+    ) -> None:
         """Constructor
 
         Args:
@@ -45,7 +54,7 @@ class ShuffleNetv2_x1_0(BaseShuffleNetv2_x1_0):
             - feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
             - num_channels (int, optional): Number of incoming channels. Defaults to 1.
         """
-        super(ShuffleNetv2_x1_0, self).__init__(
+        super().__init__(
             pre_trained=pre_trained,
             feature_extract=feature_extract,
             num_classes=10,
@@ -65,7 +74,7 @@ class ShuffleNetv2_x1_5(BaseShuffleNetv2_x1_5):
             - feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
             - num_channels (int, optional): Number of incoming channels. Defaults to 1.
         """
-        super(ShuffleNetv2_x1_5, self).__init__(
+        super().__init__(
             pre_trained=pre_trained,
             feature_extract=feature_extract,
             num_classes=10,
@@ -85,7 +94,7 @@ class ShuffleNetv2_x2_0(BaseShuffleNetv2_x2_0):
             - feature_extract (bool, optional): Use transfer learning and only train the classifier. Otherwise, finetune the whole model. Defaults to False.
             - num_channels (int, optional): Number of incoming channels. Defaults to 1.
         """
-        super(ShuffleNetv2_x2_0, self).__init__(
+        super().__init__(
             pre_trained=pre_trained,
             feature_extract=feature_extract,
             num_classes=10,

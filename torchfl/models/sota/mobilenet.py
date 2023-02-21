@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # type: ignore
 
 """Implementation of the pre-trained MobileNet architectures using PyTorch and torchvision.
@@ -10,14 +9,16 @@ Contains:
     - MobileNetV3Large
 """
 
-from torchvision import models
+from functools import partial
 from types import SimpleNamespace
+
 import torch.nn as nn
-from torchfl.compatibility import ACTIVATION_FUNCTIONS_BY_NAME
-from torchvision.ops.misc import ConvNormActivation
+from torchvision import models
 from torchvision.models._utils import _make_divisible
 from torchvision.models.mobilenetv3 import _mobilenet_v3_conf
-from functools import partial
+from torchvision.ops.misc import ConvNormActivation
+
+from torchfl.compatibility import ACTIVATION_FUNCTIONS_BY_NAME
 
 
 class MobileNetV2(models.mobilenet.MobileNetV2):
@@ -41,7 +42,7 @@ class MobileNetV2(models.mobilenet.MobileNetV2):
             - num_channels (int, optional): Number of incoming channels. Defaults to 3.
             - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
-        super(MobileNetV2, self).__init__()
+        super().__init__()
         self.hparams = SimpleNamespace(
             model_name="mobilenet_v2",
             pre_trained=pre_trained,
@@ -72,7 +73,9 @@ class MobileNetV2(models.mobilenet.MobileNetV2):
                 activation_layer=nn.ReLU6,
             )
 
-        self.classifier[-1] = nn.Linear(self.last_channel, self.hparams.num_classes)
+        self.classifier[-1] = nn.Linear(
+            self.last_channel, self.hparams.num_classes
+        )
 
 
 class MobileNetV3Small(models.mobilenet.MobileNetV3):
@@ -99,7 +102,7 @@ class MobileNetV3Small(models.mobilenet.MobileNetV3):
         inverted_residual_setting, last_channel = _mobilenet_v3_conf(
             "mobilenet_v3_small"
         )
-        super(MobileNetV3Small, self).__init__(
+        super().__init__(
             inverted_residual_setting=inverted_residual_setting,
             last_channel=last_channel,
         )
@@ -161,7 +164,7 @@ class MobileNetV3Large(models.mobilenet.MobileNetV3):
         inverted_residual_setting, last_channel = _mobilenet_v3_conf(
             "mobilenet_v3_large"
         )
-        super(MobileNetV3Large, self).__init__(
+        super().__init__(
             inverted_residual_setting=inverted_residual_setting,
             last_channel=last_channel,
         )

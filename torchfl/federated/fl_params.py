@@ -1,11 +1,11 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Standardized definition of the FL parameters to be passed around in the federated learning experiment."""
 
 import os
-from typing import Any, Dict, Optional
 from types import SimpleNamespace
+from typing import Any
+
 from torchfl.compatibility import TORCHFL_DIR
 
 
@@ -15,7 +15,7 @@ class FLParams:
     def __init__(
         self,
         experiment_name: str,
-        checkpoint_load_path: Optional[str] = None,
+        checkpoint_load_path: str | None = None,
         checkpoint_save_path: str = os.path.join(TORCHFL_DIR, "runs"),
         num_agents: int = 10,
         global_epochs: int = 10,
@@ -43,7 +43,7 @@ class FLParams:
             - sampling_ratio (float): Fraction of the agents to be sampled for each global epoch.
         """
         self.experiment_name: str = experiment_name
-        self.checkpoint_load_path: Optional[str] = checkpoint_load_path
+        self.checkpoint_load_path: str | None = checkpoint_load_path
         self.checkpoint_save_path: str = checkpoint_save_path
         self.num_agents: int = num_agents
         self.global_epochs: int = global_epochs
@@ -73,7 +73,7 @@ class FLParams:
         """String representation of the FLParams object."""
         return self.__str__()
 
-    def as_dict(self) -> Dict[str, Any]:
+    def as_dict(self) -> dict[str, Any]:
         """Convert the FLParams object to a dictionary."""
         return {
             "experiment_name": self.experiment_name,

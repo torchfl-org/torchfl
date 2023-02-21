@@ -1,13 +1,14 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Tests for AlexNet for EMNIST in `torchfl` package."""
-import pytest
-from torchvision import datasets, transforms
 import os
+
+import pytest
+import torch
+from torchvision import datasets, transforms
+
 from torchfl.compatibility import TORCHFL_DIR
 from torchfl.models.core.emnist.bymerge.alexnet import AlexNet
-import torch
 
 data_transforms = {
     "train_single_channel": transforms.Compose(
@@ -30,7 +31,7 @@ data_transforms = {
 }
 
 
-@pytest.fixture
+@pytest.fixture()
 def emnist_single_channel_loader():
     """Fixture for EMNIST, single-channel dataset.
 
@@ -47,7 +48,7 @@ def emnist_single_channel_loader():
     )
 
 
-@pytest.fixture
+@pytest.fixture()
 def emnist_3_channel_loader():
     """Fixture for EMNIST, multi-channel dataset.
 
@@ -72,7 +73,9 @@ def test_alexnet_single_channel_ouput_shape(emnist_single_channel_loader):
     """
     model = AlexNet(pre_trained=True, feature_extract=True, num_channels=1)
     model.zero_grad()
-    out = model(torch.reshape(emnist_single_channel_loader[0][0], (1, 1, 224, 224)))
+    out = model(
+        torch.reshape(emnist_single_channel_loader[0][0], (1, 1, 224, 224))
+    )
     assert out.size() == torch.Size([1, 47])
 
 

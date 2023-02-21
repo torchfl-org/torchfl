@@ -1,292 +1,485 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Contains the PyTorch Lightning wrapper modules for all EMNIST datasets."""
 
 import enum
-from typing import List, Optional, Type, Union, Dict, Any, Tuple
+from typing import Any
+
+import pytorch_lightning as pl
+import torch.nn as nn
+from torch import Tensor, optim
+
+from torchfl.compatibility import OPTIMIZERS_BY_NAME, OPTIMIZERS_TYPE
 from torchfl.federated.fl_params import FLParams
-from torchfl.models.core.emnist.balanced.alexnet import AlexNet as BalancedAlexNet
+from torchfl.models.core.emnist.balanced.alexnet import (
+    AlexNet as BalancedAlexNet,
+)
 from torchfl.models.core.emnist.balanced.densenet import (
     DenseNet121 as BalancedDenseNet121,
+)
+from torchfl.models.core.emnist.balanced.densenet import (
     DenseNet161 as BalancedDenseNet161,
+)
+from torchfl.models.core.emnist.balanced.densenet import (
     DenseNet169 as BalancedDenseNet169,
+)
+from torchfl.models.core.emnist.balanced.densenet import (
     DenseNet201 as BalancedDenseNet201,
 )
 from torchfl.models.core.emnist.balanced.lenet import LeNet as BalancedLeNet
 from torchfl.models.core.emnist.balanced.mlp import MLP as BalancedMLP
 from torchfl.models.core.emnist.balanced.mobilenet import (
     MobileNetV2 as BalancedMobileNetV2,
-    MobileNetV3Small as BalancedMobileNetV3Small,
+)
+from torchfl.models.core.emnist.balanced.mobilenet import (
     MobileNetV3Large as BalancedMobileNetV3Large,
+)
+from torchfl.models.core.emnist.balanced.mobilenet import (
+    MobileNetV3Small as BalancedMobileNetV3Small,
 )
 from torchfl.models.core.emnist.balanced.resnet import (
     ResNet18 as BalancedResNet18,
+)
+from torchfl.models.core.emnist.balanced.resnet import (
     ResNet34 as BalancedResNet34,
+)
+from torchfl.models.core.emnist.balanced.resnet import (
     ResNet50 as BalancedResNet50,
+)
+from torchfl.models.core.emnist.balanced.resnet import (
     ResNet101 as BalancedResNet101,
+)
+from torchfl.models.core.emnist.balanced.resnet import (
     ResNet152 as BalancedResNet152,
+)
+from torchfl.models.core.emnist.balanced.resnet import (
     ResNext50_32X4D as BalancedResNext50_32X4D,
+)
+from torchfl.models.core.emnist.balanced.resnet import (
     ResNext101_32X8D as BalancedResNext101_32X8D,
+)
+from torchfl.models.core.emnist.balanced.resnet import (
     WideResNet50_2 as BalancedWideResNet50_2,
+)
+from torchfl.models.core.emnist.balanced.resnet import (
     WideResNet101_2 as BalancedWideResNet101_2,
 )
 from torchfl.models.core.emnist.balanced.shufflenetv2 import (
     ShuffleNetv2_x0_5 as BalancedShuffleNetv2_x0_5,
+)
+from torchfl.models.core.emnist.balanced.shufflenetv2 import (
     ShuffleNetv2_x1_0 as BalancedShuffleNetv2_x1_0,
+)
+from torchfl.models.core.emnist.balanced.shufflenetv2 import (
     ShuffleNetv2_x1_5 as BalancedShuffleNetv2_x1_5,
+)
+from torchfl.models.core.emnist.balanced.shufflenetv2 import (
     ShuffleNetv2_x2_0 as BalancedShuffleNetv2_x2_0,
 )
 from torchfl.models.core.emnist.balanced.squeezenet import (
     SqueezeNet1_0 as BalancedSqueezeNet1_0,
+)
+from torchfl.models.core.emnist.balanced.squeezenet import (
     SqueezeNet1_1 as BalancedSqueezeNet1_1,
 )
+from torchfl.models.core.emnist.balanced.vgg import VGG11 as BalancedVGG11
 from torchfl.models.core.emnist.balanced.vgg import (
-    VGG11 as BalancedVGG11,
     VGG11_BN as BalancedVGG11_BN,
-    VGG13 as BalancedVGG13,
+)
+from torchfl.models.core.emnist.balanced.vgg import VGG13 as BalancedVGG13
+from torchfl.models.core.emnist.balanced.vgg import (
     VGG13_BN as BalancedVGG13_BN,
-    VGG16 as BalancedVGG16,
+)
+from torchfl.models.core.emnist.balanced.vgg import VGG16 as BalancedVGG16
+from torchfl.models.core.emnist.balanced.vgg import (
     VGG16_BN as BalancedVGG16_BN,
-    VGG19 as BalancedVGG19,
+)
+from torchfl.models.core.emnist.balanced.vgg import VGG19 as BalancedVGG19
+from torchfl.models.core.emnist.balanced.vgg import (
     VGG19_BN as BalancedVGG19_BN,
 )
-from torchfl.models.core.emnist.byclass.alexnet import AlexNet as ByClassAlexNet
+from torchfl.models.core.emnist.byclass.alexnet import (
+    AlexNet as ByClassAlexNet,
+)
 from torchfl.models.core.emnist.byclass.densenet import (
     DenseNet121 as ByClassDenseNet121,
+)
+from torchfl.models.core.emnist.byclass.densenet import (
     DenseNet161 as ByClassDenseNet161,
+)
+from torchfl.models.core.emnist.byclass.densenet import (
     DenseNet169 as ByClassDenseNet169,
+)
+from torchfl.models.core.emnist.byclass.densenet import (
     DenseNet201 as ByClassDenseNet201,
 )
 from torchfl.models.core.emnist.byclass.lenet import LeNet as ByClassLeNet
 from torchfl.models.core.emnist.byclass.mlp import MLP as ByClassMLP
 from torchfl.models.core.emnist.byclass.mobilenet import (
     MobileNetV2 as ByClassMobileNetV2,
-    MobileNetV3Small as ByClassMobileNetV3Small,
+)
+from torchfl.models.core.emnist.byclass.mobilenet import (
     MobileNetV3Large as ByClassMobileNetV3Large,
+)
+from torchfl.models.core.emnist.byclass.mobilenet import (
+    MobileNetV3Small as ByClassMobileNetV3Small,
 )
 from torchfl.models.core.emnist.byclass.resnet import (
     ResNet18 as ByClassResNet18,
+)
+from torchfl.models.core.emnist.byclass.resnet import (
     ResNet34 as ByClassResNet34,
+)
+from torchfl.models.core.emnist.byclass.resnet import (
     ResNet50 as ByClassResNet50,
+)
+from torchfl.models.core.emnist.byclass.resnet import (
     ResNet101 as ByClassResNet101,
+)
+from torchfl.models.core.emnist.byclass.resnet import (
     ResNet152 as ByClassResNet152,
+)
+from torchfl.models.core.emnist.byclass.resnet import (
     ResNext50_32X4D as ByClassResNext50_32X4D,
+)
+from torchfl.models.core.emnist.byclass.resnet import (
     ResNext101_32X8D as ByClassResNext101_32X8D,
+)
+from torchfl.models.core.emnist.byclass.resnet import (
     WideResNet50_2 as ByClassWideResNet50_2,
+)
+from torchfl.models.core.emnist.byclass.resnet import (
     WideResNet101_2 as ByClassWideResNet101_2,
 )
 from torchfl.models.core.emnist.byclass.shufflenetv2 import (
     ShuffleNetv2_x0_5 as ByClassShuffleNetv2_x0_5,
+)
+from torchfl.models.core.emnist.byclass.shufflenetv2 import (
     ShuffleNetv2_x1_0 as ByClassShuffleNetv2_x1_0,
+)
+from torchfl.models.core.emnist.byclass.shufflenetv2 import (
     ShuffleNetv2_x1_5 as ByClassShuffleNetv2_x1_5,
+)
+from torchfl.models.core.emnist.byclass.shufflenetv2 import (
     ShuffleNetv2_x2_0 as ByClassShuffleNetv2_x2_0,
 )
 from torchfl.models.core.emnist.byclass.squeezenet import (
     SqueezeNet1_0 as ByClassSqueezeNet1_0,
+)
+from torchfl.models.core.emnist.byclass.squeezenet import (
     SqueezeNet1_1 as ByClassSqueezeNet1_1,
 )
-from torchfl.models.core.emnist.byclass.vgg import (
-    VGG11 as ByClassVGG11,
-    VGG11_BN as ByClassVGG11_BN,
-    VGG13 as ByClassVGG13,
-    VGG13_BN as ByClassVGG13_BN,
-    VGG16 as ByClassVGG16,
-    VGG16_BN as ByClassVGG16_BN,
-    VGG19 as ByClassVGG19,
-    VGG19_BN as ByClassVGG19_BN,
+from torchfl.models.core.emnist.byclass.vgg import VGG11 as ByClassVGG11
+from torchfl.models.core.emnist.byclass.vgg import VGG11_BN as ByClassVGG11_BN
+from torchfl.models.core.emnist.byclass.vgg import VGG13 as ByClassVGG13
+from torchfl.models.core.emnist.byclass.vgg import VGG13_BN as ByClassVGG13_BN
+from torchfl.models.core.emnist.byclass.vgg import VGG16 as ByClassVGG16
+from torchfl.models.core.emnist.byclass.vgg import VGG16_BN as ByClassVGG16_BN
+from torchfl.models.core.emnist.byclass.vgg import VGG19 as ByClassVGG19
+from torchfl.models.core.emnist.byclass.vgg import VGG19_BN as ByClassVGG19_BN
+from torchfl.models.core.emnist.bymerge.alexnet import (
+    AlexNet as ByMergeAlexNet,
 )
-from torchfl.models.core.emnist.bymerge.alexnet import AlexNet as ByMergeAlexNet
 from torchfl.models.core.emnist.bymerge.densenet import (
     DenseNet121 as ByMergeDenseNet121,
+)
+from torchfl.models.core.emnist.bymerge.densenet import (
     DenseNet161 as ByMergeDenseNet161,
+)
+from torchfl.models.core.emnist.bymerge.densenet import (
     DenseNet169 as ByMergeDenseNet169,
+)
+from torchfl.models.core.emnist.bymerge.densenet import (
     DenseNet201 as ByMergeDenseNet201,
 )
 from torchfl.models.core.emnist.bymerge.lenet import LeNet as ByMergeLeNet
 from torchfl.models.core.emnist.bymerge.mlp import MLP as ByMergeMLP
 from torchfl.models.core.emnist.bymerge.mobilenet import (
     MobileNetV2 as ByMergeMobileNetV2,
-    MobileNetV3Small as ByMergeMobileNetV3Small,
+)
+from torchfl.models.core.emnist.bymerge.mobilenet import (
     MobileNetV3Large as ByMergeMobileNetV3Large,
+)
+from torchfl.models.core.emnist.bymerge.mobilenet import (
+    MobileNetV3Small as ByMergeMobileNetV3Small,
 )
 from torchfl.models.core.emnist.bymerge.resnet import (
     ResNet18 as ByMergeResNet18,
+)
+from torchfl.models.core.emnist.bymerge.resnet import (
     ResNet34 as ByMergeResNet34,
+)
+from torchfl.models.core.emnist.bymerge.resnet import (
     ResNet50 as ByMergeResNet50,
+)
+from torchfl.models.core.emnist.bymerge.resnet import (
     ResNet101 as ByMergeResNet101,
+)
+from torchfl.models.core.emnist.bymerge.resnet import (
     ResNet152 as ByMergeResNet152,
+)
+from torchfl.models.core.emnist.bymerge.resnet import (
     ResNext50_32X4D as ByMergeResNext50_32X4D,
+)
+from torchfl.models.core.emnist.bymerge.resnet import (
     ResNext101_32X8D as ByMergeResNext101_32X8D,
+)
+from torchfl.models.core.emnist.bymerge.resnet import (
     WideResNet50_2 as ByMergeWideResNet50_2,
+)
+from torchfl.models.core.emnist.bymerge.resnet import (
     WideResNet101_2 as ByMergeWideResNet101_2,
 )
 from torchfl.models.core.emnist.bymerge.shufflenetv2 import (
     ShuffleNetv2_x0_5 as ByMergeShuffleNetv2_x0_5,
+)
+from torchfl.models.core.emnist.bymerge.shufflenetv2 import (
     ShuffleNetv2_x1_0 as ByMergeShuffleNetv2_x1_0,
+)
+from torchfl.models.core.emnist.bymerge.shufflenetv2 import (
     ShuffleNetv2_x1_5 as ByMergeShuffleNetv2_x1_5,
+)
+from torchfl.models.core.emnist.bymerge.shufflenetv2 import (
     ShuffleNetv2_x2_0 as ByMergeShuffleNetv2_x2_0,
 )
 from torchfl.models.core.emnist.bymerge.squeezenet import (
     SqueezeNet1_0 as ByMergeSqueezeNet1_0,
+)
+from torchfl.models.core.emnist.bymerge.squeezenet import (
     SqueezeNet1_1 as ByMergeSqueezeNet1_1,
 )
-from torchfl.models.core.emnist.bymerge.vgg import (
-    VGG11 as ByMergeVGG11,
-    VGG11_BN as ByMergeVGG11_BN,
-    VGG13 as ByMergeVGG13,
-    VGG13_BN as ByMergeVGG13_BN,
-    VGG16 as ByMergeVGG16,
-    VGG16_BN as ByMergeVGG16_BN,
-    VGG19 as ByMergeVGG19,
-    VGG19_BN as ByMergeVGG19_BN,
-)
+from torchfl.models.core.emnist.bymerge.vgg import VGG11 as ByMergeVGG11
+from torchfl.models.core.emnist.bymerge.vgg import VGG11_BN as ByMergeVGG11_BN
+from torchfl.models.core.emnist.bymerge.vgg import VGG13 as ByMergeVGG13
+from torchfl.models.core.emnist.bymerge.vgg import VGG13_BN as ByMergeVGG13_BN
+from torchfl.models.core.emnist.bymerge.vgg import VGG16 as ByMergeVGG16
+from torchfl.models.core.emnist.bymerge.vgg import VGG16_BN as ByMergeVGG16_BN
+from torchfl.models.core.emnist.bymerge.vgg import VGG19 as ByMergeVGG19
+from torchfl.models.core.emnist.bymerge.vgg import VGG19_BN as ByMergeVGG19_BN
 from torchfl.models.core.emnist.digits.alexnet import AlexNet as DigitsAlexNet
 from torchfl.models.core.emnist.digits.densenet import (
     DenseNet121 as DigitsDenseNet121,
+)
+from torchfl.models.core.emnist.digits.densenet import (
     DenseNet161 as DigitsDenseNet161,
+)
+from torchfl.models.core.emnist.digits.densenet import (
     DenseNet169 as DigitsDenseNet169,
+)
+from torchfl.models.core.emnist.digits.densenet import (
     DenseNet201 as DigitsDenseNet201,
 )
 from torchfl.models.core.emnist.digits.lenet import LeNet as DigitsLeNet
 from torchfl.models.core.emnist.digits.mlp import MLP as DigitsMLP
 from torchfl.models.core.emnist.digits.mobilenet import (
     MobileNetV2 as DigitsMobileNetV2,
-    MobileNetV3Small as DigitsMobileNetV3Small,
+)
+from torchfl.models.core.emnist.digits.mobilenet import (
     MobileNetV3Large as DigitsMobileNetV3Large,
 )
+from torchfl.models.core.emnist.digits.mobilenet import (
+    MobileNetV3Small as DigitsMobileNetV3Small,
+)
+from torchfl.models.core.emnist.digits.resnet import ResNet18 as DigitsResNet18
+from torchfl.models.core.emnist.digits.resnet import ResNet34 as DigitsResNet34
+from torchfl.models.core.emnist.digits.resnet import ResNet50 as DigitsResNet50
 from torchfl.models.core.emnist.digits.resnet import (
-    ResNet18 as DigitsResNet18,
-    ResNet34 as DigitsResNet34,
-    ResNet50 as DigitsResNet50,
     ResNet101 as DigitsResNet101,
+)
+from torchfl.models.core.emnist.digits.resnet import (
     ResNet152 as DigitsResNet152,
+)
+from torchfl.models.core.emnist.digits.resnet import (
     ResNext50_32X4D as DigitsResNext50_32X4D,
+)
+from torchfl.models.core.emnist.digits.resnet import (
     ResNext101_32X8D as DigitsResNext101_32X8D,
+)
+from torchfl.models.core.emnist.digits.resnet import (
     WideResNet50_2 as DigitsWideResNet50_2,
+)
+from torchfl.models.core.emnist.digits.resnet import (
     WideResNet101_2 as DigitsWideResNet101_2,
 )
 from torchfl.models.core.emnist.digits.shufflenetv2 import (
     ShuffleNetv2_x0_5 as DigitsShuffleNetv2_x0_5,
+)
+from torchfl.models.core.emnist.digits.shufflenetv2 import (
     ShuffleNetv2_x1_0 as DigitsShuffleNetv2_x1_0,
+)
+from torchfl.models.core.emnist.digits.shufflenetv2 import (
     ShuffleNetv2_x1_5 as DigitsShuffleNetv2_x1_5,
+)
+from torchfl.models.core.emnist.digits.shufflenetv2 import (
     ShuffleNetv2_x2_0 as DigitsShuffleNetv2_x2_0,
 )
 from torchfl.models.core.emnist.digits.squeezenet import (
     SqueezeNet1_0 as DigitsSqueezeNet1_0,
+)
+from torchfl.models.core.emnist.digits.squeezenet import (
     SqueezeNet1_1 as DigitsSqueezeNet1_1,
 )
-from torchfl.models.core.emnist.digits.vgg import (
-    VGG11 as DigitsVGG11,
-    VGG11_BN as DigitsVGG11_BN,
-    VGG13 as DigitsVGG13,
-    VGG13_BN as DigitsVGG13_BN,
-    VGG16 as DigitsVGG16,
-    VGG16_BN as DigitsVGG16_BN,
-    VGG19 as DigitsVGG19,
-    VGG19_BN as DigitsVGG19_BN,
+from torchfl.models.core.emnist.digits.vgg import VGG11 as DigitsVGG11
+from torchfl.models.core.emnist.digits.vgg import VGG11_BN as DigitsVGG11_BN
+from torchfl.models.core.emnist.digits.vgg import VGG13 as DigitsVGG13
+from torchfl.models.core.emnist.digits.vgg import VGG13_BN as DigitsVGG13_BN
+from torchfl.models.core.emnist.digits.vgg import VGG16 as DigitsVGG16
+from torchfl.models.core.emnist.digits.vgg import VGG16_BN as DigitsVGG16_BN
+from torchfl.models.core.emnist.digits.vgg import VGG19 as DigitsVGG19
+from torchfl.models.core.emnist.digits.vgg import VGG19_BN as DigitsVGG19_BN
+from torchfl.models.core.emnist.letters.alexnet import (
+    AlexNet as LettersAlexNet,
 )
-from torchfl.models.core.emnist.letters.alexnet import AlexNet as LettersAlexNet
 from torchfl.models.core.emnist.letters.densenet import (
     DenseNet121 as LettersDenseNet121,
+)
+from torchfl.models.core.emnist.letters.densenet import (
     DenseNet161 as LettersDenseNet161,
+)
+from torchfl.models.core.emnist.letters.densenet import (
     DenseNet169 as LettersDenseNet169,
+)
+from torchfl.models.core.emnist.letters.densenet import (
     DenseNet201 as LettersDenseNet201,
 )
 from torchfl.models.core.emnist.letters.lenet import LeNet as LettersLeNet
 from torchfl.models.core.emnist.letters.mlp import MLP as LettersMLP
 from torchfl.models.core.emnist.letters.mobilenet import (
     MobileNetV2 as LettersMobileNetV2,
-    MobileNetV3Small as LettersMobileNetV3Small,
+)
+from torchfl.models.core.emnist.letters.mobilenet import (
     MobileNetV3Large as LettersMobileNetV3Large,
+)
+from torchfl.models.core.emnist.letters.mobilenet import (
+    MobileNetV3Small as LettersMobileNetV3Small,
 )
 from torchfl.models.core.emnist.letters.resnet import (
     ResNet18 as LettersResNet18,
+)
+from torchfl.models.core.emnist.letters.resnet import (
     ResNet34 as LettersResNet34,
+)
+from torchfl.models.core.emnist.letters.resnet import (
     ResNet50 as LettersResNet50,
+)
+from torchfl.models.core.emnist.letters.resnet import (
     ResNet101 as LettersResNet101,
+)
+from torchfl.models.core.emnist.letters.resnet import (
     ResNet152 as LettersResNet152,
+)
+from torchfl.models.core.emnist.letters.resnet import (
     ResNext50_32X4D as LettersResNext50_32X4D,
+)
+from torchfl.models.core.emnist.letters.resnet import (
     ResNext101_32X8D as LettersResNext101_32X8D,
+)
+from torchfl.models.core.emnist.letters.resnet import (
     WideResNet50_2 as LettersWideResNet50_2,
+)
+from torchfl.models.core.emnist.letters.resnet import (
     WideResNet101_2 as LettersWideResNet101_2,
 )
 from torchfl.models.core.emnist.letters.shufflenetv2 import (
     ShuffleNetv2_x0_5 as LettersShuffleNetv2_x0_5,
+)
+from torchfl.models.core.emnist.letters.shufflenetv2 import (
     ShuffleNetv2_x1_0 as LettersShuffleNetv2_x1_0,
+)
+from torchfl.models.core.emnist.letters.shufflenetv2 import (
     ShuffleNetv2_x1_5 as LettersShuffleNetv2_x1_5,
+)
+from torchfl.models.core.emnist.letters.shufflenetv2 import (
     ShuffleNetv2_x2_0 as LettersShuffleNetv2_x2_0,
 )
 from torchfl.models.core.emnist.letters.squeezenet import (
     SqueezeNet1_0 as LettersSqueezeNet1_0,
+)
+from torchfl.models.core.emnist.letters.squeezenet import (
     SqueezeNet1_1 as LettersSqueezeNet1_1,
 )
-from torchfl.models.core.emnist.letters.vgg import (
-    VGG11 as LettersVGG11,
-    VGG11_BN as LettersVGG11_BN,
-    VGG13 as LettersVGG13,
-    VGG13_BN as LettersVGG13_BN,
-    VGG16 as LettersVGG16,
-    VGG16_BN as LettersVGG16_BN,
-    VGG19 as LettersVGG19,
-    VGG19_BN as LettersVGG19_BN,
-)
+from torchfl.models.core.emnist.letters.vgg import VGG11 as LettersVGG11
+from torchfl.models.core.emnist.letters.vgg import VGG11_BN as LettersVGG11_BN
+from torchfl.models.core.emnist.letters.vgg import VGG13 as LettersVGG13
+from torchfl.models.core.emnist.letters.vgg import VGG13_BN as LettersVGG13_BN
+from torchfl.models.core.emnist.letters.vgg import VGG16 as LettersVGG16
+from torchfl.models.core.emnist.letters.vgg import VGG16_BN as LettersVGG16_BN
+from torchfl.models.core.emnist.letters.vgg import VGG19 as LettersVGG19
+from torchfl.models.core.emnist.letters.vgg import VGG19_BN as LettersVGG19_BN
 from torchfl.models.core.emnist.mnist.alexnet import AlexNet as MNISTAlexNet
 from torchfl.models.core.emnist.mnist.densenet import (
     DenseNet121 as MNISTDenseNet121,
+)
+from torchfl.models.core.emnist.mnist.densenet import (
     DenseNet161 as MNISTDenseNet161,
+)
+from torchfl.models.core.emnist.mnist.densenet import (
     DenseNet169 as MNISTDenseNet169,
+)
+from torchfl.models.core.emnist.mnist.densenet import (
     DenseNet201 as MNISTDenseNet201,
 )
 from torchfl.models.core.emnist.mnist.lenet import LeNet as MNISTLeNet
 from torchfl.models.core.emnist.mnist.mlp import MLP as MNISTMLP
 from torchfl.models.core.emnist.mnist.mobilenet import (
     MobileNetV2 as MNISTMobileNetV2,
-    MobileNetV3Small as MNISTMobileNetV3Small,
+)
+from torchfl.models.core.emnist.mnist.mobilenet import (
     MobileNetV3Large as MNISTMobileNetV3Large,
 )
+from torchfl.models.core.emnist.mnist.mobilenet import (
+    MobileNetV3Small as MNISTMobileNetV3Small,
+)
+from torchfl.models.core.emnist.mnist.resnet import ResNet18 as MNISTResNet18
+from torchfl.models.core.emnist.mnist.resnet import ResNet34 as MNISTResNet34
+from torchfl.models.core.emnist.mnist.resnet import ResNet50 as MNISTResNet50
+from torchfl.models.core.emnist.mnist.resnet import ResNet101 as MNISTResNet101
+from torchfl.models.core.emnist.mnist.resnet import ResNet152 as MNISTResNet152
 from torchfl.models.core.emnist.mnist.resnet import (
-    ResNet18 as MNISTResNet18,
-    ResNet34 as MNISTResNet34,
-    ResNet50 as MNISTResNet50,
-    ResNet101 as MNISTResNet101,
-    ResNet152 as MNISTResNet152,
     ResNext50_32X4D as MNISTResNext50_32X4D,
+)
+from torchfl.models.core.emnist.mnist.resnet import (
     ResNext101_32X8D as MNISTResNext101_32X8D,
+)
+from torchfl.models.core.emnist.mnist.resnet import (
     WideResNet50_2 as MNISTWideResNet50_2,
+)
+from torchfl.models.core.emnist.mnist.resnet import (
     WideResNet101_2 as MNISTWideResNet101_2,
 )
 from torchfl.models.core.emnist.mnist.shufflenetv2 import (
     ShuffleNetv2_x0_5 as MNISTShuffleNetv2_x0_5,
+)
+from torchfl.models.core.emnist.mnist.shufflenetv2 import (
     ShuffleNetv2_x1_0 as MNISTShuffleNetv2_x1_0,
+)
+from torchfl.models.core.emnist.mnist.shufflenetv2 import (
     ShuffleNetv2_x1_5 as MNISTShuffleNetv2_x1_5,
+)
+from torchfl.models.core.emnist.mnist.shufflenetv2 import (
     ShuffleNetv2_x2_0 as MNISTShuffleNetv2_x2_0,
 )
 from torchfl.models.core.emnist.mnist.squeezenet import (
     SqueezeNet1_0 as MNISTSqueezeNet1_0,
+)
+from torchfl.models.core.emnist.mnist.squeezenet import (
     SqueezeNet1_1 as MNISTSqueezeNet1_1,
 )
-from torchfl.models.core.emnist.mnist.vgg import (
-    VGG11 as MNISTVGG11,
-    VGG11_BN as MNISTVGG11_BN,
-    VGG13 as MNISTVGG13,
-    VGG13_BN as MNISTVGG13_BN,
-    VGG16 as MNISTVGG16,
-    VGG16_BN as MNISTVGG16_BN,
-    VGG19 as MNISTVGG19,
-    VGG19_BN as MNISTVGG19_BN,
-)
-import pytorch_lightning as pl
-import torch.nn as nn
-from torchfl.compatibility import OPTIMIZERS_TYPE, OPTIMIZERS_BY_NAME
-from torch import Tensor, optim
+from torchfl.models.core.emnist.mnist.vgg import VGG11 as MNISTVGG11
+from torchfl.models.core.emnist.mnist.vgg import VGG11_BN as MNISTVGG11_BN
+from torchfl.models.core.emnist.mnist.vgg import VGG13 as MNISTVGG13
+from torchfl.models.core.emnist.mnist.vgg import VGG13_BN as MNISTVGG13_BN
+from torchfl.models.core.emnist.mnist.vgg import VGG16 as MNISTVGG16
+from torchfl.models.core.emnist.mnist.vgg import VGG16_BN as MNISTVGG16_BN
+from torchfl.models.core.emnist.mnist.vgg import VGG19 as MNISTVGG19
+from torchfl.models.core.emnist.mnist.vgg import VGG19_BN as MNISTVGG19_BN
 
 pl.seed_everything(42)
 
 ###############
 # Begin Utils #
 ###############
-EMNIST_MODELS: List[str] = [
+EMNIST_MODELS: list[str] = [
     "alexnet",
     "densenet121",
     "densenet161",
@@ -361,222 +554,222 @@ class EMNIST_MODELS_ENUM(enum.Enum):
     VGG19_BN = "vgg19_bn"
 
 
-EMNIST_BALANCED_MODEL_TYPE = Union[
-    Type[BalancedAlexNet],
-    Type[BalancedDenseNet121],
-    Type[BalancedDenseNet161],
-    Type[BalancedDenseNet169],
-    Type[BalancedDenseNet201],
-    Type[BalancedLeNet],
-    Type[BalancedMLP],
-    Type[BalancedMobileNetV2],
-    Type[BalancedMobileNetV3Large],
-    Type[BalancedMobileNetV3Small],
-    Type[BalancedResNet18],
-    Type[BalancedResNet34],
-    Type[BalancedResNet50],
-    Type[BalancedResNet101],
-    Type[BalancedResNet152],
-    Type[BalancedResNext50_32X4D],
-    Type[BalancedResNext101_32X8D],
-    Type[BalancedWideResNet50_2],
-    Type[BalancedWideResNet101_2],
-    Type[BalancedShuffleNetv2_x0_5],
-    Type[BalancedShuffleNetv2_x1_0],
-    Type[BalancedShuffleNetv2_x1_5],
-    Type[BalancedShuffleNetv2_x2_0],
-    Type[BalancedSqueezeNet1_0],
-    Type[BalancedSqueezeNet1_1],
-    Type[BalancedVGG11],
-    Type[BalancedVGG11_BN],
-    Type[BalancedVGG13],
-    Type[BalancedVGG13_BN],
-    Type[BalancedVGG16],
-    Type[BalancedVGG16_BN],
-    Type[BalancedVGG19],
-    Type[BalancedVGG19_BN],
-]
-EMNIST_BYCLASS_MODEL_TYPE = Union[
-    Type[ByClassAlexNet],
-    Type[ByClassDenseNet121],
-    Type[ByClassDenseNet161],
-    Type[ByClassDenseNet169],
-    Type[ByClassDenseNet201],
-    Type[ByClassLeNet],
-    Type[ByClassMLP],
-    Type[ByClassMobileNetV2],
-    Type[ByClassMobileNetV3Large],
-    Type[ByClassMobileNetV3Small],
-    Type[ByClassResNet18],
-    Type[ByClassResNet34],
-    Type[ByClassResNet50],
-    Type[ByClassResNet101],
-    Type[ByClassResNet152],
-    Type[ByClassResNext50_32X4D],
-    Type[ByClassResNext101_32X8D],
-    Type[ByClassWideResNet50_2],
-    Type[ByClassWideResNet101_2],
-    Type[ByClassShuffleNetv2_x0_5],
-    Type[ByClassShuffleNetv2_x1_0],
-    Type[ByClassShuffleNetv2_x1_5],
-    Type[ByClassShuffleNetv2_x2_0],
-    Type[ByClassSqueezeNet1_0],
-    Type[ByClassSqueezeNet1_1],
-    Type[ByClassVGG11],
-    Type[ByClassVGG11_BN],
-    Type[ByClassVGG13],
-    Type[ByClassVGG13_BN],
-    Type[ByClassVGG16],
-    Type[ByClassVGG16_BN],
-    Type[ByClassVGG19],
-    Type[ByClassVGG19_BN],
-]
+EMNIST_BALANCED_MODEL_TYPE = (
+    type[BalancedAlexNet]
+    | type[BalancedDenseNet121]
+    | type[BalancedDenseNet161]
+    | type[BalancedDenseNet169]
+    | type[BalancedDenseNet201]
+    | type[BalancedLeNet]
+    | type[BalancedMLP]
+    | type[BalancedMobileNetV2]
+    | type[BalancedMobileNetV3Large]
+    | type[BalancedMobileNetV3Small]
+    | type[BalancedResNet18]
+    | type[BalancedResNet34]
+    | type[BalancedResNet50]
+    | type[BalancedResNet101]
+    | type[BalancedResNet152]
+    | type[BalancedResNext50_32X4D]
+    | type[BalancedResNext101_32X8D]
+    | type[BalancedWideResNet50_2]
+    | type[BalancedWideResNet101_2]
+    | type[BalancedShuffleNetv2_x0_5]
+    | type[BalancedShuffleNetv2_x1_0]
+    | type[BalancedShuffleNetv2_x1_5]
+    | type[BalancedShuffleNetv2_x2_0]
+    | type[BalancedSqueezeNet1_0]
+    | type[BalancedSqueezeNet1_1]
+    | type[BalancedVGG11]
+    | type[BalancedVGG11_BN]
+    | type[BalancedVGG13]
+    | type[BalancedVGG13_BN]
+    | type[BalancedVGG16]
+    | type[BalancedVGG16_BN]
+    | type[BalancedVGG19]
+    | type[BalancedVGG19_BN]
+)
+EMNIST_BYCLASS_MODEL_TYPE = (
+    type[ByClassAlexNet]
+    | type[ByClassDenseNet121]
+    | type[ByClassDenseNet161]
+    | type[ByClassDenseNet169]
+    | type[ByClassDenseNet201]
+    | type[ByClassLeNet]
+    | type[ByClassMLP]
+    | type[ByClassMobileNetV2]
+    | type[ByClassMobileNetV3Large]
+    | type[ByClassMobileNetV3Small]
+    | type[ByClassResNet18]
+    | type[ByClassResNet34]
+    | type[ByClassResNet50]
+    | type[ByClassResNet101]
+    | type[ByClassResNet152]
+    | type[ByClassResNext50_32X4D]
+    | type[ByClassResNext101_32X8D]
+    | type[ByClassWideResNet50_2]
+    | type[ByClassWideResNet101_2]
+    | type[ByClassShuffleNetv2_x0_5]
+    | type[ByClassShuffleNetv2_x1_0]
+    | type[ByClassShuffleNetv2_x1_5]
+    | type[ByClassShuffleNetv2_x2_0]
+    | type[ByClassSqueezeNet1_0]
+    | type[ByClassSqueezeNet1_1]
+    | type[ByClassVGG11]
+    | type[ByClassVGG11_BN]
+    | type[ByClassVGG13]
+    | type[ByClassVGG13_BN]
+    | type[ByClassVGG16]
+    | type[ByClassVGG16_BN]
+    | type[ByClassVGG19]
+    | type[ByClassVGG19_BN]
+)
 
-EMNIST_BYMERGE_MODEL_TYPE = Union[
-    Type[ByMergeAlexNet],
-    Type[ByMergeDenseNet121],
-    Type[ByMergeDenseNet161],
-    Type[ByMergeDenseNet169],
-    Type[ByMergeDenseNet201],
-    Type[ByMergeLeNet],
-    Type[ByMergeMLP],
-    Type[ByMergeMobileNetV2],
-    Type[ByMergeMobileNetV3Large],
-    Type[ByMergeMobileNetV3Small],
-    Type[ByMergeResNet18],
-    Type[ByMergeResNet34],
-    Type[ByMergeResNet50],
-    Type[ByMergeResNet101],
-    Type[ByMergeResNet152],
-    Type[ByMergeResNext50_32X4D],
-    Type[ByMergeResNext101_32X8D],
-    Type[ByMergeWideResNet50_2],
-    Type[ByMergeWideResNet101_2],
-    Type[ByMergeShuffleNetv2_x0_5],
-    Type[ByMergeShuffleNetv2_x1_0],
-    Type[ByMergeShuffleNetv2_x1_5],
-    Type[ByMergeShuffleNetv2_x2_0],
-    Type[ByMergeSqueezeNet1_0],
-    Type[ByMergeSqueezeNet1_1],
-    Type[ByMergeVGG11],
-    Type[ByMergeVGG11_BN],
-    Type[ByMergeVGG13],
-    Type[ByMergeVGG13_BN],
-    Type[ByMergeVGG16],
-    Type[ByMergeVGG16_BN],
-    Type[ByMergeVGG19],
-    Type[ByMergeVGG19_BN],
-]
+EMNIST_BYMERGE_MODEL_TYPE = (
+    type[ByMergeAlexNet]
+    | type[ByMergeDenseNet121]
+    | type[ByMergeDenseNet161]
+    | type[ByMergeDenseNet169]
+    | type[ByMergeDenseNet201]
+    | type[ByMergeLeNet]
+    | type[ByMergeMLP]
+    | type[ByMergeMobileNetV2]
+    | type[ByMergeMobileNetV3Large]
+    | type[ByMergeMobileNetV3Small]
+    | type[ByMergeResNet18]
+    | type[ByMergeResNet34]
+    | type[ByMergeResNet50]
+    | type[ByMergeResNet101]
+    | type[ByMergeResNet152]
+    | type[ByMergeResNext50_32X4D]
+    | type[ByMergeResNext101_32X8D]
+    | type[ByMergeWideResNet50_2]
+    | type[ByMergeWideResNet101_2]
+    | type[ByMergeShuffleNetv2_x0_5]
+    | type[ByMergeShuffleNetv2_x1_0]
+    | type[ByMergeShuffleNetv2_x1_5]
+    | type[ByMergeShuffleNetv2_x2_0]
+    | type[ByMergeSqueezeNet1_0]
+    | type[ByMergeSqueezeNet1_1]
+    | type[ByMergeVGG11]
+    | type[ByMergeVGG11_BN]
+    | type[ByMergeVGG13]
+    | type[ByMergeVGG13_BN]
+    | type[ByMergeVGG16]
+    | type[ByMergeVGG16_BN]
+    | type[ByMergeVGG19]
+    | type[ByMergeVGG19_BN]
+)
 
-EMNIST_DIGITS_MODEL_TYPE = Union[
-    Type[DigitsAlexNet],
-    Type[DigitsDenseNet121],
-    Type[DigitsDenseNet161],
-    Type[DigitsDenseNet169],
-    Type[DigitsDenseNet201],
-    Type[DigitsLeNet],
-    Type[DigitsMLP],
-    Type[DigitsMobileNetV2],
-    Type[DigitsMobileNetV3Large],
-    Type[DigitsMobileNetV3Small],
-    Type[DigitsResNet18],
-    Type[DigitsResNet34],
-    Type[DigitsResNet50],
-    Type[DigitsResNet101],
-    Type[DigitsResNet152],
-    Type[DigitsResNext50_32X4D],
-    Type[DigitsResNext101_32X8D],
-    Type[DigitsWideResNet50_2],
-    Type[DigitsWideResNet101_2],
-    Type[DigitsShuffleNetv2_x0_5],
-    Type[DigitsShuffleNetv2_x1_0],
-    Type[DigitsShuffleNetv2_x1_5],
-    Type[DigitsShuffleNetv2_x2_0],
-    Type[DigitsSqueezeNet1_0],
-    Type[DigitsSqueezeNet1_1],
-    Type[DigitsVGG11],
-    Type[DigitsVGG11_BN],
-    Type[DigitsVGG13],
-    Type[DigitsVGG13_BN],
-    Type[DigitsVGG16],
-    Type[DigitsVGG16_BN],
-    Type[DigitsVGG19],
-    Type[DigitsVGG19_BN],
-]
+EMNIST_DIGITS_MODEL_TYPE = (
+    type[DigitsAlexNet]
+    | type[DigitsDenseNet121]
+    | type[DigitsDenseNet161]
+    | type[DigitsDenseNet169]
+    | type[DigitsDenseNet201]
+    | type[DigitsLeNet]
+    | type[DigitsMLP]
+    | type[DigitsMobileNetV2]
+    | type[DigitsMobileNetV3Large]
+    | type[DigitsMobileNetV3Small]
+    | type[DigitsResNet18]
+    | type[DigitsResNet34]
+    | type[DigitsResNet50]
+    | type[DigitsResNet101]
+    | type[DigitsResNet152]
+    | type[DigitsResNext50_32X4D]
+    | type[DigitsResNext101_32X8D]
+    | type[DigitsWideResNet50_2]
+    | type[DigitsWideResNet101_2]
+    | type[DigitsShuffleNetv2_x0_5]
+    | type[DigitsShuffleNetv2_x1_0]
+    | type[DigitsShuffleNetv2_x1_5]
+    | type[DigitsShuffleNetv2_x2_0]
+    | type[DigitsSqueezeNet1_0]
+    | type[DigitsSqueezeNet1_1]
+    | type[DigitsVGG11]
+    | type[DigitsVGG11_BN]
+    | type[DigitsVGG13]
+    | type[DigitsVGG13_BN]
+    | type[DigitsVGG16]
+    | type[DigitsVGG16_BN]
+    | type[DigitsVGG19]
+    | type[DigitsVGG19_BN]
+)
 
-EMNIST_LETTERS_MODEL_TYPE = Union[
-    Type[LettersAlexNet],
-    Type[LettersDenseNet121],
-    Type[LettersDenseNet161],
-    Type[LettersDenseNet169],
-    Type[LettersDenseNet201],
-    Type[LettersLeNet],
-    Type[LettersMLP],
-    Type[LettersMobileNetV2],
-    Type[LettersMobileNetV3Large],
-    Type[LettersMobileNetV3Small],
-    Type[LettersResNet18],
-    Type[LettersResNet34],
-    Type[LettersResNet50],
-    Type[LettersResNet101],
-    Type[LettersResNet152],
-    Type[LettersResNext50_32X4D],
-    Type[LettersResNext101_32X8D],
-    Type[LettersWideResNet50_2],
-    Type[LettersWideResNet101_2],
-    Type[LettersShuffleNetv2_x0_5],
-    Type[LettersShuffleNetv2_x1_0],
-    Type[LettersShuffleNetv2_x1_5],
-    Type[LettersShuffleNetv2_x2_0],
-    Type[LettersSqueezeNet1_0],
-    Type[LettersSqueezeNet1_1],
-    Type[LettersVGG11],
-    Type[LettersVGG11_BN],
-    Type[LettersVGG13],
-    Type[LettersVGG13_BN],
-    Type[LettersVGG16],
-    Type[LettersVGG16_BN],
-    Type[LettersVGG19],
-    Type[LettersVGG19_BN],
-]
+EMNIST_LETTERS_MODEL_TYPE = (
+    type[LettersAlexNet]
+    | type[LettersDenseNet121]
+    | type[LettersDenseNet161]
+    | type[LettersDenseNet169]
+    | type[LettersDenseNet201]
+    | type[LettersLeNet]
+    | type[LettersMLP]
+    | type[LettersMobileNetV2]
+    | type[LettersMobileNetV3Large]
+    | type[LettersMobileNetV3Small]
+    | type[LettersResNet18]
+    | type[LettersResNet34]
+    | type[LettersResNet50]
+    | type[LettersResNet101]
+    | type[LettersResNet152]
+    | type[LettersResNext50_32X4D]
+    | type[LettersResNext101_32X8D]
+    | type[LettersWideResNet50_2]
+    | type[LettersWideResNet101_2]
+    | type[LettersShuffleNetv2_x0_5]
+    | type[LettersShuffleNetv2_x1_0]
+    | type[LettersShuffleNetv2_x1_5]
+    | type[LettersShuffleNetv2_x2_0]
+    | type[LettersSqueezeNet1_0]
+    | type[LettersSqueezeNet1_1]
+    | type[LettersVGG11]
+    | type[LettersVGG11_BN]
+    | type[LettersVGG13]
+    | type[LettersVGG13_BN]
+    | type[LettersVGG16]
+    | type[LettersVGG16_BN]
+    | type[LettersVGG19]
+    | type[LettersVGG19_BN]
+)
 
-EMNIST_MNIST_MODEL_TYPE = Union[
-    Type[MNISTAlexNet],
-    Type[MNISTDenseNet121],
-    Type[MNISTDenseNet161],
-    Type[MNISTDenseNet169],
-    Type[MNISTDenseNet201],
-    Type[MNISTLeNet],
-    Type[MNISTMLP],
-    Type[MNISTMobileNetV2],
-    Type[MNISTMobileNetV3Large],
-    Type[MNISTMobileNetV3Small],
-    Type[MNISTResNet18],
-    Type[MNISTResNet34],
-    Type[MNISTResNet50],
-    Type[MNISTResNet101],
-    Type[MNISTResNet152],
-    Type[MNISTResNext50_32X4D],
-    Type[MNISTResNext101_32X8D],
-    Type[MNISTWideResNet50_2],
-    Type[MNISTWideResNet101_2],
-    Type[MNISTShuffleNetv2_x0_5],
-    Type[MNISTShuffleNetv2_x1_0],
-    Type[MNISTShuffleNetv2_x1_5],
-    Type[MNISTShuffleNetv2_x2_0],
-    Type[MNISTSqueezeNet1_0],
-    Type[MNISTSqueezeNet1_1],
-    Type[MNISTVGG11],
-    Type[MNISTVGG11_BN],
-    Type[MNISTVGG13],
-    Type[MNISTVGG13_BN],
-    Type[MNISTVGG16],
-    Type[MNISTVGG16_BN],
-    Type[MNISTVGG19],
-    Type[MNISTVGG19_BN],
-]
+EMNIST_MNIST_MODEL_TYPE = (
+    type[MNISTAlexNet]
+    | type[MNISTDenseNet121]
+    | type[MNISTDenseNet161]
+    | type[MNISTDenseNet169]
+    | type[MNISTDenseNet201]
+    | type[MNISTLeNet]
+    | type[MNISTMLP]
+    | type[MNISTMobileNetV2]
+    | type[MNISTMobileNetV3Large]
+    | type[MNISTMobileNetV3Small]
+    | type[MNISTResNet18]
+    | type[MNISTResNet34]
+    | type[MNISTResNet50]
+    | type[MNISTResNet101]
+    | type[MNISTResNet152]
+    | type[MNISTResNext50_32X4D]
+    | type[MNISTResNext101_32X8D]
+    | type[MNISTWideResNet50_2]
+    | type[MNISTWideResNet101_2]
+    | type[MNISTShuffleNetv2_x0_5]
+    | type[MNISTShuffleNetv2_x1_0]
+    | type[MNISTShuffleNetv2_x1_5]
+    | type[MNISTShuffleNetv2_x2_0]
+    | type[MNISTSqueezeNet1_0]
+    | type[MNISTSqueezeNet1_1]
+    | type[MNISTVGG11]
+    | type[MNISTVGG11_BN]
+    | type[MNISTVGG13]
+    | type[MNISTVGG13_BN]
+    | type[MNISTVGG16]
+    | type[MNISTVGG16_BN]
+    | type[MNISTVGG19]
+    | type[MNISTVGG19_BN]
+)
 
-EMNIST_BALANCED_MODELS_MAPPING: Dict[str, EMNIST_BALANCED_MODEL_TYPE] = {
+EMNIST_BALANCED_MODELS_MAPPING: dict[str, EMNIST_BALANCED_MODEL_TYPE] = {
     "alexnet": BalancedAlexNet,
     "densenet121": BalancedDenseNet121,
     "densenet161": BalancedDenseNet161,
@@ -612,7 +805,7 @@ EMNIST_BALANCED_MODELS_MAPPING: Dict[str, EMNIST_BALANCED_MODEL_TYPE] = {
     "vgg19_bn": BalancedVGG19_BN,
 }
 
-EMNIST_BYCLASS_MODELS_MAPPING: Dict[str, EMNIST_BYCLASS_MODEL_TYPE] = {
+EMNIST_BYCLASS_MODELS_MAPPING: dict[str, EMNIST_BYCLASS_MODEL_TYPE] = {
     "alexnet": ByClassAlexNet,
     "densenet121": ByClassDenseNet121,
     "densenet161": ByClassDenseNet161,
@@ -648,7 +841,7 @@ EMNIST_BYCLASS_MODELS_MAPPING: Dict[str, EMNIST_BYCLASS_MODEL_TYPE] = {
     "vgg19_bn": ByClassVGG19_BN,
 }
 
-EMNIST_BYMERGE_MODELS_MAPPING: Dict[str, EMNIST_BYMERGE_MODEL_TYPE] = {
+EMNIST_BYMERGE_MODELS_MAPPING: dict[str, EMNIST_BYMERGE_MODEL_TYPE] = {
     "alexnet": ByMergeAlexNet,
     "densenet121": ByMergeDenseNet121,
     "densenet161": ByMergeDenseNet161,
@@ -684,7 +877,7 @@ EMNIST_BYMERGE_MODELS_MAPPING: Dict[str, EMNIST_BYMERGE_MODEL_TYPE] = {
     "vgg19_bn": ByMergeVGG19_BN,
 }
 
-EMNIST_DIGITS_MODELS_MAPPING: Dict[str, EMNIST_DIGITS_MODEL_TYPE] = {
+EMNIST_DIGITS_MODELS_MAPPING: dict[str, EMNIST_DIGITS_MODEL_TYPE] = {
     "alexnet": DigitsAlexNet,
     "densenet121": DigitsDenseNet121,
     "densenet161": DigitsDenseNet161,
@@ -720,7 +913,7 @@ EMNIST_DIGITS_MODELS_MAPPING: Dict[str, EMNIST_DIGITS_MODEL_TYPE] = {
     "vgg19_bn": DigitsVGG19_BN,
 }
 
-EMNIST_LETTERS_MODELS_MAPPING: Dict[str, EMNIST_LETTERS_MODEL_TYPE] = {
+EMNIST_LETTERS_MODELS_MAPPING: dict[str, EMNIST_LETTERS_MODEL_TYPE] = {
     "alexnet": LettersAlexNet,
     "densenet121": LettersDenseNet121,
     "densenet161": LettersDenseNet161,
@@ -756,7 +949,7 @@ EMNIST_LETTERS_MODELS_MAPPING: Dict[str, EMNIST_LETTERS_MODEL_TYPE] = {
     "vgg19_bn": LettersVGG19_BN,
 }
 
-EMNIST_MNIST_MODELS_MAPPING: Dict[str, EMNIST_MNIST_MODEL_TYPE] = {
+EMNIST_MNIST_MODELS_MAPPING: dict[str, EMNIST_MNIST_MODEL_TYPE] = {
     "alexnet": MNISTAlexNet,
     "densenet121": MNISTDenseNet121,
     "densenet161": MNISTDenseNet161,
@@ -794,15 +987,17 @@ EMNIST_MNIST_MODELS_MAPPING: Dict[str, EMNIST_MNIST_MODEL_TYPE] = {
 
 
 def create_model(
-    dataset_name: str, model_name: str, model_hparams: Optional[Dict[str, Any]] = None
-) -> Union[
-    EMNIST_BALANCED_MODEL_TYPE,
-    EMNIST_BYCLASS_MODEL_TYPE,
-    EMNIST_BYMERGE_MODEL_TYPE,
-    EMNIST_DIGITS_MODEL_TYPE,
-    EMNIST_LETTERS_MODEL_TYPE,
-    EMNIST_MNIST_MODEL_TYPE,
-]:
+    dataset_name: str,
+    model_name: str,
+    model_hparams: dict[str, Any] | None = None,
+) -> (
+    EMNIST_BALANCED_MODEL_TYPE
+    | EMNIST_BYCLASS_MODEL_TYPE
+    | EMNIST_BYMERGE_MODEL_TYPE
+    | EMNIST_DIGITS_MODEL_TYPE
+    | EMNIST_LETTERS_MODEL_TYPE
+    | EMNIST_MNIST_MODEL_TYPE
+):
     """Helper function to create a model from the available options.
 
     Args:
@@ -825,7 +1020,9 @@ def create_model(
             if not model_hparams:
                 return EMNIST_BALANCED_MODELS_MAPPING[model_name]()
             else:
-                return EMNIST_BALANCED_MODELS_MAPPING[model_name](**model_hparams)
+                return EMNIST_BALANCED_MODELS_MAPPING[model_name](
+                    **model_hparams
+                )
     elif dataset_name == "byclass":
         if model_name not in EMNIST_BYCLASS_MODELS_MAPPING:
             raise ValueError(
@@ -835,7 +1032,9 @@ def create_model(
             if not model_hparams:
                 return EMNIST_BYCLASS_MODELS_MAPPING[model_name]()
             else:
-                return EMNIST_BYCLASS_MODELS_MAPPING[model_name](**model_hparams)
+                return EMNIST_BYCLASS_MODELS_MAPPING[model_name](
+                    **model_hparams
+                )
     elif dataset_name == "bymerge":
         if model_name not in EMNIST_BYMERGE_MODELS_MAPPING:
             raise ValueError(
@@ -845,7 +1044,9 @@ def create_model(
             if not model_hparams:
                 return EMNIST_BYMERGE_MODELS_MAPPING[model_name]()
             else:
-                return EMNIST_BYMERGE_MODELS_MAPPING[model_name](**model_hparams)
+                return EMNIST_BYMERGE_MODELS_MAPPING[model_name](
+                    **model_hparams
+                )
     elif dataset_name == "letters":
         if model_name not in EMNIST_LETTERS_MODELS_MAPPING:
             raise ValueError(
@@ -855,7 +1056,9 @@ def create_model(
             if not model_hparams:
                 return EMNIST_LETTERS_MODELS_MAPPING[model_name]()
             else:
-                return EMNIST_LETTERS_MODELS_MAPPING[model_name](**model_hparams)
+                return EMNIST_LETTERS_MODELS_MAPPING[model_name](
+                    **model_hparams
+                )
     elif dataset_name == "digits":
         if model_name not in EMNIST_DIGITS_MODELS_MAPPING:
             raise ValueError(
@@ -865,7 +1068,9 @@ def create_model(
             if not model_hparams:
                 return EMNIST_DIGITS_MODELS_MAPPING[model_name]()
             else:
-                return EMNIST_DIGITS_MODELS_MAPPING[model_name](**model_hparams)
+                return EMNIST_DIGITS_MODELS_MAPPING[model_name](
+                    **model_hparams
+                )
     elif dataset_name == "mnist":
         if model_name not in EMNIST_MNIST_MODELS_MAPPING:
             raise ValueError(
@@ -894,9 +1099,9 @@ class BalancedEMNIST(pl.LightningModule):
         self,
         model_name: EMNIST_MODELS_ENUM,
         optimizer_name: OPTIMIZERS_TYPE,
-        optimizer_hparams: Dict[str, Any],
-        model_hparams: Optional[Dict[str, Any]] = None,
-        fl_hparams: Optional[FLParams] = None,
+        optimizer_hparams: dict[str, Any],
+        model_hparams: dict[str, Any] | None = None,
+        fl_hparams: FLParams | None = None,
     ) -> None:
         """Default constructor.
 
@@ -913,17 +1118,19 @@ class BalancedEMNIST(pl.LightningModule):
             model_name=model_name.value,
             model_hparams=model_hparams,
         )
-        self.fl_hparams: Optional[Dict[str, Any]] = (
+        self.fl_hparams: dict[str, Any] | None = (
             fl_hparams.as_dict() if fl_hparams else None
         )
-        combined_hparams: Dict[str, Any] = {
+        combined_hparams: dict[str, Any] = {
             "model_hparams": vars(self.model.hparams),
             "optimizer_hparams": {
                 "optimizer_name": optimizer_name,
                 "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name.value],
                 "config": optimizer_hparams,
             },
-            "fl_hparams": vars(fl_hparams.as_simple_namespace()) if fl_hparams else {},
+            "fl_hparams": vars(fl_hparams.as_simple_namespace())
+            if fl_hparams
+            else {},
         }
         self.save_hyperparameters(combined_hparams)
         self.loss_module = nn.CrossEntropyLoss()
@@ -951,7 +1158,7 @@ class BalancedEMNIST(pl.LightningModule):
         return [optimizer], [scheduler]
 
     def training_step(  # type: ignore
-        self, batch: Tuple[Tensor, Tensor], batch_idx: int
+        self, batch: tuple[Tensor, Tensor], batch_idx: int
     ) -> Tensor:  # type: ignore
         """Training step
 
@@ -989,7 +1196,7 @@ class BalancedEMNIST(pl.LightningModule):
         return loss
 
     def validation_step(  # type: ignore
-        self, batch: Tuple[Tensor, Tensor], batch_idx: int
+        self, batch: tuple[Tensor, Tensor], batch_idx: int
     ) -> None:  # type: ignore
         """Validation step
 
@@ -1024,7 +1231,7 @@ class BalancedEMNIST(pl.LightningModule):
             self.log("test_acc", acc, on_step=False, on_epoch=True)
 
     def test_step(  # type: ignore
-        self, batch: Tuple[Tensor, Tensor], batch_idx: int
+        self, batch: tuple[Tensor, Tensor], batch_idx: int
     ) -> None:  # type: ignore
         """Test step
 
@@ -1066,9 +1273,9 @@ class ByClassEMNIST(pl.LightningModule):
         self,
         model_name: EMNIST_MODELS_ENUM,
         optimizer_name: OPTIMIZERS_TYPE,
-        optimizer_hparams: Dict[str, Any],
-        model_hparams: Optional[Dict[str, Any]] = None,
-        fl_hparams: Optional[FLParams] = None,
+        optimizer_hparams: dict[str, Any],
+        model_hparams: dict[str, Any] | None = None,
+        fl_hparams: FLParams | None = None,
     ) -> None:
         """Default constructor.
 
@@ -1085,17 +1292,19 @@ class ByClassEMNIST(pl.LightningModule):
             model_name=model_name.value,
             model_hparams=model_hparams,
         )
-        self.fl_hparams: Optional[Dict[str, Any]] = (
+        self.fl_hparams: dict[str, Any] | None = (
             fl_hparams.as_dict() if fl_hparams else None
         )
-        combined_hparams: Dict[str, Any] = {
+        combined_hparams: dict[str, Any] = {
             "model_hparams": vars(self.model.hparams),
             "optimizer_hparams": {
                 "optimizer_name": optimizer_name,
                 "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name.value],
                 "config": optimizer_hparams,
             },
-            "fl_hparams": vars(fl_hparams.as_simple_namespace()) if fl_hparams else {},
+            "fl_hparams": vars(fl_hparams.as_simple_namespace())
+            if fl_hparams
+            else {},
         }
         self.save_hyperparameters(combined_hparams)
         self.loss_module = nn.CrossEntropyLoss()
@@ -1123,7 +1332,7 @@ class ByClassEMNIST(pl.LightningModule):
         return [optimizer], [scheduler]
 
     def training_step(  # type: ignore
-        self, batch: Tuple[Tensor, Tensor], batch_idx: int
+        self, batch: tuple[Tensor, Tensor], batch_idx: int
     ) -> Tensor:  # type: ignore
         """Training step
 
@@ -1161,7 +1370,7 @@ class ByClassEMNIST(pl.LightningModule):
         return loss
 
     def validation_step(  # type: ignore
-        self, batch: Tuple[Tensor, Tensor], batch_idx: int
+        self, batch: tuple[Tensor, Tensor], batch_idx: int
     ) -> None:  # type: ignore
         """Validation step
 
@@ -1196,7 +1405,7 @@ class ByClassEMNIST(pl.LightningModule):
             self.log("test_acc", acc, on_step=False, on_epoch=True)
 
     def test_step(  # type: ignore
-        self, batch: Tuple[Tensor, Tensor], batch_idx: int
+        self, batch: tuple[Tensor, Tensor], batch_idx: int
     ) -> None:  # type: ignore
         """Test step
 
@@ -1238,9 +1447,9 @@ class ByMergeEMNIST(pl.LightningModule):
         self,
         model_name: EMNIST_MODELS_ENUM,
         optimizer_name: OPTIMIZERS_TYPE,
-        optimizer_hparams: Dict[str, Any],
-        model_hparams: Optional[Dict[str, Any]] = None,
-        fl_hparams: Optional[FLParams] = None,
+        optimizer_hparams: dict[str, Any],
+        model_hparams: dict[str, Any] | None = None,
+        fl_hparams: FLParams | None = None,
     ) -> None:
         """Default constructor.
 
@@ -1257,17 +1466,19 @@ class ByMergeEMNIST(pl.LightningModule):
             model_name=model_name.value,
             model_hparams=model_hparams,
         )
-        self.fl_hparams: Optional[Dict[str, Any]] = (
+        self.fl_hparams: dict[str, Any] | None = (
             fl_hparams.as_dict() if fl_hparams else None
         )
-        combined_hparams: Dict[str, Any] = {
+        combined_hparams: dict[str, Any] = {
             "model_hparams": vars(self.model.hparams),
             "optimizer_hparams": {
                 "optimizer_name": optimizer_name,
                 "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name.value],
                 "config": optimizer_hparams,
             },
-            "fl_hparams": vars(fl_hparams.as_simple_namespace()) if fl_hparams else {},
+            "fl_hparams": vars(fl_hparams.as_simple_namespace())
+            if fl_hparams
+            else {},
         }
         self.save_hyperparameters(combined_hparams)
         self.loss_module = nn.CrossEntropyLoss()
@@ -1295,7 +1506,7 @@ class ByMergeEMNIST(pl.LightningModule):
         return [optimizer], [scheduler]
 
     def training_step(  # type: ignore
-        self, batch: Tuple[Tensor, Tensor], batch_idx: int
+        self, batch: tuple[Tensor, Tensor], batch_idx: int
     ) -> Tensor:  # type: ignore
         """Training step
 
@@ -1333,7 +1544,7 @@ class ByMergeEMNIST(pl.LightningModule):
         return loss
 
     def validation_step(  # type: ignore
-        self, batch: Tuple[Tensor, Tensor], batch_idx: int
+        self, batch: tuple[Tensor, Tensor], batch_idx: int
     ) -> None:  # type: ignore
         """Validation step
 
@@ -1368,7 +1579,7 @@ class ByMergeEMNIST(pl.LightningModule):
             self.log("test_acc", acc, on_step=False, on_epoch=True)
 
     def test_step(  # type: ignore
-        self, batch: Tuple[Tensor, Tensor], batch_idx: int
+        self, batch: tuple[Tensor, Tensor], batch_idx: int
     ) -> None:  # type: ignore
         """Test step
 
@@ -1410,9 +1621,9 @@ class LettersEMNIST(pl.LightningModule):
         self,
         model_name: EMNIST_MODELS_ENUM,
         optimizer_name: OPTIMIZERS_TYPE,
-        optimizer_hparams: Dict[str, Any],
-        model_hparams: Optional[Dict[str, Any]] = None,
-        fl_hparams: Optional[FLParams] = None,
+        optimizer_hparams: dict[str, Any],
+        model_hparams: dict[str, Any] | None = None,
+        fl_hparams: FLParams | None = None,
     ) -> None:
         """Default constructor.
 
@@ -1429,17 +1640,19 @@ class LettersEMNIST(pl.LightningModule):
             model_name=model_name.value,
             model_hparams=model_hparams,
         )
-        self.fl_hparams: Optional[Dict[str, Any]] = (
+        self.fl_hparams: dict[str, Any] | None = (
             fl_hparams.as_dict() if fl_hparams else None
         )
-        combined_hparams: Dict[str, Any] = {
+        combined_hparams: dict[str, Any] = {
             "model_hparams": vars(self.model.hparams),
             "optimizer_hparams": {
                 "optimizer_name": optimizer_name,
                 "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name.value],
                 "config": optimizer_hparams,
             },
-            "fl_hparams": vars(fl_hparams.as_simple_namespace()) if fl_hparams else {},
+            "fl_hparams": vars(fl_hparams.as_simple_namespace())
+            if fl_hparams
+            else {},
         }
         self.save_hyperparameters(combined_hparams)
         self.loss_module = nn.CrossEntropyLoss()
@@ -1467,7 +1680,7 @@ class LettersEMNIST(pl.LightningModule):
         return [optimizer], [scheduler]
 
     def training_step(  # type: ignore
-        self, batch: Tuple[Tensor, Tensor], batch_idx: int
+        self, batch: tuple[Tensor, Tensor], batch_idx: int
     ) -> Tensor:  # type: ignore
         """Training step
 
@@ -1505,7 +1718,7 @@ class LettersEMNIST(pl.LightningModule):
         return loss
 
     def validation_step(  # type: ignore
-        self, batch: Tuple[Tensor, Tensor], batch_idx: int
+        self, batch: tuple[Tensor, Tensor], batch_idx: int
     ) -> None:  # type: ignore
         """Validation step
 
@@ -1540,7 +1753,7 @@ class LettersEMNIST(pl.LightningModule):
             self.log("test_acc", acc, on_step=False, on_epoch=True)
 
     def test_step(  # type: ignore
-        self, batch: Tuple[Tensor, Tensor], batch_idx: int
+        self, batch: tuple[Tensor, Tensor], batch_idx: int
     ) -> None:  # type: ignore
         """Test step
 
@@ -1582,9 +1795,9 @@ class DigitsEMNIST(pl.LightningModule):
         self,
         model_name: EMNIST_MODELS_ENUM,
         optimizer_name: OPTIMIZERS_TYPE,
-        optimizer_hparams: Dict[str, Any],
-        model_hparams: Optional[Dict[str, Any]] = None,
-        fl_hparams: Optional[FLParams] = None,
+        optimizer_hparams: dict[str, Any],
+        model_hparams: dict[str, Any] | None = None,
+        fl_hparams: FLParams | None = None,
     ) -> None:
         """Default constructor.
 
@@ -1601,17 +1814,19 @@ class DigitsEMNIST(pl.LightningModule):
             model_name=model_name.value,
             model_hparams=model_hparams,
         )
-        self.fl_hparams: Optional[Dict[str, Any]] = (
+        self.fl_hparams: dict[str, Any] | None = (
             fl_hparams.as_dict() if fl_hparams else None
         )
-        combined_hparams: Dict[str, Any] = {
+        combined_hparams: dict[str, Any] = {
             "model_hparams": vars(self.model.hparams),
             "optimizer_hparams": {
                 "optimizer_name": optimizer_name,
                 "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name.value],
                 "config": optimizer_hparams,
             },
-            "fl_hparams": vars(fl_hparams.as_simple_namespace()) if fl_hparams else {},
+            "fl_hparams": vars(fl_hparams.as_simple_namespace())
+            if fl_hparams
+            else {},
         }
         self.save_hyperparameters(combined_hparams)
         self.loss_module = nn.CrossEntropyLoss()
@@ -1639,7 +1854,7 @@ class DigitsEMNIST(pl.LightningModule):
         return [optimizer], [scheduler]
 
     def training_step(  # type: ignore
-        self, batch: Tuple[Tensor, Tensor], batch_idx: int
+        self, batch: tuple[Tensor, Tensor], batch_idx: int
     ) -> Tensor:  # type: ignore
         """Training step
 
@@ -1677,7 +1892,7 @@ class DigitsEMNIST(pl.LightningModule):
         return loss
 
     def validation_step(  # type: ignore
-        self, batch: Tuple[Tensor, Tensor], batch_idx: int
+        self, batch: tuple[Tensor, Tensor], batch_idx: int
     ) -> None:  # type: ignore
         """Validation step
 
@@ -1712,7 +1927,7 @@ class DigitsEMNIST(pl.LightningModule):
             self.log("test_acc", acc, on_step=False, on_epoch=True)
 
     def test_step(  # type: ignore
-        self, batch: Tuple[Tensor, Tensor], batch_idx: int
+        self, batch: tuple[Tensor, Tensor], batch_idx: int
     ) -> None:  # type: ignore
         """Test step
 
@@ -1754,9 +1969,9 @@ class MNISTEMNIST(pl.LightningModule):
         self,
         model_name: EMNIST_MODELS_ENUM,
         optimizer_name: OPTIMIZERS_TYPE,
-        optimizer_hparams: Dict[str, Any],
-        model_hparams: Optional[Dict[str, Any]] = None,
-        fl_hparams: Optional[FLParams] = None,
+        optimizer_hparams: dict[str, Any],
+        model_hparams: dict[str, Any] | None = None,
+        fl_hparams: FLParams | None = None,
     ) -> None:
         """Default constructor.
 
@@ -1773,17 +1988,19 @@ class MNISTEMNIST(pl.LightningModule):
             model_name=model_name.value,
             model_hparams=model_hparams,
         )
-        self.fl_hparams: Optional[Dict[str, Any]] = (
+        self.fl_hparams: dict[str, Any] | None = (
             fl_hparams.as_dict() if fl_hparams else None
         )
-        combined_hparams: Dict[str, Any] = {
+        combined_hparams: dict[str, Any] = {
             "model_hparams": vars(self.model.hparams),
             "optimizer_hparams": {
                 "optimizer_name": optimizer_name,
                 "optimizer_fn": OPTIMIZERS_BY_NAME[optimizer_name.value],
                 "config": optimizer_hparams,
             },
-            "fl_hparams": vars(fl_hparams.as_simple_namespace()) if fl_hparams else {},
+            "fl_hparams": vars(fl_hparams.as_simple_namespace())
+            if fl_hparams
+            else {},
         }
         self.save_hyperparameters(combined_hparams)
         self.loss_module = nn.CrossEntropyLoss()
@@ -1811,7 +2028,7 @@ class MNISTEMNIST(pl.LightningModule):
         return [optimizer], [scheduler]
 
     def training_step(  # type: ignore
-        self, batch: Tuple[Tensor, Tensor], batch_idx: int
+        self, batch: tuple[Tensor, Tensor], batch_idx: int
     ) -> Tensor:  # type: ignore
         """Training step
 
@@ -1849,7 +2066,7 @@ class MNISTEMNIST(pl.LightningModule):
         return loss
 
     def validation_step(  # type: ignore
-        self, batch: Tuple[Tensor, Tensor], batch_idx: int
+        self, batch: tuple[Tensor, Tensor], batch_idx: int
     ) -> None:  # type: ignore
         """Validation step
 
@@ -1884,7 +2101,7 @@ class MNISTEMNIST(pl.LightningModule):
             self.log("test_acc", acc, on_step=False, on_epoch=True)
 
     def test_step(  # type: ignore
-        self, batch: Tuple[Tensor, Tensor], batch_idx: int
+        self, batch: tuple[Tensor, Tensor], batch_idx: int
     ) -> None:  # type: ignore
         """Test step
 

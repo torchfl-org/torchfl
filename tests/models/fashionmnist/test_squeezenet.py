@@ -1,13 +1,17 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Tests for SqueezeNet for FashionMNIST in `torchfl` package."""
-import pytest
-from torchvision import datasets, transforms
 import os
-from torchfl.compatibility import TORCHFL_DIR
-from torchfl.models.core.fashionmnist.squeezenet import SqueezeNet1_0, SqueezeNet1_1
+
+import pytest
 import torch
+from torchvision import datasets, transforms
+
+from torchfl.compatibility import TORCHFL_DIR
+from torchfl.models.core.fashionmnist.squeezenet import (
+    SqueezeNet1_0,
+    SqueezeNet1_1,
+)
 
 data_transforms = {
     "train_single_channel": transforms.Compose(
@@ -30,7 +34,7 @@ data_transforms = {
 }
 
 
-@pytest.fixture
+@pytest.fixture()
 def fashionmnist_single_channel_loader():
     """Fixture for FashionMNIST, single-channel dataset.
 
@@ -46,7 +50,7 @@ def fashionmnist_single_channel_loader():
     )
 
 
-@pytest.fixture
+@pytest.fixture()
 def fashionmnist_3_channel_loader():
     """Fixture for FashionMNIST, multi-channel dataset.
 
@@ -62,16 +66,22 @@ def fashionmnist_3_channel_loader():
     )
 
 
-def test_squeezenet_10_single_channel_ouput_shape(fashionmnist_single_channel_loader):
+def test_squeezenet_10_single_channel_ouput_shape(
+    fashionmnist_single_channel_loader,
+):
     """Testing the SqueezeNet output for a single-channel FashionMNIST image.
 
     Args:
         fashionmnist_loader (Dataset): PyTorch Dataset object for MNIST.
     """
-    model = SqueezeNet1_0(pre_trained=True, feature_extract=True, num_channels=1)
+    model = SqueezeNet1_0(
+        pre_trained=True, feature_extract=True, num_channels=1
+    )
     model.zero_grad()
     out = model(
-        torch.reshape(fashionmnist_single_channel_loader[0][0], (1, 1, 224, 224))
+        torch.reshape(
+            fashionmnist_single_channel_loader[0][0], (1, 1, 224, 224)
+        )
     )
     assert out.size() == torch.Size([1, 10])
 
@@ -82,22 +92,32 @@ def test_squeezenet_10_3_channels_output_shape(fashionmnist_3_channel_loader):
     Args:
         fashionmnist_loader (Dataset): PyTorch Dataset object for MNIST.
     """
-    model = SqueezeNet1_0(pre_trained=True, feature_extract=True, num_channels=3)
+    model = SqueezeNet1_0(
+        pre_trained=True, feature_extract=True, num_channels=3
+    )
     model.zero_grad()
-    out = model(torch.reshape(fashionmnist_3_channel_loader[0][0], (1, 3, 224, 224)))
+    out = model(
+        torch.reshape(fashionmnist_3_channel_loader[0][0], (1, 3, 224, 224))
+    )
     assert out.size() == torch.Size([1, 10])
 
 
-def test_squeezenet_11_single_channel_ouput_shape(fashionmnist_single_channel_loader):
+def test_squeezenet_11_single_channel_ouput_shape(
+    fashionmnist_single_channel_loader,
+):
     """Testing the SqueezeNet output for a single-channel FashionMNIST image.
 
     Args:
         fashionmnist_loader (Dataset): PyTorch Dataset object for MNIST.
     """
-    model = SqueezeNet1_1(pre_trained=True, feature_extract=True, num_channels=1)
+    model = SqueezeNet1_1(
+        pre_trained=True, feature_extract=True, num_channels=1
+    )
     model.zero_grad()
     out = model(
-        torch.reshape(fashionmnist_single_channel_loader[0][0], (1, 1, 224, 224))
+        torch.reshape(
+            fashionmnist_single_channel_loader[0][0], (1, 1, 224, 224)
+        )
     )
     assert out.size() == torch.Size([1, 10])
 
@@ -108,7 +128,11 @@ def test_squeezenet_11_3_channels_output_shape(fashionmnist_3_channel_loader):
     Args:
         fashionmnist_loader (Dataset): PyTorch Dataset object for MNIST.
     """
-    model = SqueezeNet1_1(pre_trained=True, feature_extract=True, num_channels=3)
+    model = SqueezeNet1_1(
+        pre_trained=True, feature_extract=True, num_channels=3
+    )
     model.zero_grad()
-    out = model(torch.reshape(fashionmnist_3_channel_loader[0][0], (1, 3, 224, 224)))
+    out = model(
+        torch.reshape(fashionmnist_3_channel_loader[0][0], (1, 3, 224, 224))
+    )
     assert out.size() == torch.Size([1, 10])

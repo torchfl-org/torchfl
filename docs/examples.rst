@@ -126,7 +126,7 @@ Federated Learning
 The following steps should be followed on a high-level to train a
 federated learning experiment.
 
-1. **Prepare a dataset and create federated data shards with iid or non-iid distribution** :ref:`torchfl.datamodules`.
+1. **Prepare a dataset and create data shards** :ref:`torchfl.datamodules`.
 
     .. code-block:: python
         :emphasize-lines: 9, 10, 11
@@ -138,7 +138,7 @@ federated learning experiment.
             datamodule.prepare_data()
             datamodule.setup()
             return datamodule
-            
+
         agent_data_shard_map = get_agent_data_shard_map().federated_iid_dataloader(
             num_workers=fl_params.num_agents,
             workers_batch_size=fl_params.local_train_batch_size,
@@ -179,7 +179,7 @@ federated learning experiment.
 
         all_agents = initialize_agents(fl_params, agent_data_shard_map)
 
-3. **Initiliaze an FLParam object with the desired FL hyperparameters and pass it on to the Entrypoint object which will abstract the training.**
+3. **Initiliaze an FLParam object and create an Entrypoint.**
 
     .. code-block:: python
         :emphasize-lines: 1, 8

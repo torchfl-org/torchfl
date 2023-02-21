@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # type: ignore
 
 """Implementation of the pre-trained VGG architectures using PyTorch and torchvision.
@@ -15,18 +14,22 @@ Contains:
     - VGG19_BN
 """
 
-from torchvision import models
 from types import SimpleNamespace
+from typing import cast
+
 import torch.nn as nn
+from torchvision import models
+from torchvision.models.vgg import cfgs, make_layers
+
 from torchfl.compatibility import ACTIVATION_FUNCTIONS_BY_NAME
-from torchvision.models.vgg import make_layers, cfgs
-from typing import List, Union, cast
 
 
 def _custom_make_layers(
-    cfg: List[Union[str, int]], batch_norm: bool = False, starting_channels: int = 3
+    cfg: list[str | int],
+    batch_norm: bool = False,
+    starting_channels: int = 3,
 ) -> nn.Sequential:
-    layers: List[nn.Module] = []
+    layers: list[nn.Module] = []
     in_channels = starting_channels
     for v in cfg:
         if v == "M":
@@ -63,7 +66,7 @@ class VGG11(models.VGG):
             - num_channels (int, optional): Number of incoming channels. Defaults to 3.
             - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
-        super(VGG11, self).__init__(make_layers(cfg=cfgs["A"], batch_norm=False))
+        super().__init__(make_layers(cfg=cfgs["A"], batch_norm=False))
         self.hparams = SimpleNamespace(
             model_name="vgg11",
             pre_trained=pre_trained,
@@ -113,7 +116,7 @@ class VGG11_BN(models.VGG):
             - num_channels (int, optional): Number of incoming channels. Defaults to 3.
             - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
-        super(VGG11_BN, self).__init__(make_layers(cfg=cfgs["A"], batch_norm=True))
+        super().__init__(make_layers(cfg=cfgs["A"], batch_norm=True))
         self.hparams = SimpleNamespace(
             model_name="vgg11_bn",
             pre_trained=pre_trained,
@@ -163,7 +166,7 @@ class VGG13(models.VGG):
             - num_channels (int, optional): Number of incoming channels. Defaults to 3.
             - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
-        super(VGG13, self).__init__(make_layers(cfg=cfgs["B"]))
+        super().__init__(make_layers(cfg=cfgs["B"]))
         self.hparams = SimpleNamespace(
             model_name="vgg13",
             pre_trained=pre_trained,
@@ -213,7 +216,7 @@ class VGG13_BN(models.VGG):
             - num_channels (int, optional): Number of incoming channels. Defaults to 3.
             - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
-        super(VGG13_BN, self).__init__(make_layers(cfg=cfgs["B"], batch_norm=True))
+        super().__init__(make_layers(cfg=cfgs["B"], batch_norm=True))
         self.hparams = SimpleNamespace(
             model_name="vgg13_bn",
             pre_trained=pre_trained,
@@ -263,7 +266,7 @@ class VGG16(models.VGG):
             - num_channels (int, optional): Number of incoming channels. Defaults to 3.
             - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
-        super(VGG16, self).__init__(make_layers(cfg=cfgs["D"]))
+        super().__init__(make_layers(cfg=cfgs["D"]))
         self.hparams = SimpleNamespace(
             model_name="vgg16",
             pre_trained=pre_trained,
@@ -313,7 +316,7 @@ class VGG16_BN(models.VGG):
             - num_channels (int, optional): Number of incoming channels. Defaults to 3.
             - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
-        super(VGG16_BN, self).__init__(make_layers(cfg=cfgs["D"], batch_norm=True))
+        super().__init__(make_layers(cfg=cfgs["D"], batch_norm=True))
         self.hparams = SimpleNamespace(
             model_name="vgg16_bn",
             pre_trained=pre_trained,
@@ -363,7 +366,7 @@ class VGG19(models.VGG):
             - num_channels (int, optional): Number of incoming channels. Defaults to 3.
             - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
-        super(VGG19, self).__init__(make_layers(cfg=cfgs["E"]))
+        super().__init__(make_layers(cfg=cfgs["E"]))
         self.hparams = SimpleNamespace(
             model_name="vgg19",
             pre_trained=pre_trained,
@@ -413,7 +416,7 @@ class VGG19_BN(models.VGG):
             - num_channels (int, optional): Number of incoming channels. Defaults to 3.
             - act_fn_name (str, optional): Activation function to be used. Defaults to "relu". Accepted: ["tanh", "relu", "leakyrelu", "gelu"].
         """
-        super(VGG19_BN, self).__init__(make_layers(cfg=cfgs["E"], batch_norm=True))
+        super().__init__(make_layers(cfg=cfgs["E"], batch_norm=True))
         self.hparams = SimpleNamespace(
             model_name="vgg19_bn",
             pre_trained=pre_trained,

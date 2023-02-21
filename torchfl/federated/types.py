@@ -1,19 +1,16 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Types used within the federated learning utilities."""
 
 import enum
-from typing import Any, Union
 
 from torchfl.federated.agents.base import BaseAgent
 from torchfl.federated.agents.v1 import V1Agent
-
 from torchfl.federated.aggregators.base import BaseAggregator
 from torchfl.federated.aggregators.fedavg import FedAvgAggregator
-
 from torchfl.federated.samplers.base import BaseSampler
 from torchfl.federated.samplers.random import RandomSampler
+
 
 # enums
 class AgentsEnum(enum.Enum):
@@ -38,6 +35,6 @@ class SamplersEnum(enum.Enum):
 
 
 # type aliases
-AgentsType = Union[BaseAgent, V1Agent]
-AggregatorsType = Union[BaseAggregator, FedAvgAggregator]
-SamplersType = Union[BaseSampler, RandomSampler]
+AgentsType = BaseAgent | V1Agent
+AggregatorsType = BaseAggregator | FedAvgAggregator
+SamplersType = BaseSampler | RandomSampler

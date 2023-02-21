@@ -1,28 +1,28 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # mypy: ignore-errors
 
 """Defines the constants to ensure the consistency and compatibility between the files."""
 import enum
 import os
 from pathlib import Path
-from typing import Dict, Any
+from typing import Any
+
+from torch.nn import GELU, LeakyReLU, ReLU, Tanh
 from torch.optim import (
+    ASGD,
+    LBFGS,
+    SGD,
     Adadelta,
     Adagrad,
     Adam,
-    AdamW,
-    SparseAdam,
     Adamax,
-    ASGD,
-    LBFGS,
+    AdamW,
     NAdam,
     RAdam,
     RMSprop,
     Rprop,
-    SGD,
+    SparseAdam,
 )
-from torch.nn import Tanh, ReLU, LeakyReLU, GELU
 
 TORCHFL_DIR: str = os.path.join(Path.home(), ".torchfl")
 DATASETS = ["mnist", "emnist_digits", "cifar10"]
@@ -78,7 +78,7 @@ class ACTIVATION_FUNCTIONS_TYPE(enum.Enum):
 
 
 # mappings
-OPTIMIZERS_BY_NAME: Dict[str, Any] = {
+OPTIMIZERS_BY_NAME: dict[str, Any] = {
     "adadelta": Adadelta,
     "adagrad": Adagrad,
     "adam": Adam,
@@ -93,7 +93,7 @@ OPTIMIZERS_BY_NAME: Dict[str, Any] = {
     "rprop": Rprop,
     "sgd": SGD,
 }
-ACTIVATION_FUNCTIONS_BY_NAME: Dict[str, Any] = {
+ACTIVATION_FUNCTIONS_BY_NAME: dict[str, Any] = {
     "tanh": Tanh,
     "relu": ReLU,
     "leakyrelu": LeakyReLU,

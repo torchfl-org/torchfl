@@ -1,10 +1,12 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """Tests for VGG for FashionMNIST in `torchfl` package."""
-import pytest
-from torchvision import datasets, transforms
 import os
+
+import pytest
+import torch
+from torchvision import datasets, transforms
+
 from torchfl.compatibility import TORCHFL_DIR
 from torchfl.models.core.fashionmnist.vgg import (
     VGG11,
@@ -16,7 +18,6 @@ from torchfl.models.core.fashionmnist.vgg import (
     VGG19,
     VGG19_BN,
 )
-import torch
 
 data_transforms = {
     "train_single_channel": transforms.Compose(
@@ -39,7 +40,7 @@ data_transforms = {
 }
 
 
-@pytest.fixture
+@pytest.fixture()
 def fashionmnist_single_channel_loader():
     """Fixture for FashionMNIST, single-channel dataset.
 
@@ -55,7 +56,7 @@ def fashionmnist_single_channel_loader():
     )
 
 
-@pytest.fixture
+@pytest.fixture()
 def fashionmnist_3_channel_loader():
     """Fixture for FashionMNIST, multi-channel dataset.
 
@@ -80,7 +81,9 @@ def test_vgg11_single_channel_ouput_shape(fashionmnist_single_channel_loader):
     model = VGG11(pre_trained=True, feature_extract=True, num_channels=1)
     model.zero_grad()
     out = model(
-        torch.reshape(fashionmnist_single_channel_loader[0][0], (1, 1, 224, 224))
+        torch.reshape(
+            fashionmnist_single_channel_loader[0][0], (1, 1, 224, 224)
+        )
     )
     assert out.size() == torch.Size([1, 10])
 
@@ -93,11 +96,15 @@ def test_vgg11_3_channels_output_shape(fashionmnist_3_channel_loader):
     """
     model = VGG11(pre_trained=True, feature_extract=True, num_channels=3)
     model.zero_grad()
-    out = model(torch.reshape(fashionmnist_3_channel_loader[0][0], (1, 3, 224, 224)))
+    out = model(
+        torch.reshape(fashionmnist_3_channel_loader[0][0], (1, 3, 224, 224))
+    )
     assert out.size() == torch.Size([1, 10])
 
 
-def test_vgg11bn_single_channel_ouput_shape(fashionmnist_single_channel_loader):
+def test_vgg11bn_single_channel_ouput_shape(
+    fashionmnist_single_channel_loader,
+):
     """Testing the VGG output for a single-channel FashionMNIST image.
 
     Args:
@@ -106,7 +113,9 @@ def test_vgg11bn_single_channel_ouput_shape(fashionmnist_single_channel_loader):
     model = VGG11_BN(pre_trained=True, feature_extract=True, num_channels=1)
     model.zero_grad()
     out = model(
-        torch.reshape(fashionmnist_single_channel_loader[0][0], (1, 1, 224, 224))
+        torch.reshape(
+            fashionmnist_single_channel_loader[0][0], (1, 1, 224, 224)
+        )
     )
     assert out.size() == torch.Size([1, 10])
 
@@ -119,7 +128,9 @@ def test_vgg11bn_3_channels_output_shape(fashionmnist_3_channel_loader):
     """
     model = VGG11_BN(pre_trained=True, feature_extract=True, num_channels=3)
     model.zero_grad()
-    out = model(torch.reshape(fashionmnist_3_channel_loader[0][0], (1, 3, 224, 224)))
+    out = model(
+        torch.reshape(fashionmnist_3_channel_loader[0][0], (1, 3, 224, 224))
+    )
     assert out.size() == torch.Size([1, 10])
 
 
@@ -132,7 +143,9 @@ def test_vgg13_single_channel_ouput_shape(fashionmnist_single_channel_loader):
     model = VGG13(pre_trained=True, feature_extract=True, num_channels=1)
     model.zero_grad()
     out = model(
-        torch.reshape(fashionmnist_single_channel_loader[0][0], (1, 1, 224, 224))
+        torch.reshape(
+            fashionmnist_single_channel_loader[0][0], (1, 1, 224, 224)
+        )
     )
     assert out.size() == torch.Size([1, 10])
 
@@ -145,11 +158,15 @@ def test_vgg13_3_channels_output_shape(fashionmnist_3_channel_loader):
     """
     model = VGG13(pre_trained=True, feature_extract=True, num_channels=3)
     model.zero_grad()
-    out = model(torch.reshape(fashionmnist_3_channel_loader[0][0], (1, 3, 224, 224)))
+    out = model(
+        torch.reshape(fashionmnist_3_channel_loader[0][0], (1, 3, 224, 224))
+    )
     assert out.size() == torch.Size([1, 10])
 
 
-def test_vgg13bn_single_channel_ouput_shape(fashionmnist_single_channel_loader):
+def test_vgg13bn_single_channel_ouput_shape(
+    fashionmnist_single_channel_loader,
+):
     """Testing the VGG output for a single-channel FashionMNIST image.
 
     Args:
@@ -158,7 +175,9 @@ def test_vgg13bn_single_channel_ouput_shape(fashionmnist_single_channel_loader):
     model = VGG13_BN(pre_trained=True, feature_extract=True, num_channels=1)
     model.zero_grad()
     out = model(
-        torch.reshape(fashionmnist_single_channel_loader[0][0], (1, 1, 224, 224))
+        torch.reshape(
+            fashionmnist_single_channel_loader[0][0], (1, 1, 224, 224)
+        )
     )
     assert out.size() == torch.Size([1, 10])
 
@@ -171,7 +190,9 @@ def test_vgg13bn_3_channels_output_shape(fashionmnist_3_channel_loader):
     """
     model = VGG13_BN(pre_trained=True, feature_extract=True, num_channels=3)
     model.zero_grad()
-    out = model(torch.reshape(fashionmnist_3_channel_loader[0][0], (1, 3, 224, 224)))
+    out = model(
+        torch.reshape(fashionmnist_3_channel_loader[0][0], (1, 3, 224, 224))
+    )
     assert out.size() == torch.Size([1, 10])
 
 
@@ -184,7 +205,9 @@ def test_vgg16_single_channel_ouput_shape(fashionmnist_single_channel_loader):
     model = VGG16(pre_trained=True, feature_extract=True, num_channels=1)
     model.zero_grad()
     out = model(
-        torch.reshape(fashionmnist_single_channel_loader[0][0], (1, 1, 224, 224))
+        torch.reshape(
+            fashionmnist_single_channel_loader[0][0], (1, 1, 224, 224)
+        )
     )
     assert out.size() == torch.Size([1, 10])
 
@@ -197,11 +220,15 @@ def test_vgg16_3_channels_output_shape(fashionmnist_3_channel_loader):
     """
     model = VGG16(pre_trained=True, feature_extract=True, num_channels=3)
     model.zero_grad()
-    out = model(torch.reshape(fashionmnist_3_channel_loader[0][0], (1, 3, 224, 224)))
+    out = model(
+        torch.reshape(fashionmnist_3_channel_loader[0][0], (1, 3, 224, 224))
+    )
     assert out.size() == torch.Size([1, 10])
 
 
-def test_vgg16bn_single_channel_ouput_shape(fashionmnist_single_channel_loader):
+def test_vgg16bn_single_channel_ouput_shape(
+    fashionmnist_single_channel_loader,
+):
     """Testing the VGG output for a single-channel FashionMNIST image.
 
     Args:
@@ -210,7 +237,9 @@ def test_vgg16bn_single_channel_ouput_shape(fashionmnist_single_channel_loader):
     model = VGG16_BN(pre_trained=True, feature_extract=True, num_channels=1)
     model.zero_grad()
     out = model(
-        torch.reshape(fashionmnist_single_channel_loader[0][0], (1, 1, 224, 224))
+        torch.reshape(
+            fashionmnist_single_channel_loader[0][0], (1, 1, 224, 224)
+        )
     )
     assert out.size() == torch.Size([1, 10])
 
@@ -223,7 +252,9 @@ def test_vgg16bn_3_channels_output_shape(fashionmnist_3_channel_loader):
     """
     model = VGG16_BN(pre_trained=True, feature_extract=True, num_channels=3)
     model.zero_grad()
-    out = model(torch.reshape(fashionmnist_3_channel_loader[0][0], (1, 3, 224, 224)))
+    out = model(
+        torch.reshape(fashionmnist_3_channel_loader[0][0], (1, 3, 224, 224))
+    )
     assert out.size() == torch.Size([1, 10])
 
 
@@ -236,7 +267,9 @@ def test_vgg19_single_channel_ouput_shape(fashionmnist_single_channel_loader):
     model = VGG19(pre_trained=True, feature_extract=True, num_channels=1)
     model.zero_grad()
     out = model(
-        torch.reshape(fashionmnist_single_channel_loader[0][0], (1, 1, 224, 224))
+        torch.reshape(
+            fashionmnist_single_channel_loader[0][0], (1, 1, 224, 224)
+        )
     )
     assert out.size() == torch.Size([1, 10])
 
@@ -249,11 +282,15 @@ def test_vgg19_3_channels_output_shape(fashionmnist_3_channel_loader):
     """
     model = VGG19(pre_trained=True, feature_extract=True, num_channels=3)
     model.zero_grad()
-    out = model(torch.reshape(fashionmnist_3_channel_loader[0][0], (1, 3, 224, 224)))
+    out = model(
+        torch.reshape(fashionmnist_3_channel_loader[0][0], (1, 3, 224, 224))
+    )
     assert out.size() == torch.Size([1, 10])
 
 
-def test_vgg19bn_single_channel_ouput_shape(fashionmnist_single_channel_loader):
+def test_vgg19bn_single_channel_ouput_shape(
+    fashionmnist_single_channel_loader,
+):
     """Testing the VGG output for a single-channel FashionMNIST image.
 
     Args:
@@ -262,7 +299,9 @@ def test_vgg19bn_single_channel_ouput_shape(fashionmnist_single_channel_loader):
     model = VGG19_BN(pre_trained=True, feature_extract=True, num_channels=1)
     model.zero_grad()
     out = model(
-        torch.reshape(fashionmnist_single_channel_loader[0][0], (1, 1, 224, 224))
+        torch.reshape(
+            fashionmnist_single_channel_loader[0][0], (1, 1, 224, 224)
+        )
     )
     assert out.size() == torch.Size([1, 10])
 
@@ -275,5 +314,7 @@ def test_vgg19bn_3_channels_output_shape(fashionmnist_3_channel_loader):
     """
     model = VGG19_BN(pre_trained=True, feature_extract=True, num_channels=3)
     model.zero_grad()
-    out = model(torch.reshape(fashionmnist_3_channel_loader[0][0], (1, 3, 224, 224)))
+    out = model(
+        torch.reshape(fashionmnist_3_channel_loader[0][0], (1, 3, 224, 224))
+    )
     assert out.size() == torch.Size([1, 10])

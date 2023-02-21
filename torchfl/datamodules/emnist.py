@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """PyTorch LightningDataModule for EMNIST (balanced, byclass, bymerge, digits, letters, mnist) dataset.
 
@@ -11,15 +10,17 @@ Returns:
     - EMNISTDataModule: PyTorch LightningDataModule for EMNIST datasets. Supports iid and non-iid splits.
 """
 import enum
-import torch
-import numpy as np
-from pathlib import Path
-import pytorch_lightning as pl
-from typing import Set, Iterable, Tuple, Any, Optional, Dict, List
 import os
-from torch.utils.data import random_split, DataLoader, Dataset
-from torchvision.datasets import EMNIST
+from collections.abc import Iterable
+from pathlib import Path
+from typing import Any
+
+import numpy as np
+import pytorch_lightning as pl
+import torch
+from torch.utils.data import DataLoader, Dataset, random_split
 from torchvision import transforms
+from torchvision.datasets import EMNIST
 
 torch.manual_seed(42)
 np.random.seed(42)
@@ -29,7 +30,7 @@ pl.seed_everything(42)
 # Begin Constants #
 ###################
 TORCHFL_DIR: str = os.path.join(Path.home(), ".torchfl")
-SUPPORTED_DATASETS: Set[str] = {
+SUPPORTED_DATASETS: set[str] = {
     "balanced",
     "byclass",
     "bymerge",
@@ -74,7 +75,7 @@ class DatasetSplit(Dataset):
             - idxs (List[int]): collection of indices.
         """
         self.dataset: Dataset = dataset
-        self.idxs: List[int] = list(idxs)
+        self.idxs: list[int] = list(idxs)
         all_targets: np.ndarray = (
             np.array(dataset.targets)
             if isinstance(dataset.targets, list)
@@ -90,7 +91,7 @@ class DatasetSplit(Dataset):
         """
         return len(self.idxs)
 
-    def __getitem__(self, index: int) -> Tuple[Any, Any]:
+    def __getitem__(self, index: int) -> tuple[Any, Any]:
         """Overriding the get method.
 
         Args:
@@ -157,17 +158,26 @@ class EMNISTDataModule(pl.LightningDataModule):
 
     def prepare_data(self) -> None:
         """Downloading the data if not already available."""
-        EMNIST(self.data_dir, train=True, split=self.dataset_name, download=True)
-        EMNIST(self.data_dir, train=False, split=self.dataset_name, download=True)
+        EMNIST(
+            self.data_dir, train=True, split=self.dataset_name, download=True
+        )
+        EMNIST(
+            self.data_dir, train=False, split=self.dataset_name, download=True
+        )
 
-    def setup(self, stage: Optional[str] = None) -> None:
+    def setup(self, stage: str | None = None) -> None:
         """Setup before training/testing/validation/prediction using the dataset.
 
         Args:
             - stage (Optional[str], optional): Current stage of the PyTorch training process used for setup. Defaults to None.
         """
         total_images: int = len(
-            EMNIST(self.data_dir, train=True, split=self.dataset_name, download=True)
+            EMNIST(
+                self.data_dir,
+                train=True,
+                split=self.dataset_name,
+                download=True,
+            )
         )
         num_validation_images: int = int(total_images * self.validation_split)
         num_training_images: int = total_images - num_validation_images
@@ -184,7 +194,8 @@ class EMNISTDataModule(pl.LightningDataModule):
                     lambda x: (x - 1)
                 )  # patch to eliminate the N/A label in the original letters dataset
             self.emnist_train, self.emnist_val = random_split(
-                self.emnist_train_full, [num_training_images, num_validation_images]
+                self.emnist_train_full,
+                [num_training_images, num_validation_images],
             )
 
         if (stage == "test") or (not stage):
@@ -262,7 +273,7 @@ class EMNISTDataModule(pl.LightningDataModule):
 
     def federated_iid_dataloader(
         self, num_workers: int = 10, workers_batch_size: int = 10
-    ) -> Dict[int, DataLoader]:
+    ) -> dict[int, DataLoader]:
         """Loads the training dataset as iid split among the workers.
 
         Args:
@@ -276,7 +287,7 @@ class EMNISTDataModule(pl.LightningDataModule):
         distribution: np.ndarray = np.random.randint(
             low=0, high=len(self.emnist_train_full), size=(num_workers, items)
         )
-        federated: Dict[int, DataLoader] = dict()
+        federated: dict[int, DataLoader] = {}
         for i in range(len(distribution)):
             federated[i] = DataLoader(
                 DatasetSplit(self.emnist_train_full, distribution[i]),
@@ -287,8 +298,11 @@ class EMNISTDataModule(pl.LightningDataModule):
         return federated
 
     def federated_non_iid_dataloader(
-        self, num_workers: int = 10, workers_batch_size: int = 10, niid_factor: int = 2
-    ) -> Dict[int, DataLoader]:
+        self,
+        num_workers: int = 10,
+        workers_batch_size: int = 10,
+        niid_factor: int = 2,
+    ) -> dict[int, DataLoader]:
         """Loads the training dataset as non-iid split among the workers.
 
         Args:
@@ -301,7 +315,7 @@ class EMNISTDataModule(pl.LightningDataModule):
         """
         shards: int = num_workers * niid_factor
         items: int = len(self.emnist_train_full) // shards
-        idx_shard: List[int] = list(range(shards))
+        idx_shard: list[int] = list(range(shards))
         classes: np.ndarray = (
             np.array(self.emnist_train_full.targets)
             if isinstance(self.emnist_train_full.targets, list)
@@ -313,22 +327,25 @@ class EMNISTDataModule(pl.LightningDataModule):
         )
         idxs_labels = idxs_labels[:, idxs_labels[1, :].argsort()]
         idxs: np.ndarray = idxs_labels[0, :]
-        distribution: Dict[int, np.ndarray] = {
+        distribution: dict[int, np.ndarray] = {
             i: np.array([], dtype="int64") for i in range(num_workers)
         }
         np.random.seed(42)
         while idx_shard:
             for i in range(num_workers):
-                rand_set: Set[int] = set(
+                rand_set: set[int] = set(
                     np.random.choice(idx_shard, niid_factor, replace=False)
                 )
                 idx_shard = list(set(idx_shard) - rand_set)
                 for rand in rand_set:
                     distribution[i] = np.concatenate(
-                        (distribution[i], idxs[rand * items : (rand + 1) * items]),
+                        (
+                            distribution[i],
+                            idxs[rand * items : (rand + 1) * items],
+                        ),
                         axis=0,
                     )
-        federated: Dict[int, DataLoader] = dict()
+        federated: dict[int, DataLoader] = {}
         for i in distribution:
             federated[i] = DataLoader(
                 DatasetSplit(self.emnist_train_full, distribution[i]),
