@@ -24,6 +24,7 @@ jobs:
       datamodules-cache-hit: ${{ steps.changed-datamodules.outputs.cache-hit }}
 
   test-datamodules:
+    name: "Test changed datamodules."
     runs-on: ubuntu-latest
     needs: changedfiles
     strategy:
