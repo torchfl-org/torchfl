@@ -93,38 +93,38 @@ jobs:
         run: |
           poetry install
       - name: PyTest for CIFAR10 models
-        if: ${{ (needs.changedfiles.changed-cifar10.outputs.cache-hit != 'true') || (needs.changedfiles.changed-sota.outputs.cache-hit != 'true') }}
+        if: ${{ (needs.changedfiles.steps.changed-cifar10.outputs.cache-hit != 'true') || (needs.changedfiles.steps.changed-sota.outputs.cache-hit != 'true') }}
         run: |
           poetry run pytest tests/models/cifar/cifar10
       - name: PyTest for CIFAR100 models
-        if: ${{ (needs.changedfiles.changed-cifar100.outputs.cache-hit != 'true') || (needs.changedfiles.changed-sota.outputs.cache-hit != 'true') }}
+        if: ${{ (needs.changedfiles.steps.changed-cifar100.outputs.cache-hit != 'true') || (needs.changedfiles.steps.changed-sota.outputs.cache-hit != 'true') }}
         run: |
           poetry run pytest tests/models/cifar/cifar100
       - name: PyTest for EMNIST balanced models
-        if: ${{ (needs.changedfiles.changed-emnist-balanced.outputs.cache-hit != 'true') || (needs.changedfiles.changed-sota.outputs.cache-hit != 'true') }}
+        if: ${{ (needs.changedfiles.steps.changed-emnist-balanced.outputs.cache-hit != 'true') || (needs.changedfiles.steps.changed-sota.outputs.cache-hit != 'true') }}
         run: |
           poetry run pytest tests/models/emnist/balanced
       - name: PyTest for EMNIST byclass models
-        if: ${{ (needs.changedfiles.changed-emnist-byclass.outputs.cache-hit != 'true') || (needs.changedfiles.changed-sota.outputs.cache-hit != 'true') }}
+        if: ${{ (needs.changedfiles.steps.changed-emnist-byclass.outputs.cache-hit != 'true') || (needs.changedfiles.steps.changed-sota.outputs.cache-hit != 'true') }}
         run: |
           poetry run pytest tests/models/emnist/byclass
       - name: PyTest for EMNIST bymerge models
-        if: ${{ (needs.changedfiles.changed-emnist-bymerge.outputs.cache-hit != 'true') || (needs.changedfiles.changed-sota.outputs.cache-hit != 'true') }}
+        if: ${{ (needs.changedfiles.steps.changed-emnist-bymerge.outputs.cache-hit != 'true') || (needs.changedfiles.steps.changed-sota.outputs.cache-hit != 'true') }}
         run: |
           poetry run pytest tests/models/emnist/bymerge
       - name: PyTest for EMNIST digits models
-        if: ${{ (needs.changedfiles.changed-emnist-digits.outputs.cache-hit != 'true') || (needs.changedfiles.changed-sota.outputs.cache-hit != 'true') }}
+        if: ${{ (needs.changedfiles.steps.changed-emnist-digits.outputs.cache-hit != 'true') || (needs.changedfiles.steps.changed-sota.outputs.cache-hit != 'true') }}
         run: |
           poetry run pytest tests/models/emnist/digits
       - name: PyTest for EMNIST letters models
-        if: ${{ (needs.changedfiles.changed-emnist-letters.outputs.cache-hit != 'true') || (needs.changedfiles.changed-sota.outputs.cache-hit != 'true') }}
+        if: ${{ (needs.changedfiles.steps.changed-emnist-letters.outputs.cache-hit != 'true') || (needs.changedfiles.steps.changed-sota.outputs.cache-hit != 'true') }}
         run: |
           poetry run pytest tests/models/emnist/letters
       - name: PyTest for EMNIST mnist models
-        if: ${{ (needs.changedfiles.changed-emnist-mnist.outputs.cache-hit != 'true') || (needs.changedfiles.changed-sota.outputs.cache-hit != 'true') }}
+        if: ${{ (needs.changedfiles.steps.changed-emnist-mnist.outputs.cache-hit != 'true') || (needs.changedfiles.steps.changed-sota.outputs.cache-hit != 'true') }}
         run: |
           poetry run pytest tests/models/emnist/mnist
       - name: PyTest for FashionMNIST models
-        if: ${{ (needs.changedfiles.changed-fashionmnist.outputs.cache-hit != 'true') || (needs.changedfiles.changed-sota.outputs.cache-hit != 'true') }}
+        if: ${{ (needs.changedfiles.steps.changed-fashionmnist.outputs.cache-hit != 'true') || (needs.changedfiles.steps.changed-sota.outputs.cache-hit != 'true') }}
         run: |
           poetry run pytest tests/models/fashionmnist
