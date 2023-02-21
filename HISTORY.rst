@@ -43,3 +43,8 @@ History
 * Officially launched the federated learning modules.
 * Added extensive examples for federated and non-federated settings.
 * Updated the documentation.
+
+0.1.7 (2023-02-01)
+
+* Code cleanup using pre-commit hooks.
+* Bug fixes.
