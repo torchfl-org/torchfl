@@ -44,5 +44,4 @@ jobs:
           poetry install
       - name: PyTest for datamodules
         run: |
-          echo ${{ needs.changedfiles.outputs.datamodules-cache-hit }}
           poetry run pytest tests/datamodules/
