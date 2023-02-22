@@ -136,8 +136,6 @@ rich = "^13.3.1"
 torch = "~1.13"
 torchvision = "~0.14"
 pytorch-lightning = "~1.9"
-wheel = "^0.38.4"
-setuptools = "^67.3.3"
 pytest = "^7.2.1"
 
 
