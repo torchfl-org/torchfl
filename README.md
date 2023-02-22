@@ -520,51 +520,51 @@ Ready to contribute? Here's how to set up torchfl for local development.
 1. Fork the torchfl repo on GitHub.
 
 2. Clone your fork locally:
-```
-$ git clone git@github.com:<your_username_here>/torchfl.git
-```
+	```
+	$ git clone git@github.com:<your_username_here>/torchfl.git
+	```
 
 3. Install Poetry to manage dependencies and virtual environments from https://python-poetry.org/docs/.
 
 4. Install the project dependencies using:
-```
-$ poetry install
-```
+	```
+	$ poetry install
+	```
 
 5. To add a new dependency to the project, use:
-```
-$ poetry add <dependency_name>
-```
+	```
+	$ poetry add <dependency_name>
+	```
 
 6. Create a branch for local development:
-```
-$ git checkout -b name-of-your-bugfix-or-feature
-```
-Now you can make your changes locally and maintain them on your own branch.
+	```
+	$ git checkout -b name-of-your-bugfix-or-feature
+	```
+	Now you can make your changes locally and maintain them on your own branch.
 
 7. When you're done making changes, check that your changes pass the tests:
-```
-$ poetry run pytest tests
-```
-If you want to run a specific test file, use:
-```
-$ poetry pytest <path-to-the-file>
-```
-If your changes are not covered by the tests, please add tests.
+	```
+	$ poetry run pytest tests
+	```
+	If you want to run a specific test file, use:
+	```
+	$ poetry pytest <path-to-the-file>
+	```
+	If your changes are not covered by the tests, please add tests.
 
 8. The pre-commit hooks will be run before every commit. If you want to run them manually, use:
-```
-$ pre-commit run --all
-```
+	```
+	$ pre-commit run --all
+	```
 
-7. Commit your changes and push your branch to GitHub:
-```
-$ git add --all
-$ git commit -m "Your detailed description of your changes."
-$ git push origin <name-of-your-bugfix-or-feature>
-```
-8. Submit a pull request through the Github web interface.
-9. Once the pull request has been submitted, the continuous integration pipelines on Github Actions will be triggered. Ensure that all of them pass before one of the maintainers can review the request.
+9. Commit your changes and push your branch to GitHub:
+	```
+	$ git add --all
+	$ git commit -m "Your detailed description of your changes."
+	$ git push origin <name-of-your-bugfix-or-feature>
+	```
+10. Submit a pull request through the Github web interface.
+11. Once the pull request has been submitted, the continuous integration pipelines on Github Actions will be triggered. Ensure that all of them pass before one of the maintainers can review the request.
 
 ### Pull Request Guidelines
 Before you submit a pull request, check that it meets these guidelines:
