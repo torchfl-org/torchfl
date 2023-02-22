@@ -51,21 +51,6 @@ $ pip install torchfl
 This is the preferred method to install ```torchfl``` with the most stable release.
 If you don't have [pip](https://pip.pypa.io/en/stable/) installed, this [Python installation guide](http://docs.python-guide.org/en/latest/starting/installation/) can guide you through the process.
 
-### From sources
-The sources for ```torchfl``` can be downloaded from the official [Github repository](https://github.com/vivekkhimani/torchfl).
-You can either clone the public repository:
-```
-$ git clone git://github.com/vivekkhimani/torchfl
-```
-or download the [tarball](https://github.com/vivekkhimani/torchfl/tarball/master):
-```
-$ curl -OJL https://github.com/vivekkhimani/torchfl/tarball/master
-```
-Once you have the copy of the source downloaded, you can install it using:
-```
-$ python setup.py install
-```
-
 ## Examples and Usage
 Although ```torchfl``` is primarily built for quick prototyping of federated learning experiments, the models, datasets, and abstractions can also speed up the non-federated learning experiments. In this section, we will explore examples and usages under both the settings.
 
