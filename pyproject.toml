@@ -105,7 +105,7 @@ markers = [
 
 [tool.poetry]
 name = "torchfl"
-version = "0.1.8"
+version = "0.1.9"
 description = "A Python library for rapid prototyping, experimenting, and logging of federated learning using state-of-the-art models and datasets. Built using PyTorch and PyTorch Lightning."
 authors = ["vivekkhimani <vivekkhimani07@gmail.com>"]
 license = "GNU General Public License v3"
