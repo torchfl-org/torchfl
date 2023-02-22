@@ -65,48 +65,47 @@ Ready to contribute? Here's how to set up `torchfl` for local development.
 
     $ git clone git@github.com:<your_username_here>/torchfl.git
 
-3. Install your local copy into a virtualenv. Assuming you have virtualenvwrapper installed, this is how you set up your fork for local development::
+3. Install Poetry to manage dependencies and virtual environments from https://python-poetry.org/docs/.
+4. Install the project dependencies using::
 
-    $ mkvirtualenv torchfl
-    $ cd torchfl/
-    $ python setup.py develop
+    $ poetry install
 
-4. Create a branch for local development::
+5. To add a new dependency to the project, use::
+
+    $ poetry add <dependency_name>
+
+6. Create a branch for local development::
 
     $ git checkout -b name-of-your-bugfix-or-feature
 
    Now you can make your changes locally and maintain them on your own branch.
 
-5. When you're done making changes, check that your changes pass flake8 and the
-   tests, including testing other Python versions with tox::
+7. When you're done making changes, check that your changes pass the tests::
 
-    $ tox
+    $ poetry run pytest tests
 
-   Run ``tox --help`` to explore more about tox.
+   If you want to run a specific test file, use::
 
-6. Your changes need to pass the existing test cases and
-   add the new ones if required under the ``tests`` directory.
-   Following approaches can be used to run tests.
+    $ poetry pytest <path-to-the-file>
 
-       * To run all the test cases::
+   If your changes are not covered by the tests, please add tests.
 
-            $ coverage run -m pytest tests
+8. The pre-commit hooks will be run before every commit.
+   If you want to run them manually, use::
 
-       * To run a specific file containing the test cases::
+    $ pre-commit run --all
 
-            $ coverage run -m pytest <path-to-the-file>
+9. Commit your changes and push your branch to GitHub::
 
-7. Commit your changes and push your branch to GitHub::
-
-    $ git add .
+    $ git add --all
     $ git commit -m "Your detailed description of your changes."
     $ git push origin <name-of-your-bugfix-or-feature>
 
-8. Submit a pull request through the GitHub website.
-9. Once the pull request has been submitted,
-   the CI pipelines will be triggered on GitHub Actions,
-   All of them must pass before one of the maintainers
-   can review the request and perform the merge.
+10. Submit a pull request through the GitHub website.
+11. Once the pull request has been submitted,
+    the CI pipelines will be triggered on GitHub Actions,
+    All of them must pass before one of the maintainers
+    can review the request and perform the merge.
 
 Pull Request Guidelines
 ----------------------------
@@ -120,15 +119,3 @@ Pull Request Guidelines
 3. The pull request should work for Python3, and for PyPy. Check
    https://travis-ci.com/vivekkhimani/torchfl/pull_requests
    and make sure that the tests pass for all supported Python versions.
-
-
-Deploying
----------
-
-A reminder for the maintainers on how to deploy.
-Make sure all your changes are committed (including an entry in HISTORY.rst).
-Then run::
-
-$ bump2version patch # possible: major / minor / patch
-$ git push
-$ git push --tags

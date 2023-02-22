@@ -18,6 +18,7 @@ def fashionmnist_data_module():
     return FashionMNISTDataModule()
 
 
+@pytest.mark.datamodules_fashionmnist()
 def test_fashionmnist_train_val_split(fashionmnist_data_module):
     """Testing the fashionmnist dataset train and validation split with PyTorch Lightning wrapper.
 
@@ -32,6 +33,7 @@ def test_fashionmnist_train_val_split(fashionmnist_data_module):
     assert len(val_dataloader.dataset) == 6000
 
 
+@pytest.mark.datamodules_fashionmnist()
 def test_fashionmnist_test_split(fashionmnist_data_module):
     """Testing the fashionmnist dataset test split with PyTorch Lightning wrapper.
 
@@ -44,6 +46,7 @@ def test_fashionmnist_test_split(fashionmnist_data_module):
     assert len(test_dataloader.dataset) == 10000
 
 
+@pytest.mark.datamodules_fashionmnist()
 def test_fashionmnist_prediction_split(fashionmnist_data_module):
     """Testing the fashionmnist dataset prediction split with PyTorch Lightning wrapper.
 
@@ -56,6 +59,7 @@ def test_fashionmnist_prediction_split(fashionmnist_data_module):
     assert len(predict_dataloader.dataset) == 10000
 
 
+@pytest.mark.datamodules_fashionmnist()
 def test_fashionmnist_federated_iid_split(fashionmnist_data_module):
     """Testing the fashionmnist dataset federated iid split with PyTorch Lightning wrapper.
 
@@ -71,6 +75,7 @@ def test_fashionmnist_federated_iid_split(fashionmnist_data_module):
     assert len(frequency.keys()) == 10
 
 
+@pytest.mark.datamodules_fashionmnist()
 def test_fashionmnist_federated_non_iid_split(fashionmnist_data_module):
     """Testing the fashionmnist dataset federated non iid split with PyTorch Lightning wrapper.
 

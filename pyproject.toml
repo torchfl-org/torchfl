@@ -87,6 +87,22 @@ target-version = "py310"
 # Unlike Flake8, default to a complexity level of 10.
 max-complexity = 10
 
+[tool.pytest.ini_options]
+minversion = "7.2"
+testpaths = ["tests"]
+addopts = "-ra -q"
+markers = [
+    "datamodules_cifar10: mark test as a datamodules_cifar10 test.",
+    "datamodules_cifar100: mark test as a datamodules_cifar100 test.",
+    "datamodules_emnist_balanced: mark test as a datamodules_emnist_balanced test.",
+    "datamodules_emnist_byclass: mark test as a datamodules_emnist_byclass test.",
+    "datamodules_emnist_bymerge: mark test as a datamodules_emnist_bymerge test.",
+    "datamodules_emnist_digits: mark test as a datamodules_emnist_digits test.",
+    "datamodules_emnist_letters: mark test as a datamodules_emnist_letters test.",
+    "datamodules_emnist_mnist: mark test as a datamodules_emnist_mnist test.",
+    "datamodules_fashionmnist: mark test as a datamodules_fashionmnist test.",
+]
+
 [tool.poetry]
 name = "torchfl"
 version = "0.1.8"
