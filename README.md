@@ -518,38 +518,43 @@ If you are proposing a feature:
 ### Get Started
 Ready to contribute? Here's how to set up torchfl for local development.
 1. Fork the torchfl repo on GitHub.
+
 2. Clone your fork locally:
 ```
 $ git clone git@github.com:<your_username_here>/torchfl.git
 ```
-3. Install your local copy into a virtualenv. Assuming you have virtualenvwrapper installed, this is how you set up your fork for local development:
+
+3. Install Poetry to manage dependencies and virtual environments from https://python-poetry.org/docs/.
+
+4. Install the project dependencies using:
 ```
-$ mkvirtualenv torchfl
-$ cd torchfl/
-$ python setup.py develop
+$ poetry install
 ```
-4. Create a branch for local development:
+
+5. To add a new dependency to the project, use:
+```
+$ poetry add <dependency_name>
+```
+
+6. Create a branch for local development:
 ```
 $ git checkout -b name-of-your-bugfix-or-feature
 ```
 Now you can make your changes locally and maintain them on your own branch.
 
+7. When you're done making changes, check that your changes pass the tests:
+```
+$ poetry run pytest tests
+```
+If you want to run a specific test file, use:
+```
+$ poetry pytest <path-to-the-file>
+```
+If your changes are not covered by the tests, please add tests.
 
-5. When you're done making changes, check that your changes pass flake8 and the tests, including testing other Python versions with tox:
+8. The pre-commit hooks will be run before every commit. If you want to run them manually, use:
 ```
-tox
-```
-Run ```tox --help``` to explore more features for tox.
-
-
-6. Your changes need to pass the existing test cases and add the new ones if required under the ```tests``` directory. Following approaches can be used to run the test cases.
-- To run all the test cases.
-```
-$ coverage run -m pytest tests
-```
-- To run a specific file containing the test cases.
-```
-$ coverage run -m pytest <path-to-the-file>
+$ pre-commit run --all
 ```
 
 7. Commit your changes and push your branch to GitHub:
@@ -568,15 +573,6 @@ Before you submit a pull request, check that it meets these guidelines:
 	- Modify the existing tests (if required) for the bug fixes.
 2. If the pull request adds functionality, the docs should be updated. Put your new functionality into a function with a docstring, and add the feature to the list in ```README.md```.
 3. The pull request should pass all the existing CI pipelines (Github Actions) and the new/modified workflows should be added as required.
-4. Please note that the test cases should only be run in the CI pipeline if the direct/indirect dependencies of the tests have changed. Look at the [workflow YAML files](https://github.com/vivekkhimani/torchfl/tree/master/.github/workflows) for more details or reach out to one of the contributors.
-
-### Deploying
-A reminder for the maintainers on how to deploy. Make sure all your changes are committed (including an entry in HISTORY.rst). Then run:
-```
-$ bump2version patch # possible: major / minor / patch
-$ git push
-$ git push --tags
-```
 
 ## Citation
 Please cite the following article if you end up using this software:
