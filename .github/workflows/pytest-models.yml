@@ -14,77 +14,15 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - name: Changed SOTA base models
+      - name: Changed Models
         uses: actions/cache@v3
-        id: changed-sota
+        id: changed-models
         with:
           path: tests/models
           key: hashFiles('torchfl/models/sota/*')
-      - name: Changed CIFAR-10 models
-        uses: actions/cache@v3
-        id: changed-cifar10
-        with:
-          path: tests/models/cifar/cifar10
-          key: hashFiles('torchfl/models/core/cifar/cifar10/*')
-      - name: Changed CIFAR-100 models
-        uses: actions/cache@v3
-        id: changed-cifar100
-        with:
-          path: tests/models/cifar/cifar100
-          key: hashFiles('torchfl/models/core/cifar/cifar100/*')
-      - name: Changed EMNIST Balanced models
-        uses: actions/cache@v3
-        id: changed-emnist-balanced
-        with:
-          path: tests/models/emnist/balanced
-          key: hashFiles('torchfl/models/core/emnist/balanced/*')
-      - name: Changed EMNIST Byclass models
-        uses: actions/cache@v3
-        id: changed-emnist-byclass
-        with:
-          path: tests/models/emnist/byclass
-          key: hashFiles('torchfl/models/core/emnist/byclass/*')
-      - name: Changed EMNIST Bymerge models
-        uses: actions/cache@v3
-        id: changed-emnist-bymerge
-        with:
-          path: tests/models/emnist/bymerge
-          key: hashFiles('torchfl/models/core/emnist/bymerge/*')
-      - name: Changed EMNIST Digits models
-        uses: actions/cache@v3
-        id: changed-emnist-digits
-        with:
-          path: tests/models/emnist/digits
-          key: hashFiles('torchfl/models/core/emnist/digits/*')
-      - name: Changed EMNIST Letters models
-        uses: actions/cache@v3
-        id: changed-emnist-letters
-        with:
-          path: tests/models/emnist/letters
-          key: hashFiles('torchfl/models/core/emnist/letters/*')
-      - name: Changed EMNIST MNIST models
-        uses: actions/cache@v3
-        id: changed-emnist-mnist
-        with:
-          path: tests/models/emnist/mnist
-          key: hashFiles('torchfl/models/core/emnist/mnist/*')
-      - name: Changed FashionMNIST models
-        uses: actions/cache@v3
-        id: changed-fashionmnist
-        with:
-          path: tests/models/fashionmnist
-          key: hashFiles('torchfl/models/core/fashionmnist/*')
     outputs:
-      sota-cache-hit: ${{ steps.changed-sota.outputs.cache-hit }}
-      cifar10-cache-hit: ${{ steps.changed-cifar10.outputs.cache-hit }}
-      cifar100-cache-hit: ${{ steps.changed-cifar100.outputs.cache-hit }}
-      emnist-balanced-cache-hit: ${{ steps.changed-emnist-balanced.outputs.cache-hit }}
-      emnist-byclass-cache-hit: ${{ steps.changed-emnist-byclass.outputs.cache-hit }}
-      emnist-bymerge-cache-hit: ${{ steps.changed-emnist-bymerge.outputs.cache-hit }}
-      emnist-digits-cache-hit: ${{ steps.changed-emnist-digits.outputs.cache-hit }}
-      emnist-letters-cache-hit: ${{ steps.changed-emnist-letters.outputs.cache-hit }}
-      emnist-mnist-cache-hit: ${{ steps.changed-emnist-mnist.outputs.cache-hit }}
-      fashionmnist-cache-hit: ${{ steps.changed-fashionmnist.outputs.cache-hit }}
+      models-cache-hit: ${{ steps.changed-models.outputs.cache-hit }}
+
   test-models:
     name: "Test changed model files."
     runs-on: ubuntu-latest
@@ -92,6 +30,7 @@ jobs:
     strategy:
       matrix:
         python-version: ["3.10"]
+    if: ${{needs.changedfiles.outputs.models-cache-hit != 'true'}}
     steps:
       - uses: actions/checkout@v3
       - name: Install poetry
@@ -104,39 +43,6 @@ jobs:
       - name: Install dependencies
         run: |
           poetry install
-      - name: PyTest for CIFAR10 models
-        if: ${{ (needs.changedfiles.outputs.cifar10-cache-hit != 'true') || (needs.changedfiles.outputs.sota-cache-hit != 'true') }}
+      - name: PyTest for models
         run: |
-          poetry run pytest tests/models/cifar/cifar10
-      - name: PyTest for CIFAR100 models
-        if: ${{ (needs.changedfiles.outputs.cifar100-cache-hit != 'true') || (needs.changedfiles.outputs.sota-cache-hit != 'true') }}
-        run: |
-          poetry run pytest tests/models/cifar/cifar100
-      - name: PyTest for EMNIST balanced models
-        if: ${{ (needs.changedfiles.outputs.emnist-balanced-cache-hit != 'true') || (needs.changedfiles.outputs.sota-cache-hit != 'true') }}
-        run: |
-          poetry run pytest tests/models/emnist/balanced
-      - name: PyTest for EMNIST byclass models
-        if: ${{ (needs.changedfiles.outputs.emnist-byclass-cache-hit != 'true') || (needs.changedfiles.outputs.sota-cache-hit != 'true') }}
-        run: |
-          poetry run pytest tests/models/emnist/byclass
-      - name: PyTest for EMNIST bymerge models
-        if: ${{ (needs.changedfiles.outputs.emnist-bymerge-cache-hit != 'true') || (needs.changedfiles.outputs.sota-cache-hit != 'true') }}
-        run: |
-          poetry run pytest tests/models/emnist/bymerge
-      - name: PyTest for EMNIST digits models
-        if: ${{ (needs.changedfiles.outputs.emnist-digits-cache-hit != 'true') || (needs.changedfiles.outputs.sota-cache-hit != 'true') }}
-        run: |
-          poetry run pytest tests/models/emnist/digits
-      - name: PyTest for EMNIST letters models
-        if: ${{ (needs.changedfiles.outputs.emnist-letters-cache-hit != 'true') || (needs.changedfiles.outputs.sota-cache-hit != 'true') }}
-        run: |
-          poetry run pytest tests/models/emnist/letters
-      - name: PyTest for EMNIST mnist models
-        if: ${{ (needs.changedfiles.outputs.emnist-mnist-cache-hit != 'true') || (needs.changedfiles.outputs.sota-cache-hit != 'true') }}
-        run: |
-          poetry run pytest tests/models/emnist/mnist
-      - name: PyTest for FashionMNIST models
-        if: ${{ (needs.changedfiles.outputs.fashionmnist-cache-hit != 'true') || (needs.changedfiles.outputs.sota-cache-hit != 'true') }}
-        run: |
-          poetry run pytest tests/models/fashionmnist
+          poetry run pytest tests/models/
