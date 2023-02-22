@@ -76,6 +76,7 @@ def emnist_mnist_data_module():
 ############
 
 
+@pytest.mark.datamodules_emnist_balanced()
 def test_emnist_balanced_train_val_split(emnist_balanced_data_module):
     """Testing the EMNIST dataset train and validation split with PyTorch Lightning wrapper.
 
@@ -90,6 +91,7 @@ def test_emnist_balanced_train_val_split(emnist_balanced_data_module):
     assert len(val_dataloader.dataset) == 11280
 
 
+@pytest.mark.datamodules_emnist_balanced()
 def test_emnist_balanced_test_split(emnist_balanced_data_module):
     """Testing the EMNIST dataset test split with PyTorch Lightning wrapper.
 
@@ -102,6 +104,7 @@ def test_emnist_balanced_test_split(emnist_balanced_data_module):
     assert len(test_dataloader.dataset) == 18800
 
 
+@pytest.mark.datamodules_emnist_balanced()
 def test_emnist_balanced_prediction_split(emnist_balanced_data_module):
     """Testing the EMNIST dataset prediction split with PyTorch Lightning wrapper.
 
@@ -114,6 +117,7 @@ def test_emnist_balanced_prediction_split(emnist_balanced_data_module):
     assert len(predict_dataloader.dataset) == 18800
 
 
+@pytest.mark.datamodules_emnist_balanced()
 def test_emnist_balanced_federated_iid_split(emnist_balanced_data_module):
     """Testing the EMNIST dataset federated iid split with PyTorch Lightning wrapper.
 
@@ -129,6 +133,7 @@ def test_emnist_balanced_federated_iid_split(emnist_balanced_data_module):
     assert len(frequency.keys()) == 47
 
 
+@pytest.mark.datamodules_emnist_balanced()
 def test_emnist_balanced_federated_non_iid_split(emnist_balanced_data_module):
     """Testing the EMNIST dataset federated non iid split with PyTorch Lightning wrapper.
 
@@ -152,6 +157,7 @@ def test_emnist_balanced_federated_non_iid_split(emnist_balanced_data_module):
 ############
 
 
+@pytest.mark.datamodules_emnist_byclass()
 def test_emnist_byclass_train_val_split(emnist_byclass_data_module):
     """Testing the EMNIST dataset train and validation split with PyTorch Lightning wrapper.
 
@@ -166,6 +172,7 @@ def test_emnist_byclass_train_val_split(emnist_byclass_data_module):
     assert len(val_dataloader.dataset) == 69793
 
 
+@pytest.mark.datamodules_emnist_byclass()
 def test_emnist_byclass_test_split(emnist_byclass_data_module):
     """Testing the EMNIST dataset test split with PyTorch Lightning wrapper.
 
@@ -178,6 +185,7 @@ def test_emnist_byclass_test_split(emnist_byclass_data_module):
     assert len(test_dataloader.dataset) == 116323
 
 
+@pytest.mark.datamodules_emnist_byclass()
 def test_emnist_byclass_prediction_split(emnist_byclass_data_module):
     """Testing the EMNIST dataset prediction split with PyTorch Lightning wrapper.
 
@@ -190,6 +198,7 @@ def test_emnist_byclass_prediction_split(emnist_byclass_data_module):
     assert len(predict_dataloader.dataset) == 116323
 
 
+@pytest.mark.datamodules_emnist_byclass()
 def test_emnist_byclass_federated_iid_split(emnist_byclass_data_module):
     """Testing the EMNIST dataset federated iid split with PyTorch Lightning wrapper.
 
@@ -205,6 +214,7 @@ def test_emnist_byclass_federated_iid_split(emnist_byclass_data_module):
     assert len(frequency.keys()) == 62
 
 
+@pytest.mark.datamodules_emnist_byclass()
 def test_emnist_byclass_federated_non_iid_split(emnist_byclass_data_module):
     """Testing the EMNIST dataset federated non iid split with PyTorch Lightning wrapper.
 
@@ -228,6 +238,7 @@ def test_emnist_byclass_federated_non_iid_split(emnist_byclass_data_module):
 ############
 
 
+@pytest.mark.datamodules_emnist_bymerge()
 def test_emnist_bymerge_train_val_split(emnist_bymerge_data_module):
     """Testing the EMNIST dataset train and validation split with PyTorch Lightning wrapper.
 
@@ -242,6 +253,7 @@ def test_emnist_bymerge_train_val_split(emnist_bymerge_data_module):
     assert len(val_dataloader.dataset) == 69793
 
 
+@pytest.mark.datamodules_emnist_bymerge()
 def test_emnist_bymerge_test_split(emnist_bymerge_data_module):
     """Testing the EMNIST dataset test split with PyTorch Lightning wrapper.
 
@@ -254,6 +266,7 @@ def test_emnist_bymerge_test_split(emnist_bymerge_data_module):
     assert len(test_dataloader.dataset) == 116323
 
 
+@pytest.mark.datamodules_emnist_bymerge()
 def test_emnist_bymerge_prediction_split(emnist_bymerge_data_module):
     """Testing the EMNIST dataset prediction split with PyTorch Lightning wrapper.
 
@@ -266,6 +279,7 @@ def test_emnist_bymerge_prediction_split(emnist_bymerge_data_module):
     assert len(predict_dataloader.dataset) == 116323
 
 
+@pytest.mark.datamodules_emnist_bymerge()
 def test_emnist_bymerge_federated_iid_split(emnist_bymerge_data_module):
     """Testing the EMNIST dataset federated iid split with PyTorch Lightning wrapper.
 
@@ -281,6 +295,7 @@ def test_emnist_bymerge_federated_iid_split(emnist_bymerge_data_module):
     assert len(frequency.keys()) == 47
 
 
+@pytest.mark.datamodules_emnist_bymerge()
 def test_emnist_bymerge_federated_non_iid_split(emnist_bymerge_data_module):
     """Testing the EMNIST dataset federated non iid split with PyTorch Lightning wrapper.
 
@@ -304,6 +319,7 @@ def test_emnist_bymerge_federated_non_iid_split(emnist_bymerge_data_module):
 ##########
 
 
+@pytest.mark.datamodules_emnist_digits()
 def test_emnist_digits_train_val_split(emnist_digits_data_module):
     """Testing the EMNIST dataset train and validation split with PyTorch Lightning wrapper.
 
@@ -318,6 +334,7 @@ def test_emnist_digits_train_val_split(emnist_digits_data_module):
     assert len(val_dataloader.dataset) == 24000
 
 
+@pytest.mark.datamodules_emnist_digits()
 def test_emnist_digits_test_split(emnist_digits_data_module):
     """Testing the EMNIST dataset test split with PyTorch Lightning wrapper.
 
@@ -330,6 +347,7 @@ def test_emnist_digits_test_split(emnist_digits_data_module):
     assert len(test_dataloader.dataset) == 40000
 
 
+@pytest.mark.datamodules_emnist_digits()
 def test_emnist_digits_prediction_split(emnist_digits_data_module):
     """Testing the EMNIST dataset prediction split with PyTorch Lightning wrapper.
 
@@ -342,6 +360,7 @@ def test_emnist_digits_prediction_split(emnist_digits_data_module):
     assert len(predict_dataloader.dataset) == 40000
 
 
+@pytest.mark.datamodules_emnist_digits()
 def test_emnist_digits_federated_iid_split(emnist_digits_data_module):
     """Testing the EMNIST dataset federated iid split with PyTorch Lightning wrapper.
 
@@ -357,6 +376,7 @@ def test_emnist_digits_federated_iid_split(emnist_digits_data_module):
     assert len(frequency.keys()) == 10
 
 
+@pytest.mark.datamodules_emnist_digits()
 def test_emnist_digits_federated_non_iid_split(emnist_digits_data_module):
     """Testing the EMNIST dataset federated non iid split with PyTorch Lightning wrapper.
 
@@ -380,6 +400,7 @@ def test_emnist_digits_federated_non_iid_split(emnist_digits_data_module):
 ###########
 
 
+@pytest.mark.datamodules_emnist_letters()
 def test_emnist_letters_train_val_split(emnist_letters_data_module):
     """Testing the EMNIST dataset train and validation split with PyTorch Lightning wrapper.
 
@@ -394,6 +415,7 @@ def test_emnist_letters_train_val_split(emnist_letters_data_module):
     assert len(val_dataloader.dataset) == 12480
 
 
+@pytest.mark.datamodules_emnist_letters()
 def test_emnist_letters_test_split(emnist_letters_data_module):
     """Testing the EMNIST dataset test split with PyTorch Lightning wrapper.
 
@@ -406,6 +428,7 @@ def test_emnist_letters_test_split(emnist_letters_data_module):
     assert len(test_dataloader.dataset) == 20800
 
 
+@pytest.mark.datamodules_emnist_letters()
 def test_emnist_letters_prediction_split(emnist_letters_data_module):
     """Testing the EMNIST dataset prediction split with PyTorch Lightning wrapper.
 
@@ -418,6 +441,7 @@ def test_emnist_letters_prediction_split(emnist_letters_data_module):
     assert len(predict_dataloader.dataset) == 20800
 
 
+@pytest.mark.datamodules_emnist_letters()
 def test_emnist_letters_federated_iid_split(emnist_letters_data_module):
     """Testing the EMNIST dataset federated iid split with PyTorch Lightning wrapper.
 
@@ -433,6 +457,7 @@ def test_emnist_letters_federated_iid_split(emnist_letters_data_module):
     assert len(frequency.keys()) == 26
 
 
+@pytest.mark.datamodules_emnist_letters()
 def test_emnist_letters_federated_non_iid_split(emnist_letters_data_module):
     """Testing the EMNIST dataset federated non iid split with PyTorch Lightning wrapper.
 
@@ -456,6 +481,7 @@ def test_emnist_letters_federated_non_iid_split(emnist_letters_data_module):
 #########
 
 
+@pytest.mark.datamodules_emnist_mnist()
 def test_emnist_mnist_train_val_split(emnist_mnist_data_module):
     """Testing the EMNIST dataset train and validation split with PyTorch Lightning wrapper.
 
@@ -470,6 +496,7 @@ def test_emnist_mnist_train_val_split(emnist_mnist_data_module):
     assert len(val_dataloader.dataset) == 6000
 
 
+@pytest.mark.datamodules_emnist_mnist()
 def test_emnist_mnist_test_split(emnist_mnist_data_module):
     """Testing the EMNIST dataset test split with PyTorch Lightning wrapper.
 
@@ -482,6 +509,7 @@ def test_emnist_mnist_test_split(emnist_mnist_data_module):
     assert len(test_dataloader.dataset) == 10000
 
 
+@pytest.mark.datamodules_emnist_mnist()
 def test_emnist_mnist_prediction_split(emnist_mnist_data_module):
     """Testing the EMNIST dataset prediction split with PyTorch Lightning wrapper.
 
@@ -494,6 +522,7 @@ def test_emnist_mnist_prediction_split(emnist_mnist_data_module):
     assert len(predict_dataloader.dataset) == 10000
 
 
+@pytest.mark.datamodules_emnist_mnist()
 def test_emnist_mnist_federated_iid_split(emnist_mnist_data_module):
     """Testing the EMNIST dataset federated iid split with PyTorch Lightning wrapper.
 
@@ -509,6 +538,7 @@ def test_emnist_mnist_federated_iid_split(emnist_mnist_data_module):
     assert len(frequency.keys()) == 10
 
 
+@pytest.mark.datamodules_emnist_mnist()
 def test_emnist_mnist_federated_non_iid_split(emnist_mnist_data_module):
     """Testing the EMNIST dataset federated non iid split with PyTorch Lightning wrapper.
 

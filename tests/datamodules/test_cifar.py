@@ -28,6 +28,7 @@ def cifar100_data_module():
     return CIFARDataModule(dataset_name=SUPPORTED_DATASETS_TYPE.CIFAR100)
 
 
+@pytest.mark.datamodules_cifar10()
 def test_cifar10_train_val_split(cifar10_data_module):
     """Testing the CIFAR10 dataset train and validation split with PyTorch Lightning wrapper.
 
@@ -42,6 +43,7 @@ def test_cifar10_train_val_split(cifar10_data_module):
     assert len(val_dataloader.dataset) == 5000
 
 
+@pytest.mark.datamodules_cifar10()
 def test_cifar10_test_split(cifar10_data_module):
     """Testing the CIFAR10 dataset test split with PyTorch Lightning wrapper.
 
@@ -54,6 +56,7 @@ def test_cifar10_test_split(cifar10_data_module):
     assert len(test_dataloader.dataset) == 10000
 
 
+@pytest.mark.datamodules_cifar10()
 def test_cifar10_prediction_split(cifar10_data_module):
     """Testing the CIFAR10 dataset prediction split with PyTorch Lightning wrapper.
 
@@ -66,6 +69,7 @@ def test_cifar10_prediction_split(cifar10_data_module):
     assert len(predict_dataloader.dataset) == 10000
 
 
+@pytest.mark.datamodules_cifar10()
 def test_cifar10_federated_iid_split(cifar10_data_module):
     """Testing the CIFAR10 dataset federated iid split with PyTorch Lightning wrapper.
 
@@ -81,6 +85,7 @@ def test_cifar10_federated_iid_split(cifar10_data_module):
     assert len(frequency.keys()) == 10
 
 
+@pytest.mark.datamodules_cifar10()
 def test_cifar10_federated_non_iid_split(cifar10_data_module):
     """Testing the CIFAR10 dataset federated non iid split with PyTorch Lightning wrapper.
 
@@ -96,6 +101,7 @@ def test_cifar10_federated_non_iid_split(cifar10_data_module):
     assert len(frequency.keys()) == 2
 
 
+@pytest.mark.datamodules_cifar10()
 def test_cifar100_train_val_split(cifar100_data_module):
     """Testing the CIFAR100 dataset train and validation split with PyTorch Lightning wrapper.
 
@@ -110,6 +116,7 @@ def test_cifar100_train_val_split(cifar100_data_module):
     assert len(val_dataloader.dataset) == 5000
 
 
+@pytest.mark.datamodules_cifar100()
 def test_cifar100_test_split(cifar100_data_module):
     """Testing the CIFAR100 dataset test split with PyTorch Lightning wrapper.
 
@@ -122,6 +129,7 @@ def test_cifar100_test_split(cifar100_data_module):
     assert len(test_dataloader.dataset) == 10000
 
 
+@pytest.mark.datamodules_cifar100()
 def test_cifar100_prediction_split(cifar100_data_module):
     """Testing the CIFAR100 dataset prediction split with PyTorch Lightning wrapper.
 
@@ -134,6 +142,7 @@ def test_cifar100_prediction_split(cifar100_data_module):
     assert len(predict_dataloader.dataset) == 10000
 
 
+@pytest.mark.datamodules_cifar100()
 def test_cifar100_federated_iid_split(cifar100_data_module):
     """Testing the CIFAR100 dataset federated iid split with PyTorch Lightning wrapper.
 
@@ -149,6 +158,7 @@ def test_cifar100_federated_iid_split(cifar100_data_module):
     assert len(frequency.keys()) == 100
 
 
+@pytest.mark.datamodules_cifar100()
 def test_cifar100_federated_non_iid_split(cifar100_data_module):
     """Testing the CIFAR100 dataset federated non iid split with PyTorch Lightning wrapper.
 

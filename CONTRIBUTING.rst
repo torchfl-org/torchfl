@@ -82,11 +82,11 @@ Ready to contribute? Here's how to set up `torchfl` for local development.
 
 7. When you're done making changes, check that your changes pass the tests::
 
-    $ pytest tests
+    $ poetry run pytest tests
 
    If you want to run a specific test file, use::
 
-    $ pytest <path-to-the-file>
+    $ poetry pytest <path-to-the-file>
 
    If your changes are not covered by the tests, please add tests.
 
