@@ -39,7 +39,8 @@ def cli_parser() -> Namespace:
     parser = ArgumentParser(prog="torchfl", description="torchfl CLI")
     general: _ArgumentGroup = parser.add_argument_group("general")
     datamodule: _ArgumentGroup = parser.add_argument_group("datamodule")
-    parser.add_argument_group("model")
+    model: _ArgumentGroup = parser.add_argument_group("model")
+    optimizer: _ArgumentGroup = parser.add_argument_group("optimizer")
     federated: _ArgumentGroup = parser.add_argument_group("federated learning")
 
     # general args
@@ -58,6 +59,7 @@ def cli_parser() -> Namespace:
         default=0.1,
         help="version of the experiment. Default: 0.1",
     )
+    general.add_argument("-v", "--verbose", action="store_true")
 
     # datamodule args
     datamodule.add_argument(
@@ -111,6 +113,33 @@ def cli_parser() -> Namespace:
     # NOTE: we can't support the following args as of now: train_transforms, val_transforms, test_transforms, predict_transforms
 
     # model args
+    model.add_argument(
+        "--model_name",
+        type=str,
+        required=True,
+        help="name of the model.",
+    )
+    # FIXME: Write sanitizer validation functions for all of the following arguments
+    model.add_argument("--num_classes", type=int, help="number of classes.")
+    model.add_argument("--num_channels", type=int, help="number of channels.")
+    model.add_argument(
+        "--activation_fn", type=str, help="activation function name."
+    )
+    model.add_argument("--pretrained", action="store_false")
+    model.add_argument("--feature_extract", action="store_false")
+
+    # optimizer args
+    # FIXME: Write sanitizer validation functions for all of the following arguments
+    optimizer.add_argument(
+        "--optimizer_name",
+        type=str,
+        required=True,
+        help="name of the optimizer.",
+    )
+    optimizer.add_argument("--lr", type=float, help="learning rate.")
+    # NOTE: Optimizers support many more arguments. We can't support all of them in CLI, but we will add support for them in YAML configs.
+    # NOTE: PyTorch Lightning has fancy features for optimizers configuration, but we don't support them via CLI or YAML configs.
+    # We can explore adding them in the future.
 
     # federated args
     federated.add_argument(
