@@ -4,6 +4,7 @@
 from argparse import ArgumentParser, Namespace, _ArgumentGroup
 from sys import exit
 
+from torchfl import __version__
 from torchfl.compatibility import DATASETS
 
 
@@ -14,8 +15,44 @@ def cli_parser() -> Namespace:
         Namespace: Namespace object from argparse
     """
     parser = ArgumentParser()
-    federated: _ArgumentGroup = parser.add_argument_group("federated learning")
     general: _ArgumentGroup = parser.add_argument_group("general")
+    parser.add_argument_group("datamodule")
+    parser.add_argument_group("model")
+    federated: _ArgumentGroup = parser.add_argument_group("federated learning")
+
+    # general args
+    general.add_argument(
+        "--version", action="version", version=f"torchfl {__version__}"
+    )
+    general.add_argument(
+        "--experiment_name",
+        type=str,
+        default="torchfl_experiment",
+        help="name of the experiment.",
+    )
+    general.add_argument(
+        "--experiment_version",
+        type=float,
+        default=0.1,
+        help="version of the experiment.",
+    )
+
+    general.add_argument(
+        "--dataset",
+        type=str,
+        default="mnist",
+        help=f"name of the dataset to be used. Supported: {DATASETS}",
+    )
+    general.add_argument(
+        "--test_bs",
+        type=int,
+        default=128,
+        help="batch size used for the testing dataset.",
+    )
+
+    # datamodule args
+
+    # model args
 
     # federated args
     federated.add_argument(
@@ -48,20 +85,6 @@ def cli_parser() -> Namespace:
         help="max number of classes held by each niid agent. lower the number, more measure of non-iidness.",
     )
 
-    # general args
-    general.add_argument(
-        "--dataset",
-        type=str,
-        default="mnist",
-        help=f"name of the dataset to be used. Supported: {DATASETS}",
-    )
-    general.add_argument(
-        "--test_bs",
-        type=int,
-        default=128,
-        help="batch size used for the testing dataset.",
-    )
-
     args = parser.parse_args()
     return args
 
@@ -70,7 +93,7 @@ def main():
     """Console script for torchfl."""
     args = cli_parser()
 
-    print("Arguments: " + str(args._))
+    print("Arguments: " + str(args))
     print("Replace this message by putting your code into " "torchfl.cli.main")
     return 0
 

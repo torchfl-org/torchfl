@@ -111,7 +111,7 @@ authors = ["vivekkhimani <vivekkhimani07@gmail.com>"]
 license = "GNU General Public License v3"
 readme = "README.md"
 homepage = "https://torchfl.readthedocs.io/en/latest/"
-repository = "https://github.com/vivekkhimani/torchfl"
+repository = "https://github.com/torchfl-org/torchfl"
 documentation = "https://torchfl.readthedocs.io/en/latest/"
 keywords = ["federated-learning", "pytorch", "pytorch-lightning", "torchfl"]
 classifiers=[
@@ -138,6 +138,11 @@ torchvision = "~0.14"
 pytorch-lightning = "~1.9"
 pytest = "^7.2.1"
 
+[tool.poetry.urls]
+"Issue Tracker" = "https://github.com/torchfl-org/torchfl/issues"
+
+[tool.poetry.scripts]
+torchfl = "torchfl.cli:main"
 
 [build-system]
 requires = ["poetry-core"]
