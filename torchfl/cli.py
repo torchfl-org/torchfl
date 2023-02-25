@@ -41,6 +41,7 @@ def cli_parser() -> Namespace:
     datamodule: _ArgumentGroup = parser.add_argument_group("datamodule")
     model: _ArgumentGroup = parser.add_argument_group("model")
     optimizer: _ArgumentGroup = parser.add_argument_group("optimizer")
+    parser.add_argument_group("trainer")
     federated: _ArgumentGroup = parser.add_argument_group("federated learning")
 
     # general args
@@ -141,25 +142,18 @@ def cli_parser() -> Namespace:
     # NOTE: PyTorch Lightning has fancy features for optimizers configuration, but we don't support them via CLI or YAML configs.
     # We can explore adding them in the future.
 
+    # trainer args
+    ## FIXME - add arguments for the trainer
+
     # federated args
     federated.add_argument(
-        "--num_workers",
+        "--num_agents",
         type=int,
         default=10,
-        help="number of workers for federated learning.",
+        help="number of agents for federated learning.",
     )
-    federated.add_argument(
-        "--worker_bs",
-        type=int,
-        default=10,
-        help="batch size of the dataset for workers training locally.",
-    )
-    federated.add_argument(
-        "--worker_ep",
-        type=int,
-        default=5,
-        help="number of epochs for the workers training locally.",
-    )
+    federated.add_argument("--global_epochs", type=int, default=10)
+    federated.add_argument("--local_epochs", type=int, default=5)
     federated.add_argument(
         "--iid",
         action="store_true",
@@ -171,6 +165,19 @@ def cli_parser() -> Namespace:
         default=2,
         help="max number of classes held by each niid agent. lower the number, more measure of non-iidness.",
     )
+    federated.add_argument("--local_test_split", type=float, default=0.1)
+    federated.add_argument("--local_train_bs", type=int, default=10)
+    federated.add_argument("--local_test_bs", type=int, default=10)
+    federated.add_argument(
+        "--sampling_method", type=str, default="random"
+    )  # FIXME: add choices here
+    federated.add_argument("--sampling_ratio", type=float, default=0.1)
+    federated.add_argument(
+        "--agent_type", type=str, default="v1"
+    )  # FIXME: add choices here
+    federated.add_argument(
+        "--aggregation_type", type=str, default="fedavg"
+    )  # FIXME: add choices here
 
     args = parser.parse_args()
     return args
