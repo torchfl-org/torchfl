@@ -38,3 +38,7 @@ class SamplersEnum(enum.Enum):
 AgentsType = BaseAgent | V1Agent
 AggregatorsType = BaseAggregator | FedAvgAggregator
 SamplersType = BaseSampler | RandomSampler
+
+AGENTS_TYPE = ["v1"]
+AGGREGATORS_TYPE = ["fedavg"]
+SAMPLERS_TYPE = ["random"]
