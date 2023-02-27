@@ -25,7 +25,6 @@ from torch.optim import (
 )
 
 TORCHFL_DIR: str = os.path.join(Path.home(), ".torchfl")
-DATASETS = ["mnist", "emnist_digits", "cifar10"]
 OPTIMIZERS = [
     "adadelta",
     "adagrad",
@@ -42,14 +41,6 @@ OPTIMIZERS = [
     "sgd",
 ]
 ACTIVATION_FUNCTIONS = ["tanh", "relu", "leakyrelu", "gelu"]
-
-
-class DATASETS_TYPE(enum.Enum):
-    """Enum class for the supported datasets."""
-
-    MNIST = "mnist"
-    EMNIST_DIGITS = "emnist_digits"
-    CIFAR10 = "cifar10"
 
 
 class OPTIMIZERS_TYPE(enum.Enum):

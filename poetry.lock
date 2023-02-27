@@ -441,14 +441,14 @@ files = [
 
 [[package]]
 name = "lightning-utilities"
-version = "0.7.0"
+version = "0.7.1"
 description = "PyTorch Lightning Sample project."
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "lightning-utilities-0.7.0.tar.gz", hash = "sha256:959638922fe127239915a465fceb4e19469238335436bc3d4fadc13881743856"},
-    {file = "lightning_utilities-0.7.0-py3-none-any.whl", hash = "sha256:7f449504e432e80cef0775f2095a8a38f059b2f3e460499e74c71683930916f0"},
+    {file = "lightning-utilities-0.7.1.tar.gz", hash = "sha256:9748a5466490d6e45c2df60c1ee77ff37a1a660ea6313bc0832ab7317a081cef"},
+    {file = "lightning_utilities-0.7.1-py3-none-any.whl", hash = "sha256:a7c58e67831c17712736e38e8ad5b81dbf64184ce28684a502e896ecca939b67"},
 ]
 
 [package.dependencies]
@@ -459,6 +459,7 @@ typing-extensions = "*"
 cli = ["fire"]
 docs = ["sphinx (>=4.0,<5.0)"]
 test = ["coverage (==6.5.0)"]
+typing = ["mypy (>=1.0.0)"]
 
 [[package]]
 name = "markdown-it-py"

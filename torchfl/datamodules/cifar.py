@@ -17,12 +17,10 @@ from typing import Any
 
 import numpy as np
 import pytorch_lightning as pl
-import torch
 from torch.utils.data import DataLoader, Dataset, random_split
 from torchvision import transforms
 from torchvision.datasets import CIFAR10, CIFAR100
 
-torch.manual_seed(42)
 np.random.seed(42)
 pl.seed_everything(42)
 
@@ -334,7 +332,6 @@ class CIFARDataModule(pl.LightningDataModule):
         distribution: dict[int, np.ndarray] = {
             i: np.array([], dtype="int64") for i in range(num_workers)
         }
-        np.random.seed(42)
         while idx_shard:
             for i in range(num_workers):
                 rand_set: set[int] = set(
