@@ -21,6 +21,7 @@ from torch.utils.data import DataLoader, Dataset, random_split
 from torchvision import transforms
 from torchvision.datasets import CIFAR10, CIFAR100
 
+np.random.seed(42)
 pl.seed_everything(42)
 
 ###################
