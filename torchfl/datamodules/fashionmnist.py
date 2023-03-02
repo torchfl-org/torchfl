@@ -18,7 +18,7 @@ from torch.utils.data import DataLoader, Dataset, random_split
 from torchvision import transforms
 from torchvision.datasets import FashionMNIST
 
-from .datamodule import BaseDataModule
+from torchfl.datamodules.base import BaseDataModule
 
 np.random.seed(42)
 pl.seed_everything(42)
