@@ -18,13 +18,17 @@ from torch.utils.data import DataLoader, Dataset, random_split
 from torchvision import transforms
 from torchvision.datasets import FashionMNIST
 
+from torchfl.datamodules.base import BaseDataModule
+
 np.random.seed(42)
 pl.seed_everything(42)
 
 ###################
 # Begin Constants #
 ###################
+
 TORCHFL_DIR: str = os.path.join(Path.home(), ".torchfl")
+SUPPORTED_DATASETS: set[str] = {"FashionMNIST"}
 DEFAULT_TRANSFORMS: transforms.Compose = transforms.Compose(
     [
         transforms.RandomResizedCrop(224),
@@ -86,12 +90,13 @@ class DatasetSplit(Dataset):
         return image, label
 
 
-class FashionMNISTDataModule(pl.LightningDataModule):
+class FashionMNISTDataModule(BaseDataModule):
     """PyTorch LightNingDataModule for CIFAR datasets."""
 
     def __init__(
         self,
         data_dir: str = os.path.join(TORCHFL_DIR, "data"),
+        dataset_name: SUPPORTED_DATASETS_TYPE = SUPPORTED_DATASETS_TYPE.FASHIONMNIST,
         validation_split: float = 0.1,
         train_batch_size: int = 32,
         validation_batch_size: int = 32,
@@ -118,20 +123,20 @@ class FashionMNISTDataModule(pl.LightningDataModule):
         Raises:
             - ValueError: The given dataset name is not supported. Supported: cifar10, cifar100.
         """
-        super().__init__()
-        if not os.path.exists(TORCHFL_DIR):
-            os.mkdir(TORCHFL_DIR)
-        self.data_dir: str = data_dir
-        self.train_transform: transforms.Compose = train_transforms
-        self.val_transform: transforms.Compose = val_transforms
-        self.test_transform: transforms.Compose = test_transforms
-        self.predict_transform: transforms.Compose = predict_transforms
-        self.validation_split: float = validation_split
-        self.train_batch_size: int = train_batch_size
-        self.validation_batch_size: int = validation_batch_size
-        self.test_batch_size: int = test_batch_size
-        self.predict_batch_size: int = predict_batch_size
-        self.save_hyperparameters()
+        super().__init__(
+            data_dir=data_dir,
+            dataset_name=dataset_name,
+            supported_datasets=SUPPORTED_DATASETS,
+            train_transforms=train_transforms,
+            val_transforms=val_transforms,
+            test_transforms=test_transforms,
+            predict_transforms=predict_transforms,
+            validation_split=validation_split,
+            train_batch_size=train_batch_size,
+            validation_batch_size=validation_batch_size,
+            test_batch_size=test_batch_size,
+            predict_batch_size=predict_batch_size,
+        )
 
     def prepare_data(self) -> None:
         """Downloading the data if not already available."""

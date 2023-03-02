@@ -21,6 +21,8 @@ from torch.utils.data import DataLoader, Dataset, random_split
 from torchvision import transforms
 from torchvision.datasets import CIFAR10, CIFAR100
 
+from torchfl.datamodules.base import BaseDataModule
+
 np.random.seed(42)
 pl.seed_everything(42)
 
@@ -95,7 +97,7 @@ class DatasetSplit(Dataset):
         return image, label
 
 
-class CIFARDataModule(pl.LightningDataModule):
+class CIFARDataModule(BaseDataModule):
     """PyTorch LightNingDataModule for CIFAR datasets."""
 
     def __init__(
@@ -130,23 +132,20 @@ class CIFARDataModule(pl.LightningDataModule):
         Raises:
             - ValueError: The given dataset name is not supported. Supported: cifar10, cifar100.
         """
-        super().__init__()
-        if not os.path.exists(TORCHFL_DIR):
-            os.mkdir(TORCHFL_DIR)
-        self.data_dir: str = data_dir
-        if dataset_name.value not in SUPPORTED_DATASETS:
-            raise ValueError(f"{dataset_name}: Not a supported dataset.")
-        self.dataset_name: str = dataset_name.value
-        self.train_transform: transforms.Compose = train_transforms
-        self.val_transform: transforms.Compose = val_transforms
-        self.test_transform: transforms.Compose = test_transforms
-        self.predict_transform: transforms.Compose = predict_transforms
-        self.validation_split: float = validation_split
-        self.train_batch_size: int = train_batch_size
-        self.validation_batch_size: int = validation_batch_size
-        self.test_batch_size: int = test_batch_size
-        self.predict_batch_size: int = predict_batch_size
-        self.save_hyperparameters()
+        super().__init__(
+            data_dir=data_dir,
+            dataset_name=dataset_name,
+            supported_datasets=SUPPORTED_DATASETS,
+            train_transforms=train_transforms,
+            val_transforms=val_transforms,
+            test_transforms=test_transforms,
+            predict_transforms=predict_transforms,
+            validation_split=validation_split,
+            train_batch_size=train_batch_size,
+            validation_batch_size=validation_batch_size,
+            test_batch_size=test_batch_size,
+            predict_batch_size=predict_batch_size,
+        )
 
     def prepare_data(self) -> None:
         """Downloading the data if not already available."""
