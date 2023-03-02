@@ -3,13 +3,13 @@
 """Base Data Module class used for defining module operations.
 
 Raises:
-    - NotImplementedError: All abstract function are undefined in the base class. 
+    - NotImplementedError: All abstract function are undefined in the base class.
 """
-import os
 import enum
+import os
+from abc import ABCMeta, abstractmethod
 from pathlib import Path
 
-from abc import ABCMeta, abstractmethod
 import pytorch_lightning as pl
 from torch.utils.data import DataLoader
 from torchvision import transforms
@@ -57,17 +57,19 @@ class BaseDataModule(pl.LightningDataModule, metaclass=ABCMeta):
     def prepare_data(self) -> None:
         """Downloading the data if not already available."""
         raise NotImplementedError(
-            f"Subclasses must implement the {self.prepare_data.__name__} method")
+            f"Subclasses must implement the {self.prepare_data.__name__} method"
+        )
 
     @abstractmethod
     def setup(self, stage: str | None) -> None:
         """Setup before training/testing/validation/prediction using the dataset.
 
         Args:
-            - stage (Optional[str], optional): Current stage of the PyTorch training process used for setup. 
+            - stage (Optional[str], optional): Current stage of the PyTorch training process used for setup.
         """
         raise NotImplementedError(
-            f"Subclasses must implement the {self.setup.__name__} method")
+            f"Subclasses must implement the {self.setup.__name__} method"
+        )
 
     @abstractmethod
     def train_dataloader(self) -> DataLoader:
@@ -77,7 +79,8 @@ class BaseDataModule(pl.LightningDataModule, metaclass=ABCMeta):
             - DataLoader: PyTorch DataLoader object.
         """
         raise NotImplementedError(
-            f"Subclasses must implement the {self.train_dataloader.__name__} method")
+            f"Subclasses must implement the {self.train_dataloader.__name__} method"
+        )
 
     @abstractmethod
     def val_dataloader(self) -> DataLoader:
@@ -87,7 +90,8 @@ class BaseDataModule(pl.LightningDataModule, metaclass=ABCMeta):
             - DataLoader: PyTorch DataLoader object.
         """
         raise NotImplementedError(
-            f"Subclasses must implement the {self.val_dataloader.__name__} method")
+            f"Subclasses must implement the {self.val_dataloader.__name__} method"
+        )
 
     @abstractmethod
     def test_dataloader(self) -> DataLoader:
@@ -97,7 +101,8 @@ class BaseDataModule(pl.LightningDataModule, metaclass=ABCMeta):
             - DataLoader: PyTorch DataLoader object.
         """
         raise NotImplementedError(
-            f"Subclasses must implement the {self.test_dataloader.__name__} method")
+            f"Subclasses must implement the {self.test_dataloader.__name__} method"
+        )
 
     @abstractmethod
     def predict_dataloader(self) -> DataLoader:
@@ -107,7 +112,8 @@ class BaseDataModule(pl.LightningDataModule, metaclass=ABCMeta):
             - DataLoader: PyTorch DataLoader object.
         """
         raise NotImplementedError(
-            f"Subclasses must implement the {self.predict_dataloader.__name__} method ")
+            f"Subclasses must implement the {self.predict_dataloader.__name__} method "
+        )
 
     @abstractmethod
     def federated_non_iid_dataloader(
@@ -119,12 +125,13 @@ class BaseDataModule(pl.LightningDataModule, metaclass=ABCMeta):
         """Loads the training dataset as non-iid split among the workers.
 
         Args:
-            - num_workers (int, optional): number of workers for federated learning. 
-            - worker_bs (int, optional): batch size of the dataset for workers training locally. 
-            - niid_factor (int, optional): max number of classes held by each niid agent. lower the number, more measure of non-iidness. 
+            - num_workers (int, optional): number of workers for federated learning.
+            - worker_bs (int, optional): batch size of the dataset for workers training locally.
+            - niid_factor (int, optional): max number of classes held by each niid agent. lower the number, more measure of non-iidness.
 
         Returns:
             - Dict[int, DataLoader]: collection of workers as the keys and the PyTorch DataLoader object as values (used for training).
         """
         raise NotImplementedError(
-            f"Subclasses must implement the {self.federated_non_iid_dataloader.__name__} method")
+            f"Subclasses must implement the {self.federated_non_iid_dataloader.__name__} method"
+        )

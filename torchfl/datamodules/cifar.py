@@ -14,12 +14,14 @@ import os
 from collections.abc import Iterable
 from pathlib import Path
 from typing import Any
-from .datamodule import BaseDataModule
+
 import numpy as np
 import pytorch_lightning as pl
 from torch.utils.data import DataLoader, Dataset, random_split
 from torchvision import transforms
 from torchvision.datasets import CIFAR10, CIFAR100
+
+from .datamodule import BaseDataModule
 
 np.random.seed(42)
 pl.seed_everything(42)
@@ -130,18 +132,20 @@ class CIFARDataModule(BaseDataModule):
         Raises:
             - ValueError: The given dataset name is not supported. Supported: cifar10, cifar100.
         """
-        super().__init__(data_dir=data_dir,
-                         dataset_name=dataset_name,
-                         supported_datasets=SUPPORTED_DATASETS,
-                         train_transforms=train_transforms,
-                         val_transforms=val_transforms,
-                         test_transforms=test_transforms,
-                         predict_transforms=predict_transforms,
-                         validation_split=validation_split,
-                         train_batch_size=train_batch_size,
-                         validation_batch_size=validation_batch_size,
-                         test_batch_size=test_batch_size,
-                         predict_batch_size=predict_batch_size)
+        super().__init__(
+            data_dir=data_dir,
+            dataset_name=dataset_name,
+            supported_datasets=SUPPORTED_DATASETS,
+            train_transforms=train_transforms,
+            val_transforms=val_transforms,
+            test_transforms=test_transforms,
+            predict_transforms=predict_transforms,
+            validation_split=validation_split,
+            train_batch_size=train_batch_size,
+            validation_batch_size=validation_batch_size,
+            test_batch_size=test_batch_size,
+            predict_batch_size=predict_batch_size,
+        )
 
     def prepare_data(self) -> None:
         """Downloading the data if not already available."""
@@ -337,7 +341,7 @@ class CIFARDataModule(BaseDataModule):
                     distribution[i] = np.concatenate(
                         (
                             distribution[i],
-                            idxs[rand * items: (rand + 1) * items],
+                            idxs[rand * items : (rand + 1) * items],
                         ),
                         axis=0,
                     )
