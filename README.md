@@ -17,6 +17,7 @@
 	<a href="https://github.com/vivekkhimani/torchfl"><img src="https://img.shields.io/github/search/vivekkhimani/torchfl/torchfl"></a>
 	<a href="https://torchfl.readthedocs.io"><img src="https://img.shields.io/readthedocs/torchfl"</a>
 	<a href="https://github.com/vivekkhimani/torchfl/blob/master/LICENSE"><img src="https://img.shields.io/pypi/l/torchfl"></a>
+	<a href="https://github.com/vivekkhimani/torchfl/blob/master/pyproject.toml"><img src="https://img.shields.io/librariesio/release/github/torchfl-org/torchfl"></a>
 </div>
 <hr>
 
