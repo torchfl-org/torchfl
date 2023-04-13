@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 
 """Console script for torchfl."""
+import copy
 import sys
 from argparse import (
+    SUPPRESS,
     Action,
     ArgumentError,
     ArgumentParser,
@@ -10,6 +12,8 @@ from argparse import (
     _ArgumentGroup,
 )
 from sys import exit
+
+import yaml
 
 from torchfl import __version__
 from torchfl.compatibility import TORCHFL_DIR
@@ -60,7 +64,7 @@ def cli_parser() -> Namespace:
         "-c",
         "--config",
         type=str,
-        help="path to the config file to create a torchfl experiment. Overrides CLI args.",
+        help="path to the config file to create a torchfl experiment. Options from the configuration file will override the CLI arguments.",
     )  # FIXME - overrides other args when this is provided.
     general.add_argument(
         "--experiment_name",
@@ -157,7 +161,7 @@ def cli_parser() -> Namespace:
     # We can explore adding them in the future.
 
     # trainer args
-    ## FIXME - add arguments for the trainer
+    # FIXME - add arguments for the trainer
 
     # federated args
     federated.add_argument(
@@ -236,9 +240,49 @@ def cli_parser() -> Namespace:
     return parser.parse_args()
 
 
+def config_parser(filename: str) -> Namespace:
+    """
+    Defines an argparse Namespace by parsing elements of the YAML config
+
+    Returns: Namespace:
+                Namespace of arguments belonging to the config
+    """
+
+    name_match = ["name"]
+    output = {}
+    """
+    There is an issue with the coalescing of configs where elements in the config may be named relative to each respective parent.
+    So something called model_name may be called name. This recursive rename solves this issue by renaming elements but this may not be sustainable in the long term.
+    """
+
+    def recursive_flatmap_rename(root: dict, parent_name=""):
+        if len(root) == 0:
+            return
+        for element in root.keys():
+            if type(root[element]) is dict:
+                recursive_flatmap_rename(root[element], parent_name=element)
+            elif element in name_match:
+                output[parent_name + "_" + element] = root[element]
+            else:
+                output[element] = root[element]
+
+    with open(filename) as yaml_file:
+        config = yaml.safe_load(yaml_file)
+        recursive_flatmap_rename(copy.deepcopy(config))
+
+        return Namespace(**output)
+
+
 def main():
     """Console script for torchfl."""
     args = cli_parser()
+    if args.config:
+        config_args = config_parser(args.config)
+        # Takes the union of the two Namespaces.
+        for k, v in vars(config_args).items():
+            if v != vars(args).get(k, SUPPRESS):
+                setattr(args, k, v)
+
     _ = ConfigResolver(args)
     # FIXME - the config resolver should return a torchfl job which can be run here
     print("Arguments: " + str(args))
