@@ -18,7 +18,8 @@ disable_error_code = ["attr-defined"]
 [[tool.mypy.overrides]]
 # Add all the modules with missing type stubs here.
 module = [
-    "torchvision.*"
+    "torchvision.*",
+    "yaml"
     ]
 ignore_missing_imports = true
 
@@ -137,6 +138,8 @@ torch = "~1.13"
 torchvision = "~0.14"
 pytorch-lightning = "~1.9"
 pytest = "^7.2.1"
+pyyaml = "^6.0"
+types-pyyaml = "^6.0.12.9"
 
 [tool.poetry.urls]
 "Issue Tracker" = "https://github.com/torchfl-org/torchfl/issues"
