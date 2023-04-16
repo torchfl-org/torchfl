@@ -55,8 +55,9 @@ class Entrypoint:
         )
         return pl.Trainer(
             max_epochs=self.fl_params.local_epochs,
-            accelerator="gpu" if torch.cuda.is_available() else None,
-            auto_lr_find=True,
+            accelerator="gpu" if torch.cuda.is_available() else "auto",
+            # auto_lr_find=True,    # NOTE: this feature was deprecated and they introduced a callback for this. We can get rid of this now but should come up w alternative.
+            benchmark=True,
             enable_progress_bar=True,
             enable_model_summary=True,
             devices=torch.cuda.device_count()
@@ -65,8 +66,7 @@ class Entrypoint:
             num_nodes=torch.cuda.device_count()
             if torch.cuda.is_available()
             else 1,
-            num_processes=1,
-            resume_from_checkpoint=self.fl_params.checkpoint_load_path,
+            default_root_dir=self.fl_params.checkpoint_load_path,
             detect_anomaly=True,
             logger=[
                 TensorBoardLogger(
@@ -85,7 +85,6 @@ class Entrypoint:
                 RichProgressBar(leave=True),
                 Timer(),
             ],
-            enable_checkpointing=False,
         )
 
     def gen_agent_trainer(self, agent: AgentsType) -> pl.Trainer:
@@ -94,8 +93,9 @@ class Entrypoint:
         )
         return pl.Trainer(
             max_epochs=self.fl_params.local_epochs,
-            accelerator="gpu" if torch.cuda.is_available() else None,
-            auto_lr_find=True,
+            accelerator="gpu" if torch.cuda.is_available() else "auto",
+            benchmark=True,
+            # auto_lr_find=True,    # NOTE: this feature was deprecated and they introduced a callback for this. We can get rid of this now but should come up w alternative.
             enable_progress_bar=True,
             enable_model_summary=True,
             devices=torch.cuda.device_count()
@@ -104,8 +104,7 @@ class Entrypoint:
             num_nodes=torch.cuda.device_count()
             if torch.cuda.is_available()
             else 1,
-            num_processes=1,
-            resume_from_checkpoint=self.fl_params.checkpoint_load_path,
+            default_root_dir=self.fl_params.checkpoint_load_path,
             detect_anomaly=True,
             logger=[
                 TensorBoardLogger(
@@ -124,7 +123,6 @@ class Entrypoint:
                 RichProgressBar(leave=True),
                 Timer(),
             ],
-            enable_checkpointing=False,
         )
 
     def run(self) -> None:
