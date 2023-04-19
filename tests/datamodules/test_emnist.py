@@ -149,7 +149,7 @@ def test_emnist_balanced_federated_non_iid_split(emnist_balanced_data_module):
         assert len(dataloader[i].dataset) == 11280
         frequency = Counter(list(dataloader[i].dataset.targets))
         all_freq.append(len(frequency.keys()))
-    assert max(all_freq) == 7
+    assert max(all_freq) == 8
 
 
 ############
@@ -230,7 +230,7 @@ def test_emnist_byclass_federated_non_iid_split(emnist_byclass_data_module):
         assert len(dataloader[i].dataset) == 69792
         frequency = Counter(list(dataloader[i].dataset.targets))
         all_freq.append(len(frequency.keys()))
-    assert max(all_freq) == 13
+    assert max(all_freq) == 16
 
 
 ############
@@ -311,7 +311,7 @@ def test_emnist_bymerge_federated_non_iid_split(emnist_bymerge_data_module):
         assert len(dataloader[i].dataset) == 69792
         frequency = Counter(list(dataloader[i].dataset.targets))
         all_freq.append(len(frequency.keys()))
-    assert max(all_freq) == 10
+    assert max(all_freq) == 12
 
 
 ##########

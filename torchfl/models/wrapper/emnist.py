@@ -6,6 +6,7 @@ import enum
 from typing import Any
 
 import pytorch_lightning as pl
+import torch
 import torch.nn as nn
 from torch import Tensor, optim
 
@@ -1017,70 +1018,72 @@ def create_model(
                 f"{model_name}: Invalid model name. Not supported for this dataset."
             )
         else:
-            if not model_hparams:
-                return EMNIST_BALANCED_MODELS_MAPPING[model_name]()
-            else:
-                return EMNIST_BALANCED_MODELS_MAPPING[model_name](
-                    **model_hparams
-                )
+            return (
+                EMNIST_BALANCED_MODELS_MAPPING[model_name](**model_hparams)
+                if model_hparams
+                else EMNIST_BALANCED_MODELS_MAPPING[model_name]()
+            )
+
     elif dataset_name == "byclass":
         if model_name not in EMNIST_BYCLASS_MODELS_MAPPING:
             raise ValueError(
                 f"{model_name}: Invalid model name. Not supported for this dataset."
             )
         else:
-            if not model_hparams:
-                return EMNIST_BYCLASS_MODELS_MAPPING[model_name]()
-            else:
-                return EMNIST_BYCLASS_MODELS_MAPPING[model_name](
-                    **model_hparams
-                )
+            return (
+                EMNIST_BYCLASS_MODELS_MAPPING[model_name](**model_hparams)
+                if model_hparams
+                else EMNIST_BYCLASS_MODELS_MAPPING[model_name]()
+            )
+
     elif dataset_name == "bymerge":
         if model_name not in EMNIST_BYMERGE_MODELS_MAPPING:
             raise ValueError(
                 f"{model_name}: Invalid model name. Not supported for this dataset."
             )
         else:
-            if not model_hparams:
-                return EMNIST_BYMERGE_MODELS_MAPPING[model_name]()
-            else:
-                return EMNIST_BYMERGE_MODELS_MAPPING[model_name](
-                    **model_hparams
-                )
+            return (
+                EMNIST_BYMERGE_MODELS_MAPPING[model_name](**model_hparams)
+                if model_hparams
+                else EMNIST_BYMERGE_MODELS_MAPPING[model_name]()
+            )
+
     elif dataset_name == "letters":
         if model_name not in EMNIST_LETTERS_MODELS_MAPPING:
             raise ValueError(
                 f"{model_name}: Invalid model name. Not supported for this dataset."
             )
         else:
-            if not model_hparams:
-                return EMNIST_LETTERS_MODELS_MAPPING[model_name]()
-            else:
-                return EMNIST_LETTERS_MODELS_MAPPING[model_name](
-                    **model_hparams
-                )
+            return (
+                EMNIST_LETTERS_MODELS_MAPPING[model_name](**model_hparams)
+                if model_hparams
+                else EMNIST_LETTERS_MODELS_MAPPING[model_name]()
+            )
+
     elif dataset_name == "digits":
         if model_name not in EMNIST_DIGITS_MODELS_MAPPING:
             raise ValueError(
                 f"{model_name}: Invalid model name. Not supported for this dataset."
             )
         else:
-            if not model_hparams:
-                return EMNIST_DIGITS_MODELS_MAPPING[model_name]()
-            else:
-                return EMNIST_DIGITS_MODELS_MAPPING[model_name](
-                    **model_hparams
-                )
+            return (
+                EMNIST_DIGITS_MODELS_MAPPING[model_name](**model_hparams)
+                if model_hparams
+                else EMNIST_DIGITS_MODELS_MAPPING[model_name]()
+            )
+
     elif dataset_name == "mnist":
         if model_name not in EMNIST_MNIST_MODELS_MAPPING:
             raise ValueError(
                 f"{model_name}: Invalid model name. Not supported for this dataset."
             )
         else:
-            if not model_hparams:
-                return EMNIST_MNIST_MODELS_MAPPING[model_name]()
-            else:
-                return EMNIST_MNIST_MODELS_MAPPING[model_name](**model_hparams)
+            return (
+                EMNIST_MNIST_MODELS_MAPPING[model_name](**model_hparams)
+                if model_hparams
+                else EMNIST_MNIST_MODELS_MAPPING[model_name]()
+            )
+
     else:
         raise ValueError(
             f"{dataset_name}: Invalid dataset name. Not a supported dataset."
@@ -1113,10 +1116,12 @@ class BalancedEMNIST(pl.LightningModule):
             - fl_hparams (Optional[FLParams], optional): Optional override the default federated learning hparams. Defaults to None.
         """
         super().__init__()
-        self.model = create_model(
-            dataset_name="balanced",
-            model_name=model_name.value,
-            model_hparams=model_hparams,
+        self.model = torch.compile(
+            create_model(
+                dataset_name="balanced",
+                model_name=model_name.value,
+                model_hparams=model_hparams,
+            )
         )
         self.fl_hparams: dict[str, Any] | None = (
             fl_hparams.as_dict() if fl_hparams else None
@@ -1287,10 +1292,12 @@ class ByClassEMNIST(pl.LightningModule):
             - fl_hparams (Optional[FLParams], optional): Optional override the default federated learning hparams. Defaults to None.
         """
         super().__init__()
-        self.model = create_model(
-            dataset_name="byclass",
-            model_name=model_name.value,
-            model_hparams=model_hparams,
+        self.model = torch.compile(
+            create_model(
+                dataset_name="byclass",
+                model_name=model_name.value,
+                model_hparams=model_hparams,
+            )
         )
         self.fl_hparams: dict[str, Any] | None = (
             fl_hparams.as_dict() if fl_hparams else None
@@ -1461,10 +1468,12 @@ class ByMergeEMNIST(pl.LightningModule):
             - fl_hparams (Optional[FLParams], optional): Optional override the default federated learning hparams. Defaults to None.
         """
         super().__init__()
-        self.model = create_model(
-            dataset_name="bymerge",
-            model_name=model_name.value,
-            model_hparams=model_hparams,
+        self.model = torch.compile(
+            create_model(
+                dataset_name="bymerge",
+                model_name=model_name.value,
+                model_hparams=model_hparams,
+            )
         )
         self.fl_hparams: dict[str, Any] | None = (
             fl_hparams.as_dict() if fl_hparams else None
@@ -1635,10 +1644,12 @@ class LettersEMNIST(pl.LightningModule):
             - fl_hparams (Optional[FLParams], optional): Optional override the default federated learning hparams. Defaults to None.
         """
         super().__init__()
-        self.model = create_model(
-            dataset_name="letters",
-            model_name=model_name.value,
-            model_hparams=model_hparams,
+        self.model = torch.compile(
+            create_model(
+                dataset_name="letters",
+                model_name=model_name.value,
+                model_hparams=model_hparams,
+            )
         )
         self.fl_hparams: dict[str, Any] | None = (
             fl_hparams.as_dict() if fl_hparams else None
@@ -1809,10 +1820,12 @@ class DigitsEMNIST(pl.LightningModule):
             - fl_hparams (Optional[FLParams], optional): Optional override the default federated learning hparams. Defaults to None.
         """
         super().__init__()
-        self.model = create_model(
-            dataset_name="digits",
-            model_name=model_name.value,
-            model_hparams=model_hparams,
+        self.model = torch.compile(
+            create_model(
+                dataset_name="digits",
+                model_name=model_name.value,
+                model_hparams=model_hparams,
+            )
         )
         self.fl_hparams: dict[str, Any] | None = (
             fl_hparams.as_dict() if fl_hparams else None
@@ -1983,10 +1996,12 @@ class MNISTEMNIST(pl.LightningModule):
             - fl_hparams (Optional[FLParams], optional): Optional override the default federated learning hparams. Defaults to None.
         """
         super().__init__()
-        self.model = create_model(
-            dataset_name="mnist",
-            model_name=model_name.value,
-            model_hparams=model_hparams,
+        self.model = torch.compile(
+            create_model(
+                dataset_name="mnist",
+                model_name=model_name.value,
+                model_hparams=model_hparams,
+            )
         )
         self.fl_hparams: dict[str, Any] | None = (
             fl_hparams.as_dict() if fl_hparams else None

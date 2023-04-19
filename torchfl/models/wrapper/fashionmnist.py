@@ -5,6 +5,7 @@ import enum
 from typing import Any
 
 import pytorch_lightning as pl
+import torch
 import torch.nn as nn
 from torch import Tensor, optim
 
@@ -276,10 +277,12 @@ def create_model(
                 f"{model_name}: Invalid model name. Not supported for this dataset."
             )
         else:
-            if not model_hparams:
-                return FASHIONMNIST_MODELS_MAPPING[model_name]()
-            else:
-                return FASHIONMNIST_MODELS_MAPPING[model_name](**model_hparams)
+            return (
+                FASHIONMNIST_MODELS_MAPPING[model_name](**model_hparams)
+                if model_hparams
+                else FASHIONMNIST_MODELS_MAPPING[model_name]()
+            )
+
     else:
         raise ValueError(
             f"{dataset_name}: Invalid dataset name. Not a supported dataset."
@@ -312,10 +315,12 @@ class FashionMNIST(pl.LightningModule):
             - fl_hparams (Optional[FLParams], optional): Optional override the default federated learning hparams. Defaults to None.
         """
         super().__init__()
-        self.model = create_model(
-            dataset_name="fashionmnist",
-            model_name=model_name.value,
-            model_hparams=model_hparams,
+        self.model = torch.compile(
+            create_model(
+                dataset_name="fashionmnist",
+                model_name=model_name.value,
+                model_hparams=model_hparams,
+            )
         )
         self.fl_hparams: dict[str, Any] | None = (
             fl_hparams.as_dict() if fl_hparams else None

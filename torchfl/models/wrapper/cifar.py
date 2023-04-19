@@ -6,6 +6,7 @@ import enum
 from typing import Any
 
 import pytorch_lightning as pl
+import torch
 import torch.nn as nn
 from torch import Tensor, optim
 
@@ -407,20 +408,24 @@ def create_model(
                 f"{model_name}: Invalid model name. Not supported for this dataset."
             )
         else:
-            if not model_hparams:
-                return CIFAR10_MODELS_MAPPING[model_name]()
-            else:
-                return CIFAR10_MODELS_MAPPING[model_name](**model_hparams)
+            return (
+                CIFAR10_MODELS_MAPPING[model_name](**model_hparams)
+                if model_hparams
+                else CIFAR10_MODELS_MAPPING[model_name]()
+            )
+
     elif dataset_name == "cifar100":
         if model_name not in CIFAR100_MODELS_MAPPING:
             raise ValueError(
                 f"{model_name}: Invalid model name. Not supported for this dataset."
             )
         else:
-            if not model_hparams:
-                return CIFAR10_MODELS_MAPPING[model_name]()
-            else:
-                return CIFAR100_MODELS_MAPPING[model_name](**model_hparams)
+            return (
+                CIFAR100_MODELS_MAPPING[model_name](**model_hparams)
+                if model_hparams
+                else CIFAR100_MODELS_MAPPING[model_name]()
+            )
+
     else:
         raise ValueError(
             f"{dataset_name}: Invalid dataset name. Not a supported dataset."
@@ -453,10 +458,12 @@ class CIFAR10(pl.LightningModule):
             - fl_hparams (Optional[FLParams], optional): Optional override the default federated learning hparams. Defaults to None.
         """
         super().__init__()
-        self.model = create_model(
-            dataset_name="cifar10",
-            model_name=model_name.value,
-            model_hparams=model_hparams,
+        self.model = torch.compile(
+            create_model(
+                dataset_name="cifar10",
+                model_name=model_name.value,
+                model_hparams=model_hparams,
+            )
         )
         self.fl_hparams: dict[str, Any] | None = (
             fl_hparams.as_dict() if fl_hparams else None
@@ -627,10 +634,12 @@ class CIFAR100(pl.LightningModule):
             - fl_hparams (Optional[FLParams], optional): Optional override the default federated learning hparams. Defaults to None.
         """
         super().__init__()
-        self.model = create_model(
-            dataset_name="cifar100",
-            model_name=model_name.value,
-            model_hparams=model_hparams,
+        self.model = torch.compile(
+            create_model(
+                dataset_name="cifar100",
+                model_name=model_name.value,
+                model_hparams=model_hparams,
+            )
         )
         self.fl_hparams: dict[str, Any] | None = (
             fl_hparams.as_dict() if fl_hparams else None
