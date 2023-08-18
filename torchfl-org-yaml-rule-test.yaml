@@ -49,3 +49,4 @@ rules:
           - pattern: yaml.load_all(..., Loader=yaml.Loader, ...)
           - pattern: yaml.load_all(..., Loader=yaml.UnsafeLoader, ...)
           - pattern: yaml.load_all(..., Loader=yaml.CLoader, ...)
+          - pattern: yaml.unsafe_load(...)
