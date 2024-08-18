@@ -132,7 +132,7 @@ include=[
 
 [tool.poetry.dependencies]
 python = "^3.10"
-numpy = "^1.24.2"
+numpy = ">=1.24.2,<3.0.0"
 rich = "^13.3.1"
 torch = "~2.0"
 torchvision = "*"
