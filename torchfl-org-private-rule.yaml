@@ -1,0 +1,14 @@
+rules:
+  - id: pytorch-consistent-lr-scheduler-step
+    languages:
+      - python
+    message: >
+      yada test change Call learning rate scheduler.step() consistently either before or after
+      the optimizer.step() to ensure proper learning rate updates. Idk does it
+      generate a new rule version? maybe something else?
+    pattern: |
+      $OPTIMIZER.step()
+      ...
+      $SCHEDULER.step()
+    severity: WARNING
+
